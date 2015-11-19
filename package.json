@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/melonmanchan/sardroid/issues"
   },
-  "homepage": "https://github.com/melonmanchan/sardroid#readme"
+  "homepage": "https://github.com/melonmanchan/sardroid#readme",
+  "cordovaPlugins": [
+    "cordova-plugin-crosswalk-webview",
+    "cordova-plugin-device"
+  ],
+  "cordovaPlatforms": []
 }
