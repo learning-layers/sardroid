@@ -47,14 +47,14 @@ gulp.task('html', function() {
 });
 
 gulp.task('vendor-js', function() {
-   return gulp.src(['./app/vendor/**/*.js'])
-       .pipe(gulpif(options.env !== 'development', minifyJS({mangle: true})))
-       .pipe(gulp.dest('./www/vendor'))
+   return gulp.src(
+       ['./app/vendor/ionic/release/js/ionic.bundle.min.js'],
+       { base: './app' })
+       .pipe(gulp.dest('./www/'))
 });
 
 gulp.task('js', ['vendor-js'], function() {
     return gulp.src('./app/js/**/*')
-        .pipe(gulpif(options.env !== 'development', minifyJS({mangle: true})))
         .pipe(gulp.dest('./www/js/'))
 });
 
