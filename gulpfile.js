@@ -12,6 +12,7 @@ var minifyCSS  = require('gulp-minify-css');
 var sourcemaps = require('gulp-sourcemaps');
 
 var minifyHTML  = require('gulp-minify-html');
+
 var browserSync = require('browser-sync');
 var reload      = browserSync.reload;
 
@@ -24,9 +25,7 @@ var knownOptions = {
 
 var options = minimist(process.argv.slice(2), knownOptions);
 
-gulp.task('default', ['scss', 'js', 'html'], function() {
-
-});
+gulp.task('build', ['scss', 'js', 'html'], function() {});
 
 gulp.task('scss', function() {
    return gulp.src('app/scss/app.scss')
@@ -37,6 +36,7 @@ gulp.task('scss', function() {
        .pipe(concat('app.css'))
        .pipe(gulpif(options.env === 'development', sourcemaps.write()))
        .pipe(gulp.dest('./www/css/'))
+       .pipe(reload({stream: true}))
 });
 
 
@@ -44,6 +44,7 @@ gulp.task('html', function() {
     return gulp.src(['./app/**/*.html', '!./app/vendor/**/*.html'])
        .pipe(gulpif(options.env !== 'development', minifyHTML()))
        .pipe(gulp.dest('./www/'))
+       .pipe(reload({stream: true}))
 });
 
 gulp.task('vendor-js', function() {
@@ -61,7 +62,18 @@ gulp.task('copy-res', function() {
 gulp.task('js', ['vendor-js'], function() {
     return gulp.src('./app/js/**/*')
         .pipe(gulp.dest('./www/js/'))
+        .pipe(reload({stream: true}))
 });
+
+gulp.task('watch', ['build'], function() {
+    browserSync({
+        server: {baseDir: 'www/'}
+    });
+    gulp.watch('app/scss/*.scss', ['scss'], {cwd: 'www'}, reload);
+    gulp.watch(['./app/**/*.html', '!./app/vendor/**/*.html'], ['html'], {cwd: 'www'}, reload);
+    gulp.watch('./app/js/**/*', ['js'], {cwd: 'www'}, reload);
+});
+
 
 gulp.task('clean', function() {
     return del('www');
