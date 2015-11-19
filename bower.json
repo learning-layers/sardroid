@@ -1,0 +1,19 @@
+{
+  "name": "sardroid",
+  "description": "New and improved version of SAR",
+  "main": "index.js",
+  "authors": [
+    "Matti Jokitulppo <matti.jokitulppo@aalto.fi>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/melonmanchan/sardroid",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
