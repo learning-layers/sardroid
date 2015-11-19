@@ -20,7 +20,9 @@
     "cordova-plugin-crosswalk-webview",
     "cordova-plugin-device"
   ],
-  "cordovaPlatforms": [],
+  "cordovaPlatforms": [
+    "android"
+  ],
   "devDependencies": {
     "browser-sync": "^2.10.0",
     "del": "^2.1.0",

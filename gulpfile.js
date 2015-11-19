@@ -53,6 +53,11 @@ gulp.task('vendor-js', function() {
        .pipe(gulp.dest('./www/'))
 });
 
+gulp.task('copy-res', function() {
+   return gulp.src('./app/config.xml')
+       .pipe(gulp.dest('./www/'))
+});
+
 gulp.task('js', ['vendor-js'], function() {
     return gulp.src('./app/js/**/*')
         .pipe(gulp.dest('./www/js/'))
