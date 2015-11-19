@@ -24,7 +24,7 @@ var knownOptions = {
 
 var options = minimist(process.argv.slice(2), knownOptions);
 
-gulp.task('default', ['scss'], function() {
+gulp.task('default', ['scss', 'js', 'html'], function() {
 
 });
 
@@ -37,4 +37,27 @@ gulp.task('scss', function() {
        .pipe(concat('app.css'))
        .pipe(gulpif(options.env === 'development', sourcemaps.write()))
        .pipe(gulp.dest('./www/css/'))
+});
+
+
+gulp.task('html', function() {
+    return gulp.src(['./app/**/*.html', '!./app/vendor/**/*.html'])
+       .pipe(gulpif(options.env !== 'development', minifyHTML()))
+       .pipe(gulp.dest('./www/'))
+});
+
+gulp.task('vendor-js', function() {
+   return gulp.src(['./app/vendor/**/*.js'])
+       .pipe(gulpif(options.env !== 'development', minifyJS({mangle: true})))
+       .pipe(gulp.dest('./www/vendor'))
+});
+
+gulp.task('js', ['vendor-js'], function() {
+    return gulp.src('./app/js/**/*')
+        .pipe(gulpif(options.env !== 'development', minifyJS({mangle: true})))
+        .pipe(gulp.dest('./www/js/'))
+});
+
+gulp.task('clean', function() {
+    return del('www');
 });
