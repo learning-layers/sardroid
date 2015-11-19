@@ -18,7 +18,8 @@
   "homepage": "https://github.com/melonmanchan/sardroid#readme",
   "cordovaPlugins": [
     "cordova-plugin-crosswalk-webview",
-    "cordova-plugin-device"
+    "cordova-plugin-device",
+    "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [
     "android"
