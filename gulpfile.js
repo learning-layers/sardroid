@@ -76,7 +76,7 @@ gulp.task('watch', ['build'], function() {
     });
     gulp.watch('app/scss/*.scss', ['scss'], {cwd: 'www'}, reload);
     gulp.watch(['./app/**/*.html', '!./app/vendor/**/*.html'], ['html'], {cwd: 'www'}, reload);
-    gulp.watch('./app/js/**/*', ['js'], {cwd: 'www'}, reload);
+    gulp.watch('./app/js/*.js', ['js'], {cwd: 'www'}, reload);
 });
 
 
