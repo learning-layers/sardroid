@@ -72,7 +72,8 @@ gulp.task('js', ['vendor-js'], function() {
 
 gulp.task('watch', ['build'], function() {
     browserSync({
-        server: {baseDir: 'www/'}
+        server: { baseDir: 'www/' },
+        open:   false
     });
     gulp.watch('app/scss/*.scss', ['scss'], {cwd: 'www'}, reload);
     gulp.watch(['./app/**/*.html', '!./app/vendor/**/*.html'], ['html'], {cwd: 'www'}, reload);
