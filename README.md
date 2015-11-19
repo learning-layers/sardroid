@@ -26,7 +26,16 @@ Afterwards, run gulp to build the www/ folder, which contains the app itself! Pa
 to it to minify CSS, HTML and such when you're about to release the app!
 
 ```sh
-gulp --env production
+gulp build --env production
+
+```
+
+## Developing
+
+To start livereload server that watches your files diligently and reloads when necessary, run
+
+```sh
+gulp watch
 
 ```
 
