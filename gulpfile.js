@@ -25,7 +25,7 @@ var knownOptions = {
 
 var options = minimist(process.argv.slice(2), knownOptions);
 
-gulp.task('build', ['scss', 'js', 'html'], function() {});
+gulp.task('build', ['scss', 'js', 'html', 'fonts'], function() {});
 
 gulp.task('scss', function() {
    return gulp.src('app/scss/app.scss')
@@ -57,6 +57,11 @@ gulp.task('vendor-js', function() {
 gulp.task('copy-res', function() {
    return gulp.src('./app/config.xml')
        .pipe(gulp.dest('./www/'))
+});
+
+gulp.task('fonts', function() {
+    return gulp.src(['./app/vendor/ionic/release/fonts/*'])
+    .pipe(gulp.dest('./www/fonts'))
 });
 
 gulp.task('js', ['vendor-js'], function() {
