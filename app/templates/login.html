@@ -1,5 +1,33 @@
-<ion-view view-title="Login">
-    <ion-content class="padding">
-        <h1>Login</h1>
+<ion-view view-title="Login" hide-nav-bar="true">
+    <ion-content class="padding center">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="sar-header positive">SAR</h1>
+            </div>
+        </div>
+        <div>
+            <div class="list list-inset padding-vertical login-form">
+                <form>
+                    <label class="item item-input">
+                        <i class="icon ion-email placeholder-icon"></i>
+                        <input type="email" placeholder="Email" required ng-model="user.email">
+                    </label>
+                    <label class="item item-input">
+                        <i class="icon ion-locked placeholder-icon"></i>
+                        <input type="password" placeholder="Password" required ng-model="user.password" >
+                    </label>
+                    <label class="item item-input">
+                        <i class="icon ion-ios-telephone placeholder-icon"></i>
+                        <input type="text" placeholder="Mobile number" required ng-model="user.phone" >
+                    </label>
+                    <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="login(user)">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
     </ion-content>
+    <ion-footer-bar align-title="center">
+        <h1 class="title positive"><i class="icon ion-key"></i> Lost password?</h1>
+    </ion-footer-bar>
 </ion-view>
