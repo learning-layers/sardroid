@@ -2,9 +2,9 @@
 
 angular.module('logincontroller', [])
 
-.controller('LoginCtrl', function($scope) {
+.controller('LoginCtrl', function($scope, $state) {
         $scope.login = function(user) {
-            console.log(user);
-            console.log($scope)
+            // Should probably log in here?
+            $state.go('home')
         };
 });
