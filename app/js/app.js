@@ -13,7 +13,7 @@ angular.module('sardroid', ['ionic', 'logincontroller', 'homecontroller'])
                 StatusBar.styleDefault();
             }
         });
-}).config(function($stateProvider, $UrlRouterProvider) {
+}).config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('login', {
             url: '/login',
@@ -25,5 +25,5 @@ angular.module('sardroid', ['ionic', 'logincontroller', 'homecontroller'])
             controller: 'HomeCtrl'
         });
 
-    $UrlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/login');
 });
