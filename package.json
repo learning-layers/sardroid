@@ -19,7 +19,8 @@
   "cordovaPlugins": [
     "cordova-plugin-crosswalk-webview",
     "cordova-plugin-device",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-plugin-statusbar"
   ],
   "cordovaPlatforms": [
     "android"
