@@ -19,10 +19,28 @@ angular.module('sardroid', ['ionic', 'logincontroller', 'homecontroller'])
             url: '/login',
             templateUrl: 'templates/login.html',
             controller: 'LoginCtrl'
-        }).state('home', {
+        }).state('tabs', {
+            url: '/tab',
+            abstract: true,
+            templateUrl: 'templates/tabs.html'
+        })
+        .state('tabs.home', {
             url: '/home',
-            templateUrl: 'templates/home.html',
-            controller: 'HomeCtrl'
+            views: {
+                'home-tab': {
+                    templateUrl: 'templates/home.html',
+                    controller: 'HomeCtrl'
+                }
+            }
+        })
+        .state('tabs.contacts', {
+            url: '/contacts',
+            views: {
+                 'contacts-tab': {
+                    templateUrl: 'templates/contacts.html',
+                    controller: 'HomeCtrl'
+                }
+            }
         });
 
     $urlRouterProvider.otherwise('/login');
