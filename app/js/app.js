@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sardroid', ['ionic', 'logincontroller', 'homecontroller', 'contactscontroller'])
+angular.module('sardroid', ['ionic', 'login', 'home', 'contacts'])
 
 .run(function($ionicPlatform) {
         $ionicPlatform.ready(function() {

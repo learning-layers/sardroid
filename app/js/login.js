@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('logincontroller', [])
+angular.module('login', [])
 
 .controller('LoginCtrl', function($scope, $state) {
         $scope.login = function(user) {

@@ -1,5 +1,5 @@
 'use strict';
 
-angular.module('homecontroller', [])
+angular.module('home', [])
 
 .controller('HomeCtrl', function($scope) {console.log("Hallo from HomeCtrl")});
