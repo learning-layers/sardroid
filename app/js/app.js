@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sardroid', ['ionic', 'login', 'home', 'contacts'])
+angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile'])
 
 .run(function($ionicPlatform) {
         $ionicPlatform.ready(function() {
@@ -23,6 +23,12 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts'])
             url: '/tab',
             abstract: true,
             templateUrl: 'templates/tabs.html'
+        })
+        .state('userprofile', {
+            url: '/userprofile',
+            templateUrl: 'templates/userprofile.html',
+            controller: 'UserProfileCtrl',
+            params: { user: null }
         })
         .state('tabs.home', {
             url: '/home',
