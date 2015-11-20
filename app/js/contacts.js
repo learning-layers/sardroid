@@ -11,6 +11,7 @@ var contacts = angular.module('contacts', ['ngCordova'])
 
 
         $scope.searchKeyPress = function(keyCode) {
+            // Enter and Android keyboard 'GO' KEYCODES
             if ((keyCode === 66 || keyCode === 13) && typeof cordova !== 'undefined') {
                 cordova.plugins.Keyboard.close();
             }
