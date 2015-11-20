@@ -4,7 +4,8 @@
   "description": "New and improved version of SAR",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp build; ionic run android"
   },
   "repository": {
     "type": "git",
