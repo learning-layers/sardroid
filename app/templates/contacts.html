@@ -3,12 +3,12 @@
         <div class="list">
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search" ng-model="contactSearch">
             </label>
         </div>
     </ion-header-bar>
     <ion-content class="padding has-header has-subheader">
-        <div ng-repeat="contact in contacts" class="list">
+        <div ng-repeat="contact in contacts | filter:contactSearch" class="list">
             <a class="item item-avatar" href ng-click="selectUser(contact)">
                 <img src="{{contact.photo}}">
                 <h2>{{contact.displayName}}</h2>

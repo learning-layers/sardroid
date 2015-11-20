@@ -2,12 +2,12 @@
 
 var contacts = angular.module('contacts', ['ngCordova'])
 .controller('ContactsCtrl', function($scope, contactsFactory, $state) {
+        console.log("asd");
         contactsFactory.getAllContacts().then(function (results) {
             $scope.contacts = results;
         }).catch(function(err) {
             console.log(err);
         });
-
         $scope.selectUser = function(selectedUser) {
             $state.go('userprofile', { user: selectedUser });
         }
