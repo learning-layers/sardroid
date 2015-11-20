@@ -13,7 +13,7 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile']
                 StatusBar.styleDefault();
             }
         });
-}).config(function($stateProvider, $urlRouterProvider) {
+}).config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $stateProvider
         .state('login', {
             url: '/login',
@@ -25,6 +25,7 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile']
             templateUrl: 'templates/tabs.html'
         })
         .state('userprofile', {
+            cache: false,
             url: '/userprofile',
             templateUrl: 'templates/userprofile.html',
             controller: 'UserProfileCtrl',
@@ -50,4 +51,5 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile']
         });
 
     $urlRouterProvider.otherwise('/login');
+
 });

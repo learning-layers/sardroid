@@ -3,17 +3,14 @@
 var contacts = angular.module('contacts', ['ngCordova'])
 .controller('ContactsCtrl', function($scope, contactsFactory, $state) {
         contactsFactory.getAllContacts().then(function (results) {
-            console.log(results);
             $scope.contacts = results;
         }).catch(function(err) {
             console.log(err);
         });
 
         $scope.selectUser = function(selectedUser) {
-            console.log(selectedUser);
-            $state.go('userprofile', { user: selectedUser }, {reload: true});
+            $state.go('userprofile', { user: selectedUser });
         }
-
 });
 
 
