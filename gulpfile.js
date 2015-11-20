@@ -25,7 +25,7 @@ var knownOptions = {
 
 var options = minimist(process.argv.slice(2), knownOptions);
 
-gulp.task('build', ['scss', 'js', 'html', 'fonts'], function() {});
+gulp.task('build', ['scss', 'js', 'html', 'fonts', 'copy-res'], function() {});
 
 gulp.task('scss', function() {
    return gulp.src('app/scss/app.scss')
@@ -49,19 +49,22 @@ gulp.task('html', function() {
 
 gulp.task('vendor-js', function() {
    return gulp.src(
-       ['./app/vendor/ionic/release/js/ionic.bundle.min.js',
-        './app/vendor/ngCordova/dist/ng-cordova.js'],
+       ['./app/vendor/ionic/js/ionic.bundle.min.js',
+        './app/vendor/ngCordova/dist/*.js'],
        { base: './app' })
        .pipe(gulp.dest('./www/'))
 });
 
+
+
 gulp.task('copy-res', function() {
-   return gulp.src('./app/config.xml')
+   return gulp.src(['./app/res/**/*'],
+       { base: './app' })
        .pipe(gulp.dest('./www/'))
 });
 
 gulp.task('fonts', function() {
-    return gulp.src(['./app/vendor/ionic/release/fonts/*'])
+    return gulp.src(['./app/vendor/ionic/fonts/*'])
     .pipe(gulp.dest('./www/fonts'))
 });
 

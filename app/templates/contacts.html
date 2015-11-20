@@ -1,6 +1,12 @@
 <ion-view view-title="Contacts" ng-cloak>
     <ion-content class="padding">
         <h1>Contacts</h1>
-        <p>{{contacts}}</p>
+        <div ng-repeat="contact in contacts" class="list">
+            <a class="item item-avatar" href="">
+                <img src="{{contact.photo}}">
+                <h2>{{contact.displayName}}</h2>
+                <p>{{contact.number}}</p>
+            </a>
+        </div>
     </ion-content>
 </ion-view>
