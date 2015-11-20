@@ -3,7 +3,7 @@
         <div class="list">
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
-                <input type="text" placeholder="Search" ng-model="contactSearch">
+                <input type="text" placeholder="Search" ng-model="contactSearch" ng-keyup="searchKeyPress($event.keyCode)">
             </label>
         </div>
     </ion-header-bar>
