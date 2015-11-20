@@ -1,13 +1,18 @@
 'use strict';
 
-var contacts = angular.module('contacts', [])
-.controller('ContactsCtrl', function($scope, contactsFactory) {console.log(contactsFactory.sayHello())});
+var contacts = angular.module('contacts', ['ngCordova'])
+.controller('ContactsCtrl', function($scope, $cordovaContacts) {
 
-contacts.factory('contactsFactory', function() {
-    return {
-        sayHello: function() {
-            return "Hello, World!"
-        }
-    };
+        $scope.getAllContacts = function() {
+            $cordovaContacts.find({
+                fields: ['id', 'displayName', 'name']})
+            .then(function (allContacts) {
+                $scope.contacts = allContacts
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
+        };
+
+      $scope.getAllContacts();
 });
-

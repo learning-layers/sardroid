@@ -20,7 +20,8 @@
     "cordova-plugin-crosswalk-webview",
     "cordova-plugin-device",
     "ionic-plugin-keyboard",
-    "cordova-plugin-statusbar"
+    "cordova-plugin-statusbar",
+    "cordova-plugin-contacts"
   ],
   "cordovaPlatforms": [
     "android"
