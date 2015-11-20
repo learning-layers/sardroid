@@ -49,7 +49,8 @@ gulp.task('html', function() {
 
 gulp.task('vendor-js', function() {
    return gulp.src(
-       ['./app/vendor/ionic/release/js/ionic.bundle.min.js'],
+       ['./app/vendor/ionic/release/js/ionic.bundle.min.js',
+        './app/vendor/ngCordova/dist/ng-cordova.js'],
        { base: './app' })
        .pipe(gulp.dest('./www/'))
 });
