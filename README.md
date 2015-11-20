@@ -41,7 +41,7 @@ gulp watch
 
 ### Mock data
 
-When developing cordova-based applications in the browser instead of the mobile, it's usually a good idea to provide mock functionality for the various device functionalities! [https://github.com/pbernasconi/chrome-cordova](This Chrome extension) is highly recommended for development.
+When developing cordova-based applications in the browser instead of the mobile, it's usually a good idea to provide mock functionality for the various device functionalities! [This Chrome extension](https://github.com/pbernasconi/chrome-cordova) is highly recommended for development.
 
 
 
