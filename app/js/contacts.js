@@ -13,11 +13,9 @@ var contacts = angular.module('contacts', ['ngCordova'])
         }
 });
 
-
 contacts.factory('contactsFactory', function($cordovaContacts) {
     return {
         getAllContacts: function() {
-
             if (typeof cordova !== 'undefined') {
                 return $cordovaContacts.find({
                     fields: ['id', 'displayName', 'name', 'phoneNumbers', 'emails', 'photos']
@@ -36,7 +34,6 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
                         return err;
                     })
             } else {
-
                 return new Promise(function(resolve, reject) {
                     resolve( [ {
                         "original": {"displayName": "Durr2"},

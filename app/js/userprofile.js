@@ -2,6 +2,6 @@
 
 angular.module('userprofile', [])
 
-.controller('UserProfileCtrl', function($scope, $stateParams, $state) {
+.controller('UserProfileCtrl', function($scope, $stateParams) {
            $scope.user = $stateParams.user;
 });
