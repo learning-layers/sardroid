@@ -2,7 +2,7 @@
 
 angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -12,9 +12,26 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile']
             if(window.StatusBar) {
                 StatusBar.styleDefault();
             }
-        });
-}).config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
-    $stateProvider
+
+            // WARNING! Mega hack to disable side menu on all pages except login
+            // TODO: Fix this somehow?
+            $rootScope.$on('$stateChangeSuccess',
+                function(event, toState, toParams, fromState, fromParams){
+                    if (toState.name == 'login'){
+                        $rootScope.showRightMenu = false;
+                        $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
+                    }
+                    else {
+                        $rootScope.showRightMenu = true;
+                        $ionicSideMenuDelegate._instances[0].right.isEnabled = true;
+                    }
+                });
+            // Disable showing right menu by default
+            $rootScope.showRightMenu = false;
+            $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
+})
+}).config(function($stateProvider, $urlRouterProvider ) {
+        $stateProvider
         .state('login', {
             url: '/login',
             templateUrl: 'templates/login.html',
