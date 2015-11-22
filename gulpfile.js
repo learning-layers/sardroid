@@ -106,7 +106,6 @@ gulp.task('watch', ['build'], function() {
         if (event.type === 'deleted') {
             console.log('Forgetting js: ' + event.path);
             delete cached.caches.js[event.path];
-            remember.forget('js', event.path);
         }
     });
 });
