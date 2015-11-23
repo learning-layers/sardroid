@@ -35,6 +35,11 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
       remoteVideoSource = window.URL.createObjectURL(stream);
     };
 
+    var answer = function(call) {
+        call.on('stream', setRemoteStreamSrc);
+        call.answer(localStream);
+    };
+
     // Public PeerJS api
     return {
         getMe: function() {
@@ -56,14 +61,25 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
                 console.log('Connection opened: ' + id);
             });
 
-
             me.on('call', function(mediaConnection) {
-              console.log('Somebody callin');
-                answer(mediaConnection);
+              console.log('Call initiated by ' + mediaConnection.peer );
+
+                var confirmPopup = $ionicPopup.confirm({
+                    title: 'Call from ' + mediaConnection.peer,
+                    template: 'Incoming call. Answer?'
+                });
+                confirmPopup.then(function(res) {
+                    if(res) {
+                        answer(mediaConnection);
+                        $state.go('call');
+                    } else {
+                        return false;
+                    }
+                });
             });
 
             me.on('connection', function(dataConnection) {
-                console.log('dataconnection formed!')
+                console.log('dataconnection formed!');
                 console.log(dataConnection);
             });
 
@@ -85,7 +101,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
             if (!me) return;
 
             getLocalStream(function (stream) {
-                var call = me.call(callToId, stream, {name: me.id})
+                var call = me.call(callToId, stream)
                 call.on('error', function (err) {
                     console.log('Call error');
                 });
@@ -94,12 +110,6 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
             });
 
         },
-
-        answer: function(call) {
-            call.on('stream', setRemoteStreamSrc);
-            call.answer(localStream);
-        },
-
         disconnectFromPeerJS: function() {
             me.disconnect();
         }

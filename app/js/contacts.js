@@ -1,7 +1,7 @@
 'use strict';
 
-var contacts = angular.module('contacts', ['ngCordova'])
-.controller('ContactsCtrl', function($scope, contactsFactory, $state, $ionicActionSheet) {
+var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
+.controller('ContactsCtrl', function($scope, contactsFactory, peerFactory, $state, $ionicActionSheet) {
 
         contactsFactory.getAllContacts().then(function (results) {
             $scope.contacts = results;
@@ -29,11 +29,9 @@ var contacts = angular.module('contacts', ['ngCordova'])
                     sheet();
                 },
                 buttonClicked: function(index) {
-                    console.log(index);
-                    console.log(selectedUser);
-
                    switch (index) {
                         case 0:
+                            peerFactory.callPeer(selectedUser.number);
                             $state.go('call', { user: selectedUser });
                             break;
                         case 1:
