@@ -5,3 +5,9 @@
 .platform-android .has-subheader.has-tabs-top{
   top: 137px;
 }
+
+.platform-android .action-sheet {
+  .icon {
+    display: none;
+  }
+}
