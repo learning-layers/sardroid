@@ -3,9 +3,15 @@
 var peerhandler = angular.module('peerhandler', []);
 
 peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
-    var me               = null;
+    // PeerJS object representing the user
+    var me                = null;
+
+    // Stream object;
     var localStream       = null;
+
+    // Stream sources
     var remoteVideoSource = null;
+    var localVideoSource  = null;
 
     // Privare api
     var getLocalStream = function(successCallback) {
@@ -19,7 +25,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
                 },
                 function (stream) {
                     localStream = stream;
-
+                    setLocalStreamSrc(stream);
                     if (successCallback) {
                         successCallback(stream);
                     }
@@ -37,6 +43,12 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
         console.log(remoteVideoSource);
     };
 
+    var setLocalStreamSrc = function (stream) {
+        console.log('setting local source!');
+        localVideoSource = window.URL.createObjectURL(stream);
+        console.log(remoteVideoSource);
+    }
+
     var answer = function(call) {
         call.on('stream', setRemoteStreamSrc);
         call.answer(localStream);
@@ -51,6 +63,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
         getRemoteStreamSrc: function() {
             if (!remoteVideoSource) {console.log('No video remote source!')}
             return remoteVideoSource;
+        },
+        getLocalStreamSrc: function() {
+            if (!localVideoSource) {console.log('No video remote source!')}
+            return localVideoSource;
         },
         isConnected: function() {
             if (!me) {return false}
