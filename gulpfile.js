@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp     = require('gulp');
+var gutil    = require('gulp-util');
 var concat   = require('gulp-concat');
 var gulpif   = require('gulp-if');
 var cached   = require('gulp-cached');
@@ -27,7 +28,9 @@ var knownOptions = {
 
 var options = minimist(process.argv.slice(2), knownOptions);
 
-gulp.task('build', ['scss', 'js', 'html', 'fonts', 'copy-res'], function() {});
+gulp.task('build', ['scss', 'js', 'html', 'fonts', 'copy-res'], function() {
+    gutil.log('Finished building app to folder www');
+});
 
 gulp.task('scss', function() {
    return gulp.src('app/scss/*.scss')
@@ -90,7 +93,7 @@ gulp.task('watch', ['build'], function() {
 
     scss.on('change', function(event) {
         if (event.type === 'deleted') {
-            console.log('Forgetting scss: ' + event.path);
+            gutil.log('Forgetting scss: ' + event.path);
             delete cached.caches.scss[event.path];
             remember.forget('scss', event.path);
         }
@@ -98,14 +101,14 @@ gulp.task('watch', ['build'], function() {
 
     html.on('change', function(event) {
         if (event.type === 'deleted') {
-            console.log('Forgetting html: ' + event.path);
+            gutil.log('Forgetting html: ' + event.path);
             delete cached.caches.html[event.path];
         }
     });
 
     js.on('change', function(event) {
         if (event.type === 'deleted') {
-            console.log('Forgetting js: ' + event.path);
+            gutil.log('Forgetting js: ' + event.path);
             delete cached.caches.js[event.path];
         }
     });
