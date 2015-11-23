@@ -32,14 +32,18 @@ var contacts = angular.module('contacts', ['ngCordova'])
                     console.log(index);
                     console.log(selectedUser);
 
-                    switch (index) {
+                   switch (index) {
+                        case 0:
+                            $state.go('call', { user: selectedUser });
+                            break;
                         case 1:
                             $state.go('userprofile', { user: selectedUser });
+                            break;
                     }
+
                     return true;
                 }
             });
-            //$state.go('userprofile', { user: selectedUser });
         };
 });
 
