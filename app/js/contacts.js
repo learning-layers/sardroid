@@ -20,10 +20,10 @@ var contacts = angular.module('contacts', ['ngCordova'])
         $scope.selectUser = function(selectedUser) {
             var sheet = $ionicActionSheet.show({
                 buttons: [
-                    { text: '<b>Call</b>' },
-                    { text: 'Profile' },
+                    { text: '<i class="icon ion-ios-telephone"></i> <b>Call</b>' },
+                    { text: '<i class="icon ion-android-person"></i> Profile' },
                 ],
-                titleText:  'User actions',
+                titleText:  'Actions',
                 cancelText: 'Cancel',
                 cancel: function() {
                     sheet();

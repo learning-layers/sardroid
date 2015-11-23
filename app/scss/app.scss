@@ -2,3 +2,9 @@
 @import "login";
 @import "android";
 @import "contacts";
+
+.action-sheet {
+  .icon {
+    position: initial;
+  }
+}
