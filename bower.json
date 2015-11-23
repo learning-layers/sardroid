@@ -19,7 +19,6 @@
   "dependencies": {
     "ionic": "driftyco/ionic-bower#~1.1.1",
     "bower": "*",
-    "install": "~1.0.4",
     "ngCordova": "~0.1.23-alpha"
   },
   "resolutions": {
