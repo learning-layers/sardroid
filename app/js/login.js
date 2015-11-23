@@ -3,6 +3,9 @@
 angular.module('login', ['peerhandler'])
 
 .controller('LoginCtrl', function($scope, $state, peerFactory) {
+        if (peerFactory.isConnected()) {
+            peerFactory.disconnectFromPeerJS();
+        }
 
         $scope.login = function(user) {
             peerFactory.connectToPeerJS(user.phone);

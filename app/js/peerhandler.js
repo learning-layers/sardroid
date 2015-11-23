@@ -2,25 +2,36 @@
 
 var peerhandler = angular.module('peerhandler', []);
 
-peerhandler.factory('peerFactory', function($rootScope) {
+peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
     var me = null;
 
     return {
         getMe: function() {
-            if (!me) {throw new Error('PeerJS connection not initialized!')}
+            if (!me) {return null;}
             return me;
+        },
+        isConnected: function() {
+            if (!me) {return false}
+            else {return !me.disconnected}
         },
         connectToPeerJS: function(id)   {
             me = new Peer(id, $rootScope.config.peerjs);
             me.on('open', function(id) {
-                me.IsConnected = true;
                 console.log('Connection opened: ' + id);
             });
 
             me.on('error', function(error) {
-              me.isConnected = false;
-              alert(error);
+              var errorAlert = $ionicPopup.alert({
+                  title: 'Something went wrong!',
+                  template: error.toString()
+              });
+             errorAlert.then(function(res) {
+                  $state.go('login');
+              });
             });
+        },
+        disconnectFromPeerJS: function() {
+            me.disconnect();
         }
     }
 });

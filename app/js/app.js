@@ -46,6 +46,7 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile',
 }).config(function($stateProvider, $urlRouterProvider) {
         $stateProvider
         .state('login', {
+            cache: false,
             url: '/login',
             templateUrl: 'templates/login.html',
             controller: 'LoginCtrl'})
