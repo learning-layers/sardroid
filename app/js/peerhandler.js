@@ -13,7 +13,13 @@ peerhandler.factory('peerFactory', function($rootScope) {
         connectToPeerJS: function(id)   {
             me = new Peer(id, $rootScope.config.peerjs);
             me.on('open', function(id) {
+                me.IsConnected = true;
                 console.log('Connection opened: ' + id);
+            });
+
+            me.on('error', function(error) {
+              me.isConnected = false;
+              alert(error);
             });
         }
     }

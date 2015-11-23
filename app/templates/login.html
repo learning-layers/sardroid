@@ -9,16 +9,12 @@
             <div class="list list-inset padding-vertical login-form">
                 <form>
                     <label class="item item-input">
-                        <i class="icon ion-email placeholder-icon"></i>
-                        <input type="email" placeholder="Email" required ng-model="user.email">
+                        <i class="icon ion-ios-telephone placeholder-icon"></i>
+                        <input type="text" placeholder="Mobile number" required ng-model="user.phone" >
                     </label>
                     <label class="item item-input">
                         <i class="icon ion-locked placeholder-icon"></i>
                         <input type="password" placeholder="Password" required ng-model="user.password" >
-                    </label>
-                    <label class="item item-input">
-                        <i class="icon ion-ios-telephone placeholder-icon"></i>
-                        <input type="text" placeholder="Mobile number" required ng-model="user.phone" >
                     </label>
                     <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="login(user)">
                         Login

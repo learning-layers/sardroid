@@ -32,7 +32,7 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile',
 
             $rootScope.config = {
                 peerjs: {
-                    host: '10.100.51.184',
+                    host: '130.233.5.54',
                     port: 9000,
                     path: '/peerjs',
                     config: {'iceServers': [
