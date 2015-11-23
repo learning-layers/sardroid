@@ -1,7 +1,7 @@
 'use strict';
 
 var contacts = angular.module('contacts', ['ngCordova'])
-.controller('ContactsCtrl', function($scope, contactsFactory, $state) {
+.controller('ContactsCtrl', function($scope, contactsFactory, $state, $ionicActionSheet) {
 
         contactsFactory.getAllContacts().then(function (results) {
             $scope.contacts = results;
@@ -18,7 +18,28 @@ var contacts = angular.module('contacts', ['ngCordova'])
         };
 
         $scope.selectUser = function(selectedUser) {
-            $state.go('userprofile', { user: selectedUser });
+            var sheet = $ionicActionSheet.show({
+                buttons: [
+                    { text: '<b>Call</b>' },
+                    { text: 'Profile' },
+                ],
+                titleText:  'User actions',
+                cancelText: 'Cancel',
+                cancel: function() {
+                    sheet();
+                },
+                buttonClicked: function(index) {
+                    console.log(index);
+                    console.log(selectedUser);
+
+                    switch (index) {
+                        case 1:
+                            $state.go('userprofile', { user: selectedUser });
+                    }
+                    return true;
+                }
+            });
+            //$state.go('userprofile', { user: selectedUser });
         };
 });
 
