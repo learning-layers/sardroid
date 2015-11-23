@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile', 'call'])
+angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile', 'call', 'peerhandler'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
         $ionicPlatform.ready(function() {
@@ -29,8 +29,21 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile',
             // Disable showing right menu by default
             $rootScope.showRightMenu = false;
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
+
+            $rootScope.config = {
+                peerjs: {
+                    host: '10.100.51.184',
+                    port: 9000,
+                    path: '/peerjs',
+                    config: {'iceServers': [
+                        { 'url': 'stun:stun.l.google.com:19302' },
+                        { 'url': 'stun:stun1.l.google.com:19302' },
+                        { 'url': 'stun:stun2.l.google.com:19302' },
+                        { 'url': 'stun:stun3.l.google.com:19302' }
+                    ]}}
+            };
 })
-}).config(function($stateProvider, $urlRouterProvider, $rootScope) {
+}).config(function($stateProvider, $urlRouterProvider) {
         $stateProvider
         .state('login', {
             url: '/login',
@@ -76,16 +89,4 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile',
 
     $urlRouterProvider.otherwise('/login');
 
-    $rootScope.config = {
-        peerjs: {
-            host: '10.100.51.184',
-            port: 9000,
-            path: '/peerjs',
-            config: {'iceServers': [
-                { 'url': 'stun:stun.l.google.com:19302' },
-                { 'url': 'stun:stun1.l.google.com:19302' },
-                { 'url': 'stun:stun2.l.google.com:19302' },
-                { 'url': 'stun:stun3.l.google.com:19302' },
-            ]}}
-        };
 });
