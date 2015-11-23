@@ -30,13 +30,13 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile',
             $rootScope.showRightMenu = false;
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
 })
-}).config(function($stateProvider, $urlRouterProvider ) {
+}).config(function($stateProvider, $urlRouterProvider, $rootScope) {
         $stateProvider
         .state('login', {
             url: '/login',
             templateUrl: 'templates/login.html',
-            controller: 'LoginCtrl'
-        }).state('tabs', {
+            controller: 'LoginCtrl'})
+        .state('tabs', {
             url: '/tab',
             abstract: true,
             templateUrl: 'templates/tabs.html'
@@ -76,4 +76,16 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile',
 
     $urlRouterProvider.otherwise('/login');
 
+    $rootScope.config = {
+        peerjs: {
+            host: '10.100.51.184',
+            port: 9000,
+            path: '/peerjs',
+            config: {'iceServers': [
+                { 'url': 'stun:stun.l.google.com:19302' },
+                { 'url': 'stun:stun1.l.google.com:19302' },
+                { 'url': 'stun:stun2.l.google.com:19302' },
+                { 'url': 'stun:stun3.l.google.com:19302' },
+            ]}}
+        };
 });
