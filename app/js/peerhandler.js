@@ -14,7 +14,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $ti
     var localVideoSource  = null;
 
     var currentCall   = null;
-    
+
     // Private api
     var getLocalStream = function(successCallback) {
         if (localStream && successCallback) {
