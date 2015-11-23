@@ -29,10 +29,9 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
                     sheet();
                 },
                 buttonClicked: function(index) {
-                   switch (index) {
+                    switch (index) {
                         case 0:
-                            peerFactory.callPeer(selectedUser.number);
-                            $state.go('call', { user: selectedUser });
+                            peerFactory.callPeer(selectedUser);
                             break;
                         case 1:
                             $state.go('userprofile', { user: selectedUser });

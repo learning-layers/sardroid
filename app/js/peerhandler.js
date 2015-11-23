@@ -32,7 +32,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
     };
 
     var setRemoteStreamSrc = function (stream) {
+        console.log('setting remote source!');
       remoteVideoSource = window.URL.createObjectURL(stream);
+        console.log(remoteVideoSource);
     };
 
     var answer = function(call) {
@@ -71,7 +73,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
                 confirmPopup.then(function(res) {
                     if(res) {
                         answer(mediaConnection);
-                        $state.go('call');
+                        $state.go('call', {user: { displayName: mediaConnection.peer }});
                     } else {
                         return false;
                     }
@@ -97,16 +99,19 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
               });
             });
         },
-        callPeer: function (callToId) {
+        callPeer: function (userToCall) {
             if (!me) return;
 
             getLocalStream(function (stream) {
-                var call = me.call(callToId, stream)
+                var call = me.call(userToCall.number, stream, { metadata: me.id})
                 call.on('error', function (err) {
                     console.log('Call error');
                 });
 
-                call.on('stream', setRemoteStreamSrc);
+                call.on('stream', function(stream) {
+                    setRemoteStreamSrc(stream);
+                    $state.go('call', {user: userToCall});
+                });
             });
 
         },
