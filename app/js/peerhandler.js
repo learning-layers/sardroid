@@ -13,7 +13,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $ti
     var remoteVideoSource = null;
     var localVideoSource  = null;
 
-    // Privare api
+    var currentCall   = null;
+    
+    // Private api
     var getLocalStream = function(successCallback) {
         if (localStream && successCallback) {
             successCallback(localStream)
@@ -47,10 +49,14 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $ti
         console.log('setting local source!');
         localVideoSource = window.URL.createObjectURL(stream);
         console.log(localVideoSource);
-    }
+    };
 
     var answer = function(call) {
         call.on('stream', setRemoteStreamSrc);
+        call.on('close', function() {
+            alert('Call ended by other!');
+
+        });
         call.answer(localStream);
     };
 
@@ -121,19 +127,29 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $ti
             if (!me) return;
 
             getLocalStream(function (stream) {
-                var call = me.call(userToCall.number, stream, { metadata: me.id})
-                call.on('error', function (err) {
+                currentCall = me.call(userToCall.number, stream, { metadata: me.id})
+                currentCall.on('error', function (err) {
                     console.log('Call error');
                 });
 
-                call.on('stream', function(stream) {
+                currentCall.on('stream', function(stream) {
                     setRemoteStreamSrc(stream);
                     $timeout(function() {
                         $state.go('call', {user: userToCall});
                     }, 500)
                 });
+
+                currentCall.on('close', function() {
+                    alert('call ended by you');
+                });
             });
 
+        },
+        endCurrentCall: function() {
+            if (currentCall) {
+                currentCall.close();
+                currentCall = null;
+            }
         },
         disconnectFromPeerJS: function() {
             me.disconnect();
