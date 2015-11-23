@@ -56,9 +56,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
                 console.log('Connection opened: ' + id);
             });
 
+
             me.on('call', function(mediaConnection) {
               console.log('Somebody callin');
-                console.log(mediaConnection);
+                answer(mediaConnection);
             });
 
             me.on('connection', function(dataConnection) {
@@ -95,7 +96,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
         },
 
         answer: function(call) {
-            console.log('incoming Call!');
+            call.on('stream', setRemoteStreamSrc);
             call.answer(localStream);
         },
 
