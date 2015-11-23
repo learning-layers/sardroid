@@ -43,8 +43,16 @@ gulp watch
 
 When developing cordova-based applications in the browser instead of the mobile, it's usually a good idea to provide mock functionality for the various device functionalities! [This Chrome extension](https://github.com/pbernasconi/chrome-cordova) is highly recommended for development.
 
+## Gotchas
 
+### Android
 
+Add the following lines manually to your AndroidManifest.xml under platforms/android to enable WebRTC
+
+```xml
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.CAMERA" />
+```
 
 Licence
 -------
