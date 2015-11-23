@@ -8,8 +8,10 @@ angular.module('login', ['peerhandler'])
         }
 
         $scope.login = function(user) {
-            peerFactory.connectToPeerJS(user.phone);
-            // Should probably  do some back-end log in related stuff in here?
-            $state.go('tabs.home')
+            if (typeof user !== 'undefined' && user.phone) {
+                peerFactory.connectToPeerJS(user.phone);
+                // Should probably  do some back-end log in related stuff in here?
+                $state.go('tabs.home');
+            }
         };
 });
