@@ -30,6 +30,7 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile',
             $rootScope.showRightMenu = false;
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
 
+            // Set up configuration variables we can use anywhere in Angular
             $rootScope.config = {
                 peerjs: {
                     host: '130.233.5.54',

@@ -2,7 +2,7 @@
 
 var peerhandler = angular.module('peerhandler', []);
 
-peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
+peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $timeout) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -46,7 +46,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
     var setLocalStreamSrc = function (stream) {
         console.log('setting local source!');
         localVideoSource = window.URL.createObjectURL(stream);
-        console.log(remoteVideoSource);
+        console.log(localVideoSource);
     }
 
     var answer = function(call) {
@@ -89,7 +89,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
                 confirmPopup.then(function(res) {
                     if(res) {
                         answer(mediaConnection);
-                        $state.go('call', {user: { displayName: mediaConnection.peer }});
+                        $timeout(function() {
+                            $state.go('call', {user: { displayName: mediaConnection.peer }});
+                        }, 500)
                     } else {
                         return false;
                     }
@@ -126,7 +128,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state) {
 
                 call.on('stream', function(stream) {
                     setRemoteStreamSrc(stream);
-                    $state.go('call', {user: userToCall});
+                    $timeout(function() {
+                        $state.go('call', {user: userToCall});
+                    }, 500)
                 });
             });
 
