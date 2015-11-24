@@ -36,6 +36,7 @@ angular.module('sardroid', ['ionic', 'login', 'home', 'contacts', 'userprofile',
                     host: '10.100.51.184',
                     port: 9000,
                     path: '/peerjs',
+                    debug: 3,
                     config: {'iceServers': [
                         { 'url': 'stun:stun.l.google.com:19302' },
                         { 'url': 'stun:stun1.l.google.com:19302' },

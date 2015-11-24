@@ -81,6 +81,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $ti
         connectToPeerJS: function(id)   {
             me = new Peer(id, $rootScope.config.peerjs);
 
+            if (!me) {
+              alert('Error creating peer!');
+            }
             me.on('open', function(id) {
                 console.log('Connection opened: ' + id);
             });
@@ -115,12 +118,15 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $ti
             };
 
             me.on('error', function(error) {
+              var errorMsg = error.toString();
               var errorAlert = $ionicPopup.alert({
                   title: 'Something went wrong!',
-                  template: error.toString()
+                  template: errorMsg
               });
              errorAlert.then(function(res) {
-                  $state.go('login');
+                 if (_.contains(errorMsg, 'Lost connection to server')) {
+                     $state.go('login');
+                 }
               });
             });
         },
