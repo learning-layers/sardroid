@@ -41,7 +41,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
     var setRemoteStreamSrc = function (stream) {
         console.log('setting remote source!');
-      remoteVideoSource = window.URL.createObjectURL(stream);
+        remoteVideoSource = window.URL.createObjectURL(stream);
         console.log(remoteVideoSource);
     };
 
@@ -102,11 +102,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                     template: 'Incoming call. Answer?'
                 });
                 confirmPopup.then(function(res) {
+                    console.log(res);
                     if(res) {
                         answer(mediaConnection);
-                        $timeout(function() {
+
+                          $timeout(function() {
                             $state.go('call', {user: { displayName: mediaConnection.peer }});
-                        }, 200)
+                        }, 500)
                     } else {
                         mediaConnection.close();
                         return false;
@@ -117,6 +119,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             me.on('connection', function(dataConnection) {
                 console.log('dataconnection formed!');
                 console.log(dataConnection);
+            });
+
+            me.on('close', function() {
+               console.log('closed Peerjs connection');
             });
 
             me.socket._socket.onopen = function() {
@@ -137,19 +143,24 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             });
         },
         callPeer: function (userToCall) {
-            if (!me) return;
+            if (!me) {
+                console.log("Warning! no peerjs connection")
+            };
 
             getLocalStream(function (stream) {
-                currentCall = me.call(userToCall.number, stream, { metadata: me.id})
+                currentCall = me.call(userToCall.number, stream, { metadata: me.id});
                 currentCall.on('error', function (err) {
                     console.log('Call error');
                 });
 
                 currentCall.on('stream', function(stream) {
+                    console.log('going to stream from call')
                     setRemoteStreamSrc(stream);
+
                     $timeout(function() {
-                        $state.go('call', {user: userToCall});
-                    }, 200)
+                         $state.go('call', {user: userToCall});
+                     }, 500)
+
                 });
 
                 currentCall.on('close', function() {
@@ -165,7 +176,12 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             }
         },
         disconnectFromPeerJS: function() {
-            me.disconnect();
+            if (me) {
+                me.disconnect();
+                me.destroy();
+            } else {
+                console.log("Warning! Attempted to disconnect without ")
+            }
         }
     }
 });
