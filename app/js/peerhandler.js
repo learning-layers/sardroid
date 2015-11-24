@@ -51,16 +51,22 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         console.log(localVideoSource);
     };
 
+    var callAlertModal = function() {
+        var callEndedAlert = $ionicPopup.alert({
+            title: 'Call over!',
+            template: 'Call was ended!'
+        });
+        callEndedAlert.then(function() {
+            endCall
+            $ionicHistory.goBack();
+        });
+
+    };
+
     var answer = function(call) {
         call.on('stream', setRemoteStreamSrc);
         call.on('close', function() {
-            var callEndedAlert = $ionicPopup.alert({
-                title: 'Call over!',
-                template: 'Call was ended by the other party'
-            });
-            callEndedAlert.then(function() {
-                $ionicHistory.goBack();
-            });
+            callAlertModal('answercall');
         });
 
         call.answer(localStream);
@@ -164,6 +170,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 });
 
                 currentCall.on('close', function() {
+                    callAlertModal('owncall');
                     console.log('call closed');
                 });
             });
