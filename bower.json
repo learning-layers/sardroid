@@ -21,7 +21,8 @@
     "bower": "*",
     "ngCordova": "~0.1.23-alpha",
     "peerjs": "~0.3.14",
-    "lodash": "~3.10.1"
+    "lodash": "~3.10.1",
+    "ngstorage": "~0.3.10"
   },
   "resolutions": {
     "angular": "~1.4.7"
