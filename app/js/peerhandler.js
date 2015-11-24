@@ -95,7 +95,6 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             });
 
             me.on('call', function(mediaConnection) {
-                console.log(mediaConnection);
               console.log('Call initiated by ' + mediaConnection.peer );
 
                 var confirmPopup = $ionicPopup.confirm({
@@ -107,8 +106,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                         answer(mediaConnection);
                         $timeout(function() {
                             $state.go('call', {user: { displayName: mediaConnection.peer }});
-                        }, 500)
+                        }, 200)
                     } else {
+                        mediaConnection.close();
                         return false;
                     }
                 });
@@ -149,7 +149,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                     setRemoteStreamSrc(stream);
                     $timeout(function() {
                         $state.go('call', {user: userToCall});
-                    }, 500)
+                    }, 200)
                 });
 
                 currentCall.on('close', function() {
