@@ -2,7 +2,7 @@
 
 var peerhandler = angular.module('peerhandler', []);
 
-peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $timeout) {
+peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -54,9 +54,15 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $ti
     var answer = function(call) {
         call.on('stream', setRemoteStreamSrc);
         call.on('close', function() {
-            alert('Call ended by other!');
-
+            var callEndedAlert = $ionicPopup.alert({
+                title: 'Call over!',
+                template: 'Call was ended by the other party'
+            });
+            callEndedAlert.then(function() {
+                $ionicHistory.goBack();
+            });
         });
+
         call.answer(localStream);
     };
 
@@ -147,7 +153,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $ti
                 });
 
                 currentCall.on('close', function() {
-                    alert('call ended by you');
+                    console.log('call closed');
                 });
             });
 
