@@ -86,6 +86,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $state, $ti
             });
 
             me.on('call', function(mediaConnection) {
+                console.log(mediaConnection);
               console.log('Call initiated by ' + mediaConnection.peer );
 
                 var confirmPopup = $ionicPopup.confirm({

@@ -47,18 +47,28 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
 contacts.factory('contactsFactory', function($cordovaContacts) {
     return {
         getAllContacts: function() {
-                return $cordovaContacts.find({
-                    fields: ['id', 'displayName', 'name', 'phoneNumbers', 'emails', 'photos']
-                })
+
+            var opts = {
+                fields: ['id', 'displayName', 'name', 'phoneNumbers', 'emails', 'photos'],
+                hasPhoneNumber : true
+            };
+
+            return $cordovaContacts.find(opts)
                 .then(function (allContacts) {
-                        return allContacts.map(function (c) {
-                           return {
-                                "original": c,
-                                "displayName": c.displayName || c.emails[0].value,
-                                "number": c.phoneNumbers ? c.phoneNumbers[0] ? c.phoneNumbers[0].value : 'N/A' : 'N/A',
-                                "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/logo.png' : 'res/img/logo.png'
-                         }
-                      })
+                   var filtered =_.filter(allContacts, function(c) {
+                       return (!(_.isEmpty(c.phoneNumbers)) &&  c.phoneNumbers.length > 0 )
+                    });
+                    var formatted = _.map(filtered, function(c) {
+                        return {
+                            "original": c,
+                            "displayName": c.displayName || c.emails[0].value,
+                            "number": c.phoneNumbers[0].value,
+                            "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/logo.png' : 'res/img/logo.png'
+                        }
+                    });
+                    console.log('filtered');
+                    console.log(filtered);
+                    return formatted;
                   })
                 .catch(function (err) {
                   return err;
