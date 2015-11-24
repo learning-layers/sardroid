@@ -51,13 +51,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         console.log(localVideoSource);
     };
 
-    var callAlertModal = function() {
+    var callAlertModal = function(reasonMessage) {
         var callEndedAlert = $ionicPopup.alert({
             title: 'Call over!',
-            template: 'Call was ended!'
+            template: reasonMessage
         });
         callEndedAlert.then(function() {
-            endCall
+            endCurrentCall();
             $ionicHistory.goBack();
         });
 
