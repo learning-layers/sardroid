@@ -2,7 +2,7 @@
 
 Hi there!
 
-Welcome to the SAR-HR hybrid app V2! It's poweved by [Cordova](https://cordova.apache.org/) and 
+Welcome to the SAR-HR hybrid app V2! It's powered by [Cordova](https://cordova.apache.org/) and 
 [Crosswalk](https://crosswalk-project.org/), with npm and bower as the package managers. [Ionic](http://ionicframework.com/)
 was chosen as the hybrid framework of choice!
 
