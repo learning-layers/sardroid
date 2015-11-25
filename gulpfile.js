@@ -80,6 +80,7 @@ gulp.task('fonts', function() {
 gulp.task('js', ['vendor-js'], function() {
     return gulp.src('./app/js/**/*')
         .pipe(ngAnnotate())
+        .pipe(gulpif(options.env !== 'development', minifyJS()))
         .pipe(cached('js'))
         .pipe(gulp.dest('./www/js/'))
         .pipe(reload({stream: true}))
