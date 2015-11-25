@@ -72,6 +72,25 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         call.answer(localStream);
     };
 
+
+    var endCurrentCall = function() {
+        if (currentCall) {
+            currentCall.close();
+            currentCall = null;
+        }
+    };
+
+     var disconnectFromPeerJS = function() {
+        if (me) {
+            me.disconnect();
+            me.destroy();
+            me = null;
+            endCurrentCall();
+        } else {
+            console.log("Warning! Attempted to disconnect without connecting")
+        }
+    };
+
     // Public PeerJS api
     return {
         getMe: function() {
@@ -91,6 +110,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             else {return !me.disconnected}
         },
         connectToPeerJS: function(id)   {
+
+            var disconnectRef = this.disconnectFromPeerJS;
+
             me = new Peer(id, $rootScope.config.peerjs);
 
             if (!me) {
@@ -142,7 +164,8 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                   template: errorMsg
               });
              errorAlert.then(function(res) {
-                 if (_.contains(errorMsg, 'Lost connection to server')) {
+                 if (_.contains(errorMsg, 'Lost connection to server') || _.contains(errorMsg, 'is taken')) {
+                     disconnectRef();
                      $state.go('login');
                  }
               });
@@ -177,20 +200,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
         },
         endCurrentCall: function() {
-            if (currentCall) {
-                currentCall.close();
-                currentCall = null;
-            }
+            endCurrentCall();
         },
         disconnectFromPeerJS: function() {
-            if (me) {
-                me.disconnect();
-                me.destroy();
-                me = null;
-                this.endCurrentCall();
-            } else {
-                console.log("Warning! Attempted to disconnect without ")
-            }
+            disconnectFromPeerJS();
         }
     }
 });
