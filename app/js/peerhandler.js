@@ -187,7 +187,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 me.disconnect();
                 me.destroy();
                 me = null;
-                endCurrentCall();
+                this.endCurrentCall();
             } else {
                 console.log("Warning! Attempted to disconnect without ")
             }

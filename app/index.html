@@ -26,6 +26,7 @@
     <script src="js/cordovainit.js"></script>
     <script src="js/home.js"></script>
     <script src="js/login.js"></script>
+    <script src="js/logout.js"></script>
     <script src="js/contacts.js"></script>
     <script src="js/userprofile.js"></script>
     <script src="js/call.js"></script>
@@ -54,7 +55,7 @@
         <ion-content>
             <ul class="list">
                 <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
-                <a href="#/login" class="item" menu-close>Log out</a>
+                <a ng-controller="LogoutCtrl" ng-click="logout()" class="item" menu-close>Log out</a>
             </ul>
         </ion-content>
     </ion-side-menu>

@@ -8,10 +8,6 @@ angular.module('login', ['peerhandler'])
             $scope.user = $localStorage.user;
         }
 
-        if (peerFactory.isConnected()) {
-            peerFactory.disconnectFromPeerJS();
-        }
-
         $scope.login = function(user) {
             if (typeof user !== 'undefined' && user.phone) {
                 $localStorage.user = user;
