@@ -3,6 +3,8 @@
 var peerhandler = angular.module('peerhandler', []);
 
 peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout) {
+    console.log($ionicHistory.currentView());
+    console.log($state);
     // PeerJS object representing the user
     var me                = null;
 
@@ -13,7 +15,11 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     var remoteVideoSource = null;
     var localVideoSource  = null;
 
+    // currentCall   = local
+    // currentAnswer = remote
     var currentCall   = null;
+    var currentAnswer = null;
+
 
     // Private api
     var getLocalStream = function(successCallback) {
@@ -40,16 +46,20 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     };
 
     var setRemoteStreamSrc = function (stream) {
-        console.log('setting remote source!');
         remoteVideoSource = window.URL.createObjectURL(stream);
-        console.log(remoteVideoSource);
     };
 
     var setLocalStreamSrc = function (stream) {
-        console.log('setting local source!');
         localVideoSource = window.URL.createObjectURL(stream);
-        console.log(localVideoSource);
     };
+
+
+    var endCallAndGoBack = function() {
+        endCurrentCall();
+        if ($state.current.name === "call") {
+            $ionicHistory.goBack();
+        }
+    }
 
     var callAlertModal = function(reasonMessage) {
         var callEndedAlert = $ionicPopup.alert({
@@ -57,16 +67,20 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             template: reasonMessage
         });
         callEndedAlert.then(function() {
-            endCurrentCall();
-            $ionicHistory.goBack();
+            endCallAndGoBack();
         });
 
     };
 
     var answer = function(call) {
+        currentAnswer = call;
         call.on('stream', setRemoteStreamSrc);
         call.on('close', function() {
-            callAlertModal('answercall');
+            callAlertModal('Call ended by the other')
+        });
+
+        call.on('error', function(error) {
+            callAlertModal('Error: ' + error.toString());
         });
 
         call.answer(localStream);
@@ -77,6 +91,11 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         if (currentCall) {
             currentCall.close();
             currentCall = null;
+        }
+
+        if (currentAnswer) {
+            currentAnswer.close();
+            currentAnswer = null;
         }
     };
 
@@ -130,10 +149,8 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                     template: 'Incoming call. Answer?'
                 });
                 confirmPopup.then(function(res) {
-                    console.log(res);
                     if(res) {
                         answer(mediaConnection);
-
                           $timeout(function() {
                             $state.go('call', {user: { displayName: mediaConnection.peer }});
                         }, 500)
@@ -174,12 +191,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         callPeer: function (userToCall) {
             if (!me) {
                 console.log("Warning! no peerjs connection")
-            };
+            }
 
             getLocalStream(function (stream) {
                 currentCall = me.call(userToCall.number, stream, { metadata: me.id});
                 currentCall.on('error', function (err) {
-                    console.log('Call error');
+                    endCurrentCall();
+
                 });
 
                 currentCall.on('stream', function(stream) {
@@ -193,8 +211,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 });
 
                 currentCall.on('close', function() {
-                    callAlertModal('owncall');
-                    console.log('call closed');
+                    endCallAndGoBack();
                 });
             });
 

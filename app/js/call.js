@@ -17,7 +17,6 @@ angular.module('call', ['peerhandler'])
             $scope.remoteStreamSrc = $sce.trustAsResourceUrl(remoteStreamSrc);
 
             $scope.$on('$ionicView.leave', function() {
-                console.log('leaving!');
-                    peerFactory.endCurrentCall();
+                 peerFactory.endCurrentCall();
             });
 });
