@@ -13,7 +13,7 @@ angular.module('login', ['peerhandler'])
                 $localStorage.user = user;
                 peerFactory.connectToPeerJS(user.phone);
                 // Should probably  do some back-end log in related stuff in here?
-                $state.go('tabs.home');
+                $state.go('tabs.contacts');
             }
         };
 });
