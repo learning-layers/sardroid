@@ -19,7 +19,8 @@ var minifyHTML  = require('gulp-minify-html');
 var browserSync = require('browser-sync');
 var reload      = browserSync.reload;
 
-var minifyJS = require('gulp-uglify');
+var ngAnnotate = require('gulp-ng-annotate');
+var minifyJS   = require('gulp-uglify');
 
 var knownOptions = {
     string: 'env',
@@ -78,6 +79,7 @@ gulp.task('fonts', function() {
 
 gulp.task('js', ['vendor-js'], function() {
     return gulp.src('./app/js/**/*')
+        .pipe(ngAnnotate())
         .pipe(cached('js'))
         .pipe(gulp.dest('./www/js/'))
         .pipe(reload({stream: true}))
