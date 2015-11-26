@@ -20,7 +20,7 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
         $scope.selectUser = function(selectedUser) {
             var sheet = $ionicActionSheet.show({
                 buttons: [
-                    { text: '<i class="icon ion-ios-telephone"></i> <b>Call</b>' },
+                    { text: '<i class="icon ion-ios-telephone"></i> <b>Call with SAR</b>' },
                     { text: '<i class="icon ion-android-person"></i> Profile' },
                 ],
                 titleText:  'Actions',

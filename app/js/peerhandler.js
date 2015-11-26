@@ -148,7 +148,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                     $cordovaLocalNotification.schedule({
                         id: 1,
                         title: 'SAR Call from ' + mediaConnection.peer,
-                        text: 'SAR Call incoming'
+                        text: 'SAR Call from ' + mediaConnection.peer
                     }).then(function (result) {
                         console.log(result);
                     });
