@@ -74,7 +74,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         currentAnswerStream = call;
         call.on('stream', setRemoteStreamSrc);
         call.on('close', function() {
-            callAlertModal('Call ended by the other')
+            endCallAndGoBack();
         });
 
         call.on('error', function(error) {
