@@ -2,7 +2,15 @@
 
 angular.module('login', ['peerhandler'])
 
-.controller('LoginCtrl', function($scope, $state, $localStorage, peerFactory) {
+.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, peerFactory) {
+
+        // Disable back button so we can't back to login!
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+
+        // Hack so we're disconnected for sure!
+        peerFactory.disconnectFromPeerJS();
 
         if ($localStorage.user) {
             $scope.user = $localStorage.user;
@@ -10,11 +18,7 @@ angular.module('login', ['peerhandler'])
 
         $scope.login = function(user) {
             if (typeof user !== 'undefined' && user.phone) {
-
-                if (peerFactory.isConnected() && peerFactory.getMe().id === user.phone) {
-                    console.log('Changing connection name');
-                    peerFactory.disconnectFromPeerJS();
-                }
+                // Should probably  do some back-end log in related stuff in here?
 
                 if (!peerFactory.isConnected()) {
                     console.log('not connected! connecting');
@@ -22,8 +26,9 @@ angular.module('login', ['peerhandler'])
                     peerFactory.connectToPeerJS(user.phone).then(function() {
                         $state.go('tabs.contacts');
                     });
+                } else {
+                    $state.go('tabs.contacts');
                 }
-                // Should probably  do some back-end log in related stuff in here?
             }
         };
 });
