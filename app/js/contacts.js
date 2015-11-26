@@ -63,16 +63,14 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
                             "original": c,
                             "displayName": c.displayName || c.emails[0].value,
                             "number": c.phoneNumbers[0].value,
-                            "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/logo.png' : 'res/img/logo.png'
+                            "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/keilamies.png' : 'res/img/keilamies.png'
                         }
                     });
-                    console.log('filtered');
-                    console.log(filtered);
                     return formatted;
                   })
                 .catch(function (err) {
                   return err;
-                });
+           });
         }
     };
 });
