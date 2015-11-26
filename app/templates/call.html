@@ -1,6 +1,8 @@
 <ion-view view-title="Call with {{user.displayName}}" ng-controller="CallCtrl">
     <ion-content class="padding">
         <video id="local-video" class="stream-video" autoplay muted ng-src="{{localStreamSrc}}"></video>
+        <canvas id="local-canvas"></canvas>
         <video id="remote-video" class="stream-video" autoplay muted ng-src="{{remoteStreamSrc}}"></video>
+        <canvas id="remote-canvas"></canvas>
     </ion-content>
 </ion-view>

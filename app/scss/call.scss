@@ -1,7 +1,28 @@
 .stream-video {
+  height:46vh;
+  width: 56vw;
   max-height: 46vh;
   max-width: 56vw;
-
   margin-left: 50%;
   transform: translateX(-50%);
+}
+
+canvas {
+  opacity: 0.5;
+  position: absolute;
+  height: 46vh;
+  width: 56vw;
+  top: 0;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+#local-canvas {
+  background-color: rosybrown;
+
+}
+
+#remote-canvas {
+  background-color: aqua;
+  margin-top: 46vh;
 }
