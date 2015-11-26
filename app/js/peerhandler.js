@@ -18,28 +18,60 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     var currentCallStream   = null;
     var currentAnswerStream = null;
 
+    // Get a suitable camera for video (first choice is backwards-facing camera)
+    var getDeviceCameraID= function() {
+        return new Promise(function(resolve, reject) {
+            var first = false;
+            var back  = false;
+
+            MediaStreamTrack.getSources(function(src) {
+                for (var i in src) {
+                    if (src[i].kind === 'video') {
+
+                        if (!first) {
+                            first = src[i].id;
+                        }
+
+                        if (src[i].facing === 'environment') {
+                            back = src[i].id;
+                        }
+
+                    }
+                }
+                resolve(back || first);
+            });
+        })
+    };
 
     // Private api
     var getLocalStream = function(successCallback) {
         if (localStream && successCallback) {
             successCallback(localStream)
         } else {
-            navigator.webkitGetUserMedia(
-                {
-                    audio: true,
-                    video: true
-                },
-                function (stream) {
-                    localStream = stream;
-                    setLocalStreamSrc(stream);
-                    if (successCallback) {
-                        successCallback(stream);
-                    }
-                },
-                function(err){
-                    console.log(err);
+            getDeviceCameraID().then(function (id) {
+                var videoSettings = {};
+
+                if (id) {
+                    videoSettings.optional = [{sourceId: id}];
                 }
-            )
+
+                navigator.webkitGetUserMedia(
+                    {
+                        audio: true,
+                        video: videoSettings
+                    },
+                    function (stream) {
+                        localStream = stream;
+                        setLocalStreamSrc(stream);
+                        if (successCallback) {
+                            successCallback(stream);
+                        }
+                    },
+                    function(err){
+                        console.log(err);
+                    }
+                )
+            })
         }
     };
 
@@ -57,7 +89,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         if ($state.current.name === "call") {
             $ionicHistory.goBack();
         }
-    }
+    };
 
     var callAlertModal = function(reasonMessage) {
         var callEndedAlert = $ionicPopup.alert({
@@ -145,13 +177,14 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 me.on('call', function(mediaConnection) {
                     console.log('Call initiated by ' + mediaConnection.peer );
 
-                    $cordovaLocalNotification.schedule({
+
+                    /*$cordovaLocalNotification.schedule({
                         id: 1,
                         title: 'SAR Call from ' + mediaConnection.peer,
                         text: 'SAR Call from ' + mediaConnection.peer
                     }).then(function (result) {
                         console.log(result);
-                    });
+                    });*/
 
                     var confirmPopup = $ionicPopup.confirm({
                         title: 'Call from ' + mediaConnection.peer,
