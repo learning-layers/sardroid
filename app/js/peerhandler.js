@@ -178,13 +178,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                     console.log('Call initiated by ' + mediaConnection.peer );
 
 
-                    /*$cordovaLocalNotification.schedule({
+                    $cordovaLocalNotification.schedule({
                         id: 1,
                         title: 'SAR Call from ' + mediaConnection.peer,
                         text: 'SAR Call from ' + mediaConnection.peer
                     }).then(function (result) {
                         console.log(result);
-                    });*/
+                    });
 
                     var confirmPopup = $ionicPopup.confirm({
                         title: 'Call from ' + mediaConnection.peer,
