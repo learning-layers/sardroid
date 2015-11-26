@@ -13,7 +13,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'co
                 StatusBar.styleDefault();
             }
 
-            // WARNING! Mega hack to disable side menu on all pages except login
+            // WARNING! Mega hack to disable side menu login
             // TODO: Fix this somehow?
             $rootScope.$on('$stateChangeSuccess',
                 function(event, toState, toParams, fromState, fromParams){
