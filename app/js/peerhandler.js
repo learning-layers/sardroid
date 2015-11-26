@@ -127,76 +127,80 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             else {return !me.disconnected}
         },
         connectToPeerJS: function(id)   {
-
             var disconnectRef = this.disconnectFromPeerJS;
 
-            me = new Peer(id, $rootScope.config.peerjs);
+            return new Promise(function(resolve, reject) {
 
-            if (!me) {
-              alert('Error creating peer!');
-            }
-            me.on('open', function(id) {
-                console.log('Connection opened: ' + id);
-            });
+                me = new Peer(id, $rootScope.config.peerjs);
 
-            me.on('call', function(mediaConnection) {
-              console.log('Call initiated by ' + mediaConnection.peer );
-
-              $cordovaLocalNotification.schedule({
-                       id: 1,
-                       title: 'SAR Call from ' + mediaConnection.peer,
-                       text: 'SAR Call incoming'
-              }).then(function (result) {
-                 console.log(result);
-              });
-
-                var confirmPopup = $ionicPopup.confirm({
-                    title: 'Call from ' + mediaConnection.peer,
-                    template: 'Incoming call. Answer?'
+                if (!me) {
+                    alert('Error creating peer!');
+                    reject();W
+                }
+                me.on('open', function(id) {
+                    resolve();
+                    console.log('Connection opened: ' + id);
                 });
 
-                confirmPopup.then(function(res) {
-                    if(res) {
-                        answer(mediaConnection);
-                          $timeout(function() {
-                            $state.go('call', {user: { displayName: mediaConnection.peer }});
-                        }, 500)
-                    } else {
-                         $cordovaLocalNotification.cancel(1).then(function (result) {
-                               console.log(result);
-                          });
-                        mediaConnection.close();
-                        return false;
-                    }
+                me.on('call', function(mediaConnection) {
+                    console.log('Call initiated by ' + mediaConnection.peer );
+
+                    $cordovaLocalNotification.schedule({
+                        id: 1,
+                        title: 'SAR Call from ' + mediaConnection.peer,
+                        text: 'SAR Call incoming'
+                    }).then(function (result) {
+                        console.log(result);
+                    });
+
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Call from ' + mediaConnection.peer,
+                        template: 'Incoming call. Answer?'
+                    });
+
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            answer(mediaConnection);
+                            $timeout(function() {
+                                $state.go('call', {user: { displayName: mediaConnection.peer }});
+                            }, 500)
+                        } else {
+                            $cordovaLocalNotification.cancel(1).then(function (result) {
+                                console.log(result);
+                            });
+                            mediaConnection.close();
+                            return false;
+                        }
+                    });
                 });
-            });
 
-            me.on('connection', function(dataConnection) {
-                console.log('dataconnection formed!');
-                console.log(dataConnection);
-            });
+                me.on('connection', function(dataConnection) {
+                    console.log('dataconnection formed!');
+                    console.log(dataConnection);
+                });
 
-            me.on('close', function() {
-               console.log('closed Peerjs connection');
-            });
+                me.on('close', function() {
+                    console.log('closed Peerjs connection');
+                });
 
-            me.socket._socket.onopen = function() {
-              getLocalStream();
-            };
+                me.socket._socket.onopen = function() {
+                    getLocalStream();
+                };
 
-            me.on('error', function(error) {
-              var errorMsg = error.toString();
-              var errorAlert = $ionicPopup.alert({
-                  title: 'Something went wrong!',
-                  template: errorMsg
-              });
-             errorAlert.then(function(res) {
-                 if (_.contains(errorMsg, 'Lost connection to server') || _.contains(errorMsg, 'is taken')) {
-                     disconnectRef();
-                     $state.go('login');
-                 }
-              });
-            });
+                me.on('error', function(error) {
+                    var errorMsg = error.toString();
+                    var errorAlert = $ionicPopup.alert({
+                        title: 'Something went wrong!',
+                        template: errorMsg
+                    });
+                    errorAlert.then(function(res) {
+                        if (_.contains(errorMsg, 'Lost connection to server') || _.contains(errorMsg, 'is taken')) {
+                            disconnectRef();
+                            $state.go('login');
+                        }
+                    });
+                });
+            })
         },
         callPeer: function (userToCall) {
             if (!me) {

@@ -10,12 +10,20 @@ angular.module('login', ['peerhandler'])
 
         $scope.login = function(user) {
             if (typeof user !== 'undefined' && user.phone) {
+
+                if (peerFactory.isConnected() && peerFactory.getMe().id === user.phone) {
+                    console.log('Changing connection name');
+                    peerFactory.disconnectFromPeerJS();
+                }
+
                 if (!peerFactory.isConnected()) {
+                    console.log('not connected! connecting');
                     $localStorage.user = user;
-                    peerFactory.connectToPeerJS(user.phone);
+                    peerFactory.connectToPeerJS(user.phone).then(function() {
+                        $state.go('tabs.contacts');
+                    });
                 }
                 // Should probably  do some back-end log in related stuff in here?
-                $state.go('tabs.contacts');
             }
         };
 });
