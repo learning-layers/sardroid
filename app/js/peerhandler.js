@@ -3,8 +3,6 @@
 var peerhandler = angular.module('peerhandler', ['ngCordova']);
 
 peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout, $cordovaLocalNotification) {
-    console.log($ionicHistory.currentView());
-    console.log($state);
     // PeerJS object representing the user
     var me                = null;
 
@@ -15,10 +13,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     var remoteVideoSource = null;
     var localVideoSource  = null;
 
-    // currentCall   = local
-    // currentAnswer = remote
-    var currentCall   = null;
-    var currentAnswer = null;
+    // currentCallStream   = local
+    // currentAnswerStream = remote
+    var currentCallStream   = null;
+    var currentAnswerStream = null;
 
 
     // Private api
@@ -73,7 +71,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     };
 
     var answer = function(call) {
-        currentAnswer = call;
+        currentAnswerStream = call;
         call.on('stream', setRemoteStreamSrc);
         call.on('close', function() {
             callAlertModal('Call ended by the other')
@@ -88,14 +86,14 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
 
     var endCurrentCall = function() {
-        if (currentCall) {
-            currentCall.close();
-            currentCall = null;
+        if (currentCallStream) {
+            currentCallStream.close();
+            currentCallStream = null;
         }
 
-        if (currentAnswer) {
-            currentAnswer.close();
-            currentAnswer = null;
+        if (currentAnswerStream) {
+            currentAnswerStream.close();
+            currentAnswerStream = null;
         }
     };
 
@@ -144,13 +142,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             me.on('call', function(mediaConnection) {
               console.log('Call initiated by ' + mediaConnection.peer );
 
-                    $cordovaLocalNotification.schedule({
-                        id: 1,
-                        title: 'SAR Call from ' + mediaConnection.peer,
-                        text: 'SAR Call incoming'
-                    }).then(function (result) {
-                        console.log(result);
-                    });
+              $cordovaLocalNotification.schedule({
+                       id: 1,
+                       title: 'SAR Call from ' + mediaConnection.peer,
+                       text: 'SAR Call incoming'
+              }).then(function (result) {
+                 console.log(result);
+              });
 
                 var confirmPopup = $ionicPopup.confirm({
                     title: 'Call from ' + mediaConnection.peer,
@@ -206,13 +204,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             }
 
             getLocalStream(function (stream) {
-                currentCall = me.call(userToCall.number, stream, { metadata: me.id});
-                currentCall.on('error', function (err) {
+                currentCallStream = me.call(userToCall.number, stream, { metadata: me.id});
+                currentCallStream.on('error', function (err) {
                     endCurrentCall();
 
                 });
 
-                currentCall.on('stream', function(stream) {
+                currentCallStream.on('stream', function(stream) {
                     console.log('going to stream from call')
                     setRemoteStreamSrc(stream);
 
@@ -222,7 +220,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
                 });
 
-                currentCall.on('close', function() {
+                currentCallStream.on('close', function() {
                     endCallAndGoBack();
                 });
             });
