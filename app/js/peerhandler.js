@@ -1,8 +1,8 @@
 'use strict';
 
-var peerhandler = angular.module('peerhandler', []);
+var peerhandler = angular.module('peerhandler', ['ngCordova']);
 
-peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout) {
+peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout, $cordovaLocalNotification) {
     console.log($ionicHistory.currentView());
     console.log($state);
     // PeerJS object representing the user
@@ -144,10 +144,19 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             me.on('call', function(mediaConnection) {
               console.log('Call initiated by ' + mediaConnection.peer );
 
+                    $cordovaLocalNotification.schedule({
+                        id: 1,
+                        title: 'SAR Call from ' + mediaConnection.peer,
+                        text: 'SAR Call incoming'
+                    }).then(function (result) {
+                        console.log(result);
+                    });
+
                 var confirmPopup = $ionicPopup.confirm({
                     title: 'Call from ' + mediaConnection.peer,
                     template: 'Incoming call. Answer?'
                 });
+
                 confirmPopup.then(function(res) {
                     if(res) {
                         answer(mediaConnection);
@@ -155,6 +164,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                             $state.go('call', {user: { displayName: mediaConnection.peer }});
                         }, 500)
                     } else {
+                         $cordovaLocalNotification.cancel(1).then(function (result) {
+                               console.log(result);
+                          });
                         mediaConnection.close();
                         return false;
                     }
