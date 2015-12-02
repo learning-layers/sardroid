@@ -28,11 +28,20 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         return fabricCanvas;
     };
 
+    var sendDrawingData = function(canvas) {
+        return function() {
+            var data = JSON.stringify(canvas);
+            // Do nothing if the canvas is empty
+            if (data !== '{"objects":[],"background":""}') {
+                console.log(JSON.stringify(canvas));
+                canvas.clear();
+            }
+        }
+    };
+
     var setUpDrawingCanvas = function (canvasId, opts) {
            var canvas = initFabricJS(canvasId, opts);
-           $interval(function() {
-                console.log(JSON.stringify(canvas));
-            }, 1000)
+           $interval(sendDrawingData(canvas), 1000)
     };
 
     return {
