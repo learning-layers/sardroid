@@ -21,10 +21,10 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window) {
         }
     };
 
-
     var setUpDrawingCanvas = function (canvasId, callback, opts) {
            initFabricJS(canvasId, opts);
-        }
+    };
+
     return {
             setUpRemoteCanvas: function(canvasId, callback, opts) {
                 opts.isRemote = true;
