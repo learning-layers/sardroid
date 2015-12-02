@@ -10,12 +10,15 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             } else {
                     $scope.user = {};
             }
-            //var localStreamSrc = peerFactory.getLocalStreamSrc();
-            //var remoteStreamSrc = peerFactory.getRemoteStreamSrc();
+            var localStreamSrc = peerFactory.getLocalStreamSrc();
+            var remoteStreamSrc = peerFactory.getRemoteStreamSrc();
+
+            if (localStreamSrc === null) {localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'}
+            if (remoteStreamSrc === null) {remoteStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'}
+            
             var localCanvas = document.querySelector('#local-canvas');
             var remoteCanvas = document.querySelector('#remote-canvas');           
-            var localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4';
-            var remoteStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4';
+            
             $scope.localStreamSrc  = $sce.trustAsResourceUrl(localStreamSrc);
             $scope.remoteStreamSrc = $sce.trustAsResourceUrl(remoteStreamSrc);
 

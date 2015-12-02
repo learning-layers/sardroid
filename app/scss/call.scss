@@ -1,29 +1,24 @@
 .stream-video {
-  height:46vh;
+  height: 44vh;
   width: 56vw;
-  max-height: 46vh;
+  max-height: 44vh;
   max-width: 56vw;
   margin-left: 50%;
   transform: translateX(-50%);
 }
 
-/*.canvas-container {
-    margin-left: 50%;
-    transform: translateX(-50%);
-    position: absolute;
-}*/
-
 .canvas-container {
   opacity: 0.5;
   position: absolute !important;
-  height: 46vh;
+  height: 44vh;
   width: 56vw;
   top: 0;
   margin-left: 50%;
   transform: translateX(-50%);
 }
+
 .canvas-container:nth-of-type(2) {
-    margin-top: 46vh;
+    margin-top: 44vh;
 }
 
 #local-canvas {

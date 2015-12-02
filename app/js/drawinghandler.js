@@ -1,22 +1,28 @@
 'use strict';
 
-var drawinghandler = angular.module('drawinghandler',[]);
+var drawinghandler = angular.module('drawinghandler',['sardroid']);
 
 drawinghandler.factory('drawingFactory', function ($rootScope, $window) {
     
     var remoteCanvas = null;
     var localCanvas  = null;
+    var config = $rootScope.config;
 
     var initFabricJS = function (canvasId, opts) {
+        console.log($rootScope.config.drawings);
         var fabricCanvas = new fabric.Canvas(canvasId, {
             isDrawingMode: true,
-            width:  $window.innerWidth * 0.56,
-            height: $window.innerHeight * 0.46
+            width:  $window.innerWidth *  config.drawings.size.width,
+            height: $window.innerHeight * config.drawings.size.height
         });
+
         fabricCanvas.calcOffset();
+        fabricCanvas.freeDrawingBrush.width = config.drawings.brushWidth;
         if (opts.isRemote === true) {
+            fabricCanvas.freeDrawingBrush.color = config.drawings.remoteColor;
             remoteCanvas = fabricCanvas;
         } else if (opts.isRemote === false){
+            fabricCanvas.freeDrawingBrush.color = config.drawings.localColor;
             localCanvas = fabricCanvas;
         }
     };

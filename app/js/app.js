@@ -17,7 +17,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'co
             // TODO: Fix this somehow?
             $rootScope.$on('$stateChangeSuccess',
                 function(event, toState, toParams, fromState, fromParams){
-                    if (toState.name == 'login'){
+                    if (toState.name == 'login' || toState.name == 'call'){
                         $rootScope.showRightMenu = false;
                         $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
                     }
@@ -42,7 +42,16 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'co
                         { 'url': 'stun:stun1.l.google.com:19302' },
                         { 'url': 'stun:stun2.l.google.com:19302' },
                         { 'url': 'stun:stun3.l.google.com:19302' }
-                    ]}}
+                    ]}},
+                drawings: {
+                    size: {
+                        width:  0.56,
+                        height: 0.44
+                    },
+                    remoteColor: 'red',
+                    localColor:  'blue',
+                    brushWidth:   10
+                }
             };
 })
 }).config(function($stateProvider, $urlRouterProvider) {

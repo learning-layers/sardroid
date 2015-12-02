@@ -1,7 +1,7 @@
 'use strict';
 
 var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
-.controller('ContactsCtrl', function($scope, contactsFactory, peerFactory, $state, $ionicActionSheet) {
+.controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, $state, $ionicActionSheet) {
 
         contactsFactory.getAllContacts().then(function (results) {
             $scope.contacts = results;
@@ -16,7 +16,7 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
                 cordova.plugins.Keyboard.close();
             }
         };
-
+        $scope.user = $localStorage.user;
         $scope.selectUser = function(selectedUser) {
             var sheet = $ionicActionSheet.show({
                 buttons: [

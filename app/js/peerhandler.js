@@ -147,11 +147,17 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             return me;
         },
         getRemoteStreamSrc: function() {
-            if (!remoteVideoSource) {console.log('No video remote source!')}
+            if (!remoteVideoSource) {
+                console.log('No video remote source!');
+                return null;
+            }
             return remoteVideoSource;
         },
         getLocalStreamSrc: function() {
-            if (!localVideoSource) {console.log('No video remote source!')}
+            if (!localVideoSource) {
+                console.log('No video remote source!')
+                return null;
+            }
             return localVideoSource;
         },
         isConnected: function() {
