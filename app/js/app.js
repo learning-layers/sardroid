@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'contacts', 'userprofile', 'call', 'peerhandler'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
         $ionicPlatform.ready(function() {

@@ -7,9 +7,15 @@
   transform: translateX(-50%);
 }
 
-canvas {
+/*.canvas-container {
+    margin-left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+}*/
+
+.canvas-container {
   opacity: 0.5;
-  position: absolute;
+  position: absolute !important;
   height: 46vh;
   width: 56vw;
   top: 0;
