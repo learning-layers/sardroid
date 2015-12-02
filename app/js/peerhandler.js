@@ -18,6 +18,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     var currentCallStream   = null;
     var currentAnswerStream = null;
 
+    // Seperate data connection for sending data
+    var dataConnection = null;
+
     // Get a suitable camera for video (first choice is backwards-facing camera)
     var getDeviceCameraID= function() {
         return new Promise(function(resolve, reject) {
@@ -83,6 +86,34 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         localVideoSource = window.URL.createObjectURL(stream);
     };
 
+    var setDataConnection = function(dataConn) {
+        dataConn.on('open', function() {
+            console.log('Dataconnection opened')
+            dataConn.on('data', function(data) {
+                console.log('data received!');
+                console.log(data);
+            });
+
+            dataConn.on('error', function(err) {
+             console.log('dataconnection error!')
+             console.log(err);
+         })
+        dataConnection = dataConn;
+        })
+    };
+
+    var sendData = function(data) {
+        if (dataConnection) { dataConnection.send(data); }
+        else {
+            console.log('uhoh! data was null')
+        }
+    }
+
+    var closeDataConnection = function() {
+        console.log('closing data connection')
+      if (dataConnection) { dataConnection.close() }
+        dataConnection = null;
+    };
 
     var endCallAndGoBack = function() {
         endCurrentCall();
@@ -118,6 +149,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
 
     var endCurrentCall = function() {
+        closeDataConnection();
         if (currentCallStream) {
             currentCallStream.close();
             currentCallStream = null;
@@ -127,6 +159,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             currentAnswerStream.close();
             currentAnswerStream = null;
         }
+
     };
 
      var disconnectFromPeerJS = function() {
@@ -173,7 +206,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
                 if (!me) {
                     alert('Error creating peer!');
-                    reject();W
+                    reject();
                 }
                 me.on('open', function(id) {
                     resolve();
@@ -213,14 +246,14 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                     });
                 });
 
-                me.on('connection', function(dataConnection) {
-                    console.log('dataconnection formed!');
-                    console.log(dataConnection);
+                me.on('connection', function(dataConn) {
+                    setDataConnection(dataConn);
                 });
 
                 me.on('close', function() {
                     console.log('closed Peerjs connection');
                 });
+
 
                 me.socket._socket.onopen = function() {
                     getLocalStream();
@@ -241,18 +274,25 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 });
             })
         },
+        isDataConnectionOpen: function() {
+          if (dataConnection === null && dataConnection.open === false) { return false}
+          return true;
+        },
+        sendDataToPeer: function(dataToSend) {
+            sendData(dataToSend);
+        },
         callPeer: function (userToCall) {
             if (!me) {
                 console.log("Warning! no peerjs connection")
             }
 
             getLocalStream(function (stream) {
+
                 currentCallStream = me.call(userToCall.number, stream, { metadata: me.id});
                 currentCallStream.on('error', function (err) {
                     endCurrentCall();
 
                 });
-
                 currentCallStream.on('stream', function(stream) {
                     console.log('going to stream from call')
                     setRemoteStreamSrc(stream);
@@ -267,6 +307,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                     endCallAndGoBack();
                 });
             });
+
+            var dataConn = me.connect(userToCall.number);
+
+            setDataConnection(dataConn);
 
         },
         endCurrentCall: function() {

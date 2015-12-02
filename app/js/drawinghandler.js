@@ -30,18 +30,21 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     var sendDrawingData = function(canvas) {
         return function() {
-            var data = JSON.stringify(canvas);
-            // Do nothing if the canvas is empty
-            if (data !== '{"objects":[],"background":""}') {
-                console.log(JSON.stringify(canvas));
-                canvas.clear();
+            if (peerFactory.isDataConnectionOpen()) {
+                var data = JSON.stringify(canvas);
+                // Do nothing if the canvas is empty
+                if (data !== '{"objects":[],"background":""}') {
+                    console.log('sending data')
+                    canvas.clear();
+                    peerFactory.sendDataToPeer(data);
+                }
             }
         }
     };
 
     var setUpDrawingCanvas = function (canvasId, opts) {
            var canvas = initFabricJS(canvasId, opts);
-           $interval(sendDrawingData(canvas), 1000)
+           $interval(sendDrawingData(canvas), 2000)
     };
 
     return {
