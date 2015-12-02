@@ -17,14 +17,23 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'co
             // TODO: Fix this somehow?
             $rootScope.$on('$stateChangeSuccess',
                 function(event, toState, toParams, fromState, fromParams){
-                    if (toState.name == 'login' || toState.name == 'call'){
+                    if (toState.name === 'login' ){
                         $rootScope.showRightMenu = false;
                         $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
                     }
                     else {
                         $rootScope.showRightMenu = true;
+                        $ionicSideMenuDelegate.canDragContent(true);
                         $ionicSideMenuDelegate._instances[0].right.isEnabled = true;
                     }
+
+                    if (toState.name === 'call') {
+                        $ionicSideMenuDelegate.canDragContent(false);
+                    }
+                    else {
+                        $ionicSideMenuDelegate.canDragContent(true);
+                    }
+
                 });
             // Disable showing right menu by default
             $rootScope.showRightMenu = false;
