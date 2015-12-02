@@ -22,8 +22,9 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             $scope.localStreamSrc  = $sce.trustAsResourceUrl(localStreamSrc);
             $scope.remoteStreamSrc = $sce.trustAsResourceUrl(remoteStreamSrc);
 
-            drawingFactory.setUpRemoteCanvas(remoteCanvas, function(){},{});
-            drawingFactory.setUpLocalCanvas(localCanvas, function(){}, {});
+            drawingFactory.setUpRemoteCanvas(remoteCanvas,{});
+            drawingFactory.setUpLocalCanvas(localCanvas, {});
+
             $scope.$on('$ionicView.leave', function() {
                  peerFactory.endCurrentCall();
             });

@@ -1,15 +1,15 @@
 'use strict';
 
-var drawinghandler = angular.module('drawinghandler',['sardroid']);
+var drawinghandler = angular.module('drawinghandler',['sardroid', 'peerhandler']);
 
-drawinghandler.factory('drawingFactory', function ($rootScope, $window) {
+drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, $interval, peerFactory) {
     
     var remoteCanvas = null;
     var localCanvas  = null;
+
     var config = $rootScope.config;
 
     var initFabricJS = function (canvasId, opts) {
-        console.log($rootScope.config.drawings);
         var fabricCanvas = new fabric.Canvas(canvasId, {
             isDrawingMode: true,
             width:  $window.innerWidth *  config.drawings.size.width,
@@ -25,20 +25,24 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window) {
             fabricCanvas.freeDrawingBrush.color = config.drawings.localColor;
             localCanvas = fabricCanvas;
         }
+        return fabricCanvas;
     };
 
-    var setUpDrawingCanvas = function (canvasId, callback, opts) {
-           initFabricJS(canvasId, opts);
+    var setUpDrawingCanvas = function (canvasId, opts) {
+           var canvas = initFabricJS(canvasId, opts);
+           $interval(function() {
+                console.log(JSON.stringify(canvas));
+            }, 1000)
     };
 
     return {
-            setUpRemoteCanvas: function(canvasId, callback, opts) {
+           setUpRemoteCanvas: function(canvasId, opts) {
                 opts.isRemote = true;
-                setUpDrawingCanvas(canvasId, callback, opts);
-            },
-            setUpLocalCanvas: function(canvasId, callback, opts) {
+                setUpDrawingCanvas(canvasId, opts);
+           },
+           setUpLocalCanvas: function(canvasId, opts) {
                 opts.isRemote = false;
-                setUpDrawingCanvas(canvasId, callback, opts);
+                setUpDrawingCanvas(canvasId, opts);
             }
         }
 
