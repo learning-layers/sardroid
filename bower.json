@@ -22,7 +22,8 @@
     "ngCordova": "~0.1.23-alpha",
     "peerjs": "~0.3.14",
     "lodash": "~3.10.1",
-    "ngstorage": "~0.3.10"
+    "ngstorage": "~0.3.10",
+    "fabric.js": "fabric#~1.5.0"
   },
   "resolutions": {
     "angular": "~1.4.7"
