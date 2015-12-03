@@ -2,13 +2,14 @@
 
 var drawinghandler = angular.module('drawinghandler',['sardroid', 'peerhandler']);
 
-drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, $interval, peerFactory) {
+drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, $timeout, peerFactory) {
     
     var remoteCanvas = null;
     var localCanvas  = null;
 
     var config = $rootScope.config;
 
+    var pathRemoteTimers = [];
 
     var initFabricJS = function (canvasId, opts) {
         var fabricCanvas = new fabric.Canvas(canvasId, {
@@ -31,6 +32,12 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         return fabricCanvas;
     };
 
+    var removePathFromCanvas = function (canvas, path) {
+        console.log('removing path');
+        canvas.remove(path);
+        canvas.renderAll();
+    }
+
     var setUpCanvasEvents = function(canvas) {
 
     canvas.on('path:created', function(e) {
@@ -39,6 +46,9 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
             tag:  canvas.tag,
             data: data
             }))
+         $timeout(function () {
+             removePathFromCanvas(canvas, e.path);
+         }, config.drawings.drawingRemoveTime);
         });
     };
 
@@ -59,8 +69,14 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         objects.forEach(function (o) {
             o.stroke = config.drawings.remoteColor;
             canvas.add(o);
+            
+            $timeout(function () {
+                 removePathFromCanvas(canvas, o);
+             }, config.drawings.drawingRemoveTime);
+            // var timer = $timeout(removePathFromCanvas(canvas, o), 500);
+            //pathRemoteTimers.push(timer);
         })
-        canvas.renderAll();
+        //canvas.renderTop();
         })
     };
 
