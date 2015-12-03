@@ -1,7 +1,5 @@
 'use strict';
 
-
-
 angular.module('call', ['peerhandler', 'drawinghandler'])
 
 .controller('CallCtrl', function($scope, $sce, $stateParams, peerFactory, drawingFactory) {

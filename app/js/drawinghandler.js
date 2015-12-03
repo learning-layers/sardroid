@@ -18,33 +18,34 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
         fabricCanvas.calcOffset();
         fabricCanvas.freeDrawingBrush.width = config.drawings.brushWidth;
+        
         if (opts.isRemote === true) {
             fabricCanvas.freeDrawingBrush.color = config.drawings.remoteColor;
             remoteCanvas = fabricCanvas;
+            fabricCanvas.tag = 'remote';
         } else if (opts.isRemote === false){
             fabricCanvas.freeDrawingBrush.color = config.drawings.localColor;
             localCanvas = fabricCanvas;
+            fabricCanvas.tag = 'local';
         }
         return fabricCanvas;
     };
 
-    var sendDrawingData = function(canvas) {
-        return function() {
-            if (peerFactory.isDataConnectionOpen()) {
-                var data = JSON.stringify(canvas);
-                // Do nothing if the canvas is empty
-                if (data !== '{"objects":[],"background":""}') {
-                    console.log('sending data')
-                    canvas.clear();
-                    peerFactory.sendDataToPeer(data);
-                }
-            }
-        }
+    var setUpCanvasEvents = function(canvas) {
+
+    canvas.on('path:created', function(e) {
+        var data = JSON.stringify(e.path);
+            console.log(data);
+            peerFactory.sendDataToPeer({
+            tag:  canvas.tag,
+            data: data
+            })
+        })
     };
 
     var setUpDrawingCanvas = function (canvasId, opts) {
            var canvas = initFabricJS(canvasId, opts);
-           $interval(sendDrawingData(canvas), 2000)
+           setUpCanvasEvents(canvas);
     };
 
     return {

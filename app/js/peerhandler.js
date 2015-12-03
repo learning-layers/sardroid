@@ -97,6 +97,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             dataConn.on('error', function(err) {
              console.log('dataconnection error!')
              console.log(err);
+             alert(err);
          })
         dataConnection = dataConn;
         })
@@ -291,7 +292,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 currentCallStream = me.call(userToCall.number, stream, { metadata: me.id});
                 currentCallStream.on('error', function (err) {
                     endCurrentCall();
-
+                    alert(err)
                 });
                 currentCallStream.on('stream', function(stream) {
                     console.log('going to stream from call')
