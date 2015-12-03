@@ -35,12 +35,12 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     canvas.on('path:created', function(e) {
         var data = JSON.stringify(e.path);
-            console.log(data);
-            peerFactory.sendDataToPeer({
+        console.log(data);
+        peerFactory.sendDataToPeer(JSON.stringify({
             tag:  canvas.tag,
             data: data
-            })
-        })
+            }))
+        });
     };
 
     var setUpDrawingCanvas = function (canvasId, opts) {

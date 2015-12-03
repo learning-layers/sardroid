@@ -87,6 +87,8 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     };
 
     var setDataConnection = function(dataConn) {
+        dataConn.serialization = 'json'
+        
         dataConn.on('open', function() {
             console.log('Dataconnection opened')
             dataConn.on('data', function(data) {
@@ -290,10 +292,11 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             getLocalStream(function (stream) {
 
                 currentCallStream = me.call(userToCall.number, stream, { metadata: me.id});
+                
                 currentCallStream.on('error', function (err) {
-                    endCurrentCall();
-                    alert(err)
+                    alert(err);
                 });
+
                 currentCallStream.on('stream', function(stream) {
                     console.log('going to stream from call')
                     setRemoteStreamSrc(stream);
