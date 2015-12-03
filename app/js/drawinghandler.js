@@ -54,12 +54,14 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     var addNewPathToCanvas = function (canvas, pathData) {
         console.log('addNewPathToCanvas')
-       new fabric.Path.fromObject({path: pathData}, function (path) {
-           path.fill = config.drawings.remoteColor;
+        /*fabric.Path.fromObject({path: pathData}, function (path) {
+            console.log('path created!');
+            path.fill = config.drawings.remoteColor;
            console.log(path);
            canvas.add(path);
            canvas.renderAll();
-       });
+       });*/
+      console.log(pathData);
     };
 
     var setUpDrawingCanvas = function (canvasId, opts) {

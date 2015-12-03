@@ -90,24 +90,29 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     };
 
     var setDataConnection = function(dataConn) {
-        dataConn.serialization = 'json'
-        
+        dataConn.serialization = 'none';
+        dataConn.reliable = true;
+        console.log('setting data connection'); 
         dataConn.on('open', function() {
             console.log('Dataconnection opened')
             dataConn.on('data', function(data) {
                 console.log('data received!');
                 
                 dataCallbacks.map(function (cb) {
-                    console.log(cb);
                     cb(data);
                 });
-            });
+        });
 
-            dataConn.on('error', function(err) {
+        dataConn.on('error', function(err) {
              console.log('dataconnection error!')
              console.log(err);
              alert(err);
-         })
+         });
+
+        dataConn.on('close', function() {
+            alert('dataconn closed')
+        });
+
         dataConnection = dataConn;
         })
     };
@@ -323,7 +328,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 });
             });
 
-            var dataConn = me.connect(userToCall.number);
+            var dataConn = me.connect(userToCall.number, {reliable: true, serialization: "none"});
 
             setDataConnection(dataConn);
 
