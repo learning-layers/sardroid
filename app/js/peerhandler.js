@@ -1,6 +1,6 @@
 'use strict';
 
-var peerhandler = angular.module('peerhandler', ['ngCordova']);
+var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
 
 peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout, $cordovaLocalNotification) {
     // PeerJS object representing the user
@@ -20,6 +20,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
     // Seperate data connection for sending data
     var dataConnection = null;
+
+    // Array of callbck fuctions to handle data
+    var dataCallbacks = [];
 
     // Get a suitable camera for video (first choice is backwards-facing camera)
     var getDeviceCameraID= function() {
@@ -93,7 +96,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             console.log('Dataconnection opened')
             dataConn.on('data', function(data) {
                 console.log('data received!');
-                console.log(data);
+
+                dataCallbacks.map(function (cb) {
+                    cb(data);
+                });
             });
 
             dataConn.on('error', function(err) {
@@ -199,6 +205,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         isConnected: function() {
             if (!me) {return false}
             else {return !me.disconnected}
+        },
+        addDatacallback: function (callback) {
+            dataCallbacks.push(callback);
         },
         connectToPeerJS: function(id)   {
             var disconnectRef = this.disconnectFromPeerJS;

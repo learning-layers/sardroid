@@ -9,6 +9,11 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     var config = $rootScope.config;
 
+    peerFactory.addDatacallback(function(data) {
+            var data = JSON.parse(data);
+            addPathToCanvas(data.tag, data.data);
+    });
+
     var initFabricJS = function (canvasId, opts) {
         var fabricCanvas = new fabric.Canvas(canvasId, {
             isDrawingMode: true,
@@ -18,13 +23,12 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
         fabricCanvas.calcOffset();
         fabricCanvas.freeDrawingBrush.width = config.drawings.brushWidth;
-        
+        fabricCanvas.freeDrawingBrush.color = config.drawings.localColor;
+
         if (opts.isRemote === true) {
-            fabricCanvas.freeDrawingBrush.color = config.drawings.remoteColor;
             remoteCanvas = fabricCanvas;
             fabricCanvas.tag = 'remote';
         } else if (opts.isRemote === false){
-            fabricCanvas.freeDrawingBrush.color = config.drawings.localColor;
             localCanvas = fabricCanvas;
             fabricCanvas.tag = 'local';
         }
@@ -43,6 +47,25 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         });
     };
 
+    var addPathToCanvas = function (canvasTag, pathData) {
+        if (canvasTag === 'local') {
+            addNewPathToCanvas(localCanvas, pathData);
+        }
+        else if (canvasTag === 'remote') {
+            addNewPathToCanvas(remoteCanvas, pathData);
+        }
+    };
+
+    var addNewPathToCanvas = function (canvas, pathData) {
+       console.log(canvas);
+       console.log(pathData);
+       new fabric.Path.fromObject({path: pathData}, function (path) {
+           path.fill = config.drawings.remoteColor;
+           canvas.add(path);
+           canvas.renderAll();
+       });
+    };
+
     var setUpDrawingCanvas = function (canvasId, opts) {
            var canvas = initFabricJS(canvasId, opts);
            setUpCanvasEvents(canvas);
@@ -56,7 +79,6 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
            setUpLocalCanvas: function(canvasId, opts) {
                 opts.isRemote = false;
                 setUpDrawingCanvas(canvasId, opts);
-            }
+           },
         }
-
 });
