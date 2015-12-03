@@ -110,7 +110,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
          });
 
         dataConn.on('close', function() {
-            alert('dataconn closed')
+            console.log('dataconn closed')
         });
 
         dataConnection = dataConn;
