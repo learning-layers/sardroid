@@ -20,6 +20,7 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             $scope.localStreamSrc  = $sce.trustAsResourceUrl(localStreamSrc);
             $scope.remoteStreamSrc = $sce.trustAsResourceUrl(remoteStreamSrc);
 
+            drawingFactory.setUpDataCallbacks();
             drawingFactory.setUpRemoteCanvas(remoteCanvas,{});
             drawingFactory.setUpLocalCanvas(localCanvas, {});
 

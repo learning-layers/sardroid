@@ -96,8 +96,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             console.log('Dataconnection opened')
             dataConn.on('data', function(data) {
                 console.log('data received!');
-
+                
                 dataCallbacks.map(function (cb) {
+                    console.log(cb);
                     cb(data);
                 });
             });
@@ -172,7 +173,8 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     };
 
      var disconnectFromPeerJS = function() {
-        if (me) {
+            console.log("Disconnecting from PeerJS")
+         if (me) {
             me.disconnect();
             me.destroy();
             me = null;
@@ -327,6 +329,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
         },
         endCurrentCall: function() {
+            console.log('ending current call')
             endCurrentCall();
         },
         disconnectFromPeerJS: function() {

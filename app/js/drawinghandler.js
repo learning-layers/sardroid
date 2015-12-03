@@ -9,10 +9,6 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     var config = $rootScope.config;
 
-    peerFactory.addDatacallback(function(data) {
-            var data = JSON.parse(data);
-            addPathToCanvas(data.tag, data.data);
-    });
 
     var initFabricJS = function (canvasId, opts) {
         var fabricCanvas = new fabric.Canvas(canvasId, {
@@ -28,7 +24,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         if (opts.isRemote === true) {
             remoteCanvas = fabricCanvas;
             fabricCanvas.tag = 'remote';
-        } else if (opts.isRemote === false){
+        } else if (opts.isRemote === false) {
             localCanvas = fabricCanvas;
             fabricCanvas.tag = 'local';
         }
@@ -39,7 +35,6 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     canvas.on('path:created', function(e) {
         var data = JSON.stringify(e.path);
-        console.log(data);
         peerFactory.sendDataToPeer(JSON.stringify({
             tag:  canvas.tag,
             data: data
@@ -48,6 +43,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
     };
 
     var addPathToCanvas = function (canvasTag, pathData) {
+        console.log('addPathToCanvas')
         if (canvasTag === 'local') {
             addNewPathToCanvas(localCanvas, pathData);
         }
@@ -57,10 +53,10 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
     };
 
     var addNewPathToCanvas = function (canvas, pathData) {
-       console.log(canvas);
-       console.log(pathData);
+        console.log('addNewPathToCanvas')
        new fabric.Path.fromObject({path: pathData}, function (path) {
            path.fill = config.drawings.remoteColor;
+           console.log(path);
            canvas.add(path);
            canvas.renderAll();
        });
@@ -80,5 +76,12 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
                 opts.isRemote = false;
                 setUpDrawingCanvas(canvasId, opts);
            },
+           setUpDataCallbacks: function() {
+                peerFactory.addDatacallback(function (data) {
+                    console.log('data callback callin')
+                    var data = JSON.parse(data);
+                    addPathToCanvas(data.tag, data.data);
+                })
+           }
         }
 });
