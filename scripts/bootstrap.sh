@@ -19,8 +19,6 @@ sudo apt-get install -y curl git openjdk-7-jdk ant expect
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
-sudo npm install -g bower gulp cordova ionic
-
 curl -O $ANDROID_SDK
 tar -xzvf $ANDROID_SDK_FILENAME
 sudo chown -R vagrant android-sdk-linux/
@@ -29,11 +27,15 @@ echo "ANDROID_HOME=~/android-sdk-linux" >> /home/vagrant/.bashrc
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-i386" >> /home/vagrant/.bashrc
 echo "PATH=\$PATH:~/android-sdk-linux/tools:~/android-sdk-linux/platform-tools" >> /home/vagrant/.bashrc
 
+sudo npm install -g bower
+sudo npm install -g gulp
+sudo npm install -g cordova
+sudo npm install -g ionic
 
-# expect -c '
-# set timeout -1   ;
-# spawn /home/vagrant/android-sdk-linux/tools/android update sdk -u --all --filter platform-tool,android-19,build-tools-19.1.0
-# expect { 
-#     "Do you accept the license" { exp_send "y\r" ; exp_continue }
-#     eof
-# }'
+ expect -c '
+ set timeout -1   ;
+ spawn /home/vagrant/android-sdk-linux/tools/android update sdk -u --all --filter platform-tool,android-19,build-tools-19.1.0
+ expect { 
+     "Do you accept the license" { exp_send "y\r" ; exp_continue }
+     eof
+ }'

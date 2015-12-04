@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.hostname = "SAR-dev"
 
     config.vm.provision :shell, path: "scripts/bootstrap.sh"
-    config.vm.provision :shell, run: "always", inline: $init
+    # config.vm.provision :shell, run: "always", inline: $init
 
     config.vm.network "forwarded_port", guest: 3000, host:3000
     config.vm.network "forwarded_port", guest: 35729, host:35729
