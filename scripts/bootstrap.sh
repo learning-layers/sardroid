@@ -27,15 +27,17 @@ echo "ANDROID_HOME=~/android-sdk-linux" >> /home/vagrant/.bashrc
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-i386" >> /home/vagrant/.bashrc
 echo "PATH=\$PATH:~/android-sdk-linux/tools:~/android-sdk-linux/platform-tools" >> /home/vagrant/.bashrc
 
-sudo npm install -g bower
-sudo npm install -g gulp
-sudo npm install -g cordova
-sudo npm install -g ionic
+sudo npm install -g bower@1.6.5
+sudo npm install -g gulp@3.9.0
+sudo npm install -g cordova@5.4.0
+sudo npm install -g ionic@1.7.10
 
  expect -c '
  set timeout -1   ;
- spawn /home/vagrant/android-sdk-linux/tools/android update sdk -u --all --filter platform-tool,android-19,build-tools-19.1.0
+ spawn /home/vagrant/android-sdk-linux/tools/android update sdk -u --all --filter platform-tool,android-22,build-tools-24.4.1
  expect { 
      "Do you accept the license" { exp_send "y\r" ; exp_continue }
      eof
  }'
+
+
