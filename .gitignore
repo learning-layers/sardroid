@@ -37,3 +37,4 @@ plugins/
 app/vendor
 www
 platforms
+.vagrant/
