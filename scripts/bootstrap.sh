@@ -40,9 +40,10 @@ sudo npm install -g ionic@1.7.10
      eof
  }'
 
-# Install bower and npm dependencies, start livereload server
+# Install bower and npm dependencies, start livereload server on port 3000
 cd /vagrant/
 npm install
 bower install --allow-root
+ionic state restore
 gulp watch &
 
