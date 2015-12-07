@@ -111,7 +111,8 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
                 })
            },
            tearDownDrawingFactory: function () {
-                cancelPathRemoveTimers();    
+                cancelPathRemoveTimers();
+                peerFactory.removeDatacallbacks();
            }
         }
 });

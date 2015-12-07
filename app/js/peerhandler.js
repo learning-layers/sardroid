@@ -216,6 +216,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         addDatacallback: function (callback) {
             dataCallbacks.push(callback);
         },
+        removeDatacallbacks: function() {
+            console.log('removing data callbacks from peerfactory');
+            dataCallbacks = [];
+        },
         connectToPeerJS: function(id)   {
             var disconnectRef = this.disconnectFromPeerJS;
 
