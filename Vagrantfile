@@ -20,8 +20,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network "forwarded_port", guest: 35729, host:35729
 
     config.vm.provider "virtualbox" do |vb|
+        vb.memory = 1024
+        vb.cpus = 2
         vb.customize ["modifyvm", :id, "--usb", "on"]
         vb.customize ["usbfilter", "add", "0", "--target", :id, "--name", "android", "--vendorid", "0x18d1"]
-
     end
 end

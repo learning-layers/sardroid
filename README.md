@@ -8,6 +8,14 @@ was chosen as the hybrid framework of choice!
 
 ## Installation
 
+### The vagrant way
+
+If you'd prefer using Vagrant for your development needs, just install 
+Vagrant, then run 'vagrant up' inside the project folder. Currently, it
+install the required development dependencies specified below, and also the Android SDK for easy deployment and testing. Neato!
+
+### The regular way
+
 First thing's first, install a whole bunch of Node stuff
 
 ```sh

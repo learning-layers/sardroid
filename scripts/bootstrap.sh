@@ -34,10 +34,15 @@ sudo npm install -g ionic@1.7.10
 
  expect -c '
  set timeout -1   ;
- spawn /home/vagrant/android-sdk-linux/tools/android update sdk -u --all --filter platform-tool,android-22,build-tools-24.4.1
+ spawn /home/vagrant/android-sdk-linux/tools/android update sdk -u --all --filter platform-tool,android-22,build-tools-22.0.1
  expect { 
      "Do you accept the license" { exp_send "y\r" ; exp_continue }
      eof
  }'
 
+# Install bower and npm dependencies, start livereload server
+cd /vagrant/
+npm install
+bower install --allow-root
+gulp watch &
 
