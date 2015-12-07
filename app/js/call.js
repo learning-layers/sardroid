@@ -25,6 +25,7 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             drawingFactory.setUpLocalCanvas(localCanvas, {});
 
             $scope.$on('$ionicView.leave', function() {
-                 peerFactory.endCurrentCall();
+                drawingFactory.tearDownDrawingFactory();
+                peerFactory.endCurrentCall();
             });
 });

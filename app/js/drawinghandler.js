@@ -9,7 +9,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     var config = $rootScope.config;
 
-    var pathRemoteTimers = [];
+    var pathRemoveTimers = [];
 
     var initFabricJS = function (canvasId, opts) {
         var fabricCanvas = new fabric.Canvas(canvasId, {
@@ -38,18 +38,32 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         canvas.renderAll();
     }
 
+    var createPathRemoveTimer = function(canvas, path) {
+        console.log('creating timer')
+        var timer = $timeout(function () {
+             removePathFromCanvas(canvas, path);
+         }, config.drawings.drawingRemoveTime);
+
+         pathRemoveTimers.push(timer);
+    }
+
+    var cancelPathRemoveTimers = function() {
+        console.log('cancel timers');
+        pathRemoveTimers.map(function (t){
+            $timeout.cancel(t);
+    })
+    }
+
     var setUpCanvasEvents = function(canvas) {
 
-    canvas.on('path:created', function(e) {
-        var data = JSON.stringify(e.path);
-        peerFactory.sendDataToPeer(JSON.stringify({
-            tag:  canvas.tag,
-            data: data
-            }))
-         $timeout(function () {
-             removePathFromCanvas(canvas, e.path);
-         }, config.drawings.drawingRemoveTime);
-        });
+        canvas.on('path:created', function(e) {
+            var data = JSON.stringify(e.path);
+            peerFactory.sendDataToPeer(JSON.stringify({
+                tag:  canvas.tag,
+                data: data
+                }))
+            createPathRemoveTimer(canvas, e.path);
+            });
     };
 
     var addPathToCanvas = function (canvasTag, pathData) {
@@ -70,11 +84,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
             o.stroke = config.drawings.remoteColor;
             canvas.add(o);
             
-            $timeout(function () {
-                 removePathFromCanvas(canvas, o);
-             }, config.drawings.drawingRemoveTime);
-            // var timer = $timeout(removePathFromCanvas(canvas, o), 500);
-            //pathRemoteTimers.push(timer);
+            createPathRemoveTimer(canvas, o);
         })
         //canvas.renderTop();
         })
@@ -96,10 +106,12 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
            },
            setUpDataCallbacks: function() {
                 peerFactory.addDatacallback(function (data) {
-                    console.log('data callback callin')
                     var data = JSON.parse(data);
                     addPathToCanvas(data.tag, data.data);
                 })
+           },
+           tearDownDrawingFactory: function () {
+                cancelPathRemoveTimers();    
            }
         }
 });
