@@ -42,10 +42,11 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'co
             // Set up configuration variables we can use anywhere in Angular
             $rootScope.config = {
                 peerjs: {
-                    host: '46.101.248.58',
+                    host: 'mattij.com',
                     port: 9000,
                     path: '/peerjs',
                     debug: 3,
+                    secure: true,
                     config: {'iceServers': [
                         { 'url': 'stun:stun.l.google.com:19302' },
                         { 'url': 'stun:stun1.l.google.com:19302' },
