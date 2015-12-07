@@ -38,6 +38,13 @@ gulp build --env production
 
 ```
 
+When deploying to actual devices, remember to install the needed cordova plugins, which ionic handily stores in the package.json
+
+```sh
+ionic state restore
+
+```
+
 ## Developing
 
 To start livereload server that watches your files diligently and reloads when necessary, run
