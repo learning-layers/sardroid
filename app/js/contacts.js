@@ -9,7 +9,6 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
             console.log(err);
         });
 
-
         $scope.searchKeyPress = function(keyCode) {
             // Enter and Android keyboard 'GO' KEYCODES
             if ((keyCode === 66 || keyCode === 13) && typeof cordova !== 'undefined') {
@@ -45,9 +44,11 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
 });
 
 contacts.factory('contactsFactory', function($cordovaContacts) {
+    // Array to store all the devices contacts
+    var contacts = [];
+    
     return {
         getAllContacts: function() {
-
             var opts = {
                 fields: ['id', 'displayName', 'name', 'phoneNumbers', 'emails', 'photos'],
                 hasPhoneNumber : true
@@ -66,11 +67,15 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
                             "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/keilamies.png' : 'res/img/keilamies.png'
                         }
                     });
+                    contacts = formatted;
                     return formatted;
                   })
                 .catch(function (err) {
                   return err;
            });
+        },
+        getContactByNumber(number) {
+            return _.find(contacts, 'number', number);
         }
     };
 });

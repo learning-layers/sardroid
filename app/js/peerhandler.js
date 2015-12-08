@@ -2,7 +2,7 @@
 
 var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
 
-peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout, $cordovaLocalNotification, audioFactory) {
+peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout, $cordovaLocalNotification, audioFactory, contactsFactory) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -22,7 +22,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     var dataConnection = null;
 
     // Array of callback functions to handle data
-    var dataCallbacks = [];
+    var dataCallbacks   = [];
 
     // Array of ids for local notifications that are shown to the user
     var notificationIds = [];
@@ -254,21 +254,21 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 });
 
                 me.on('call', function(mediaConnection) {
-                    console.log('Call initiated by ' + mediaConnection.peer );
-
+                    var user = contactsFactory.getContactByNumber(mediaConnection.peer);
                     var id = Math.floor(Math.random() * 10000);
+                    
                     notificationIds.push(id);
 
                     $cordovaLocalNotification.schedule({
                         id: id,
-                        title: 'SAR Call from ' + mediaConnection.peer,
-                        text: 'SAR Call from ' + mediaConnection.peer
+                        title: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')',
+                        text: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')'
                     }).then(function (result) {
                         console.log(result);
                     });
 
                     var confirmPopup = $ionicPopup.confirm({
-                        title: 'Call from ' + mediaConnection.peer,
+                        title: 'Call from ' + user.displayName,
                         template: 'Incoming call. Answer?'
                     });
                     audioFactory.playSound('.call');
@@ -278,7 +278,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                         if(res) {
                             answer(mediaConnection);
                             $timeout(function() {
-                                $state.go('call', {user: { displayName: mediaConnection.peer }});
+                                $state.go('call', {user: user});
                             }, 500)
                         } else {
                             mediaConnection.close();
