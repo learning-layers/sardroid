@@ -21,8 +21,11 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     // Seperate data connection for sending data
     var dataConnection = null;
 
-    // Array of callbck fuctions to handle data
+    // Array of callback functions to handle data
     var dataCallbacks = [];
+
+    // Array of ids for local notifications that are shown to the user
+    var notificationIds = [];
 
     // Get a suitable camera for video (first choice is backwards-facing camera)
     var getDeviceCameraID= function() {
@@ -81,6 +84,19 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         }
     };
 
+    var cancelAllLocalNotifications = function() {
+            notificationIds.map(function (id) {
+                console.log(id);
+                cancelLocalNotification(id);
+            });
+    };
+
+    var cancelLocalNotification = function(id) {
+        $cordovaLocalNotification.cancel(id);
+        var index = notificationIds.indexOf(id);
+        notificationIds.splice(index, 1);
+    }
+
     var setRemoteStreamSrc = function (stream) {
         remoteVideoSource = window.URL.createObjectURL(stream);
     };
@@ -92,7 +108,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     var setDataConnection = function(dataConn) {
         dataConn.serialization = 'none';
         dataConn.reliable = true;
-        console.log('setting data connection'); 
+        console.log('setting data connection');
         dataConn.on('open', function() {
             console.log('Dataconnection opened')
             dataConn.on('data', function(data) {
@@ -164,6 +180,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
 
     var endCurrentCall = function() {
+        cancelAllLocalNotifications();
         closeDataConnection();
         if (currentCallStream) {
             currentCallStream.close();
@@ -239,9 +256,11 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 me.on('call', function(mediaConnection) {
                     console.log('Call initiated by ' + mediaConnection.peer );
 
+                    var id = Math.floor(Math.random() * 10000);
+                    notificationIds.push(id);
 
                     $cordovaLocalNotification.schedule({
-                        id: 1,
+                        id: id,
                         title: 'SAR Call from ' + mediaConnection.peer,
                         text: 'SAR Call from ' + mediaConnection.peer
                     }).then(function (result) {
@@ -254,15 +273,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                     });
 
                     confirmPopup.then(function(res) {
+                        cancelLocalNotification(id);
                         if(res) {
                             answer(mediaConnection);
                             $timeout(function() {
                                 $state.go('call', {user: { displayName: mediaConnection.peer }});
                             }, 500)
                         } else {
-                            $cordovaLocalNotification.cancel(1).then(function (result) {
-                                console.log(result);
-                            });
                             mediaConnection.close();
                             return false;
                         }
