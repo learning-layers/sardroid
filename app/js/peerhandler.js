@@ -108,15 +108,22 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     var setDataConnection = function(dataConn) {
         dataConn.serialization = 'none';
         dataConn.reliable = true;
-        console.log('setting data connection');
+
         dataConn.on('open', function() {
             console.log('Dataconnection opened')
             dataConn.on('data', function(data) {
                 console.log('data received!');
-                
-                dataCallbacks.map(function (cb) {
-                    cb(data);
-                });
+                console.log(data);
+
+                var dataJSON = JSON.parse(data);
+                if (dataJSON.type == 'connectionClose') {
+                    alert(dataJSON.message);
+                }
+                else {
+                     dataCallbacks.map(function (cb) {
+                        cb(dataJSON);
+                     });
+                }
         });
 
         dataConn.on('error', function(err) {
@@ -126,7 +133,6 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
          });
 
         dataConn.on('close', function() {
-            alert('dataconnection closed')
             console.log('dataconn closed')
         });
 
@@ -135,16 +141,28 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     };
 
     var sendData = function(data) {
+
+        if (typeof data != 'string') {
+                data = JSON.stringify(data);
+         }
         if (dataConnection) { dataConnection.send(data); }
         else {
             console.log('uhoh! data was null')
         }
     }
 
-    var closeDataConnection = function() {
+    var closeDataConnection = function(reason) {
         console.log('closing data connection')
-      if (dataConnection) { dataConnection.close() }
+      if (dataConnection) {
+        if (reason) {
+            sendData({
+                type:    'connectionClose',
+                message: reason
+            });
+        }
+        dataConnection.close();
         dataConnection = null;
+      }
     };
 
     var endCallAndGoBack = function() {
@@ -283,7 +301,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                                 $state.go('call', {user: user});
                             }, 500)
                         } else {
-                            closeDataConnection();
+                            closeDataConnection('User is busy!');
                             mediaConnection.close();
                             return false;
                         }
@@ -323,6 +341,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
           return true;
         },
         sendDataToPeer: function(dataToSend) {
+            console.log(typeof dataToSend);
             sendData(dataToSend);
         },
         callPeer: function (userToCall) {
@@ -349,7 +368,6 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 });
 
                 currentCallStream.on('close', function() {
-                    alert('call stream closed')
                     endCallAndGoBack();
                 });
             });
@@ -368,3 +386,4 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         }
     }
 });
+
