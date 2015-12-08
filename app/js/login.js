@@ -3,7 +3,6 @@
 angular.module('login', ['peerhandler'])
 
 .controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, peerFactory) {
-
         // Disable back button so we can't back to login!
         $ionicHistory.nextViewOptions({
             disableBack: true
@@ -32,3 +31,4 @@ angular.module('login', ['peerhandler'])
             }
         };
 });
+
