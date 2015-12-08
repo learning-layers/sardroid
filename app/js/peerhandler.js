@@ -2,7 +2,7 @@
 
 var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
 
-peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout, $cordovaLocalNotification) {
+peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout, $cordovaLocalNotification, audioFactory) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -271,8 +271,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                         title: 'Call from ' + mediaConnection.peer,
                         template: 'Incoming call. Answer?'
                     });
-
+                    audioFactory.playSound('.call');
                     confirmPopup.then(function(res) {
+                        audioFactory.stopSound('.call');
                         cancelLocalNotification(id);
                         if(res) {
                             answer(mediaConnection);
