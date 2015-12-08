@@ -126,6 +126,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
          });
 
         dataConn.on('close', function() {
+            alert('dataconnection closed')
             console.log('dataconn closed')
         });
 
@@ -147,6 +148,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     };
 
     var endCallAndGoBack = function() {
+        console.log('end call and go back!');
         endCurrentCall();
         if ($state.current.name === "call") {
             $ionicHistory.goBack();
@@ -281,6 +283,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                                 $state.go('call', {user: user});
                             }, 500)
                         } else {
+                            closeDataConnection();
                             mediaConnection.close();
                             return false;
                         }
@@ -346,6 +349,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 });
 
                 currentCallStream.on('close', function() {
+                    alert('call stream closed')
                     endCallAndGoBack();
                 });
             });
