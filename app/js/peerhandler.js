@@ -402,7 +402,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
 
             isInCallCurrently = true;
 
-            $ionicLoading.show({template: 'Dialing, hold on...' })
+            $ionicLoading.show({ templateUrl: '../templates/loader.html' })
 
             getLocalStream(function (stream) {
 
