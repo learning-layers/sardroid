@@ -26,7 +26,8 @@
     {
       "locator": "https://github.com/joshbatchelor/cordova-plugin-local-notifications",
       "id": "de.appplant.cordova.plugin.local-notification"
-    }
+    },
+    "org.apache.cordova.device"
   ],
   "cordovaPlatforms": [
     "android"
