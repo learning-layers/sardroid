@@ -105,6 +105,25 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         localVideoSource = window.URL.createObjectURL(stream);
     };
 
+    // TODO: Make closing dataconnection more modular?
+    var checkIfDataConnectionIsSet = function (incomingConnection) {
+       if (dataConnnection != null || dataConnection.open == true) {
+        incomingConnection.send(
+            JSON.stringify({
+                type: 'connectionClose',
+                message: 'User is already in call!'
+            })
+        );
+        incomingConnection.close();
+        incomingConnection = null;
+
+        return true;
+       }
+       else {
+        return false;
+       }
+    };
+
     var setDataConnection = function(dataConn) {
         dataConn.serialization = 'none';
         dataConn.reliable = true;
@@ -117,11 +136,11 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
                 var dataJSON = JSON.parse(data);
                 if (dataJSON.type == 'connectionClose') {
-                    alert(dataJSON.message);
+                    callAlertModal(dataJSON.message);
                 }
                 else {
                      dataCallbacks.map(function (cb) {
-                        cb(dataJSON);
+                        cb(data);
                      });
                 }
         });
@@ -145,7 +164,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         if (typeof data != 'string') {
                 data = JSON.stringify(data);
          }
-        if (dataConnection) { dataConnection.send(data); }
+        if (dataConnection) {
+            dataConnection.send(data);
+        }
         else {
             console.log('uhoh! data was null')
         }
@@ -275,8 +296,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
                 me.on('call', function(mediaConnection) {
                     var user = contactsFactory.getContactByNumber(mediaConnection.peer);
-                    var id = Math.floor(Math.random() * 10000);
-                    
+                    var id = Math.floor(Math.random() * 10000);  
                     notificationIds.push(id);
 
                     $cordovaLocalNotification.schedule({
@@ -309,7 +329,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 });
 
                 me.on('connection', function(dataConn) {
-                    setDataConnection(dataConn);
+                    if (checkIfDataConnectionIsSet(dataConn) === false) {
+                        setDataConnection(dataConn);
+                    }
                 });
 
                 me.on('close', function() {

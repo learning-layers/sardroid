@@ -59,6 +59,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         canvas.on('path:created', function(e) {
             var data = JSON.stringify(e.path);
             peerFactory.sendDataToPeer(JSON.stringify({
+                type: 'newPathCreated',
                 tag:  canvas.tag,
                 data: data
                 }))
@@ -81,12 +82,10 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         fabric.util.enlivenObjects([pathData], function(objects) {
 
         objects.forEach(function (o) {
-            o.stroke = config.drawings.remoteColor;
-            canvas.add(o);
-            
-            createPathRemoveTimer(canvas, o);
-        })
-        //canvas.renderTop();
+                o.stroke = config.drawings.remoteColor;
+                canvas.add(o);
+                createPathRemoveTimer(canvas, o);
+            })
         })
     };
 
