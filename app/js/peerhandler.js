@@ -191,6 +191,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
     var endCallAndGoBack = function() {
         console.log('end call and go back!');
+        isInCallCurrently = false;
         endCurrentCall();
         if ($state.current.name === "call") {
             $ionicHistory.goBack();
@@ -300,6 +301,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 me.on('call', function(mediaConnection) {
 
                     if (isInCallCurrently === false) {
+                        console.log(isInCallCurrently);
                         isInCallCurrently = true;
 
                         var user = contactsFactory.getContactByNumber(mediaConnection.peer);
@@ -309,7 +311,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                         if (!user) {
                             user = { displayName: mediaConnection.peer }
                         }
-
+                       
                         $cordovaLocalNotification.schedule({
                             id: id,
                             title: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')',
@@ -337,6 +339,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                                 return false;
                             }
                         });
+                    } else {
+                        console.log('ALready in call, closing media')
+                        mediaConnection.close();
                     }
                 });
 
@@ -382,12 +387,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             if (!me) {
                 console.log("Warning! no peerjs connection")
             }
-
+            isInCallCurrently = true;
             getLocalStream(function (stream) {
 
                 currentCallStream = me.call(userToCall.number, stream, { metadata: me.id});
                 
                 currentCallStream.on('error', function (err) {
+                    isInCallCurrently = false;
                     alert(err);
                 });
 
@@ -408,8 +414,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
             var dataConn = me.connect(userToCall.number, {reliable: true, serialization: "none"});
 
-            setDataConnection(dataConn);
-
+            if (checkIfDataConnectionIsSet(dataConn) === false) {
+                setDataConnection(dataConn);
+            }
         },
         endCurrentCall: function() {
             console.log('ending current call')
