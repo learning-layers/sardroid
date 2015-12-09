@@ -368,7 +368,12 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 };
 
                 me.on('error', function(error) {
+
                     var errorMsg = error.toString();
+                    if (_.contains(errorMsg), 'could not connect to peer') {
+                        errorMsg = 'Looks like that user is offline!';
+                    }
+
                     var errorAlert = $ionicPopup.alert({
                         title: 'Something went wrong!',
                         template: errorMsg
