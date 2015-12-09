@@ -107,7 +107,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
     // TODO: Make closing dataconnection more modular?
     var checkIfDataConnectionIsSet = function (incomingConnection) {
-       if (dataConnnection != null || dataConnection.open == true) {
+       if (typeof dataConnnection != 'undefined' || dataConnection != null) {
         incomingConnection.send(
             JSON.stringify({
                 type: 'connectionClose',
@@ -296,8 +296,12 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
 
                 me.on('call', function(mediaConnection) {
                     var user = contactsFactory.getContactByNumber(mediaConnection.peer);
-                    var id = Math.floor(Math.random() * 10000);  
+                    var id = Math.floor(Math.random() * 10000);
                     notificationIds.push(id);
+
+                    if (!user) {
+                        user = { displayName: mediaConnection.peer }
+                    }
 
                     $cordovaLocalNotification.schedule({
                         id: id,
