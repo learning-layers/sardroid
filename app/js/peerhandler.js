@@ -109,6 +109,8 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
     };
 
     var showCallLoader = function () {
+        console.log('show loader')
+        audioFactory.playSound('.dial');
         $ionicLoading.show({
             templateUrl: 'templates/loader.html',
             duration: 10000
@@ -116,6 +118,8 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
     };
 
     var hideCallLoader = function () {
+        console.log('hide loader')
+        audioFactory.stopSound('.dial');
         $ionicLoading.hide();
     }
 
