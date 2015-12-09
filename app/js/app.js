@@ -1,5 +1,11 @@
 'use strict';
 
+/*
+ * The "main" module of the whole app, so to speak...
+ * Mostly handles setting up configuration variables
+ * and wiring up the states, controllers and templates
+ */
+
 angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
@@ -113,3 +119,4 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'co
     $urlRouterProvider.otherwise('/login');
 
 });
+

@@ -1,5 +1,10 @@
 'use strict';
 
+/*
+ * Pretty simple controller for the login screen.
+ * Not much else to say about this one!
+ */
+
 angular.module('login', ['peerhandler'])
 
 .controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, peerFactory) {
@@ -17,7 +22,7 @@ angular.module('login', ['peerhandler'])
 
         $scope.login = function(user) {
             if (typeof user !== 'undefined' && user.phone) {
-                // Should probably  do some back-end log in related stuff in here?
+                // Should probably do some back-end log in related stuff in here?
 
                 if (!peerFactory.isConnected()) {
                     console.log('not connected! connecting');

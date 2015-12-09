@@ -1,5 +1,9 @@
 'use strict';
 
+/*
+ * Module for playing audio, now the Angular way!
+ */
+
 var audiohandler = angular.module('audiohandler', []);
 
 audiohandler.factory('audioFactory', function() {
@@ -23,3 +27,4 @@ audiohandler.factory('audioFactory', function() {
         }
     }
 });
+

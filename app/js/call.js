@@ -1,5 +1,10 @@
 'use strict';
 
+/*
+ * Controller which handles the actual video call part of the app
+ * Sets up the canvases, and sets up the correct data callbacks and such...
+ */
+
 angular.module('call', ['peerhandler', 'drawinghandler'])
 
 .controller('CallCtrl', function($scope, $sce, $stateParams, peerFactory, drawingFactory) {
@@ -8,15 +13,17 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             } else {
                     $scope.user = {};
             }
+
             var localStreamSrc = peerFactory.getLocalStreamSrc();
             var remoteStreamSrc = peerFactory.getRemoteStreamSrc();
 
+            // Sweet hack for browser if you can't be bothered to make a call
             if (localStreamSrc === null) {localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'}
             if (remoteStreamSrc === null) {remoteStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'}
-            
+
             var localCanvas = document.querySelector('#local-canvas');
-            var remoteCanvas = document.querySelector('#remote-canvas');           
-            
+            var remoteCanvas = document.querySelector('#remote-canvas');
+
             $scope.localStreamSrc  = $sce.trustAsResourceUrl(localStreamSrc);
             $scope.remoteStreamSrc = $sce.trustAsResourceUrl(remoteStreamSrc);
 
@@ -29,3 +36,4 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                 peerFactory.endCurrentCall();
             });
 });
+

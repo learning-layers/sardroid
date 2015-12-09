@@ -1,16 +1,28 @@
 'use strict';
 
+/*
+ * Factory for setting up a FabricJS drawing surface on a canvas.
+ * Also sets up callbacks for PeerJS, so it can receive line data
+ * and draw them accordingly.
+ */
+
 var drawinghandler = angular.module('drawinghandler',['sardroid', 'peerhandler']);
 
 drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, $timeout, peerFactory) {
-    
+
+    // References to two of the canvasi
     var remoteCanvas = null;
     var localCanvas  = null;
 
+    // Reference to rootscope configuration object
     var config = $rootScope.config;
 
+    // Array that will eventually contain a bunch of angular $timeouts
+    // We need to keep track of em so we can easily cancel them all if need be
     var pathRemoveTimers = [];
 
+    // Takes in a selector and an optionals object
+    // Size of canvas has to be calculated at runtime
     var initFabricJS = function (canvasId, opts) {
         var fabricCanvas = new fabric.Canvas(canvasId, {
             isDrawingMode: true,
@@ -36,7 +48,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         console.log('removing path');
         canvas.remove(path);
         canvas.renderAll();
-    }
+    };
 
     var createPathRemoveTimer = function(canvas, path) {
         console.log('creating timer')
@@ -45,17 +57,16 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
          }, config.drawings.drawingRemoveTime);
 
          pathRemoveTimers.push(timer);
-    }
+    };
 
     var cancelPathRemoveTimers = function() {
         console.log('cancel timers');
         pathRemoveTimers.map(function (t){
             $timeout.cancel(t);
-    })
-    }
+        })
+    };
 
     var setUpCanvasEvents = function(canvas) {
-
         canvas.on('path:created', function(e) {
             var data = JSON.stringify(e.path);
             peerFactory.sendDataToPeer(JSON.stringify({
@@ -94,6 +105,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
            setUpCanvasEvents(canvas);
     };
 
+    // Public API begins here
     return {
            setUpRemoteCanvas: function(canvasId, opts) {
                 opts.isRemote = true;
@@ -115,3 +127,4 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
            }
         }
 });
+

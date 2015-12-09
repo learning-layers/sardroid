@@ -6,23 +6,21 @@
     <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
     <title>Sardroid</title>
 
+    <!-- App stylesheets which are compiled from SCSS are here -->
     <link href="css/app.css" rel="stylesheet">
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
-
-    <!-- ionic/angularjs js -->
+    <!-- Vendor things (downloaded from bower) go here -->
     <script src="vendor/ionic/js/ionic.bundle.min.js"></script>
     <script src="vendor/ngCordova/dist/ng-cordova.js"></script>
     <script src="vendor/peerjs/peer.min.js"></script>
     <script src="vendor/lodash/lodash.min.js"></script>
     <script src="vendor/ngstorage/ngStorage.min.js"></script>
     <script src="vendor/fabric.js/dist/fabric.js"></script>
+    
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
-    <!-- your app's js -->
+    <!-- The app javascript files -->
     <script src="js/cordovainit.js"></script>
     <script src="js/home.js"></script>
     <script src="js/login.js"></script>
@@ -41,33 +39,34 @@
         <source src="res/sounds/dial.wav" type="audio/wav"></source>
     </audio>
 </head>
+
+<!-- The skeleton for the base of the app starts here -->
 <body ng-app="sardroid" ng-strict-di>
-<ion-side-menus enable-menu-with-back-views="false">
-    <ion-side-menu-content>
-        <ion-nav-bar class="bar-positive">
-            <ion-nav-back-button>
-            </ion-nav-back-button>
-            <ion-nav-buttons side="right">
-                <button class="button button-icon button-clear ion-navicon" menu-toggle="right">
-                </button>
-            </ion-nav-buttons>
-        </ion-nav-bar >
-        <ion-nav-view>
-        </ion-nav-view>
-    </ion-side-menu-content>
-    <ion-side-menu side="right">
-        <ion-header-bar class="bar-positive">
-            <h1 class="title">Menu</h1>
-        </ion-header-bar>
-        <ion-content>
-            <ul class="list">
-                <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
-                <a ng-controller="LogoutCtrl" ng-click="logout()" class="item" menu-close>Log out</a>
-            </ul>
-        </ion-content>
-    </ion-side-menu>
-</ion-side-menus>
-
-
-</body>
+    <ion-side-menus enable-menu-with-back-views="false">
+        <ion-side-menu-content>
+            <ion-nav-bar class="bar-positive">
+                <ion-nav-back-button>
+                </ion-nav-back-button>
+                <ion-nav-buttons side="right">
+                    <button class="button button-icon button-clear ion-navicon" menu-toggle="right">
+                    </button>
+                </ion-nav-buttons>
+            </ion-nav-bar >
+            <ion-nav-view>
+            </ion-nav-view>
+        </ion-side-menu-content>
+        <ion-side-menu side="right">
+            <ion-header-bar class="bar-positive">
+                <h1 class="title">Menu</h1>
+            </ion-header-bar>
+            <ion-content>
+                <ul class="list">
+                    <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
+                    <a ng-controller="LogoutCtrl" ng-click="logout()" class="item" menu-close>Log out</a>
+                </ul>
+            </ion-content>
+        </ion-side-menu>
+    </ion-side-menus>
+    </body>
 </html>
+

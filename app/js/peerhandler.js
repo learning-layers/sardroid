@@ -1,5 +1,11 @@
 'use strict';
 
+/*
+ * Gigantic factory whis is basically a wrapper around the PeerJS
+ * WebRTC library. This one may be a bit hard to read unfortunately.
+ * You should refer to the PeerJS docs if something is puzzling.
+ */
+
 var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
 
 peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoading, $ionicHistory, $state, $timeout, $cordovaLocalNotification, audioFactory, contactsFactory) {
@@ -276,10 +282,12 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
 
     // Public PeerJS api
     return {
+
         getMe: function() {
             if (!me) {return null;}
             return me;
         },
+
         getRemoteStreamSrc: function() {
             if (!remoteVideoSource) {
                 console.log('No video remote source!');
@@ -287,6 +295,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
             }
             return remoteVideoSource;
         },
+
         getLocalStreamSrc: function() {
             if (!localVideoSource) {
                 console.log('No video remote source!')
@@ -294,17 +303,21 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
             }
             return localVideoSource;
         },
+
         isConnected: function() {
             if (!me) {return false}
             else {return !me.disconnected}
         },
+
         addDatacallback: function (callback) {
             dataCallbacks.push(callback);
         },
+
         removeDatacallbacks: function() {
             console.log('removing data callbacks from peerfactory');
             dataCallbacks = [];
         },
+
         connectToPeerJS: function(id)   {
             var disconnectRef = this.disconnectFromPeerJS;
 
@@ -334,7 +347,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                         if (!user) {
                             user = { displayName: mediaConnection.peer }
                         }
-                       
+
                         $cordovaLocalNotification.schedule({
                             id: id,
                             title: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')',
@@ -347,10 +360,14 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                             title: 'Call from ' + user.displayName,
                             template: 'Incoming call. Answer?'
                         });
+
                         audioFactory.playSound('.call');
+
                         confirmPopup.then(function(res) {
+
                             audioFactory.stopSound('.call');
                             cancelLocalNotification(id);
+
                             if(res) {
                                 answer(mediaConnection);
                                 $timeout(function() {
@@ -386,6 +403,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                     console.log('error');
                     hideCallLoader();
                     var errorMsg = error.toString();
+
                     if (_.contains(errorMsg), 'could not connect to peer') {
                         errorMsg = 'Looks like that user is offline!';
                     }
@@ -394,6 +412,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                         title: 'Something went wrong!',
                         template: errorMsg
                     });
+
                     errorAlert.then(function(res) {
                         if (_.contains(errorMsg, 'Lost connection to server') || _.contains(errorMsg, 'is taken')) {
                             disconnectRef();
@@ -403,17 +422,21 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                 });
             })
         },
+
         isDataConnectionOpen: function() {
           if (dataConnection === null && dataConnection.open === false) { return false}
           return true;
         },
+
         sendDataToPeer: function(dataToSend) {
             console.log(typeof dataToSend);
             sendData(dataToSend);
         },
+
         callPeer: function (userToCall) {
             if (!me) {
-                console.log("Warning! no peerjs connection")
+                console.log("Warning! no peerjs connection");
+                return;
             }
 
             isInCallCurrently = true;
@@ -422,7 +445,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
             getLocalStream(function (stream) {
 
                 currentCallStream = me.call(userToCall.number, stream, { metadata: me.id});
-                
+
                 currentCallStream.on('error', function (err) {
                     hideCallLoader();
                     isInCallCurrently = false;
@@ -451,11 +474,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                 setDataConnection(dataConn);
             }
         },
+
         endCurrentCall: function() {
             console.log('ending current call')
             isInCallCurrently = false;
             endCurrentCall();
         },
+
         disconnectFromPeerJS: function() {
             disconnectFromPeerJS();
         }
