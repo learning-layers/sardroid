@@ -109,7 +109,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
     };
 
     var showCallLoader = function () {
-        $ionicLoading.show({templateUrl: '../templates/loader.html'});
+        $ionicLoading.show({
+            templateUrl: 'templates/loader.html',
+            duration: 10000
+        });
     };
 
     var hideCallLoader = function () {
@@ -154,6 +157,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
 
                 var dataJSON = JSON.parse(data);
                 if (dataJSON.type == 'connectionClose') {
+                    hideCallLoader();
                     callAlertModal(dataJSON.message);
                 }
                 else {
