@@ -18,6 +18,9 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
     var currentCallStream   = null;
     var currentAnswerStream = null;
 
+    // Simple boolean flag to check if we're currently in a call
+    var isInCallCurrently = false;
+
     // Seperate data connection for sending data
     var dataConnection = null;
 
@@ -295,41 +298,46 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                 });
 
                 me.on('call', function(mediaConnection) {
-                    var user = contactsFactory.getContactByNumber(mediaConnection.peer);
-                    var id = Math.floor(Math.random() * 10000);
-                    notificationIds.push(id);
 
-                    if (!user) {
-                        user = { displayName: mediaConnection.peer }
-                    }
+                    if (isInCallCurrently === false) {
+                        isInCallCurrently = true;
 
-                    $cordovaLocalNotification.schedule({
-                        id: id,
-                        title: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')',
-                        text: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')'
-                    }).then(function (result) {
-                        console.log(result);
-                    });
+                        var user = contactsFactory.getContactByNumber(mediaConnection.peer);
+                        var id = Math.floor(Math.random() * 10000);
+                        notificationIds.push(id);
 
-                    var confirmPopup = $ionicPopup.confirm({
-                        title: 'Call from ' + user.displayName,
-                        template: 'Incoming call. Answer?'
-                    });
-                    audioFactory.playSound('.call');
-                    confirmPopup.then(function(res) {
-                        audioFactory.stopSound('.call');
-                        cancelLocalNotification(id);
-                        if(res) {
-                            answer(mediaConnection);
-                            $timeout(function() {
-                                $state.go('call', {user: user});
-                            }, 500)
-                        } else {
-                            closeDataConnection('User is busy!');
-                            mediaConnection.close();
-                            return false;
+                        if (!user) {
+                            user = { displayName: mediaConnection.peer }
                         }
-                    });
+
+                        $cordovaLocalNotification.schedule({
+                            id: id,
+                            title: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')',
+                            text: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')'
+                        }).then(function (result) {
+                            console.log(result);
+                        });
+
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: 'Call from ' + user.displayName,
+                            template: 'Incoming call. Answer?'
+                        });
+                        audioFactory.playSound('.call');
+                        confirmPopup.then(function(res) {
+                            audioFactory.stopSound('.call');
+                            cancelLocalNotification(id);
+                            if(res) {
+                                answer(mediaConnection);
+                                $timeout(function() {
+                                    $state.go('call', {user: user});
+                                }, 500)
+                            } else {
+                                closeDataConnection('User is busy!');
+                                mediaConnection.close();
+                                return false;
+                            }
+                        });
+                    }
                 });
 
                 me.on('connection', function(dataConn) {
@@ -405,6 +413,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
         },
         endCurrentCall: function() {
             console.log('ending current call')
+            isInCallCurrently = false;
             endCurrentCall();
         },
         disconnectFromPeerJS: function() {
