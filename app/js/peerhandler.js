@@ -108,13 +108,21 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
         localVideoSource = window.URL.createObjectURL(stream);
     };
 
+    var showCallLoader = function () {
+        $ionicLoading.show({templateUrl: '../templates/loader.html'});
+    };
+
+    var hideCallLoader = function () {
+        $ionicLoading.hide();
+    }
+
     // TODO: Make closing dataconnection more modular?
     var checkIfDataConnectionIsSet = function (incomingConnection) {
        if (typeof dataConnnection != 'undefined' || dataConnection != null) {
            console.log('dataconnection formed! closing...');
         incomingConnection.serialization = 'none';
         incomingConnection.reliable = true;
-        
+
         incomingConnection.on('open', function () {
             console.log('opened bad connection, closing...');
             incomingConnection.send(
@@ -368,7 +376,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
 
                 me.on('error', function(error) {
                     console.log('error');
-                    $ionicLoading.hide();
+                    hideCallLoader();
                     var errorMsg = error.toString();
                     if (_.contains(errorMsg), 'could not connect to peer') {
                         errorMsg = 'Looks like that user is offline!';
@@ -402,21 +410,20 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
 
             isInCallCurrently = true;
 
-            $ionicLoading.show({ templateUrl: '../templates/loader.html' })
-
+            showCallLoader();
             getLocalStream(function (stream) {
 
                 currentCallStream = me.call(userToCall.number, stream, { metadata: me.id});
                 
                 currentCallStream.on('error', function (err) {
-                    $ionicLoading.hide();
+                    hideCallLoader();
                     isInCallCurrently = false;
                     alert(err);
                 });
 
                 currentCallStream.on('stream', function(stream) {
                     console.log('going to stream from call')
-                    $ionicLoading.hide();
+                    hideCallLoader();
                     setRemoteStreamSrc(stream);
 
                     $timeout(function() {
