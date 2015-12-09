@@ -2,7 +2,7 @@
 
 var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
 
-peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHistory, $state, $timeout, $cordovaLocalNotification, audioFactory, contactsFactory) {
+peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoading, $ionicHistory, $state, $timeout, $cordovaLocalNotification, audioFactory, contactsFactory) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -362,13 +362,13 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
                     console.log('closed Peerjs connection');
                 });
 
-
                 me.socket._socket.onopen = function() {
                     getLocalStream();
                 };
 
                 me.on('error', function(error) {
-
+                    console.log('error');
+                    $ionicLoading.hide();
                     var errorMsg = error.toString();
                     if (_.contains(errorMsg), 'could not connect to peer') {
                         errorMsg = 'Looks like that user is offline!';
@@ -399,18 +399,24 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicHisto
             if (!me) {
                 console.log("Warning! no peerjs connection")
             }
+
             isInCallCurrently = true;
+
+            $ionicLoading.show({template: 'Dialing, hold on...' })
+
             getLocalStream(function (stream) {
 
                 currentCallStream = me.call(userToCall.number, stream, { metadata: me.id});
                 
                 currentCallStream.on('error', function (err) {
+                    $ionicLoading.hide();
                     isInCallCurrently = false;
                     alert(err);
                 });
 
                 currentCallStream.on('stream', function(stream) {
                     console.log('going to stream from call')
+                    $ionicLoading.hide();
                     setRemoteStreamSrc(stream);
 
                     $timeout(function() {
