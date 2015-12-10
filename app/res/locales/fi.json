@@ -2,5 +2,8 @@
     "LOGIN" :  "Kirjaudu sisään",
     "MOBILE_NUMBER": "Puhelinnumero",
     "PASSWORD": "Salasana",
-    "LOST_PASSWORD": "Salasana hukassa?"
+    "LOST_PASSWORD": "Salasana hukassa?",
+    "LOG_OUT": "Kirjaudu ulos",
+    "CONTACTS": "Kontaktit",
+    "SEARCH": "Hae"
 }
