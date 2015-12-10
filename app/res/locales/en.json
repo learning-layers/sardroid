@@ -6,5 +6,9 @@
     "LOG_OUT": "Log out",
     "CONTACTS": "Contacts",
     "SEARCH": "Search",
-    "DIAL_WAIT": "Dialing, please hold..."
+    "DIAL_WAIT": "Dialing, please hold...",
+    "SAR_CALL": "Call with SAR",
+    "PROFILE": "Profile",
+    "ACTIONS": "Actions",
+    "CANCEL": "Cancel"
 }

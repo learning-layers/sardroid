@@ -8,7 +8,13 @@
  */
 
 var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
-.controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, $state, $ionicActionSheet) {
+.controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, $state, $ionicActionSheet, $translate) {
+
+        var translations = null;
+
+        var translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {
+            translations = trans;
+        });
 
         contactsFactory.getAllContacts().then(function (results) {
             $scope.contacts = results;
@@ -26,14 +32,15 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
         $scope.user = $localStorage.user;
 
         $scope.selectUser = function(selectedUser) {
+
             var sheet = $ionicActionSheet.show({
 
                 buttons: [
-                    { text: '<i class="icon ion-ios-telephone"></i> <b>Call with SAR</b>' },
-                    { text: '<i class="icon ion-android-person"></i> Profile' },
+                    { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' },
+                    { text: '<i class="icon ion-android-person"></i> ' + translations.PROFILE },
                 ],
-                titleText:  'Actions',
-                cancelText: 'Cancel',
+                titleText:  translations.ACTIONS,
+                cancelText: translations.CANCEL,
                 cancel: function() {
                     sheet();
                 },

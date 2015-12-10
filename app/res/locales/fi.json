@@ -6,5 +6,9 @@
     "LOG_OUT": "Kirjaudu ulos",
     "CONTACTS": "Kontaktit",
     "SEARCH": "Hae",
-    "DIAL_WAIT": "Soitetaan, odota hetki..."
+    "DIAL_WAIT": "Soitetaan, odota hetki...",
+    "SAR_CALL": "Soita SAR:lla",
+    "PROFILE": "Profiili",
+    "ACTIONS": "Toiminnot",
+    "CANCEL": "Peruuta"
 }
