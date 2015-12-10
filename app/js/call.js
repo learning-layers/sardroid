@@ -14,6 +14,40 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                     $scope.user = { displayName: '?????'};
             }
 
+            $scope.toggleFullscreen = function (canvasId) {
+                console.log(canvasId);
+
+                if ($scope.currentFullscreenCanvas === canvasId) {
+                    $scope.currentFullscreenCanvas = null;
+                    console.log('going away from fullscreen ' + canvasId)
+                    switch (canvasId) {
+                        case 'local':
+                            document.querySelector('#local-wrapper').classList.remove('fullscreen');
+                            document.querySelector('#remote-wrapper').style.display = '';
+                        break;
+                        case 'remote':
+                            document.querySelector('#remote-wrapper').classList.remove('fullscreen');
+                            document.querySelector('#local-wrapper').style.display = '';
+                        break;
+                    }
+                } else {
+                    console.log('zooming into canvas ' + canvasId);
+                    $scope.currentFullscreenCanvas = canvasId;
+
+                    switch (canvasId) {
+                        case 'local':
+                            document.querySelector('#local-wrapper').classList.add('fullscreen');
+                            document.querySelector('#remote-wrapper').style.display = 'none';
+                        break;
+                        case 'remote':
+                            document.querySelector('#remote-wrapper').classList.add('fullscreen');
+                            document.querySelector('#local-wrapper').style.display = 'none';
+                        break;
+                    }
+                }
+
+            }
+
             var localStreamSrc = peerFactory.getLocalStreamSrc();
             var remoteStreamSrc = peerFactory.getRemoteStreamSrc();
 
