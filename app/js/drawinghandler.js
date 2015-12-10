@@ -21,13 +21,18 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
     // We need to keep track of em so we can easily cancel them all if need be
     var pathRemoveTimers = [];
 
+    var canvasSize = {
+        width:  $window.innerWidth *  config.drawings.size.width,
+        height: $window.innerHeight * config.drawings.size.height
+    };
+
     // Takes in a selector and an optionals object
     // Size of canvas has to be calculated at runtime
     var initFabricJS = function (canvasId, opts) {
         var fabricCanvas = new fabric.Canvas(canvasId, {
             isDrawingMode: true,
-            width:  $window.innerWidth *  config.drawings.size.width,
-            height: $window.innerHeight * config.drawings.size.height
+            width: canvasSize.width,
+            height: canvasSize.height
         });
 
         fabricCanvas.calcOffset();
