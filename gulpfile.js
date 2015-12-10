@@ -72,7 +72,9 @@ gulp.task('vendor-js', function() {
 gulp.task('copy-res', function() {
    return gulp.src(['./app/res/**/*'],
        { base: './app' })
+       .pipe(cached('res'))
        .pipe(gulp.dest('./www/'))
+       .pipe(reload({stream: true}))
 });
 
 gulp.task('fonts', function() {
@@ -95,9 +97,10 @@ gulp.task('watch', ['build'], function() {
         open:   false
     });
 
-    var scss = gulp.watch('app/scss/*.scss', ['scss'], {cwd: 'www'}, reload);
+    var scss = gulp.watch('./app/scss/*.scss', ['scss'], {cwd: 'www'}, reload);
     var html = gulp.watch(['./app/**/*.html', '!./app/vendor/**/*.html'], ['html'], {cwd: 'www'}, reload);
     var js   = gulp.watch('./app/js/**/*', ['js'], {cwd: 'www'}, reload);
+    var res  = gulp.watch('./app/res/**/*', ['copy-res'],  {cwd: 'www'}, reload);
 
     scss.on('change', function(event) {
         if (event.type === 'deleted') {
@@ -118,6 +121,13 @@ gulp.task('watch', ['build'], function() {
         if (event.type === 'deleted') {
             gutil.log('Forgetting js: ' + event.path);
             delete cached.caches.js[event.path];
+        }
+    });
+
+    res.on('change', function(event) {
+        if (event.type === 'deleted') {
+            gutil.log('Forgetting res: ' + event.path);
+            delete cached.caches.res[event.path];
         }
     });
 });
