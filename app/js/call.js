@@ -11,7 +11,7 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             if ($stateParams && $stateParams.user) {
                     $scope.user = $stateParams.user;
             } else {
-                    $scope.user = {};
+                    $scope.user = { displayName: '?????'};
             }
 
             var localStreamSrc = peerFactory.getLocalStreamSrc();
