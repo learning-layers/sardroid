@@ -14,12 +14,10 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                     $scope.user = { displayName: '?????'};
             }
 
+            //TODO: Refactor this into something more elegant
             $scope.toggleFullscreen = function (canvasId) {
-                console.log(canvasId);
-
                 if ($scope.currentFullscreenCanvas === canvasId) {
                     $scope.currentFullscreenCanvas = null;
-                    console.log('going away from fullscreen ' + canvasId)
                     drawingFactory.zoomOutCanvasByTag(canvasId);
                     switch (canvasId) {
                         case 'local':
@@ -32,10 +30,8 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                         break;
                     }
                 } else {
-                    console.log('zooming into canvas ' + canvasId);
                     drawingFactory.zoomInCanvasByTag(canvasId);
                     $scope.currentFullscreenCanvas = canvasId;
-
                     switch (canvasId) {
                         case 'local':
                             document.querySelector('#local-wrapper').classList.add('fullscreen');
