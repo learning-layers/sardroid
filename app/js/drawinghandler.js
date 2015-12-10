@@ -110,6 +110,18 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
            setUpCanvasEvents(canvas);
     };
 
+    var zoomInCanvas = function (canvas) {
+        canvas.setWidth($window.innerWidth);
+        canvas.setHeight($window.innerHeight * 0.9);
+        canvas.calcOffset();
+    };
+
+    var zoomOutCanvas = function (canvas) {
+        canvas.setWidth(canvasSize.width);
+        canvas.setHeight(canvasSize.height);
+        canvas.calcOffset();
+    };
+
     // Public API begins here
     return {
            setUpRemoteCanvas: function(canvasId, opts) {
@@ -125,6 +137,26 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
                     var data = JSON.parse(data);
                     addPathToCanvas(data.tag, data.data);
                 })
+           },
+           zoomInCanvasByTag: function (tag) {
+               switch (tag) {
+                   case 'local':
+                       zoomInCanvas(localCanvas);
+                   break;
+                   case 'remote':
+                       zoomInCanvas(remoteCanvas);
+                   break;
+               }
+           },
+           zoomOutCanvasByTag: function (tag) {
+               switch (tag) {
+                   case 'local':
+                       zoomOutCanvas(localCanvas);
+                   break;
+                   case 'remote':
+                       zoomOutCanvas(remoteCanvas);
+                   break;
+               }
            },
            tearDownDrawingFactory: function () {
                 cancelPathRemoveTimers();

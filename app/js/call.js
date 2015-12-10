@@ -20,6 +20,7 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                 if ($scope.currentFullscreenCanvas === canvasId) {
                     $scope.currentFullscreenCanvas = null;
                     console.log('going away from fullscreen ' + canvasId)
+                    drawingFactory.zoomOutCanvasByTag(canvasId);
                     switch (canvasId) {
                         case 'local':
                             document.querySelector('#local-wrapper').classList.remove('fullscreen');
@@ -32,6 +33,7 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                     }
                 } else {
                     console.log('zooming into canvas ' + canvasId);
+                    drawingFactory.zoomInCanvasByTag(canvasId);
                     $scope.currentFullscreenCanvas = canvasId;
 
                     switch (canvasId) {

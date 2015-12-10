@@ -30,20 +30,35 @@
     transform: translateX(-50%);
 }
 
+#local-canvas {
+    background-color: yellow;
+}
+
+#remote-canvas {
+    background-color: red;
+}
+
 .content-wrapper.fullscreen {
-    height: 100vh;
+    height: 90vh;
     width: 100%;
 
     .stream-video {
         height: 100%;
         width: 100%;
         max-width:100%;
-        max-height: 100vh;
+        max-height: 90vh;
     }
 
     .canvas-container {
-        height: 100%;
-        width:: 100%;
+      opacity: 0.7;
+      //position: absolute !important;
+      height: 100% !important;
+      width: 100vw !important;
+      top: 0;
+    }
+
+    .canvas-container:nth-of-type(2) {
+        margin-top: 0;
     }
 
     .fullscreen-button {
