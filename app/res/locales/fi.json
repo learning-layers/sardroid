@@ -11,5 +11,5 @@
     "PROFILE": "Profiili",
     "ACTIONS": "Toiminnot",
     "CANCEL": "Peruuta",
-    "CALL_HEADER": "Puhelu {{user.displayName}}:n kanssa"
+    "CALL_HEADER": "Puhelu {{displayName}}:n kanssa"
 }
