@@ -62,6 +62,8 @@ gulp.task('vendor-js', function() {
         './app/vendor/peerjs/peer.min.js',
         './app/vendor/lodash/lodash.min.js',
         './app/vendor/ngstorage/ngStorage.min.js',
+        './app/vendor/angular-translate/angular-translate.min.js',
+        './app/vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
         './app/vendor/fabric.js/dist/fabric.js'],
        { base: './app' })
        .pipe(gulp.dest('./www/'))

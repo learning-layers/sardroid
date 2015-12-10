@@ -6,7 +6,7 @@
  * and wiring up the states, controllers and templates
  */
 
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.translate', 'logout', 'home', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
         $ionicPlatform.ready(function() {
@@ -71,7 +71,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'co
                 }
             };
 })
-}).config(function($stateProvider, $urlRouterProvider) {
+}).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
         $stateProvider
         .state('login', {
             cache: false,
@@ -115,6 +115,19 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'logout', 'home', 'co
                 }
             }
         });
+
+    $translateProvider.
+        useStaticFilesLoader({
+            prefix: 'res/locales/',
+            suffix: '.json'
+        })
+        .registerAvailableLanguageKeys(['en', 'fi'], {
+        'en': 'en', 'en_GB': 'en', 'en_US': 'en',
+        'fi': 'fi'
+        })
+        .preferredLanguage('en')
+        .fallbackLanguage('en')
+        .determinePreferredLanguage()
 
     $urlRouterProvider.otherwise('/login');
 
