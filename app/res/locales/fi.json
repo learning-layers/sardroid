@@ -10,5 +10,6 @@
     "SAR_CALL": "Soita SAR:lla",
     "PROFILE": "Profiili",
     "ACTIONS": "Toiminnot",
-    "CANCEL": "Peruuta"
+    "CANCEL": "Peruuta",
+    "CALL_HEADER": "Puhelu {{user.displayName}}:n kanssa"
 }

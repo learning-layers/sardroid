@@ -10,5 +10,6 @@
     "SAR_CALL": "Call with SAR",
     "PROFILE": "Profile",
     "ACTIONS": "Actions",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "CALL_HEADER": "Call with {{displayName}}"
 }
