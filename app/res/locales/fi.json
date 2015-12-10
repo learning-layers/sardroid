@@ -1,3 +1,6 @@
 {
-    "LOGIN" : "Kirjaudu sisään"
+    "LOGIN" :  "Kirjaudu sisään",
+    "PHONE_NUMBER": "Puhelinnumero",
+    "PASSWORD": "Salasana",
+    "LOST_PASSWORD": "Salasana hukassa?"
 }

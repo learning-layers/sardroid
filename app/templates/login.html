@@ -10,11 +10,11 @@
                 <form>
                     <label class="item item-input">
                         <i class="icon ion-ios-telephone placeholder-icon"></i>
-                        <input type="text" placeholder="Mobile number" required ng-model="user.phone" >
+                        <input type="text" placeholder="{{'MOBILE_NUMBER' | translate}}" required ng-model="user.phone" >
                     </label>
                     <label class="item item-input">
                         <i class="icon ion-locked placeholder-icon"></i>
-                        <input type="password" placeholder="Password" required ng-model="user.password" >
+                        <input type="password" placeholder="{{'PASSWORD' | translate}}" required ng-model="user.password" >
                     </label>
                     <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="login(user)" translate="LOGIN">
                     </button>
@@ -23,7 +23,7 @@
         </div>
     </ion-content>
     <ion-footer-bar align-title="center">
-        <h1 class="title positive"><i class="icon ion-ios-information"></i> Lost password?</h1>
+        <h1 class="title positive" ><i class="icon ion-ios-information"></i> {{'LOST_PASSWORD' | translate}}</h1>
     </ion-footer-bar>
 </ion-view>
 

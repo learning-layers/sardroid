@@ -1,3 +1,6 @@
 {
-    "LOGIN": "Login"
+    "LOGIN": "Login",
+    "MOBILE_NUMBER": "Mobile number",
+    "PASSWORD": "Password",
+    "LOST_PASSWORD": " Lost password?"
 }
