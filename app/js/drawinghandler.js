@@ -127,7 +127,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     var zoomInCanvas = function (canvas) {
         canvas.setWidth($window.innerWidth);
-        canvas.setHeight($window.innerHeight * 0.9);
+        canvas.setHeight($window.innerHeight * 0.85);
         canvas.calcOffset();
     };
 
