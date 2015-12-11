@@ -106,6 +106,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
         objects.forEach(function (o) {
                 o.stroke = config.drawings.remoteColor;
+
                 if (currentlyZoomedInCanvas == null && currentlyZoomedInRemoteCanvas != null) {
                     o.set({
                         top:    o.top    * config.drawings.size.height,
@@ -113,7 +114,15 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
                         scaleY: o.scaleX * config.drawings.size.height,
                         scaleX: o.scaleY * config.drawings.size.width
                     });
+                } else if (currentlyZoomedInCanvas != null && currentlyZoomedInRemoteCanvas == null) {
+                    o.set({
+                        top:    o.top    / config.drawings.size.height,
+                        left:   o.left   / config.drawings.size.width,
+                        scaleY: o.scaleX / config.drawings.size.height,
+                        scaleX: o.scaleY / config.drawings.size.width
+                    });
                 }
+
                 canvas.add(o);
                 createPathRemoveTimer(canvas, o);
             })
@@ -127,7 +136,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     var zoomInCanvas = function (canvas) {
         canvas.setWidth($window.innerWidth);
-        canvas.setHeight($window.innerHeight * 0.85);
+        canvas.setHeight($window.innerHeight * 0.87);
         canvas.calcOffset();
     };
 
