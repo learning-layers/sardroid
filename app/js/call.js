@@ -14,32 +14,39 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                     $scope.user = { displayName: '?????'};
             }
 
+            var localWrapper  = document.querySelector('#local-wrapper');
+            var remoteWrapper = document.querySelector('#remote-wrapper');
+
             //TODO: Refactor this into something more elegant
             $scope.toggleFullscreen = function (canvasId) {
                 if ($scope.currentFullscreenCanvas === canvasId) {
+
                     $scope.currentFullscreenCanvas = null;
                     drawingFactory.zoomOutCanvasByTag(canvasId);
+
                     switch (canvasId) {
                         case 'local':
-                            document.querySelector('#local-wrapper').classList.remove('fullscreen');
-                            document.querySelector('#remote-wrapper').style.display = '';
+                            localWrapper.classList.remove('fullscreen');
+                            remoteWrapper.style.display = '';
                         break;
                         case 'remote':
-                            document.querySelector('#remote-wrapper').classList.remove('fullscreen');
-                            document.querySelector('#local-wrapper').style.display = '';
+                            remoteWrapper.classList.remove('fullscreen');
+                            localWrapper.style.display = '';
                         break;
                     }
                 } else {
+
                     drawingFactory.zoomInCanvasByTag(canvasId);
                     $scope.currentFullscreenCanvas = canvasId;
+
                     switch (canvasId) {
                         case 'local':
-                            document.querySelector('#local-wrapper').classList.add('fullscreen');
-                            document.querySelector('#remote-wrapper').style.display = 'none';
+                           localWrapper.classList.add('fullscreen');
+                            remoteWrapper.style.display = 'none';
                         break;
                         case 'remote':
-                            document.querySelector('#remote-wrapper').classList.add('fullscreen');
-                            document.querySelector('#local-wrapper').style.display = 'none';
+                            remoteWrapper.classList.add('fullscreen');
+                            localWrapper.style.display = 'none';
                         break;
                     }
                 }
