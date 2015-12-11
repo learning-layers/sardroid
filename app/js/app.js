@@ -72,7 +72,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
             };
 })
 }).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
-        $stateProvider
+    $stateProvider
         .state('login', {
             cache: false,
             url: '/login',
@@ -91,11 +91,11 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
             params: { user: null }
         })
          .state('call', {
-                cache: false,
-                url: '/call',
-                templateUrl: 'templates/call.html',
-                controller: 'CallCtrl',
-                params: { user: null }
+            cache: false,
+            url: '/call',
+            templateUrl: 'templates/call.html',
+            controller: 'CallCtrl',
+            params: { user: null }
          })
         .state('tabs.home', {
             url: '/home',
@@ -114,7 +114,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
                     controller: 'ContactsCtrl'
                 }
             }
-        });
+    });
 
     $translateProvider.
         useStaticFilesLoader({
@@ -128,6 +128,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
         .preferredLanguage('en')
         .fallbackLanguage('en')
         .determinePreferredLanguage()
+        .useSanitizeValueStrategy('sanitize')
 
     $urlRouterProvider.otherwise('/login');
 
