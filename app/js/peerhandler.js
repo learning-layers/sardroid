@@ -400,12 +400,19 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                 };
 
                 me.on('error', function(error) {
-                    console.log('error');
                     hideCallLoader();
                     var errorMsg = error.toString();
-
-                    if (_.contains(errorMsg), 'could not connect to peer') {
-                        errorMsg = 'Looks like that user is offline!';
+                    console.log(error.type);
+                    switch (error.type) {
+                        case 'peer-unavailable':
+                            errorMsg = 'Looks like that user is offline!';
+                        break;
+                        case 'server-error':
+                            errorMsg = 'Could not connect to server!';
+                        break;
+                        case 'network':
+                            errorMsg = 'Network error with server!';
+                        break;
                     }
 
                     var errorAlert = $ionicPopup.alert({
