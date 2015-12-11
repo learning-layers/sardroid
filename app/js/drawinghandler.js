@@ -14,6 +14,9 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
     var remoteCanvas = null;
     var localCanvas  = null;
 
+    // Tag of the canvas that is currently fullscreen
+    var currentlyZoomedInCanvas = null;
+
     // Reference to rootscope configuration object
     var config = $rootScope.config;
 
@@ -73,32 +76,44 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
 
     var setUpCanvasEvents = function(canvas) {
         canvas.on('path:created', function(e) {
+
             var data = JSON.stringify(e.path);
+
             peerFactory.sendDataToPeer(JSON.stringify({
                 type: 'newPathCreated',
                 tag:  canvas.tag,
-                data: data
-                }))
+                data: data,
+                currentlyZoomedInCanvas: currentlyZoomedInCanvas
+            }));
+
             createPathRemoveTimer(canvas, e.path);
-            });
+        });
     };
 
-    var addPathToCanvas = function (canvasTag, pathData) {
+    var addPathToCanvas = function (canvasTag, pathData, currentlyZoomedInCanvas) {
         console.log('addPathToCanvas')
         if (canvasTag === 'local') {
-            addNewPathToCanvas(remoteCanvas, pathData);
+            addNewPathToCanvas(remoteCanvas, pathData, currentlyZoomedInCanvas);
         }
         else if (canvasTag === 'remote') {
-            addNewPathToCanvas(localCanvas, pathData);
+            addNewPathToCanvas(localCanvas, pathData, currentlyZoomedInCanvas);
         }
     };
 
-    var addNewPathToCanvas = function (canvas, pathData) {
+    var addNewPathToCanvas = function (canvas, pathData, currentlyZoomedInCanvas) {
         pathData = JSON.parse(pathData);
+        console.log(pathData.currentlyZoomedInCanvas);
         fabric.util.enlivenObjects([pathData], function(objects) {
 
         objects.forEach(function (o) {
+            console.log(currentlyZoomedInCanvas);
                 o.stroke = config.drawings.remoteColor;
+                /*o.set({
+                    top: canvas.height/2,
+                    left: canvas.width/2,
+                    scaleY: canvas.height / o.height,
+                    scaleX: canvas.width / o.width
+                });*/
                 canvas.add(o);
                 createPathRemoveTimer(canvas, o);
             })
@@ -135,10 +150,11 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
            setUpDataCallbacks: function() {
                 peerFactory.addDatacallback(function (data) {
                     var data = JSON.parse(data);
-                    addPathToCanvas(data.tag, data.data);
+                    addPathToCanvas(data.tag, data.data, data.currentlyZoomedInCanvas);
                 })
            },
            zoomInCanvasByTag: function (tag) {
+               currentlyZoomedInCanvas = tag;
                switch (tag) {
                    case 'local':
                        zoomInCanvas(localCanvas);
@@ -149,6 +165,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
                }
            },
            zoomOutCanvasByTag: function (tag) {
+               currentlyZoomedInCanvas = null;
                switch (tag) {
                    case 'local':
                        zoomOutCanvas(localCanvas);
