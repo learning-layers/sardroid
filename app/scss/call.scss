@@ -18,11 +18,17 @@
 }
 
 .fullscreen-button {
+    font-size: 3.5em;
+    opacity: 0.9;
+    color: lightgray;
     position: absolute;
     z-index: 100;
     bottom: 0%;
     margin-left: 100%;
     transform: translateX(-50%);
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .content-wrapper{
@@ -31,11 +37,11 @@
 }
 
 #local-canvas {
-    background-color: yellow;
+    //background-color: yellow;
 }
 
 #remote-canvas {
-    background-color: green;
+    //background-color: green;
 }
 
 .content-wrapper.fullscreen {

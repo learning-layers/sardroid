@@ -17,6 +17,7 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             var localWrapper  = document.querySelector('#local-wrapper');
             var remoteWrapper = document.querySelector('#remote-wrapper');
 
+
             //TODO: Refactor this into something more elegant
             $scope.toggleFullscreen = function (canvasId) {
                 if ($scope.currentFullscreenCanvas === canvasId) {
@@ -51,6 +52,15 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                     }
                 }
 
+            }
+
+            $scope.determineFullscreenButtonClass = function () {
+                console.log($scope.currentFullscreenCanvas);
+                if ($scope.currentFullscreenCanvas) {
+                    return 'ion-arrow-shrink'
+                } else {
+                    return 'ion-arrow-expand'
+                }
             }
 
             var localStreamSrc = peerFactory.getLocalStreamSrc();
