@@ -65,7 +65,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
                         height: 0.44
                     },
                     remoteColor: 'red',
-                    localColor:  'blue',
+                    localColor:  '#387ef5',
                     brushWidth:   5,
                     drawingRemoveTime: 2000
                 }
