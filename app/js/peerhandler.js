@@ -328,6 +328,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                 if (me) {
                     me.reconnect();
                     console.log("already connected, reconnecting");
+                    resolve();
                 }
                 else {
 
@@ -429,7 +430,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                         });
 
                         errorAlert.then(function(res) {
-                            if (_.contains(errorMsg, 'Lost connection to server') || _.contains(errorMsg, 'is taken')) {
+                            if (error.type == 'server-error') {
                                 disconnectRef();
                                 $state.go('login');
                             }

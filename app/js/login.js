@@ -14,7 +14,7 @@ angular.module('login', ['peerhandler'])
         });
 
         // Hack so we're disconnected for sure!
-        //peerFactory.disconnectFromPeerJS();
+        peerFactory.disconnectFromPeerJS();
 
         if ($localStorage.user) {
             $scope.user = $localStorage.user;
@@ -23,16 +23,10 @@ angular.module('login', ['peerhandler'])
         $scope.login = function(user) {
             if (typeof user !== 'undefined' && user.phone) {
                 // Should probably do some back-end log in related stuff in here?
-
-                if (!peerFactory.isConnected()) {
-                    console.log('not connected! connecting');
-                    $localStorage.user = user;
-                    peerFactory.connectToPeerJS(user.phone).then(function() {
-                        $state.go('tabs.contacts');
-                    });
-                } else {
+                $localStorage.user = user;
+                peerFactory.connectToPeerJS(user.phone).then(function() {
                     $state.go('tabs.contacts');
-                }
+                });
             }
         };
 });
