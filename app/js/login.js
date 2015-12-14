@@ -14,7 +14,7 @@ angular.module('login', ['peerhandler'])
         });
 
         // Hack so we're disconnected for sure!
-        peerFactory.disconnectFromPeerJS();
+        //peerFactory.disconnectFromPeerJS();
 
         if ($localStorage.user) {
             $scope.user = $localStorage.user;
