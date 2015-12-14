@@ -55,7 +55,6 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             }
 
             $scope.determineFullscreenButtonClass = function () {
-                console.log($scope.currentFullscreenCanvas);
                 if ($scope.currentFullscreenCanvas) {
                     return 'ion-arrow-shrink'
                 } else {
