@@ -8,7 +8,7 @@
 
 var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
 
-peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoading, $ionicHistory, $state, $timeout, $cordovaLocalNotification, audioFactory, contactsFactory) {
+peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoading, $ionicHistory, $state, $timeout, $translate, $cordovaLocalNotification, audioFactory, contactsFactory) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -101,7 +101,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
     };
 
     var cancelLocalNotification = function(id) {
-        $cordovaLocalNotification.cancel(id);
+        if (window.cordova) {
+            $cordovaLocalNotification.cancel(id);
+        }
+
         var index = notificationIds.indexOf(id);
         notificationIds.splice(index, 1);
     }
@@ -350,15 +353,15 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
 
                         $cordovaLocalNotification.schedule({
                             id: id,
-                            title: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')',
-                            text: 'SAR Call from ' + user.displayName + ' (' + mediaConnection.peer + ')'
+                            title: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
+                            template: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
                         }).then(function (result) {
                             console.log(result);
                         });
 
                         var confirmPopup = $ionicPopup.confirm({
-                            title: 'Call from ' + user.displayName,
-                            template: 'Incoming call. Answer?'
+                            title: $translate.instant('CALL_INCOMING_TITLE', {displayName: user.displayName}),
+                            template: $translate.instant('CALL_INCOMING_TEMPLATE')
                         });
 
                         audioFactory.playSound('.call');
@@ -405,18 +408,18 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                     console.log(error.type);
                     switch (error.type) {
                         case 'peer-unavailable':
-                            errorMsg = 'Looks like that user is offline!';
+                            errorMsg = $translate.instant('ERROR_USER_OFFLINE');
                         break;
                         case 'server-error':
-                            errorMsg = 'Could not connect to server!';
+                            errorMsg =  $translate.instant('ERROR_SERVER');
                         break;
                         case 'network':
-                            errorMsg = 'Network error with server!';
+                            errorMsg =  $translate.instant('ERROR_NETWORK');
                         break;
                     }
 
                     var errorAlert = $ionicPopup.alert({
-                        title: 'Something went wrong!',
+                        title: $translate.instant('ERROR_TITLE'),
                         template: errorMsg
                     });
 

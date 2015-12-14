@@ -11,5 +11,13 @@
     "PROFILE": "Profile",
     "ACTIONS": "Actions",
     "CANCEL": "Cancel",
-    "CALL_HEADER": "Call with {{displayName}}"
+    "CALL_HEADER": "Call with {{displayName}}",
+    "USER_ALREADY_IN_CALL": "User is already in call!",
+    "CALL_INCOMING_TITLE":" Call from {{displayName}}}",
+    "NOTIFICATION_CALL" : "Soar call from {{displayName}}} ( {.peer}} )",
+    "CALL_INCOMING_TEMPLATE": "Incoming call. Answer?",
+    "ERROR_USER_OFFLINE": "Looks like that user is offline!",
+    "ERROR_SERVER" : "Could not connect to server!",
+    "ERROR_NETWORK" : "Network error with server!",
+    "ERROR_TITLE" : "Something went wrong!"
 }

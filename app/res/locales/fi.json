@@ -11,5 +11,13 @@
     "PROFILE": "Profiili",
     "ACTIONS": "Toiminnot",
     "CANCEL": "Peruuta",
-    "CALL_HEADER": "Puhelu {{displayName}}:n kanssa"
+    "CALL_HEADER": "Puhelu {{displayName}}:n kanssa",
+    "USER_ALREADY_IN_CALL": "Käyttäjällä on puhelu kesken!",
+    "CALL_INCOMING_TITLE":" Puhelu {{displayName}}:lta",
+    "NOTIFICATION_CALL" : "Soar-puhelu {{displayName}}:lta ( {.peer}} )",
+    "CALL_INCOMING_TEMPLATE": "Puhelu tulossa. Vastaa?",
+    "ERROR_USER_OFFLINE": "Näyttää siltä että käyttäjä on offline!",
+    "ERROR_SERVER" : "Palvelimeen ei saatu yhteyttä!",
+    "ERROR_NETWORK" : "Yhteysvirhe palvelimen kanssa",
+    "ERROR_TITLE" : "Jotain meni pieleen!"
 }
