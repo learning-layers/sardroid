@@ -135,12 +135,10 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
     // TODO: Make closing dataconnection more modular?
     var checkIfDataConnectionIsSet = function (incomingConnection) {
        if (typeof dataConnnection != 'undefined' || dataConnection != null) {
-           console.log('dataconnection formed! closing...');
         incomingConnection.serialization = 'none';
         incomingConnection.reliable = true;
 
         incomingConnection.on('open', function () {
-            console.log('opened bad connection, closing...');
             incomingConnection.send(
                 JSON.stringify({
                     type: 'connectionClose',
@@ -343,9 +341,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                     });
 
                     me.on('call', function(mediaConnection) {
-
                         if (isInCallCurrently === false) {
-                            console.log(isInCallCurrently);
                             isInCallCurrently = true;
 
                             var user = contactsFactory.getContactByNumber(mediaConnection.peer);
