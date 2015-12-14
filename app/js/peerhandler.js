@@ -166,7 +166,6 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
             console.log('Dataconnection opened')
             dataConn.on('data', function(data) {
                 console.log('data received!');
-                console.log(data);
 
                 var dataJSON = JSON.parse(data);
                 if (dataJSON.type == 'connectionClose') {
