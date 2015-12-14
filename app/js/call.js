@@ -62,6 +62,13 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                 }
             }
 
+            var leave = function () {
+                peerFactory.sendDataToPeer({type: 'otherPeerLeft'});
+                drawingFactory.tearDownDrawingFactory();
+                peerFactory.removeDatacallbacks();
+                peerFactory.endCurrentCall();
+            }
+
             var localStreamSrc = peerFactory.getLocalStreamSrc();
             var remoteStreamSrc = peerFactory.getRemoteStreamSrc();
 
@@ -79,9 +86,15 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             drawingFactory.setUpRemoteCanvas(remoteCanvas,{});
             drawingFactory.setUpLocalCanvas(localCanvas, {});
 
+            peerFactory.addDatacallback(function (data) {
+                var data = JSON.parse(data);
+                if (data.type === 'otherPeerLeft') {
+                    leave();
+                };
+            })
+
             $scope.$on('$ionicView.leave', function() {
-                drawingFactory.tearDownDrawingFactory();
-                peerFactory.endCurrentCall();
+                leave();
             });
 });
 
