@@ -55,7 +55,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
     var removePathFromCanvas = function (canvas, path) {
         console.log('removing path');
         canvas.remove(path);
-        canvas.renderAll();
+        canvas.renderAll(true);
     };
 
     var createPathRemoveTimer = function(canvas, path) {
@@ -124,6 +124,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
                 }
 
                 canvas.add(o);
+                canvas.renderAll(true);
                 createPathRemoveTimer(canvas, o);
             })
         })
@@ -148,7 +149,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
             })
         }
 
-        canvas.renderAll();
+        canvas.renderAll(true);
 
         canvas.calcOffset();
     };
@@ -167,7 +168,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
             })
         }
 
-        canvas.renderAll();
+        canvas.renderAll(true);
         canvas.calcOffset();
     };
 
