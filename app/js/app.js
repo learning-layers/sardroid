@@ -54,11 +54,11 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
                     debug: 3,
                     secure: true,
                     config: {'iceServers': [
-                        { 'url': 'stun:188.166.88.67:3478' },
-                        //{ 'url': 'stun:stun.l.google.com:19302' },
-                        //{ 'url': 'stun:stun1.l.google.com:19302' },
-                        //{ 'url': 'stun:stun2.l.google.com:19302' },
-                       // { 'url': 'stun:stun3.l.google.com:19302' }
+                        { 'url': 'turn:188.166.88.67:3478?transport=tcp' },
+                        { 'url': 'stun:stun.l.google.com:19302' },
+                        { 'url': 'stun:stun1.l.google.com:19302' },
+                        { 'url': 'stun:stun2.l.google.com:19302' },
+                        { 'url': 'stun:stun3.l.google.com:19302' }
                     ]}},
                 drawings: {
                     size: {
