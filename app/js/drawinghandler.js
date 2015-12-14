@@ -137,12 +137,37 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
     var zoomInCanvas = function (canvas) {
         canvas.setWidth($window.innerWidth);
         canvas.setHeight($window.innerHeight * 0.87);
+
+        var objects = canvas.getObjects();
+        for (var o in objects) {
+            objects[o].set({
+                top:    o.top    * config.drawings.size.height,
+                left:   o.left   * config.drawings.size.width,
+                scaleY: o.scaleX * config.drawings.size.height,
+                scaleX: o.scaleY * config.drawings.size.width
+            })
+        }
+
+        canvas.renderAll();
+
         canvas.calcOffset();
     };
 
     var zoomOutCanvas = function (canvas) {
         canvas.setWidth(canvasSize.width);
         canvas.setHeight(canvasSize.height);
+        
+        var objects = canvas.getObjects();
+        for (var o in objects) {
+            objects[o].set({
+                top:    o.top    / config.drawings.size.height,
+                left:   o.left   / config.drawings.size.width,
+                scaleY: o.scaleX / config.drawings.size.height,
+                scaleX: o.scaleY / config.drawings.size.width
+            })
+        }
+
+        canvas.renderAll();
         canvas.calcOffset();
     };
 
