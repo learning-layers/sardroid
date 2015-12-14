@@ -34,6 +34,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
     var initFabricJS = function (canvasId, opts) {
         var fabricCanvas = new fabric.Canvas(canvasId, {
             isDrawingMode: true,
+            renderOnAddRemove: false,
             width: canvasSize.width,
             height: canvasSize.height
         });
