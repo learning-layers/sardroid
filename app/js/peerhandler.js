@@ -355,7 +355,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                             $cordovaLocalNotification.schedule({
                                 id: id,
                                 title: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
-                                template: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
+                                text: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
                             }).then(function (result) {
                                 console.log(result);
                             });
