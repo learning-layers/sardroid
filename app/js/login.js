@@ -7,12 +7,13 @@
 
 angular.module('login', ['peerhandler'])
 
-.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, peerFactory) {
+.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, peerFactory, socketFactory) {
         // Disable back button so we can't back to login!
         $ionicHistory.nextViewOptions({
             disableBack: true
         });
 
+        socketFactory.connectToServer();
         // Hack so we're disconnected for sure!
         peerFactory.disconnectFromPeerJS();
 

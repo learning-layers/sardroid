@@ -69,6 +69,9 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
                     localColor:  '#387ef5',
                     brushWidth:   5,
                     drawingRemoveTime: 2000
+                },
+                socketio: {
+                    url: 'http://localhost:9000'
                 }
             };
 })
