@@ -18,8 +18,13 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
         CONTACT_OFFLINE: 'contact:offline'
     }
 
+    // Array of callbacks
+    var callbacks = [];
+
+    var config = configFactory.getValue('socketio');
+
     var getCallbacksByType = function (type) {
-        return _.find(callbacks, 'eventType', type);
+        return _.where(callbacks, {eventType: type});
     }
 
     var callCallbacks = function (type, data) {
@@ -29,15 +34,11 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
             var len = callbackArray.length;
 
             for (var i = 0; i < len; i++) {
+                console.log(data);
                 callbackArray[i].callback(data)
             }
         }
     }
-
-    // Array of callbacks
-    var callbacks = [];
-
-    var config = configFactory.getValue('socketio');
 
     return {
 
@@ -61,17 +62,16 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
             socket.on(eventTypes.CONTACT_ONLINE, function(data) {
                 console.log('User is online');
                 console.log(data);
+
                 contactsFactory.setContactState(data.peerJSId, contactsFactory.contactStates.ONLINE);
                 callCallbacks(eventTypes.CONTACT_ONLINE, data);
-
             })
 
             socket.on(eventTypes.CONTACT_OFFLINE, function(data) {
                 console.log('User is offline');
                 console.log(data);
+
                 contactsFactory.setContactState(data.peerJSId, contactsFactory.contactStates.OFFLINE);
-
-
                 callCallbacks(eventTypes.CONTACT_ONLINE, data);
             })
         },
@@ -87,6 +87,7 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
                 eventType: eventType,
                 callback:  callback
             });
+            console.log(callbacks);
         },
         
         clearAllCallbacks: function () {
