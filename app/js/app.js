@@ -6,7 +6,7 @@
  * and wiring up the states, controllers and templates
  */
 
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.translate', 'logout', 'home', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.translate', 'logout', 'home', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
         $ionicPlatform.ready(function() {
