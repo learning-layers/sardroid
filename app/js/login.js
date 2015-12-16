@@ -13,7 +13,6 @@ angular.module('login', ['peerhandler'])
             disableBack: true
         });
 
-        socketFactory.connectToServer();
         // Hack so we're disconnected for sure!
         peerFactory.disconnectFromPeerJS();
 
@@ -27,6 +26,7 @@ angular.module('login', ['peerhandler'])
                 $localStorage.user = user;
                 peerFactory.connectToPeerJS(user.phone).then(function() {
                     $state.go('tabs.contacts');
+                    socketFactory.connectToServer();
                 });
             }
         };
