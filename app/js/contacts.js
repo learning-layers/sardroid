@@ -18,15 +18,20 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
 
         contactsFactory.fetchAllContacts().then(function (results) {
             $scope.contacts = results;
+            console.log(results);
         }).catch(function(err) {
             console.log(err);
         });
 
-        socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_ONLINE, function (data) {
-            console.log('yupyupyup');
-           $scope.contacts = contactsFactory.getContacts(); 
-        });
+        var updateContactState = function() {
+            $scope.$apply(function () {
+                $scope.contacts = contactsFactory.getContacts();
+            });
+        }
 
+        socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_ONLINE,  updateContactState);
+        socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_OFFLINE, updateContactState);
+        
         $scope.searchKeyPress = function(keyCode) {
             // Enter and Android keyboard 'GO' keycodes to close the keyboard
             if ((keyCode === 66 || keyCode === 13) && typeof cordova !== 'undefined') {
