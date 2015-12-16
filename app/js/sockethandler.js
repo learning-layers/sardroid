@@ -30,8 +30,19 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory) {
             });
 
             socket.on('contact:online', function(data) {
+                console.log('User is online');
                 console.log(data);
             })
+
+            socket.on('contact:offline', function(data) {
+                console.log('User is offline');
+                console.log(data);
+            })
+        },
+        disconnectFromServer: function () {
+            if (socket) {
+                socket.disconnect();
+            }
         }
     };
 });

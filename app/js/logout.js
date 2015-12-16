@@ -7,12 +7,15 @@
 
 angular.module('logout', ['peerhandler'])
 
-    .controller('LogoutCtrl', function($scope, $state, peerFactory) {
+    .controller('LogoutCtrl', function($scope, $state, peerFactory, socketFactory) {
         $scope.logout = function() {
             if (peerFactory.isConnected()) {
                 peerFactory.disconnectFromPeerJS();
             }
-             $state.go('login');
+
+            socketFactory.disconnectFromServer();
+
+            $state.go('login');
         };
 });
 
