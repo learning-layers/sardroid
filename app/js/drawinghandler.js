@@ -8,7 +8,7 @@
 
 var drawinghandler = angular.module('drawinghandler',['sardroid', 'peerhandler']);
 
-drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, $timeout, peerFactory) {
+drawinghandler.factory('drawingFactory', function (configFactory, $window, $state, $timeout, peerFactory) {
 
     // References to two of the canvasi
     var remoteCanvas = null;
@@ -17,16 +17,16 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
     // Tag of the canvas that is currently fullscreen
     var currentlyZoomedInCanvas = null;
 
-    // Reference to rootscope configuration object
-    var config = $rootScope.config;
+    // Configuration object
+    var config = configFactory.getValue('drawings');
 
     // Array that will eventually contain a bunch of angular $timeouts
     // We need to keep track of em so we can easily cancel them all if need be
     var pathRemoveTimers = [];
 
     var canvasSize = {
-        width:  $window.innerWidth *  config.drawings.size.width,
-        height: $window.innerHeight * config.drawings.size.height
+        width:  $window.innerWidth *  config.size.width,
+        height: $window.innerHeight * config.size.height
     };
 
     // Takes in a selector and an optionals object
@@ -40,8 +40,8 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         });
 
         fabricCanvas.calcOffset();
-        fabricCanvas.freeDrawingBrush.width = config.drawings.brushWidth;
-        fabricCanvas.freeDrawingBrush.color = config.drawings.localColor;
+        fabricCanvas.freeDrawingBrush.width = config.brushWidth;
+        fabricCanvas.freeDrawingBrush.color = config.localColor;
 
         if (opts.isRemote === true) {
             remoteCanvas = fabricCanvas;
@@ -63,7 +63,7 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         console.log('creating timer')
         var timer = $timeout(function () {
              removePathFromCanvas(canvas, path);
-         }, config.drawings.drawingRemoveTime);
+         }, config.drawingRemoveTime);
 
          pathRemoveTimers.push(timer);
     };
@@ -106,21 +106,21 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         fabric.util.enlivenObjects([pathData], function(objects) {
 
         objects.forEach(function (o) {
-                o.stroke = config.drawings.remoteColor;
+                o.stroke = config.remoteColor;
 
                 if (currentlyZoomedInCanvas == null && currentlyZoomedInRemoteCanvas != null) {
                     o.set({
-                        top:    o.top    * config.drawings.size.height,
-                        left:   o.left   * config.drawings.size.width,
-                        scaleY: o.scaleX * config.drawings.size.height,
-                        scaleX: o.scaleY * config.drawings.size.width
+                        top:    o.top    * config.size.height,
+                        left:   o.left   * config.size.width,
+                        scaleY: o.scaleX * config.size.height,
+                        scaleX: o.scaleY * config.size.width
                     });
                 } else if (currentlyZoomedInCanvas != null && currentlyZoomedInRemoteCanvas == null) {
                     o.set({
-                        top:    o.top    / config.drawings.size.height,
-                        left:   o.left   / config.drawings.size.width,
-                        scaleY: o.scaleX / config.drawings.size.height,
-                        scaleX: o.scaleY / config.drawings.size.width
+                        top:    o.top    / config.size.height,
+                        left:   o.left   / config.size.width,
+                        scaleY: o.scaleX / config.size.height,
+                        scaleX: o.scaleY / config.size.width
                     });
                 }
 
@@ -143,10 +143,10 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         var objects = canvas.getObjects();
         for (var o in objects) {
             objects[o].set({
-                top:    o.top    * config.drawings.size.height,
-                left:   o.left   * config.drawings.size.width,
-                scaleY: o.scaleX * config.drawings.size.height,
-                scaleX: o.scaleY * config.drawings.size.width
+                top:    o.top    * config.size.height,
+                left:   o.left   * config.size.width,
+                scaleY: o.scaleX * config.size.height,
+                scaleX: o.scaleY * config.size.width
             })
         }
 
@@ -162,10 +162,10 @@ drawinghandler.factory('drawingFactory', function ($rootScope, $window, $state, 
         var objects = canvas.getObjects();
         for (var o in objects) {
             objects[o].set({
-                top:    o.top    / config.drawings.size.height,
-                left:   o.left   / config.drawings.size.width,
-                scaleY: o.scaleX / config.drawings.size.height,
-                scaleX: o.scaleY / config.drawings.size.width
+                top:    o.top    / config.size.height,
+                left:   o.left   / config.size.width,
+                scaleY: o.scaleX / config.size.height,
+                scaleX: o.scaleY / config.size.width
             })
         }
 

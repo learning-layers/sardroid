@@ -6,14 +6,16 @@
 
 var sockethandler = angular.module('sockethandler', []);
 
-sockethandler.factory('socketFactory', function ($rootScope) {
+sockethandler.factory('socketFactory', function ($rootScope, configFactory) {
 
     // The actual websocket connection where most of the magic happens
     var socket = null;
 
+    var config = configFactory.getValue('socketio');
+
     return {
         connectToServer: function () {
-            socket = io.connect('http://localhost:9000');
+            socket = io.connect(config.url);
 
             socket.on('connect', function() {
                 console.log('Succesfully connected!');

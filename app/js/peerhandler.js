@@ -8,9 +8,12 @@
 
 var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
 
-peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoading, $ionicHistory, $state, $timeout, $translate, $cordovaLocalNotification, audioFactory, contactsFactory) {
+peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $state, $timeout, $translate, $cordovaLocalNotification, audioFactory, contactsFactory) {
     // PeerJS object representing the user
     var me                = null;
+
+    // Object holding configuration variables
+    var config            = configFactory.getValue('peerjs');
 
     // Stream object;
     var localStream       = null;
@@ -329,7 +332,7 @@ peerhandler.factory('peerFactory', function($rootScope, $ionicPopup, $ionicLoadi
                 }
                 else {
 
-                    me = new Peer(id, $rootScope.config.peerjs);
+                    me = new Peer(id, config);
 
                     if (!me) {
                         alert('Error creating peer!');
