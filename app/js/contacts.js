@@ -16,7 +16,7 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
             translations = trans;
         });
 
-        contactsFactory.getAllContacts().then(function (results) {
+        contactsFactory.fetchAllContacts().then(function (results) {
             $scope.contacts = results;
         }).catch(function(err) {
             console.log(err);
@@ -64,8 +64,16 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
     // Array to store all the devices contacts so we don't have to re-fetch them all the time
     var contacts = [];
 
+    var contactStates = {
+        BUSY: "busy",
+        OFFLINE: "offline",
+        ONLINE: "online"
+    }
+
     return {
-        getAllContacts: function() {
+        contactStates: contactStates,
+
+        fetchAllContacts: function() {
             // As far as I know, the fields do nothing. Cordova just YOLO's everything?
             var opts = {
                 fields: ['id', 'displayName', 'name', 'phoneNumbers', 'emails', 'photos'],
@@ -83,7 +91,8 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
                             "original": c,
                             "displayName": c.displayName || c.emails[0].value,
                             "number": c.phoneNumbers[0].value,
-                            "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/keilamies.png' : 'res/img/keilamies.png'
+                            "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/keilamies.png' : 'res/img/keilamies.png',
+                            "currentState": contactStates.OFFLINE
                         }
                     });
                     contacts = formatted;
@@ -93,8 +102,20 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
                   return err;
            });
         },
+
+        getContacts: function () {
+            return contacts
+        },
+
         getContactByNumber(number) {
             return _.find(contacts, 'number', number);
+        },
+        setContactState(number, state) {
+            var index = _.indexOf(contacts, this.getContactByNumber(number));
+
+            if (index != -1) {
+                contacts[index].currentState = state
+            }
         }
     };
 });
