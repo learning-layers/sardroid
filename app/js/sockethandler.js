@@ -14,7 +14,7 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory) {
     var config = configFactory.getValue('socketio');
 
     return {
-        connectToServer: function () {
+        connectToServer: function() {
             socket = io.connect(config.url);
 
             socket.on('connect', function() {
@@ -26,6 +26,10 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory) {
             });
 
             socket.on('sockettest', function(data) {
+                console.log(data);
+            });
+
+            socket.on('contact:online', function(data) {
                 console.log(data);
             })
         }
