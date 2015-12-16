@@ -64,6 +64,7 @@ gulp.task('vendor-js', function() {
         './app/vendor/ngstorage/ngStorage.min.js',
         './app/vendor/angular-translate/angular-translate.min.js',
         './app/vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+        './app/vendor/socket.io-client/socket.io.js',
         './app/vendor/fabric.js/dist/fabric.js'],
        { base: './app' })
        .pipe(gulp.dest('./www/'))

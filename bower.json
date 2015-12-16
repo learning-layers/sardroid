@@ -25,7 +25,9 @@
     "ngstorage": "~0.3.10",
     "fabric.js": "fabric#~1.5.0",
     "angular-translate": "~2.8.1",
-    "angular-translate-loader-static-files": "~2.8.1"
+    "angular-translate-loader-static-files": "~2.8.1",
+    "socket.io": "https://github.com/socketio/socket.io-client/blob/master/socket.io.js",
+    "socket.io-client": "git@github.com:socketio/socket.io-client.git#6580a7f9b50be02c70efe308f7d80501c8d6379b"
   },
   "resolutions": {
     "angular": "~1.4.7"
