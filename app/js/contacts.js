@@ -8,7 +8,7 @@
  */
 
 var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
-.controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, $state, $ionicActionSheet, $translate) {
+.controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, socketFactory, $state, $ionicActionSheet, $translate) {
 
         var translations = null;
 
@@ -20,6 +20,11 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
             $scope.contacts = results;
         }).catch(function(err) {
             console.log(err);
+        });
+
+        socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_ONLINE, function (data) {
+            console.log('yupyupyup');
+           $scope.contacts = contactsFactory.getContacts(); 
         });
 
         $scope.searchKeyPress = function(keyCode) {
@@ -65,9 +70,9 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
     var contacts = [];
 
     var contactStates = {
-        BUSY: "busy",
+        BUSY:    "busy",
         OFFLINE: "offline",
-        ONLINE: "online"
+        ONLINE:  "online"
     }
 
     return {
@@ -104,7 +109,7 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
         },
 
         getContacts: function () {
-            return contacts
+            return contacts;
         },
 
         getContactByNumber(number) {
@@ -114,7 +119,8 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
             var index = _.indexOf(contacts, this.getContactByNumber(number));
 
             if (index != -1) {
-                contacts[index].currentState = state
+                console.log('setting contact ' + number + ' state to ' + state);
+                contacts[index].currentState = state;
             }
         }
     };
