@@ -22,6 +22,10 @@ sockethandler.factory('socketFactory', function ($rootScope) {
             socket.on('connect_error', function(err) {
                 console.log(err);
             });
+
+            socket.on('sockettest', function(data) {
+                console.log(data);
+            })
         }
     };
 });
