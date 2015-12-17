@@ -325,11 +325,11 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
             var disconnectRef = this.disconnectFromPeerJS;
 
             return new Promise(function(resolve, reject) {
-    
+
              if (me) {
                 me.disconnect();
                 me = null;
-            } 
+            }
 
             me = new Peer(id, config);
 

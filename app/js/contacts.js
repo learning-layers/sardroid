@@ -8,7 +8,7 @@
  */
 
 var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
-.controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, socketFactory, $state, $ionicActionSheet, $translate) {
+.controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
 
         var translations = null;
 
@@ -31,7 +31,7 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
 
         socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_ONLINE,  updateContactState);
         socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_OFFLINE, updateContactState);
-        
+
         $scope.searchKeyPress = function(keyCode) {
             // Enter and Android keyboard 'GO' keycodes to close the keyboard
             if ((keyCode === 66 || keyCode === 13) && typeof cordova !== 'undefined') {
@@ -70,7 +70,7 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
         };
 });
 
-contacts.factory('contactsFactory', function($cordovaContacts) {
+contacts.factory('contactsFactory', function($cordovaContacts, $http, configFactory) {
     // Array to store all the devices contacts so we don't have to re-fetch them all the time
     var contacts = [];
 
@@ -81,6 +81,7 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
     };
 
     return {
+
         contactStates: contactStates,
 
         fetchAllContacts: function() {
@@ -90,27 +91,42 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
                 hasPhoneNumber : true
             };
 
-            return $cordovaContacts.find(opts)
-                .then(function (allContacts) {
-                    //TODO: Maybe optimize this filter and format shebang a bit
-                   var filtered =_.filter(allContacts, function(c) {
-                       return (!(_.isEmpty(c.phoneNumbers)) &&  c.phoneNumbers.length > 0 )
+            return new Promise(function(resolve, reject) {
+                $cordovaContacts.find(opts)
+                    .then(function (allContacts) {
+                            $http({
+                                method: 'GET',
+                                url:  configFactory.getValue('onlineContactsLocation')
+                            })
+                            .then(function success(results) {
+                                var onlineUsers = results.data;
+                                //TODO: Maybe optimize this filter and format shebang a bit
+                                var filtered =_.filter(allContacts, function(c) {
+                                   return (!(_.isEmpty(c.phoneNumbers)) &&  c.phoneNumbers.length > 0 )
+                                });
+
+                                var formatted = _.map(filtered, function(c) {
+                                    var number = c.phoneNumbers[0].value;
+                                    return {
+                                        "original": c,
+                                        "displayName": c.displayName || c.emails[0].value,
+                                        "number": number,
+                                        "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/keilamies.png' : 'res/img/keilamies.png',
+                                        "currentState": _.includes(onlineUsers, number) ? contactStates.ONLINE : contactStates.OFFLINE                                                      }
+                                });
+
+                                contacts = formatted;
+                                resolve(formatted)
+                                },
+                                function error(error) {
+                                    console.log(error);
+                                    reject(error)
+                                } )
+                    })
+                    .catch(function (err) {
+                        reject(err)
                     });
-                    var formatted = _.map(filtered, function(c) {
-                        return {
-                            "original": c,
-                            "displayName": c.displayName || c.emails[0].value,
-                            "number": c.phoneNumbers[0].value,
-                            "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/keilamies.png' : 'res/img/keilamies.png',
-                            "currentState": contactStates.OFFLINE
-                        }
-                    });
-                    contacts = formatted;
-                    return formatted;
-                  })
-                .catch(function (err) {
-                  return err;
-           });
+            })
         },
 
         getContacts: function () {

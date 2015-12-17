@@ -34,7 +34,6 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
             var len = callbackArray.length;
 
             for (var i = 0; i < len; i++) {
-                console.log(data);
                 callbackArray[i].callback(data)
             }
         }
@@ -56,7 +55,6 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
             });
 
             socket.on('sockettest', function(data) {
-                console.log(data);
             });
 
             socket.on(eventTypes.CONTACT_ONLINE, function(data) {
@@ -87,7 +85,6 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
                 eventType: eventType,
                 callback:  callback
             });
-            console.log(callbacks);
         },
         
         clearAllCallbacks: function () {
