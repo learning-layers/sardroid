@@ -322,10 +322,14 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
         },
 
         registerCallback: function (eventType, callback) {
-            dataCallbacks.push({
-               eventType: eventType,
-               callback: callback
-            });
+            // Quick hack since callbacks seem to be registered twice at the moment
+            if (getCallbacksByType(eventType).length === 0) {
+                console.log('adding callback ' + eventType);
+                dataCallbacks.push({
+                   eventType: eventType,
+                   callback: callback
+                });
+            }
         },
 
         clearCallback(type) {
@@ -333,6 +337,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
             dataCallbacks = dataCallbacks.filter(function (cbo) {
                 return cbo.eventType !== type;
             })
+            console.log(dataCallbacks.length);
         },
 
         clearAllCallbacks: function() {
