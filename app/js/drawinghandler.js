@@ -184,10 +184,10 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
                 setUpDrawingCanvas(canvasId, opts);
            },
            setUpDataCallbacks: function() {
-                peerFactory.addDatacallback(function (data) {
+                peerFactory.registerCallback('newPathCreated', function (data) {
                     var data = JSON.parse(data);
                     addPathToCanvas(data.tag, data.data, data.currentlyZoomedInRemoteCanvas);
-                })
+                });
            },
            zoomInCanvasByTag: function (tag) {
                currentlyZoomedInCanvas = tag;
@@ -213,7 +213,8 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
            },
            tearDownDrawingFactory: function () {
                 cancelPathRemoveTimers();
-                peerFactory.removeDatacallbacks();
+                peerFactory.clearCallback('newPathCreated');
+                //peerFactory.clearAllCallbacks();
            }
         }
 });

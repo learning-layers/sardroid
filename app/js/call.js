@@ -8,6 +8,7 @@
 angular.module('call', ['peerhandler', 'drawinghandler'])
 
 .controller('CallCtrl', function($scope, $sce, $stateParams, peerFactory, drawingFactory) {
+
             if ($stateParams && $stateParams.user) {
                     $scope.user = $stateParams.user;
             } else {
@@ -20,6 +21,7 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
 
             //TODO: Refactor this into something more elegant
             $scope.toggleFullscreen = function (canvasId) {
+
                 if ($scope.currentFullscreenCanvas === canvasId) {
 
                     $scope.currentFullscreenCanvas = null;
@@ -35,6 +37,7 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                             localWrapper.style.display = '';
                         break;
                     }
+
                 } else {
 
                     drawingFactory.zoomInCanvasByTag(canvasId);
@@ -63,9 +66,9 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             }
 
             var leave = function () {
-                peerFactory.sendDataToPeer({type: 'otherPeerLeft'});
+                peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
                 drawingFactory.tearDownDrawingFactory();
-                peerFactory.removeDatacallbacks();
+                peerFactory.clearCallback('otherPeerLeft');
                 peerFactory.endCurrentCall();
             }
 
@@ -73,8 +76,8 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             var remoteStreamSrc = peerFactory.getRemoteStreamSrc();
 
             // Sweet hack for browser if you can't be bothered to make a call
-            if (localStreamSrc === null) {localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'}
-            if (remoteStreamSrc === null) {remoteStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'}
+            if (localStreamSrc === null) { localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4' }
+            if (remoteStreamSrc === null) { remoteStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4' }
 
             var localCanvas = document.querySelector('#local-canvas');
             var remoteCanvas = document.querySelector('#remote-canvas');
@@ -86,12 +89,17 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
             drawingFactory.setUpRemoteCanvas(remoteCanvas,{});
             drawingFactory.setUpLocalCanvas(localCanvas, {});
 
+            peerFactory.registerCallback('otherPeerLeft', function (data) {
+                leave();
+            });
+
+            /*
             peerFactory.addDatacallback(function (data) {
                 var data = JSON.parse(data);
                 if (data.type === 'otherPeerLeft') {
                     leave();
                 };
-            })
+            })*/
 
             $scope.$on('$ionicView.leave', function() {
                 leave();

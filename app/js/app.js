@@ -44,36 +44,6 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
             // Disable showing right menu by default
             $rootScope.showRightMenu = false;
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
-
-            // Set up configuration variables we can use anywhere in Angular
-            $rootScope.config = {
-                peerjs: {
-                    host: 'mattij.com',
-                    port: 9000,
-                    path: '/peerjs',
-                    debug: 3,
-                    secure: true,
-                    config: {'iceServers': [
-                        { 'url': 'turn:188.166.88.67:3478?transport=tcp' },
-                        { 'url': 'stun:stun.l.google.com:19302' },
-                        { 'url': 'stun:stun1.l.google.com:19302' },
-                        { 'url': 'stun:stun2.l.google.com:19302' },
-                        { 'url': 'stun:stun3.l.google.com:19302' }
-                    ]}},
-                drawings: {
-                    size: {
-                        width:  0.56,
-                        height: 0.44
-                    },
-                    remoteColor: 'red',
-                    localColor:  '#387ef5',
-                    brushWidth:   5,
-                    drawingRemoveTime: 2000
-                },
-                socketio: {
-                    url: 'http://localhost:9000'
-                }
-            };
 })
 }).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
     $stateProvider

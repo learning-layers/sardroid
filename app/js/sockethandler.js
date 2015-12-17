@@ -19,12 +19,12 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
     };
 
     // Array of callbacks
-    var callbacks = [];
+    var dataCallbacks = [];
 
     var config = configFactory.getValue('socketio');
 
     var getCallbacksByType = function (type) {
-        return _.where(callbacks, {eventType: type});
+        return _.where(dataCallbacks, {eventType: type});
     }
 
     var callCallbacks = function (type, data) {
@@ -40,7 +40,6 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
     }
 
     return {
-
         eventTypes: eventTypes,
 
         connectToServer: function() {
@@ -79,16 +78,16 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
                 socket.disconnect();
             }
         },
-        
+
         registerCallback: function (eventType, callback) {
-            callbacks.push({
+            dataCallbacks.push({
                 eventType: eventType,
                 callback:  callback
             });
         },
-        
+
         clearAllCallbacks: function () {
-            callbacks = [];
+            dataCallbacks = [];
         }
     };
 });

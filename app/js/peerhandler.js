@@ -110,6 +110,10 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
 
         var index = notificationIds.indexOf(id);
         notificationIds.splice(index, 1);
+    };
+
+    var getCallbacksByType = function (type) {
+        return _.where(dataCallbacks, { eventType: type });
     }
 
     var setRemoteStreamSrc = function (stream) {
@@ -174,9 +178,14 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                     callAlertModal(dataJSON.message);
                 }
                 else {
-                     dataCallbacks.map(function (cb) {
-                        cb(data);
-                     });
+                    var callbackArray = getCallbacksByType(dataJSON.type)
+                    if (callbackArray) {
+                        var len = callbackArray.length;
+
+                        for (var i = 0; i < len; i++) {
+                            callbackArray[i].callback(data)
+                        }
+                    }
                 }
         });
 
@@ -312,12 +321,21 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
             else {return !me.disconnected}
         },
 
-        addDatacallback: function (callback) {
-            dataCallbacks.push(callback);
+        registerCallback: function (eventType, callback) {
+            dataCallbacks.push({
+               eventType: eventType,
+               callback: callback
+            });
         },
 
-        removeDatacallbacks: function() {
-            console.log('removing data callbacks from peerfactory');
+        clearCallback(type) {
+            console.log('clearing data callback by type: ' + type);
+            dataCallbacks = dataCallbacks.filter(function (cbo) {
+                return cbo.eventType !== type;
+            })
+        },
+
+        clearAllCallbacks: function() {
             dataCallbacks = [];
         },
 
@@ -433,7 +451,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                     }
                 });
             });
-                
+
             })
         },
 
