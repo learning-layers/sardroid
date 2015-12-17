@@ -93,15 +93,7 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                 leave();
             });
 
-            /*
-            peerFactory.addDatacallback(function (data) {
-                var data = JSON.parse(data);
-                if (data.type === 'otherPeerLeft') {
-                    leave();
-                };
-            })*/
-
-            $scope.$on('$ionicView.leave', function() {
+            $scope.$on('$ionicView.leave', function(event) {
                 leave();
             });
 });
