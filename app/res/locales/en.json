@@ -19,5 +19,6 @@
     "ERROR_USER_OFFLINE": "Looks like that user is offline!",
     "ERROR_SERVER" : "Could not connect to server!",
     "ERROR_NETWORK" : "Network error with server!",
-    "ERROR_TITLE" : "Something went wrong!"
+    "ERROR_TITLE" : "Something went wrong!",
+    "CONTACT_CURRENT_STATE": "Currently "
 }

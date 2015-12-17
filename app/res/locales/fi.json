@@ -19,5 +19,7 @@
     "ERROR_USER_OFFLINE": "Näyttää siltä että käyttäjä on offline!",
     "ERROR_SERVER" : "Palvelimeen ei saatu yhteyttä!",
     "ERROR_NETWORK" : "Yhteysvirhe palvelimen kanssa",
-    "ERROR_TITLE" : "Jotain meni pieleen!"
+    "ERROR_TITLE" : "Jotain meni pieleen!",
+    "CONTACT_CURRENT_STATE": "Tällä hetkellä "
 }
+

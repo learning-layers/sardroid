@@ -16,7 +16,7 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
         CONNECT_ERROR: 'connect_error',
         CONTACT_ONLINE: 'contact:online',
         CONTACT_OFFLINE: 'contact:offline'
-    }
+    };
 
     // Array of callbacks
     var callbacks = [];
