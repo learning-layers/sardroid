@@ -74,7 +74,7 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
         };
 });
 
-contacts.factory('contactsFactory', function($cordovaContacts, $http, configFactory) {
+contacts.factory('contactsFactory', function($cordovaContacts, $http, $localStorage, configFactory) {
     // Array to store all the devices contacts so we don't have to re-fetch them all the time
     var contacts = [];
 
@@ -104,9 +104,10 @@ contacts.factory('contactsFactory', function($cordovaContacts, $http, configFact
                             })
                             .then(function success(results) {
                                 var onlineUsers = results.data;
+                                var userPhone = $localStorage.user.phone;
                                 //TODO: Maybe optimize this filter and format shebang a bit
                                 var filtered =_.filter(allContacts, function(c) {
-                                   return (!(_.isEmpty(c.phoneNumbers)) &&  c.phoneNumbers.length > 0 )
+                                   return (!(_.isEmpty(c.phoneNumbers)) &&  c.phoneNumbers.length > 0 && c.phoneNumbers[0].value != userPhone) 
                                 });
 
                                 var formatted = _.map(filtered, function(c) {
