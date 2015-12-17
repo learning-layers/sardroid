@@ -325,116 +325,115 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
             var disconnectRef = this.disconnectFromPeerJS;
 
             return new Promise(function(resolve, reject) {
-                if (me) {
-                    me.reconnect();
-                    console.log("already connected, reconnecting");
-                    resolve();
-                }
-                else {
+    
+             if (me) {
+                me.disconnect();
+                me = null;
+            } 
 
-                    me = new Peer(id, config);
+            me = new Peer(id, config);
 
-                    if (!me) {
-                        alert('Error creating peer!');
-                        reject();
+            if (!me) {
+                alert('Error creating peer!');
+                reject();
+            }
+            me.on('open', function(id) {
+                resolve();
+                console.log('Connection opened: ' + id);
+            });
+
+            me.on('call', function(mediaConnection) {
+                if (isInCallCurrently === false) {
+                    isInCallCurrently = true;
+
+                    var user = contactsFactory.getContactByNumber(mediaConnection.peer);
+                    var id = Math.floor(Math.random() * 10000);
+                    notificationIds.push(id);
+
+                    if (!user) {
+                        user = { displayName: mediaConnection.peer }
                     }
-                    me.on('open', function(id) {
-                        resolve();
-                        console.log('Connection opened: ' + id);
+
+                    $cordovaLocalNotification.schedule({
+                        id: id,
+                        title: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
+                        text: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
+                    }).then(function (result) {
+                        console.log(result);
                     });
 
-                    me.on('call', function(mediaConnection) {
-                        if (isInCallCurrently === false) {
-                            isInCallCurrently = true;
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: $translate.instant('CALL_INCOMING_TITLE', {displayName: user.displayName}),
+                        template: $translate.instant('CALL_INCOMING_TEMPLATE')
+                    });
 
-                            var user = contactsFactory.getContactByNumber(mediaConnection.peer);
-                            var id = Math.floor(Math.random() * 10000);
-                            notificationIds.push(id);
+                    audioFactory.playSound('.call');
 
-                            if (!user) {
-                                user = { displayName: mediaConnection.peer }
-                            }
+                    confirmPopup.then(function(res) {
 
-                            $cordovaLocalNotification.schedule({
-                                id: id,
-                                title: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
-                                text: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
-                            }).then(function (result) {
-                                console.log(result);
-                            });
+                        audioFactory.stopSound('.call');
+                        cancelLocalNotification(id);
 
-                            var confirmPopup = $ionicPopup.confirm({
-                                title: $translate.instant('CALL_INCOMING_TITLE', {displayName: user.displayName}),
-                                template: $translate.instant('CALL_INCOMING_TEMPLATE')
-                            });
-
-                            audioFactory.playSound('.call');
-
-                            confirmPopup.then(function(res) {
-
-                                audioFactory.stopSound('.call');
-                                cancelLocalNotification(id);
-
-                                if(res) {
-                                    answer(mediaConnection);
-                                    $timeout(function() {
-                                        $state.go('call', {user: user});
-                                    }, 500)
-                                } else {
-                                    closeDataConnection('User is busy!');
-                                    mediaConnection.close();
-                                    return false;
-                                }
-                            });
+                        if(res) {
+                            answer(mediaConnection);
+                            $timeout(function() {
+                                $state.go('call', {user: user});
+                            }, 500)
                         } else {
-                            console.log('ALready in call, closing media')
+                            closeDataConnection('User is busy!');
                             mediaConnection.close();
+                            return false;
                         }
                     });
-
-                    me.on('connection', function(dataConn) {
-                        if (checkIfDataConnectionIsSet(dataConn) === false) {
-                            setDataConnection(dataConn);
-                        }
-                    });
-
-                    me.on('close', function() {
-                        console.log('closed Peerjs connection');
-                    });
-
-                    me.socket._socket.onopen = function() {
-                        getLocalStream();
-                    };
-
-                    me.on('error', function(error) {
-                        hideCallLoader();
-                        var errorMsg = error.toString();
-                        console.log(error.type);
-                        switch (error.type) {
-                            case 'peer-unavailable':
-                                errorMsg = $translate.instant('ERROR_USER_OFFLINE');
-                            break;
-                            case 'server-error':
-                                errorMsg =  $translate.instant('ERROR_SERVER');
-                            break;
-                            case 'network':
-                                errorMsg =  $translate.instant('ERROR_NETWORK');
-                            break;
-                        }
-
-                        var errorAlert = $ionicPopup.alert({
-                            title: $translate.instant('ERROR_TITLE'),
-                            template: errorMsg
-                        });
-
-                        errorAlert.then(function(res) {
-                            if (error.type == 'server-error') {
-                                disconnectRef();
-                                $state.go('login');
-                            }
-                        });
-                    });
+                } else {
+                    console.log('ALready in call, closing media')
+                    mediaConnection.close();
                 }
+            });
+
+            me.on('connection', function(dataConn) {
+                if (checkIfDataConnectionIsSet(dataConn) === false) {
+                    setDataConnection(dataConn);
+                }
+            });
+
+            me.on('close', function() {
+                console.log('closed Peerjs connection');
+            });
+
+            me.socket._socket.onopen = function() {
+                getLocalStream();
+            };
+
+            me.on('error', function(error) {
+                hideCallLoader();
+                var errorMsg = error.toString();
+                console.log(error.type);
+                switch (error.type) {
+                    case 'peer-unavailable':
+                        errorMsg = $translate.instant('ERROR_USER_OFFLINE');
+                    break;
+                    case 'server-error':
+                        errorMsg =  $translate.instant('ERROR_SERVER');
+                    break;
+                    case 'network':
+                        errorMsg =  $translate.instant('ERROR_NETWORK');
+                    break;
+                }
+
+                var errorAlert = $ionicPopup.alert({
+                    title: $translate.instant('ERROR_TITLE'),
+                    template: errorMsg
+                });
+
+                errorAlert.then(function(res) {
+                    if (error.type == 'server-error') {
+                        disconnectRef();
+                        $state.go('login');
+                    }
+                });
+            });
+                
             })
         },
 
