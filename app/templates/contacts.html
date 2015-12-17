@@ -7,7 +7,10 @@
             </label>
         </div>
     </ion-header-bar>
-    <ion-content class="padding has-header has-subheader">
+    <ion-content class="padding has-header has-subheader" ng-class="preloaderClass">
+        <div class="loader-wrapper">
+            <div class="loader"></div>
+        </div>
         <div ng-repeat="contact in contacts | filter:contactSearch" class="list">
             <a class="item item-avatar" ng-class="contact.currentState" href ng-click="selectUser(contact)">
                 <img src="{{contact.photo}}">

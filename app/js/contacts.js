@@ -16,9 +16,11 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
             translations = trans;
         });
 
+        $scope.preloaderClass = "preloader-on";
+
         contactsFactory.fetchAllContacts().then(function (results) {
             $scope.contacts = results;
-            console.log(results);
+            $scope.preloaderClass = 'preloader-off';
         }).catch(function(err) {
             console.log(err);
         });
