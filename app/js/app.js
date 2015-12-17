@@ -102,7 +102,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
         .preferredLanguage('en')
         .fallbackLanguage('en')
         .determinePreferredLanguage()
-        .useSanitizeValueStrategy('sanitize')
+        .useSanitizeValueStrategy('sanitizeParameters')
 
     $urlRouterProvider.otherwise('/login');
 
