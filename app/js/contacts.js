@@ -46,31 +46,32 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
         $scope.user = $localStorage.user;
 
         $scope.selectUser = function(selectedUser) {
+            if (selectedUser.currentState === contactsFactory.contactStates.ONLINE) {
+                var sheet = $ionicActionSheet.show({
 
-            var sheet = $ionicActionSheet.show({
+                    buttons: [
+                        { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' },
+                        { text: '<i class="icon ion-android-person"></i> ' + translations.PROFILE },
+                    ],
+                    titleText:  translations.ACTIONS,
+                    cancelText: translations.CANCEL,
+                    cancel: function() {
+                        sheet();
+                    },
 
-                buttons: [
-                    { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' },
-                    { text: '<i class="icon ion-android-person"></i> ' + translations.PROFILE },
-                ],
-                titleText:  translations.ACTIONS,
-                cancelText: translations.CANCEL,
-                cancel: function() {
-                    sheet();
-                },
-
-                buttonClicked: function(index) {
-                    switch (index) {
-                        case 0:
-                            peerFactory.callPeer(selectedUser);
-                            break;
-                        case 1:
-                            $state.go('userprofile', { user: selectedUser });
-                            break;
+                    buttonClicked: function(index) {
+                        switch (index) {
+                            case 0:
+                                peerFactory.callPeer(selectedUser);
+                                break;
+                            case 1:
+                                $state.go('userprofile', { user: selectedUser });
+                                break;
+                        }
+                        return true;
                     }
-                    return true;
-                }
-            });
+                });
+            }
         };
 });
 
@@ -146,6 +147,7 @@ contacts.factory('contactsFactory', function($cordovaContacts, $http, $localStor
         },
         setContactState(number, state) {
             var index = _.indexOf(contacts, this.getContactByNumber(number));
+            console.log('attempting to set contact ' + number + ' state to ' + state);
 
             if (index != -1) {
                 console.log('setting contact ' + number + ' state to ' + state);
