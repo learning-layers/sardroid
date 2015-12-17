@@ -75,9 +75,9 @@ contacts.factory('contactsFactory', function($cordovaContacts) {
     var contacts = [];
 
     var contactStates = {
-        BUSY:    "Busy",
-        OFFLINE: "Offline",
-        ONLINE:  "Online"
+        BUSY:    "busy",
+        OFFLINE: "offline",
+        ONLINE:  "online"
     };
 
     return {
