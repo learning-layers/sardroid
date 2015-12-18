@@ -27,10 +27,26 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
             console.log(err);
         });
 
-        var updateContactState = function() {
-            $scope.$apply(function () {
-                $scope.contacts = contactsFactory.getContacts();
-            });
+        var updateContactState = function(data) {
+
+           // if (data.eventType === socketFactory.eventTypes.CONTACT_ONLINE) {
+
+           //     contactsFactory.setContactState(data.peerJSId, contactsFactory.contactStates.ONLINE);
+           // }
+           // else if (data.eventType === socketFactory.eventTypes.CONTACT_OFFLINE) {
+
+           //     contactsFactory.setContactState(data.peerJSId, contactsFactory.contactStates.OFFLINE);
+           // }
+
+            var stateToSet = data.eventType === socketFactory.eventTypes.CONTACT_ONLINE ? contactsFactory.contactStates.ONLINE : contactsFactory.contactStates.OFFLINE
+            var didStateChange = contactsFactory.setContactStateIfApplicable(data.peerJSId, stateToSet);
+ 
+            if (didStateChange) {
+                $scope.$apply(function () {
+                    $scope.contacts = contactsFactory.getContacts();
+                });
+            }
+
         }
 
         socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_ONLINE,  updateContactState);
@@ -145,13 +161,18 @@ contacts.factory('contactsFactory', function($cordovaContacts, $http, $localStor
         getContactByNumber(number) {
             return _.find(contacts, 'number', number);
         },
-        setContactState(number, state) {
+        setContactStateIfApplicable(number, state) {
             var index = _.indexOf(contacts, this.getContactByNumber(number));
             console.log('attempting to set contact ' + number + ' state to ' + state);
 
-            if (index != -1) {
+            if (index === -1) {
+                return false;
+            }
+
+            else {
                 console.log('setting contact ' + number + ' state to ' + state);
                 contacts[index].currentState = state;
+                return true;
             }
         }
     };

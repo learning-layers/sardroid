@@ -6,7 +6,7 @@
 
 var sockethandler = angular.module('sockethandler', []);
 
-sockethandler.factory('socketFactory', function ($rootScope, configFactory, contactsFactory) {
+sockethandler.factory('socketFactory', function ($rootScope, configFactory) {
 
     // The actual websocket connection where most of the magic happens
     var socket = null;
@@ -53,24 +53,17 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory, cont
                 console.log(err);
             });
 
-            socket.on('sockettest', function(data) {
-            });
-
             socket.on(eventTypes.CONTACT_ONLINE, function(data) {
                 console.log('User is online');
-                console.log(data);
-
-                contactsFactory.setContactState(data.peerJSId, contactsFactory.contactStates.ONLINE);
+                data.eventType = eventTypes.CONTACT_ONLINE;
                 callCallbacks(eventTypes.CONTACT_ONLINE, data);
-            })
+            });
 
             socket.on(eventTypes.CONTACT_OFFLINE, function(data) {
                 console.log('User is offline');
-                console.log(data);
-
-                contactsFactory.setContactState(data.peerJSId, contactsFactory.contactStates.OFFLINE);
-                callCallbacks(eventTypes.CONTACT_ONLINE, data);
-            })
+                data.eventType = eventTypes.CONTACT_OFFLINE;
+                callCallbacks(eventTypes.CONTACT_OFFLINE, data);
+            });
         },
 
         disconnectFromServer: function () {
