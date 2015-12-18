@@ -124,20 +124,20 @@ contacts.factory('contactsFactory', function($cordovaContacts, $http, $localStor
                                     var onlineUsers = results.data;
                                     var userPhone = $localStorage.user.phone;
 
-                                    var formattedContacts = _.reduce(allContacts, function (formatted, c) {
-                                    if (!(_.isEmpty(c.phoneNumbers)) && c.phoneNumbers[0].value !== userPhone) {
-                                            console.log(userPhone);
-                                            var number = c.phoneNumbers[0].value;
-                                            formatted.push({
-                                                "original": c,
-                                                "displayName": c.displayName || c.emails[0].value,
-                                                "number": number,
-                                                "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/keilamies.png' : 'res/img/keilamies.png',
-                                                "currentState": _.includes(onlineUsers, number) ? contactStates.ONLINE : contactStates.OFFLINE
-                                            });
 
-                                            return formatted;
+                                    var formattedContacts = _.reduce(allContacts, function (formatted, c) {
+                                        if (!(_.isEmpty(c.phoneNumbers)) && c.phoneNumbers.length > 0 && c.phoneNumbers[0].value !== userPhone) {
+                                            console.log(c);
+                                                var number = c.phoneNumbers[0].value;
+                                                formatted.push({
+                                                    "original": c,
+                                                    "displayName": c.displayName || c.emails[0].value,
+                                                    "number": number,
+                                                    "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/keilamies.png' : 'res/img/keilamies.png',
+                                                    "currentState": _.includes(onlineUsers, number) ? contactStates.ONLINE : contactStates.OFFLINE
+                                                });
                                         }
+                                        return formatted;
                                     }, []);
 
                                     contacts = formattedContacts;
