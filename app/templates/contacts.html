@@ -12,12 +12,14 @@
             <div class="loader"></div>
         </div>
         <div ng-repeat="contact in contacts | filter:contactSearch" class="list">
-            <a class="item item-avatar" ng-class="contact.currentState" href ng-click="selectUser(contact)">
-                <img src="{{contact.photo}}">
-                <h2>{{contact.displayName}}</h2>
-                <p class="contact-number"><i class="icon ion-ios-telephone contact-telephone"></i>  {{contact.number}}</p>
-                <p class="contact-state"> {{'CONTACT_CURRENT_STATE' | translate}}  {{contact.currentState}}</p>
-            </a>
+            <div class="contact-wrapper" ng-class="contact.currentState">
+                <a class="item item-avatar" href ng-click="selectUser(contact)">
+                    <img src="{{contact.photo}}">
+                    <h2>{{contact.displayName}}</h2>
+                    <p class="contact-number"><i class="icon ion-ios-telephone contact-telephone"></i>  {{contact.number}}</p>
+                    <p class="contact-state"> {{'CONTACT_CURRENT_STATE' | translate}}  {{contact.currentState}}</p>
+                </a>
+            </div>
         </div>
     </ion-content>
 </ion-view>
