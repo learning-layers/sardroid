@@ -19,6 +19,9 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
         $scope.preloaderClass = "preloader-on";
 
         contactsFactory.fetchAllContacts().then(function (results) {
+
+            contactsFactory.sortContactsByState();
+
             $scope.$apply(function () {
                 $scope.contacts = results;
                 $scope.preloaderClass = 'preloader-off';
@@ -29,19 +32,11 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
 
         var updateContactState = function(data) {
 
-           // if (data.eventType === socketFactory.eventTypes.CONTACT_ONLINE) {
-
-           //     contactsFactory.setContactState(data.peerJSId, contactsFactory.contactStates.ONLINE);
-           // }
-           // else if (data.eventType === socketFactory.eventTypes.CONTACT_OFFLINE) {
-
-           //     contactsFactory.setContactState(data.peerJSId, contactsFactory.contactStates.OFFLINE);
-           // }
-
             var stateToSet = data.eventType === socketFactory.eventTypes.CONTACT_ONLINE ? contactsFactory.contactStates.ONLINE : contactsFactory.contactStates.OFFLINE
             var didStateChange = contactsFactory.setContactStateIfApplicable(data.peerJSId, stateToSet);
- 
+
             if (didStateChange) {
+                contactsFactory.sortContactsByState();
                 $scope.$apply(function () {
                     $scope.contacts = contactsFactory.getContacts();
                 });
@@ -158,10 +153,18 @@ contacts.factory('contactsFactory', function($cordovaContacts, $http, $localStor
             return contacts;
         },
 
-        getContactByNumber(number) {
+        getContactByNumber: function (number) {
             return _.find(contacts, 'number', number);
         },
-        setContactStateIfApplicable(number, state) {
+
+        sortContactsByState: function () {
+            console.log('Sorting array!');
+            contacts = _.sortBy(contacts, function (c) {
+                return c.currentState === contactStates.OFFLINE;
+            });
+        },
+
+        setContactStateIfApplicable: function (number, state) {
             var index = _.indexOf(contacts, this.getContactByNumber(number));
             console.log('attempting to set contact ' + number + ' state to ' + state);
 
