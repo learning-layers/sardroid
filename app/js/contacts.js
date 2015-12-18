@@ -122,7 +122,6 @@ contacts.factory('contactsFactory', function($cordovaContacts, $http, $localStor
 
                                     var formattedContacts = _.reduce(allContacts, function (formatted, c) {
                                         if (!(_.isEmpty(c.phoneNumbers)) && c.phoneNumbers.length > 0 && c.phoneNumbers[0].value !== userPhone) {
-                                            console.log(c);
                                                 var number = c.phoneNumbers[0].value;
                                                 formatted.push({
                                                     "original": c,
