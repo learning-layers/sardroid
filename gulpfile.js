@@ -103,7 +103,7 @@ gulp.task('watch', ['build'], function() {
     var js   = gulp.watch('./app/js/**/*', ['js'], {cwd: 'www'}, reload);
     var res  = gulp.watch('./app/res/**/*', ['copy-res'],  {cwd: 'www'}, reload);
 
-    scss.on('change', function(event) {
+    /*scss.on('change', function(event) {
         if (event.type === 'deleted') {
             gutil.log('Forgetting scss: ' + event.path);
             delete cached.caches.scss[event.path];
@@ -130,7 +130,7 @@ gulp.task('watch', ['build'], function() {
             gutil.log('Forgetting res: ' + event.path);
             delete cached.caches.res[event.path];
         }
-    });
+    });*/
 });
 
 gulp.task('clean', function() {
