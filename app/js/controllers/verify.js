@@ -9,6 +9,13 @@ angular.module('verify', [])
 
     var config = configFactory.getValue('api');
 
+    var goToRegister = function () {
+        console.log('asdasdasd');
+        $state.go('register')
+    }
+
+    $scope.goToRegister = goToRegister;
+    
     $scope.signup = function (user) {
         if (user.phone) {
             var number = user.phone.replace(' ', '');
@@ -22,8 +29,7 @@ angular.module('verify', [])
             }, function error(err) {
                 console.log(err);
             }) */
-
-            $state.go('register');
+            goToRegister();
         }
     }
 });
