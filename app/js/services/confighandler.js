@@ -10,13 +10,13 @@ confighandler.factory('configFactory', function () {
     
     // Set up configuration variables we can use anywhere in Angular
     var config = {
-        onlineContactsLocation: 'http://localhost:9000/peerjs/peerjs/peers',
+        onlineContactsLocation: 'http://10.100.51.184:9000/peerjs/peerjs/peers',
         peerjs: {
-            host: 'mattij.com',
+            host: '10.100.51.184',
             port: 9000,
             path: '/peerjs',
             debug: 3,
-            secure: true,
+            secure: false,
             config: {'iceServers': [
                 { 'url': 'turn:188.166.88.67:3478?transport=tcp' },
                 { 'url': 'stun:stun.l.google.com:19302' },
@@ -35,7 +35,7 @@ confighandler.factory('configFactory', function () {
             drawingRemoveTime: 2000
         },
         socketio: {
-            url: 'http://localhost:9000'
+            url: 'http://10.100.51.184:9000'
         }
     };
 
