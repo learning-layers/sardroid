@@ -6,7 +6,7 @@
  * and wiring up the states, controllers and templates
  */
 
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'signup',  'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
         $ionicPlatform.ready(function() {
@@ -52,11 +52,16 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'signup',  'pascalpre
             url: '/login',
             templateUrl: 'templates/login.html',
             controller: 'LoginCtrl'})
-        .state('signup', {
+        .state('verify', {
             cache: false,
-            url: '/signup',
-            templateUrl: 'templates/signup.html',
-            controller: 'SignUpCtrl'})
+            url: '/verify',
+            templateUrl: 'templates/verify.html',
+            controller: 'VerifyCtrl'})
+        .state('register', {
+            cache: false,
+            url: '/register',
+            templateUrl: 'templates/register.html',
+            controller: 'RegisterCtrl'})
         .state('tabs', {
             url: '/tab',
             abstract: true,

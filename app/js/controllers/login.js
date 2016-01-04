@@ -21,7 +21,7 @@ angular.module('login', ['peerhandler'])
         }
 
         $scope.goToSignUp = function () {
-            $state.go('signup');
+            $state.go('verify');
         }
 
         $scope.login = function(user) {
