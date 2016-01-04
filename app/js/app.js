@@ -6,7 +6,7 @@
  * and wiring up the states, controllers and templates
  */
 
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'signup',  'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
         $ionicPlatform.ready(function() {
@@ -23,7 +23,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
             // TODO: Fix this somehow?
             $rootScope.$on('$stateChangeSuccess',
                 function(event, toState, toParams, fromState, fromParams){
-                    if (toState.name === 'login' ){
+                    if (toState.name === 'login' || toState.name === 'signup' ){
                         $rootScope.showRightMenu = false;
                         $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
                     }
@@ -52,6 +52,11 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'pascalprecht.transla
             url: '/login',
             templateUrl: 'templates/login.html',
             controller: 'LoginCtrl'})
+        .state('signup', {
+            cache: false,
+            url: '/signup',
+            templateUrl: 'templates/signup.html',
+            controller: 'SignUpCtrl'})
         .state('tabs', {
             url: '/tab',
             abstract: true,
