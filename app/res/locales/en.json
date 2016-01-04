@@ -1,5 +1,6 @@
 {
     "LOGIN": "Login",
+    "REGISTER" :  "Sign up",
     "MOBILE_NUMBER": "Mobile number",
     "PASSWORD": "Password",
     "LOST_PASSWORD": " Lost password?",

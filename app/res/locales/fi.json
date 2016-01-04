@@ -1,5 +1,6 @@
 {
     "LOGIN" :  "Kirjaudu sisään",
+    "REGISTER" :  "Rekisteröidy",
     "MOBILE_NUMBER": "Puhelinnumero",
     "PASSWORD": "Salasana",
     "LOST_PASSWORD": "Salasana hukassa?",
