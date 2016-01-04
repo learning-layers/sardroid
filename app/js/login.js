@@ -20,6 +20,10 @@ angular.module('login', ['peerhandler'])
             $scope.user = $localStorage.user;
         }
 
+        $scope.goToSignUp = function () {
+            $state.go('signup');
+        }
+
         $scope.login = function(user) {
             if (typeof user !== 'undefined' && user.phone) {
                 // Should probably do some back-end log in related stuff in here?
