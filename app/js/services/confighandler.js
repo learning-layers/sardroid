@@ -10,6 +10,9 @@ confighandler.factory('configFactory', function () {
     
     // Set up configuration variables we can use anywhere in Angular
     var config = {
+        api: {
+            url: 'http://10.100.51.184:9000/'
+        },
         onlineContactsLocation: 'http://10.100.51.184:9000/peerjs/peerjs/peers',
         peerjs: {
             host: '10.100.51.184',

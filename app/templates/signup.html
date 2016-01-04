@@ -6,7 +6,7 @@
                     {{'VERIFY_NUMBER_HEADER' | translate}}
                 </div>
                 <div class="item item-text-wrap">
-                    This is a basic Card with some text.
+                    {{'VERIFY_NUMBER_TEXT' | translate}}
                 </div>
             </div>
             <div class="list list-inset padding-vertical login-form">
@@ -15,7 +15,7 @@
                         <i class="icon ion-ios-telephone placeholder-icon"></i>
                         <input type="text" placeholder="{{'MOBILE_NUMBER' | translate}}" required ng-model="user.phone" >
                     </label>
-                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup()" translate="VERIFY_NUMBER"></button> 
+                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup(user)" translate="VERIFY_NUMBER"></button> 
                 </form>
             </div>
         </div>

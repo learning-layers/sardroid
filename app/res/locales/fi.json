@@ -1,7 +1,8 @@
 {
     "LOGIN" :  "Kirjaudu sisään",
     "VERIFY_NUMBER" :  "Lähetä varmistuskoodi",
-    "VERIFY_NUMBER_HEADER" :  "Numerosi varmentaminen",
+    "VERIFY_NUMBER_HEADER" :  "1. Numerosi varmentaminen",
+    "VERIFY_NUMBER_TEXT" :  "Rekisteröityäksesi lähetämme sinulle kertakäyttöisen koodin tekstiviestinä varmentaaksemme numerosi. Kirjoita numerosi alas ja käytä tätä koodia rekisteröidessäsi tilin",
     "REGISTER" :  "Rekisteröidy",
     "MOBILE_NUMBER": "Puhelinnumero",
     "PASSWORD": "Salasana",
