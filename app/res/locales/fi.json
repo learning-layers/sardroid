@@ -1,5 +1,7 @@
 {
     "LOGIN" :  "Kirjaudu sisään",
+    "VERIFY_NUMBER" :  "Lähetä varmistuskoodi",
+    "VERIFY_NUMBER_HEADER" :  "Numerosi varmentaminen",
     "REGISTER" :  "Rekisteröidy",
     "MOBILE_NUMBER": "Puhelinnumero",
     "PASSWORD": "Salasana",

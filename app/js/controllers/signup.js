@@ -6,6 +6,8 @@
 
 angular.module('signup', [])
 .controller('SignUpCtrl', function($scope, $state, $localStorage) {
-
+    $scope.signup = function () {
+        console.log('asd');
+    }
 });
 

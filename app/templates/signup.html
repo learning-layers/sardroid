@@ -1,26 +1,24 @@
 <ion-view view-title="Sign up" hide-nav-bar="true">
     <ion-content class="padding center">
-        <div class="row">
-            <div class="col text-center">
-                <h1 class="sar-header positive">Sign up</h1>
-            </div>
-        </div>
         <div>
+            <div class="card">
+                <div class="item item-divider text-center">
+                    {{'VERIFY_NUMBER_HEADER' | translate}}
+                </div>
+                <div class="item item-text-wrap">
+                    This is a basic Card with some text.
+                </div>
+            </div>
             <div class="list list-inset padding-vertical login-form">
                 <form>
                     <label class="item item-input">
                         <i class="icon ion-ios-telephone placeholder-icon"></i>
                         <input type="text" placeholder="{{'MOBILE_NUMBER' | translate}}" required ng-model="user.phone" >
                     </label>
-                    <div class="button-wrapper">
-                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="login(user)" > Verify me</button>
-                    </div>
+                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup()" translate="VERIFY_NUMBER"></button> 
                 </form>
             </div>
         </div>
     </ion-content>
-    <ion-footer-bar align-title="center">
-        <h1 class="title positive" ><i class="icon ion-ios-information"></i> {{'LOST_PASSWORD' | translate}}</h1>
-    </ion-footer-bar>
 </ion-view>
 
