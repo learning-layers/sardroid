@@ -11,6 +11,8 @@
     "MOBILE_NUMBER": "Mobile number",
     "PASSWORD": "Password",
     "PASSWORD_AGAIN": "Password again",
+    "PASSWORD_ERROR": "Password error",
+    "PASSWORD_NO_MATCH": "Passwords do not match!",
     "LOST_PASSWORD": " Lost password?",
     "LOG_OUT": "Log out",
     "CONTACTS": "Contacts",

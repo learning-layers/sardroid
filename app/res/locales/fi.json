@@ -11,6 +11,8 @@
     "MOBILE_NUMBER": "Puhelinnumero",
     "PASSWORD": "Salasana",
     "PASSWORD_AGAIN": "Salasana uudelleen",
+    "PASSWORD_ERROR": "Salsanavirhe",
+    "PASSWORD_NO_MATCH": "Salasanat eivät täsmää!",
     "LOST_PASSWORD": "Salasana hukassa?",
     "LOG_OUT": "Kirjaudu ulos",
     "CONTACTS": "Kontaktit",

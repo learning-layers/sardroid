@@ -13,17 +13,17 @@
                 <form>
                     <label class="item item-input">
                         <i class="icon ion-key placeholder-icon"></i>
-                        <input type="text" placeholder="{{'VERIFY_CODE' | translate}}" ng-model="user.phone" >
+                        <input type="text" placeholder="{{'VERIFY_CODE' | translate}}" ng-model="newUser.code" >
                     </label>
                     <label class="item item-input">
                         <i class="icon ion-locked placeholder-icon"></i>
-                        <input type="password" placeholder="{{'PASSWORD' | translate}}" ng-model="user.password" >
+                        <input type="password" placeholder="{{'PASSWORD' | translate}}" ng-model="newUser.password" >
                     </label>
                     <label class="item item-input">
                         <i class="icon ion-locked placeholder-icon"></i>
-                        <input type="password" placeholder="{{'PASSWORD_AGAIN' | translate}}" ng-model="user.password" >
+                        <input type="password" placeholder="{{'PASSWORD_AGAIN' | translate}}" ng-model="newUser.passwordAgain" >
                     </label>
-                    <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="goToSignUp()" translate="REGISTER"></button>
+                    <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="register(newUser)" translate="REGISTER"></button>
                 </form>
             </div>
         </div>
