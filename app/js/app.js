@@ -23,7 +23,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'verify', 'register',
             // TODO: Fix this somehow?
             $rootScope.$on('$stateChangeSuccess',
                 function(event, toState, toParams, fromState, fromParams){
-                    if (toState.name === 'login' || toState.name === 'signup' ){
+                    if (toState.name === 'login' || toState.name === 'verify' || toState.name === 'register' ){
                         $rootScope.showRightMenu = false;
                         $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
                     }

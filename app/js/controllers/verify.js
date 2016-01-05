@@ -16,9 +16,9 @@ angular.module('verify', [])
 
     $scope.goToRegister = goToRegister;
     
-    $scope.signup = function (user) {
-        if (user.phone) {
-            var number = user.phone.replace(' ', '');
+    $scope.signup = function (phone) {
+        if (phone) {
+            var number = phone.replace(' ', '');
 
 
             /*$http.post(

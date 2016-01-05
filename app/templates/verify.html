@@ -1,5 +1,5 @@
-<ion-view view-title="Sign up" hide-nav-bar="true">
-    <ion-content class="padding center">
+<ion-view view-title="Verify your number" hide-nav-bar="false">
+    <ion-content class="padding flex-container flex-container-center  center">
         <div>
             <div class="card">
                 <div class="item item-divider text-center">
@@ -13,15 +13,15 @@
                 <form>
                     <label class="item item-input">
                         <i class="icon ion-ios-telephone placeholder-icon"></i>
-                        <input type="text" placeholder="{{'MOBILE_NUMBER' | translate}}" required ng-model="user.phone" >
+                        <input type="text" placeholder="{{'MOBILE_NUMBER' | translate}}" ng-model="phone" >
                     </label>
-                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup(user)" translate="VERIFY_NUMBER"></button> 
+                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup(phone)" translate="VERIFY_NUMBER"></button> 
                 </form>
             </div>
         </div>
     </ion-content>
     <ion-footer-bar align-title="center" ng-click="goToRegister()">
-       <h1 class="title positive">Already got a code? Tap here.</h1>  
+        <h1 class="title positive">{{'VERIFY_EXIST' | translate}}</h1>  
     </ion-footer-bar>
 </ion-view>
 

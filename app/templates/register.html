@@ -1,27 +1,32 @@
-<ion-view view-title="Register" hide-nav-bar="true">
-    <ion-content class="padding center">
+<ion-view view-title="Register" hide-nav-bar="false">
+    <ion-content class="padding flex-container flex-container-center center">
+        <div class="full-width  card">
+            <div class="item item-divider text-center">
+                {{'REGISTER_NUMBER_HEADER' | translate}}
+            </div>
+            <div class="item item-text-wrap">
+                {{'REGISTER_NUMBER_TEXT' | translate}}
+            </div>
+        </div>
         <div>
             <div class="list list-inset padding-vertical login-form">
                 <form>
                     <label class="item item-input">
-                        <i class="icon ion-ios-telephone placeholder-icon"></i>
-                        <input type="text" placeholder="{{'MOBILE_NUMBER' | translate}}" required ng-model="user.phone" >
+                        <i class="icon ion-key placeholder-icon"></i>
+                        <input type="text" placeholder="{{'VERIFY_CODE' | translate}}" ng-model="user.phone" >
                     </label>
                     <label class="item item-input">
                         <i class="icon ion-locked placeholder-icon"></i>
-                        <input type="password" placeholder="{{'PASSWORD' | translate}}" required ng-model="user.password" >
+                        <input type="password" placeholder="{{'PASSWORD' | translate}}" ng-model="user.password" >
                     </label>
                     <label class="item item-input">
                         <i class="icon ion-locked placeholder-icon"></i>
-                        <input type="password" placeholder="{{'PASSWORD' | translate}}" required ng-model="user.password" >
+                        <input type="password" placeholder="{{'PASSWORD_AGAIN' | translate}}" ng-model="user.password" >
                     </label>
-                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="goToSignUp()" translate="REGISTER"></button>
+                    <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="goToSignUp()" translate="REGISTER"></button>
                 </form>
             </div>
         </div>
     </ion-content>
-    <ion-footer-bar align-title="center">
-        <h1 class="title positive" ><i class="icon ion-ios-information"></i> {{'LOST_PASSWORD' | translate}}</h1>
-    </ion-footer-bar>
 </ion-view>
 
