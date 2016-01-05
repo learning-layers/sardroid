@@ -1,16 +1,15 @@
 'use strict';
 
 /*
- * Controller for the registering screen 
+ * Controller for the verification screen
  */
 
 angular.module('verify', [])
 .controller('VerifyCtrl', function($scope, $state, $localStorage, $http, configFactory) {
 
-    var config = configFactory.getValue('api');
+    var url = configFactory.getValue('apiUrl');
 
     var goToRegister = function () {
-        console.log('asdasdasd');
         $state.go('register')
     }
 
