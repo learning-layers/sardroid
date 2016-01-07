@@ -7,6 +7,10 @@ var gulpif   = require('gulp-if');
 var cached   = require('gulp-cached');
 var remember = require('gulp-remember');
 
+var plumber = require('gulp-plumber');
+var beep    = require('beepbeep');
+var notify  = require('gulp-notify');
+
 var del      = require('del');
 var minimist = require('minimist');
 
@@ -29,12 +33,24 @@ var knownOptions = {
 
 var options = minimist(process.argv.slice(2), knownOptions);
 
+var onError = function(err) {
+    notify.onError({
+        title:    "Gulp error in " + err.plugin,
+        message:  err.toString()
+    })(err);
+    
+    beep(3);
+    this.emit('end');
+};
+
+
 gulp.task('build', ['scss', 'js', 'html', 'fonts', 'copy-res'], function() {
     gutil.log('Finished building app to folder www');
 });
 
 gulp.task('scss', function() {
    return gulp.src('app/scss/*.scss')
+       .pipe(plumber({errorHandler: onError}))
        .pipe(cached('scss'))
        .pipe(gulpif(options.env === 'development', sourcemaps.init()))
        .pipe(sass())
@@ -86,6 +102,7 @@ gulp.task('fonts', function() {
 
 gulp.task('js', ['vendor-js'], function() {
     return gulp.src('./app/js/**/*')
+        .pipe(plumber({errorHandler: onError}))
         .pipe(ngAnnotate())
         .pipe(gulpif(options.env !== 'development', minifyJS()))
         .pipe(cached('js'))
