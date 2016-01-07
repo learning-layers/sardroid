@@ -13,7 +13,9 @@ sockethandler.factory('socketFactory', function ($rootScope, $state, configFacto
 
     var eventTypes = {
         CONNECT         : 'connect',
+        DISCONNECT      : 'disconnect',
         CONNECT_ERROR   : 'connect_error',
+        TOKEN_VALID     : 'token_valid',
         TOKEN_INVALID   : 'token_invalid',
         CONTACT_ONLINE  : 'contact:online',
         CONTACT_OFFLINE : 'contact:offline'
@@ -46,19 +48,28 @@ sockethandler.factory('socketFactory', function ($rootScope, $state, configFacto
         connectToServer: function(token) {
             socket = io.connect(config.url, { query: "token=" + token });
 
+            // These two events are used for authentication
+            socket.on(eventTypes.TOKEN_VALID, function(data) {
+                console.log('Token is valid!');
+            });
+
+            socket.on(eventTypes.TOKEN_INVALID, function(data) {
+                console.log('Token is invalid!');
+                socket.disconnect();
+            });
+
             socket.on(eventTypes.CONNECT, function() {
                 console.log('Succesfully connected!');
+            });
+
+            socket.on(eventTypes.DISCONNECT, function() {
+                console.log('Disconnected!');
             });
 
             socket.on(eventTypes.CONNECT_ERROR, function(err) {
                 console.log(err);
             });
 
-            socket.on(eventTypes.TOKEN_INVALID, function(data) {
-                console.log('Token is invalid!');
-                disconnectFromServer();
-                $state.go('login');
-            });
 
             socket.on(eventTypes.CONTACT_ONLINE, function(data) {
                 console.log('User is online');
