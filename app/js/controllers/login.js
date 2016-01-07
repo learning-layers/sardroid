@@ -25,10 +25,10 @@ angular.module('login', ['peerhandler'])
         }
 
         $scope.login = function(user) {
-            if (typeof user !== 'undefined' && user.phone) {
+            if (typeof user !== 'undefined' && user.phoneNumber) {
                 // Should probably do some back-end log in related stuff in here?
                 $localStorage.user = user;
-                peerFactory.connectToPeerJS(user.phone).then(function() {
+                peerFactory.connectToPeerJS(user.phoneNumber).then(function() {
                     $state.go('tabs.contacts');
                     socketFactory.connectToServer();
                 });

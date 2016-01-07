@@ -1,4 +1,4 @@
-<ion-view view-title="{{'CONTACTS' | translate}} - {{user.phone}}" ng-cloak>
+<ion-view view-title="{{'CONTACTS' | translate}} - {{user.phoneNumber}}" ng-cloak>
     <ion-header-bar class="bar-light bar-subheader has-tabs-top search-bar">
         <div class="list">
             <label class="item item-input">
@@ -16,7 +16,7 @@
                 <a class="item item-avatar" href ng-click="selectUser(contact)">
                     <img src="{{contact.photo}}">
                     <h2>{{contact.displayName}}</h2>
-                    <p class="contact-number"><i class="icon ion-ios-telephone contact-telephone"></i>  {{contact.number}}</p>
+                    <p class="contact-number"><i class="icon ion-ios-telephone contact-telephone"></i>  {{contact.phoneNumber}}</p>
                     <p class="contact-state"> {{'CONTACT_CURRENT_STATE' | translate}}  {{contact.currentState}}</p>
                 </a>
             </div>

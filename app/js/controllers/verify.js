@@ -14,21 +14,21 @@ angular.module('verify', [])
     }
 
     $scope.goToRegister = goToRegister;
-    
+
     $scope.signup = function (phone) {
         if (phone) {
             var number = phone.replace(' ', '');
 
-
-            /*$http.post(
-                config.url + '/auth/verification',
+            $http.post(
+                url + 'auth/verification',
                 { phoneNumber: number }
             ).then(function success(results) {
                 console.log(results);
+                goToRegister();
             }, function error(err) {
                 console.log(err);
-            }) */
-            goToRegister();
+            })
+
         }
     }
 });
