@@ -34,13 +34,20 @@ angular.module('login', ['peerhandler'])
                     { phoneNumber : user.phoneNumber,
                      password     : user.password }
                 ).then(function success(results) {
-                    console.log(results);
+
                     $localStorage.user  = results.data.user;
                     $localStorage.token = results.data.user.token;
+ 
                     peerFactory.connectToPeerJS(user.phoneNumber).then(function() {
+                        return socketFactory.connectToServer($localStorage.token);
+                    }).then(function () {
                         $state.go('tabs.contacts');
-                        socketFactory.connectToServer('asdasdasd');
+                    })
+                    .catch(function (error) {
+                        peerFactory.disconnectFromPeerJS();
+                        socketFactory.disconnectFromServer();
                     });
+
                 }, function error(err) {
                     console.log(err);
                 })

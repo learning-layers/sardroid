@@ -46,32 +46,10 @@ sockethandler.factory('socketFactory', function ($rootScope, $state, configFacto
         eventTypes: eventTypes,
 
         connectToServer: function(token) {
-            socket = io.connect(config.url, { query: "token=" + token });
 
-            // These two events are used for authentication
-            socket.on(eventTypes.TOKEN_VALID, function(data) {
-                console.log('Token is valid!');
-            });
-
-            socket.on(eventTypes.TOKEN_INVALID, function(data) {
-                console.log('Token is invalid!');
-                socket.disconnect();
-            });
-
-            socket.on(eventTypes.CONNECT, function() {
-                console.log('Succesfully connected!');
-            });
-
-            socket.on(eventTypes.DISCONNECT, function() {
-                console.log('Disconnected!');
-            });
-
-            socket.on(eventTypes.CONNECT_ERROR, function(err) {
-                console.log(err);
-            });
-
-
-            socket.on(eventTypes.CONTACT_ONLINE, function(data) {
+             socket = io.connect(config.url, { query: "token=" + token });
+            
+             socket.on(eventTypes.CONTACT_ONLINE, function(data) {
                 console.log('User is online');
                 data.eventType = eventTypes.CONTACT_ONLINE;
                 callCallbacks(eventTypes.CONTACT_ONLINE, data);
@@ -82,6 +60,34 @@ sockethandler.factory('socketFactory', function ($rootScope, $state, configFacto
                 data.eventType = eventTypes.CONTACT_OFFLINE;
                 callCallbacks(eventTypes.CONTACT_OFFLINE, data);
             });
+            
+            return new Promise(function (resolve, reject) {
+                // These two events are used for authentication
+                socket.on(eventTypes.TOKEN_VALID, function(data) {
+                    console.log('Token is valid!');
+                    resolve();
+                });
+
+                socket.on(eventTypes.TOKEN_INVALID, function(data) {
+                    console.log('Token is invalid!');
+                    socket.disconnect();
+                    reject();
+                });
+
+                socket.on(eventTypes.CONNECT, function() {
+                    console.log('Succesfully connected!');
+                });
+
+                socket.on(eventTypes.DISCONNECT, function() {
+                    console.log('Disconnected!');
+                });
+
+                socket.on(eventTypes.CONNECT_ERROR, function(err) {
+                    console.log(err);
+                    reject();
+                });
+            })
+
         },
 
         disconnectFromServer: function () {
