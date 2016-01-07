@@ -48,7 +48,7 @@ sockethandler.factory('socketFactory', function ($rootScope, $state, configFacto
         connectToServer: function(token) {
 
              socket = io.connect(config.url, { query: "token=" + token });
-            
+
              socket.on(eventTypes.CONTACT_ONLINE, function(data) {
                 console.log('User is online');
                 data.eventType = eventTypes.CONTACT_ONLINE;
@@ -60,7 +60,7 @@ sockethandler.factory('socketFactory', function ($rootScope, $state, configFacto
                 data.eventType = eventTypes.CONTACT_OFFLINE;
                 callCallbacks(eventTypes.CONTACT_OFFLINE, data);
             });
-            
+
             return new Promise(function (resolve, reject) {
                 // These two events are used for authentication
                 socket.on(eventTypes.TOKEN_VALID, function(data) {
