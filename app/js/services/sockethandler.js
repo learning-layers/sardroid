@@ -6,16 +6,17 @@
 
 var sockethandler = angular.module('sockethandler', []);
 
-sockethandler.factory('socketFactory', function ($rootScope, configFactory) {
+sockethandler.factory('socketFactory', function ($rootScope, $state, configFactory) {
 
     // The actual websocket connection where most of the magic happens
     var socket = null;
 
     var eventTypes = {
-        CONNECT: 'connect',
-        CONNECT_ERROR: 'connect_error',
-        CONTACT_ONLINE: 'contact:online',
-        CONTACT_OFFLINE: 'contact:offline'
+        CONNECT         : 'connect',
+        CONNECT_ERROR   : 'connect_error',
+        TOKEN_INVALID   : 'token_invalid',
+        CONTACT_ONLINE  : 'contact:online',
+        CONTACT_OFFLINE : 'contact:offline'
     };
 
     // Array of callbacks
@@ -42,8 +43,8 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory) {
     return {
         eventTypes: eventTypes,
 
-        connectToServer: function() {
-            socket = io.connect(config.url);
+        connectToServer: function(token) {
+            socket = io.connect(config.url, { query: "token=" + token });
 
             socket.on(eventTypes.CONNECT, function() {
                 console.log('Succesfully connected!');
@@ -51,6 +52,12 @@ sockethandler.factory('socketFactory', function ($rootScope, configFactory) {
 
             socket.on(eventTypes.CONNECT_ERROR, function(err) {
                 console.log(err);
+            });
+
+            socket.on(eventTypes.TOKEN_INVALID, function(data) {
+                console.log('Token is invalid!');
+                disconnectFromServer();
+                $state.go('login');
             });
 
             socket.on(eventTypes.CONTACT_ONLINE, function(data) {
