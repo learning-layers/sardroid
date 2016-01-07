@@ -7,7 +7,7 @@
     "VERIFY_CODE": "Varmistusluku",
     "REGISTER" :  "Rekisteröidy",
     "REGISTER_NUMBER_HEADER" :  "2 / 2 | Rekisteröityminen ",
-    "REGISTER_NUMBER_TEXT" :  "Kirjoita koodisi, sekä salasana jota haluat käyttää kahteen kertaan.",
+    "REGISTER_NUMBER_TEXT" :  "OK, sinun pitäisi saada koodisi hetken päästä. Sinulla on tunti aikaa käyttää koodi, joten kirjoita se alle, sekä myös salasana jota haluat käyttää kahteen kertaan.",
     "MOBILE_NUMBER": "Puhelinnumero",
     "PASSWORD": "Salasana",
     "PASSWORD_AGAIN": "Salasana uudelleen",
