@@ -5,9 +5,7 @@
  */
 
 angular.module('register', [])
-.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $http, $ionicPopup, configFactory) {
-
-    var url = configFactory.getValue('apiUrl');
+.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, apiFactory, $ionicPopup, configFactory) {
 
     $scope.register = function (newUser) {
 
@@ -26,20 +24,17 @@ angular.module('register', [])
                 newUser.password      = "";
                 newUser.passwordAgain = "";
             });
+
         } else {
-
-            $http.post(
-                url + 'auth/register',
-                { verificationCode : newUser.code,
-                 password          : newUser.password }
-            ).then(function success(results) {
+            apiFactory.auth.register(newUser.code, newUser.password)
+            .then(function success(results) {
                 console.log(results);
-                $localStorage.user = results.data;
+                $localStorage.user = results;
                 $state.go('login');
-            }, function error(err) {
-                console.log(err);
             })
-
+            .catch(function (error) {
+                console.log(error);
+            })
         }
     };
 });

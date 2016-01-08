@@ -7,8 +7,6 @@
 angular.module('verify', [])
 .controller('VerifyCtrl', function($scope, $state, $localStorage, apiFactory, configFactory) {
 
-    var url = configFactory.getValue('apiUrl');
-
     var goToRegister = function () {
         $state.go('register')
     }
