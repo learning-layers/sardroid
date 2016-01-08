@@ -44,8 +44,9 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
     };
 
     var post = function (path, params) {
+        console.log(params);
         return new Promise(function (resolve, reject) {
-            $http.post(apiUrl + path, { data: params })
+            $http.post(apiUrl + path, params )
                 .then(function (results) {
                     resolve(results.data)
                 })
