@@ -68,7 +68,13 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
 
         auth: {
             login: function (phoneNumber, password) {
-                return post('auth/login', { phoneNumber : phoneNumber, password : password })
+                return post('auth/login', { phoneNumber : phoneNumber, password : password });
+            },
+            verify: function (phoneNumber) {
+                return post('auth/verification', { phoneNumber : phoneNumber});
+            },
+            register: function (verificationCode, password) {
+                return post('auth/register', { verificationCode: verificationCode, password: password });
             }
         }
 

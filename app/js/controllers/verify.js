@@ -5,7 +5,7 @@
  */
 
 angular.module('verify', [])
-.controller('VerifyCtrl', function($scope, $state, $localStorage, $http, configFactory) {
+.controller('VerifyCtrl', function($scope, $state, $localStorage, apiFactory, configFactory) {
 
     var url = configFactory.getValue('apiUrl');
 
@@ -19,16 +19,14 @@ angular.module('verify', [])
         if (phone) {
             var number = phone.replace(' ', '');
 
-            $http.post(
-                url + 'auth/verification',
-                { phoneNumber: number }
-            ).then(function success(results) {
-                console.log(results);
-                goToRegister();
-            }, function error(err) {
-                console.log(err);
-            })
-
+            apiFactory.auth.verify(number)
+                .then(function success(results) {
+                    console.log(results);
+                    goToRegister();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
         }
     }
 });
