@@ -8,7 +8,7 @@ var apihandler = angular.module('apihandler', []);
 
 apihandler.factory('apiFactory', function ($http, configFactory) {
     // Private API
-    var url = configFactory.getValue('apiUrl');
+    var apiUrl = configFactory.getValue('apiUrl');
 
     // Various different kinds of errors that can be returned from the REST API
     var errorTypes = {
@@ -29,7 +29,22 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
         }
     };
 
+    var get = function (path) {
+        return $http.get(apiUrl + path);
+    };
+
+    var post = function (path, params) {
+        return $http.post(apiUrl + path, { data: params });
+    };
+
     // Public API
-    return {};
+    return {
+        setApiToken: function (token) {
+            $http.defaults.headers.common.Authorization = 'Bearer: ' + token;
+        },
+        deleteApiToken: function () {
+            delete $http.defaults.headers.common.Authorization;
+        },
+    };
 });
 
