@@ -41,8 +41,6 @@ angular.module('login', ['peerhandler'])
                     })
                     .catch(function (error) {
                         console.log(error);
-                        peerFactory.disconnectFromPeerJS();
-                        socketFactory.disconnectFromServer();
                     });
             }
         };
