@@ -29,22 +29,48 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
         }
     };
 
+    var formatError = function (error) {
+        var errorType    = error.data ? error.name    : error.data.type
+        var errorMessage = error.data ? error.message : error.data.message
+
+        return {
+            name    : errorType,
+            message : errorMessage
+        }
+    }
+
     var get = function (path) {
         return $http.get(apiUrl + path);
     };
 
     var post = function (path, params) {
-        return $http.post(apiUrl + path, { data: params });
+        return new Promise(function (resolve, reject) {
+            $http.post(apiUrl + path, { data: params })
+                .then(function (results) {
+                    resolve(results.data)
+                })
+                .catch(function (error) {
+                    reject(formatError(error));
+                })
+        })
     };
 
     // Public API
     return {
+
         setApiToken: function (token) {
             $http.defaults.headers.common.Authorization = 'Bearer: ' + token;
         },
         deleteApiToken: function () {
             delete $http.defaults.headers.common.Authorization;
         },
+
+        auth: {
+            login: function (phoneNumber, password) {
+                return post('auth/login', { phoneNumber : phoneNumber, password : password })
+            }
+        }
+
     };
 });
 
