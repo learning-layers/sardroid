@@ -30,8 +30,8 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
     };
 
     var formatError = function (error) {
-        var errorType    = error.data ? error.name    : error.data.type
-        var errorMessage = error.data ? error.message : error.data.message
+        var errorType    = typeof error.data === 'undefined' ? error.name    : error.data.type
+        var errorMessage = typeof error.data === 'undefined' ? error.message : error.data.message
 
         return {
             name    : errorType,
