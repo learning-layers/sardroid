@@ -2,7 +2,7 @@
     "LOGIN" :  "Kirjaudu sisään",
     "VERIFY_NUMBER" :  "Lähetä varmistuskoodi",
     "VERIFY_NUMBER_HEADER" :  "1 / 2 |  Numerosi varmentaminen",
-    "VERIFY_NUMBER_TEXT" :  "Rekisteröityäksesi lähetämme sinulle kertakäyttöisen koodin tekstiviestinä varmentaaksemme numerosi. Kirjoita numerosi alas ja käytä tätä koodia rekisteröidessäsi tilin",
+    "VERIFY_NUMBER_TEXT" :  "Rekisteröityäksesi lähetämme sinulle kertakäyttöisen koodin tekstiviestinä varmentaaksemme numerosi. Kirjoita numerosi alas (kansainvälisesssä formaatissa) ja käytä tätä koodia rekisteröidessäsi tilin",
     "VERIFY_EXIST" :  "Onko sinulla jo koodi? Klikkaa tästä.",
     "VERIFY_CODE": "Varmistusluku",
     "REGISTER" :  "Rekisteröidy",

@@ -2,7 +2,7 @@
     "LOGIN": "Login",
     "VERIFY_NUMBER" :  "Send verification code",
     "VERIFY_NUMBER_HEADER" :  "1 / 2 |  Verifying your phone number",
-    "VERIFY_NUMBER_TEXT" :  "In order to sign up, we will send you an SMS message with a one-time code to verify your phone number. Enter your number below and use this code to register your account",
+    "VERIFY_NUMBER_TEXT" :  "In order to sign up, we will send you an SMS with a one-time code to verify your phone number. Enter your number below (in international format) and use this code to register your account",
     "VERIFY_EXIST" :  "Already got a code? Tap here.",
     "VERIFY_CODE": "Verification code",
     "REGISTER" :  "Sign up",
