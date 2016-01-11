@@ -28,7 +28,7 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                                 url:  configFactory.getValue('onlineContactsLocation')
                             })
                             .then(function success(results) {
-
+                                    // Add a plus sign since PeerJS doesn't allow them in an id
                                     var onlineUsers = results.data.map(function (c) {
                                         return "+" + c;
                                     });
