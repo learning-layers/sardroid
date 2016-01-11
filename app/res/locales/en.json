@@ -1,5 +1,10 @@
 {
     "LOGIN": "Login",
+    "ERROR" :  "Error!",
+    "UNSPECIFIED_ERROR" :  "Unspecified error",
+    "TIMEOUT_ERROR" :  "Connection timed out",
+    "WRONG_PASSWORD": "Wrong password!",
+    "USER_NOT_FOUND": "User not found!",
     "VERIFY_NUMBER" :  "Send verification code",
     "VERIFY_NUMBER_HEADER" :  "1 / 2 |  Verifying your phone number",
     "VERIFY_NUMBER_TEXT" :  "In order to sign up, we will send you an SMS with a one-time code to verify your phone number. Enter your number below (in international format) and use this code to register your account",

@@ -46,7 +46,7 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
         }
 
         return {
-            name    : errorType,
+            name    : errorType.toUpperCase(),
             message : errorMessage
         }
     }

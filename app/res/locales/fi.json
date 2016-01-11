@@ -1,5 +1,10 @@
 {
     "LOGIN" :  "Kirjaudu sisään",
+    "ERROR" :  "Virhe!",
+    "UNSPECIFIED_ERROR" :  "Tuntematon virhe",
+    "TIMEOUT_ERROR" :  "Yhteyttä palvelimeen ei saatu",
+    "WRONG_PASSWORD": "Väärä salasana!",
+    "USER_NOT_FOUND": "Käyttäjää ei löytynyt!",
     "VERIFY_NUMBER" :  "Lähetä varmistuskoodi",
     "VERIFY_NUMBER_HEADER" :  "1 / 2 |  Numerosi varmentaminen",
     "VERIFY_NUMBER_TEXT" :  "Rekisteröityäksesi lähetämme sinulle kertakäyttöisen koodin tekstiviestinä varmentaaksemme numerosi. Kirjoita numerosi alas (kansainvälisesssä formaatissa) ja käytä tätä koodia rekisteröidessäsi tilin",

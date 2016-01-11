@@ -7,7 +7,7 @@
 
 angular.module('login', ['peerhandler'])
 
-.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, apiFactory, modalFactory,  peerFactory, socketFactory, configFactory) {
+.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, configFactory) {
         // Disable back button so we can't back to login!
         $ionicHistory.nextViewOptions({
             disableBack: true
@@ -41,8 +41,13 @@ angular.module('login', ['peerhandler'])
                         })
                     })
                     .catch(function (error) {
-                        console.log(error);
-                        modalFactory.alert(error.name, error.message);
+                        var name = error.name;
+
+                        if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {
+                            name = 'TIMEOUT_ERROR';
+                        }
+
+                        modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
                     });
             }
         };
