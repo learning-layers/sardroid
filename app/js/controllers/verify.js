@@ -5,7 +5,7 @@
  */
 
 angular.module('verify', [])
-.controller('VerifyCtrl', function($scope, $state, $localStorage,$ionicPopup,  apiFactory, configFactory) {
+.controller('VerifyCtrl', function($scope, $state, $localStorage,$ionicPopup, modalFactory, apiFactory, configFactory) {
 
     var goToRegister = function () {
         $state.go('register')
@@ -34,7 +34,13 @@ angular.module('verify', [])
                         goToRegister();
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        var name = error.name;
+
+                        if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {
+                            name = 'TIMEOUT_ERROR';
+                        }
+
+                        modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
                     })
             }
         }

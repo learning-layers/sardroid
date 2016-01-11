@@ -5,7 +5,7 @@
  */
 
 angular.module('register', [])
-.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, apiFactory, $ionicPopup, configFactory) {
+.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, apiFactory, $ionicPopup, modalFactory, configFactory) {
 
     $scope.register = function (newUser) {
 
@@ -33,7 +33,13 @@ angular.module('register', [])
                 $state.go('login');
             })
             .catch(function (error) {
-                console.log(error);
+                var name = error.name;
+
+                if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {
+                    name = 'TIMEOUT_ERROR';
+                }
+
+                modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
             })
         }
     };
