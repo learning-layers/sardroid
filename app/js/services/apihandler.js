@@ -61,6 +61,7 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
 
     // Public API
     return {
+        errorTypes: errorTypes,
 
         setApiToken: function (token) {
             $http.defaults.headers.common.Authorization = 'Bearer: ' + token;
