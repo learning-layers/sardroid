@@ -7,7 +7,7 @@
 
 angular.module('login', ['peerhandler'])
 
-.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, apiFactory, peerFactory, socketFactory, configFactory) {
+.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, apiFactory, modalFactory,  peerFactory, socketFactory, configFactory) {
         // Disable back button so we can't back to login!
         $ionicHistory.nextViewOptions({
             disableBack: true
@@ -39,10 +39,10 @@ angular.module('login', ['peerhandler'])
                         }).then(function () {
                             $state.go('tabs.contacts');
                         })
-
                     })
                     .catch(function (error) {
                         console.log(error);
+                        modalFactory.alert(error.name, error.message);
                     });
             }
         };

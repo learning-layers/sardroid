@@ -6,7 +6,7 @@
 
 var modalhandler = angular.module('modalhandler', []);
 
-modalhandler.factory('modalFactory', function(i$ionicPopup) {
+modalhandler.factory('modalFactory', function($ionicPopup) {
     return {
         alert: function (title, template) {
             return $ionicPopup.alert({
