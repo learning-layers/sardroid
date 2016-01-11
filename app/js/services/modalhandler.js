@@ -7,6 +7,13 @@
 var modalhandler = angular.module('modalhandler', []);
 
 modalhandler.factory('modalFactory', function(i$ionicPopup) {
-    return {}
+    return {
+        alert: function (title, template) {
+            return $ionicPopup.alert({
+                title    : title,
+                template : template
+            });
+        }
+    }
 });
 
