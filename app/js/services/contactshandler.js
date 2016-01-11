@@ -35,6 +35,12 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                                     var formattedContacts = _.reduce(allContacts, function (formatted, c) {
                                         if (!(_.isEmpty(c.phoneNumbers)) && c.phoneNumbers.length > 0 && c.phoneNumbers[0].value !== userPhone) {
                                                 var number = c.phoneNumbers[0].value;
+
+                                                //TODO: Make this more legit
+                                                if (number.substring(0, 4) !== '+358' && number.substring(0, 1) === '0') {
+                                                    number = "+358" + number.substring(1);
+                                                }
+
                                                 formatted.push({
                                                     "original": c,
                                                     "displayName": c.displayName || c.emails[0].value,
