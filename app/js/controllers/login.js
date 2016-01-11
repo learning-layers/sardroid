@@ -31,8 +31,10 @@ angular.module('login', ['peerhandler'])
                         console.log(results);
                         $localStorage.user  = results.user;
                         $localStorage.token = results.user.token;
-     
-                        peerFactory.connectToPeerJS(user.phoneNumber.substring(1)).then(function() {
+
+                        var number = user.phoneNumber.replace('+', '');
+
+                        peerFactory.connectToPeerJS(number).then(function() {
                             return socketFactory.connectToServer($localStorage.token);
                         }).then(function () {
                             $state.go('tabs.contacts');
