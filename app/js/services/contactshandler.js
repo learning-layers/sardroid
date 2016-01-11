@@ -29,7 +29,10 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                             })
                             .then(function success(results) {
 
-                                    var onlineUsers = results.data;
+                                    var onlineUsers = results.data.map(function (c) {
+                                        return "+" + c;
+                                    });
+
                                     var userPhone = $localStorage.user.phoneNumber;
 
                                     var formattedContacts = _.reduce(allContacts, function (formatted, c) {
