@@ -26,14 +26,23 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
             USER_NOT_FOUND : 'user_not_found',
             BCRYPT_ERROR   : 'bcrypt_error',
             WRONG_PASSWORD : 'wrong_password'
+        },
+        GENERIC        : {
+            MISSING_PARAMS    : 'missing_params',
+            UNSPECIFIED_ERROR : 'unspecified_error'
         }
     };
 
     var formatError = function (error) {
+        var errorMessage;
+        var errorType;
 
         if (error.name || error.data) {
-            var errorType    = typeof error.data === 'undefined' ? error.name    : error.data.type
-            var errorMessage = typeof error.data === 'undefined' ? error.message : error.data.message
+            errorType    = typeof error.data === 'undefined' ? error.name    : error.data.type
+            errorMessage = typeof error.data === 'undefined' ? error.message : error.data.message
+        } else {
+            errorType    = errorTypes.GENERIC.UNSPECIFIED_ERROR;
+            errorMessage = 'Unspecified error!';
         }
 
         return {
