@@ -30,8 +30,11 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
     };
 
     var formatError = function (error) {
-        var errorType    = typeof error.data === 'undefined' ? error.name    : error.data.type
-        var errorMessage = typeof error.data === 'undefined' ? error.message : error.data.message
+
+        if (error.name || error.data) {
+            var errorType    = typeof error.data === 'undefined' ? error.name    : error.data.type
+            var errorMessage = typeof error.data === 'undefined' ? error.message : error.data.message
+        }
 
         return {
             name    : errorType,
@@ -44,11 +47,9 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
     };
 
     var post = function (path, params) {
-        console.log(params);
         return new Promise(function (resolve, reject) {
             $http.post(apiUrl + path, params )
                 .then(function (results) {
-                    console.log(results);
                     resolve(results.data)
                 })
                 .catch(function (error) {
