@@ -81,17 +81,9 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'verify', 'register',
             controller: 'CallCtrl',
             params: { user: null }
          })
-        .state('tabs.home', {
-            url: '/home',
-            views: {
-                'home-tab': {
-                    templateUrl: 'templates/home.html',
-                    controller: 'HomeCtrl'
-                }
-            }
-        })
         .state('tabs.contacts', {
             url: '/contacts',
+            cache: false,
             views: {
                  'contacts-tab': {
                     templateUrl: 'templates/contacts.html',
