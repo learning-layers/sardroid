@@ -28,7 +28,7 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                                 url:  configFactory.getValue('onlineContactsLocation')
                             })
                             .then(function success(results) {
-
+                                    var onlineUsers = results.data;
                                     var userPhone = $localStorage.user.phoneNumber;
 
                                     var formattedContacts = _.reduce(allContacts, function (formatted, c) {
