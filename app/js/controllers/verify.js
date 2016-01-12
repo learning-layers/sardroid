@@ -5,7 +5,7 @@
  */
 
 angular.module('verify', [])
-.controller('VerifyCtrl', function($scope, $state, $localStorage,$ionicPopup, modalFactory, apiFactory, configFactory) {
+.controller('VerifyCtrl', function($scope, $state, $localStorage, $ionicPopup, $translate, modalFactory, apiFactory, configFactory) {
 
     var goToRegister = function () {
         $state.go('register')
@@ -15,22 +15,12 @@ angular.module('verify', [])
 
     $scope.signup = function (phone) {
         if (phone) {
-            var number = phone.replace(' ', '');
-            //TODO: Do this better
-            if (number.substring(0,4) !== '+358') {
-                var malformedMessagePopup = $ionicPopup.alert({
-                    title: 'Error!',
-                    template: 'Your number must begin with +358'
-                });
+            var number = phone.replace(/[ +]/g, '');
+            var isNumber = /^\d+$/.test(number);
 
-                malformedMessagePopup.then(function() {
-                    $scope.phone = "";
-                });
-
-            } else {
+            if (isNumber) {
                 apiFactory.auth.verify(number)
                     .then(function success(results) {
-                        console.log(results);
                         goToRegister();
                     })
                     .catch(function (error) {
@@ -42,6 +32,8 @@ angular.module('verify', [])
 
                         modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
                     })
+            } else {
+                modalFactory.alert($translate.instant('ERROR'), $translate.instant('MALFORMED_NUMBER'))
             }
         }
     }

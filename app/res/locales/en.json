@@ -14,6 +14,7 @@
     "VERIFY_NUMBER_TEXT" :  "In order to sign up, we will send you an SMS with a one-time code to verify your phone number. Enter your number below (in international format) and use this code to register your account",
     "VERIFY_EXIST" :  "Already got a code? Tap here.",
     "VERIFY_CODE": "Verification code",
+    "MALFORMED_NUMBER": "Your number seems to not be valid!",
     "REGISTER" :  "Sign up",
     "REGISTER_NUMBER_HEADER" :  "2 / 2 | Registering",
     "REGISTER_NUMBER_TEXT" :  "OK, you should receive your code in a moment. You have an hour t ouse it, input your code and the password you want to use, twice",
