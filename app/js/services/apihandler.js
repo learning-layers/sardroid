@@ -49,7 +49,7 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
             name    : errorType.toUpperCase(),
             message : errorMessage
         }
-    }
+    };
 
     var get = function (path) {
         return $http.get(apiUrl + path);
@@ -58,6 +58,19 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
     var post = function (path, params) {
         return new Promise(function (resolve, reject) {
             $http.post(apiUrl + path, params )
+                .then(function (results) {
+                    resolve(results.data)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    reject(formatError(error));
+                })
+        })
+    };
+
+    var del = function (path) {
+        return new Promise(function (resolve, reject) {
+            $http.delete(apiUrl + path)
                 .then(function (results) {
                     resolve(results.data)
                 })
@@ -82,6 +95,9 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
         auth: {
             login: function (phoneNumber, password) {
                 return post('auth/login', { phoneNumber : phoneNumber, password : password });
+            },
+            logout: function () {
+                return del('auth/logout');
             },
             verify: function (phoneNumber) {
                 return post('auth/verification', { phoneNumber : phoneNumber});
