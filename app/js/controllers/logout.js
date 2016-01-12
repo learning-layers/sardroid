@@ -11,30 +11,31 @@ angular.module('logout', ['peerhandler'])
         $scope.logout = function() {
 
             apiFactory.auth.logout()
-                .then(function () {
-                    apiFactory.deleteApiToken();
-
-                    var number = $localStorage.user.phoneNumber;
-
-                    // Remove everything except user number so it doesn't have to be typed in every time
-                    $localStorage.$reset({
-                            user: {
-                                phoneNumber: number
-                            }
-                    })
-
-                    if (peerFactory.isConnected()) {
-                        peerFactory.disconnectFromPeerJS();
-                    }
-
-                    socketFactory.disconnectFromServer();
-
-                    $state.go('login');
+                .then(function (results) {
+                    console.log(results);
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
 
+                apiFactory.deleteApiToken();
+
+                var number = $localStorage.user.phoneNumber;
+
+                // Remove everything except user number so it doesn't have to be typed in every time
+                $localStorage.$reset({
+                        user: {
+                            phoneNumber: number
+                        }
+                })
+
+                if (peerFactory.isConnected()) {
+                    peerFactory.disconnectFromPeerJS();
+                }
+
+                socketFactory.disconnectFromServer();
+
+                $state.go('login');
         };
 });
 
