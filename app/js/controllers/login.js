@@ -25,14 +25,14 @@ angular.module('login', ['peerhandler'])
         }
 
         $scope.login = function(user) {
+            console.log(user);
             if (typeof user !== 'undefined' && user.phoneNumber && user.password) {
-                apiFactory.auth.login(user.phoneNumber, user.password)
+                var number = user.phoneNumber.replace(/[ +]/g, '');
+                apiFactory.auth.login(number, user.password)
                     .then(function success(results) {
                         console.log(results);
                         $localStorage.user  = results.user;
                         $localStorage.token = results.user.token;
-
-                        var number = user.phoneNumber.replace('+', '');
 
                         peerFactory.connectToPeerJS(number).then(function() {
                             return socketFactory.connectToServer($localStorage.token);
@@ -41,6 +41,7 @@ angular.module('login', ['peerhandler'])
                         })
                     })
                     .catch(function (error) {
+                        console.log(error);
                         var name = error.name;
 
                         if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {

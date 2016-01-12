@@ -28,20 +28,18 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                                 url:  configFactory.getValue('onlineContactsLocation')
                             })
                             .then(function success(results) {
-                                    // Add a plus sign since PeerJS doesn't allow them in an id
-                                    var onlineUsers = results.data.map(function (c) {
-                                        return "+" + c;
-                                    });
 
                                     var userPhone = $localStorage.user.phoneNumber;
 
                                     var formattedContacts = _.reduce(allContacts, function (formatted, c) {
                                         if (!(_.isEmpty(c.phoneNumbers)) && c.phoneNumbers.length > 0 && c.phoneNumbers[0].value !== userPhone) {
-                                                var number = c.phoneNumbers[0].value;
+                                                var number = c.phoneNumbers[0].value.replace(' ', '');
 
                                                 //TODO: Make this more legit
-                                                if (number.substring(0, 4) !== '+358' && number.substring(0, 1) === '0') {
-                                                    number = "+358" + number.substring(1);
+                                                if (number.substring(0, 1) === '+') {
+                                                    number = number.substring(1);
+                                                } else if (number.substring(0, 1) === '0') {
+                                                    number = "358" + number.substring(1);
                                                 }
 
                                                 formatted.push({
