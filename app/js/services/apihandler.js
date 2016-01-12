@@ -44,7 +44,8 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
             errorType    = errorTypes.GENERIC.UNSPECIFIED_ERROR;
             errorMessage = 'Unspecified error!';
         }
-
+        console.log(errorType);
+        console.log(errorMessage);
         return {
             name    : errorType.toUpperCase(),
             message : errorMessage

@@ -35,6 +35,7 @@ angular.module('login', ['peerhandler'])
                         $localStorage.token = results.user.token;
 
                         peerFactory.connectToPeerJS(number).then(function() {
+                            apiFactory.setApiToken($localStorage.token);
                             return socketFactory.connectToServer($localStorage.token);
                         }).then(function () {
                             $state.go('tabs.contacts');
