@@ -14,18 +14,24 @@ angular.module('login', ['peerhandler'])
         });
 
         var loginCompleted = function (number) {
-            peerFactory.connectToPeerJS(number).then(function() {
+            socketFactory.connectToServer($localStorage.token)
+            .then(function () {
                 apiFactory.setApiToken($localStorage.token);
-                return socketFactory.connectToServer($localStorage.token);
-            }).then(function () {
+                return peerFactory.connectToPeerJS(number);
+            })
+            .then(function () {
+                console.log('going to swag');
                 $state.go('tabs.contacts');
+            })
+            .catch(function (error) {
+                console.log(error);
             })
         }
         // Hack so we're disconnected for sure!
         peerFactory.disconnectFromPeerJS();
 
         // Already got a valid token, we can just log in
-        if ($localStorage.user.phoneNumber && $localStorage.token) {
+        if ($localStorage.user && $localStorage.token) {
             loginCompleted($localStorage.user.phoneNumber);
         } else if ($localStorage.user) {
             $scope.user = $localStorage.user;
@@ -44,7 +50,7 @@ angular.module('login', ['peerhandler'])
                     .then(function success(results) {
                         $localStorage.user  = results.user;
                         $localStorage.token = results.user.token;
-                        loginCompleted();
+                        loginCompleted(results.user.phoneNumber);
                     })
                     .catch(function (error) {
 
