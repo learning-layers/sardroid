@@ -1,5 +1,6 @@
 {
     "LOGIN" :  "Kirjaudu sisään",
+    "QUIT": "Lopeta sovellus",
     "ERROR" :  "Virhe!",
     "UNSPECIFIED_ERROR" :  "Tuntematon virhe",
     "TIMEOUT_ERROR" :  "Yhteyttä palvelimeen ei saatu",
