@@ -13,10 +13,21 @@ angular.module('login', ['peerhandler'])
             disableBack: true
         });
 
+        var loginCompleted = function (number) {
+            peerFactory.connectToPeerJS(number).then(function() {
+                apiFactory.setApiToken($localStorage.token);
+                return socketFactory.connectToServer($localStorage.token);
+            }).then(function () {
+                $state.go('tabs.contacts');
+            })
+        }
         // Hack so we're disconnected for sure!
         peerFactory.disconnectFromPeerJS();
 
-        if ($localStorage.user) {
+        // Already got a valid token, we can just log in
+        if ($localStorage.user.phoneNumber && $localStorage.token) {
+            loginCompleted($localStorage.user.phoneNumber);
+        } else if ($localStorage.user) {
             $scope.user = $localStorage.user;
         }
 
@@ -25,23 +36,18 @@ angular.module('login', ['peerhandler'])
         }
 
         $scope.login = function(user) {
-            console.log(user);
             if (typeof user !== 'undefined' && user.phoneNumber && user.password) {
+
                 var number = user.phoneNumber.replace(/[ +]/g, '');
+ 
                 apiFactory.auth.login(number, user.password)
                     .then(function success(results) {
-                        console.log(results);
                         $localStorage.user  = results.user;
                         $localStorage.token = results.user.token;
-
-                        peerFactory.connectToPeerJS(number).then(function() {
-                            apiFactory.setApiToken($localStorage.token);
-                            return socketFactory.connectToServer($localStorage.token);
-                        }).then(function () {
-                            $state.go('tabs.contacts');
-                        })
+                        loginCompleted();
                     })
                     .catch(function (error) {
+
                         console.log(error);
                         var name = error.name;
 
