@@ -349,7 +349,12 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
 
             return new Promise(function(resolve, reject) {
 
-             if (me) {
+             if (me && me.disconnected === false ) {
+                 console.log('already connected!');
+                if (me.id === id) {
+                     console.log('already connected with same id, resolving...');
+                    resolve();
+                }
                 me.disconnect();
                 me = null;
             }
@@ -369,6 +374,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 if (isInCallCurrently === false) {
                     isInCallCurrently = true;
 
+                    console.log('call from ' + mediaConnection.peer);
                     var user = contactsFactory.getContactByNumber(mediaConnection.peer);
                     var id = Math.floor(Math.random() * 10000);
                     notificationIds.push(id);
@@ -450,7 +456,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 });
 
                 errorAlert.then(function(res) {
-                    if (error.type == 'server-error') {
+                    if (error.type == 'server-error' || error.type == 'network' ) {
                         disconnectRef();
                         $state.go('login');
                     }
@@ -475,13 +481,14 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 console.log("Warning! no peerjs connection");
                 return;
             }
-
+            console.log('attempting to call user ' );
+            console.log(userToCall);
             isInCallCurrently = true;
 
             showCallLoader();
             getLocalStream(function (stream) {
 
-                currentCallStream = me.call(userToCall.number, stream, { metadata: me.id});
+                currentCallStream = me.call(userToCall.phoneNumber,  stream, { metadata: me.id});
 
                 currentCallStream.on('error', function (err) {
                     hideCallLoader();

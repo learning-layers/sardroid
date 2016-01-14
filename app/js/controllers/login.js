@@ -20,7 +20,7 @@ angular.module('login', ['peerhandler'])
                 return peerFactory.connectToPeerJS(number);
             })
             .then(function () {
-                console.log('going to swag');
+                console.log('going to contacts');
                 $state.go('tabs.contacts');
             })
             .catch(function (error) {
