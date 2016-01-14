@@ -39,7 +39,7 @@
     "CANCEL": "Cancel",
     "CALL_HEADER": "Call with {{displayName}}",
     "USER_ALREADY_IN_CALL": "User is already in call!",
-    "CALL_INCOMING_TITLE":" Call from {{displayName}}}",
+    "CALL_INCOMING_TITLE":" Call from {{displayName}}",
     "NOTIFICATION_CALL" : "SoAR call from {{displayName}} ( {{mediaConnection}} )",
     "CALL_INCOMING_TEMPLATE": "Incoming call. Answer?",
     "ERROR_USER_OFFLINE": "Looks like that user is offline!",
