@@ -105,6 +105,9 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
             },
             register: function (verificationCode, password) {
                 return post('auth/register', { verificationCode: verificationCode, password: password });
+            },
+            resetPassword: function (verificationCode, password) {
+                return post('auth/resetpw', { verificationCode: verificationCode, password: password });
             }
         }
 

@@ -19,7 +19,7 @@ angular.module('register', [])
         $scope.buttonTranslation = 'RESET_PASSWORD';
     }
 
-    $scope.register = function (user) {
+    $scope.submit = function (user) {
 
         if (!user || !user.password || !user.passwordAgain || !user.code) {
             return;
@@ -38,7 +38,9 @@ angular.module('register', [])
             });
 
         } else {
-            apiFactory.auth.register(user.code, user.password)
+            var requestType = currentState === 'register' ? apiFactory.auth.register : apiFactory.auth.resetPassword;
+
+            requestType(user.code, user.password)
             .then(function success(results) {
                 console.log(results);
                 $localStorage.user = results;
