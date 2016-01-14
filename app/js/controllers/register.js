@@ -1,19 +1,31 @@
 'use strict';
 
 /*
- * Controller for the registering screen
+ * Controller for the registering screen, also handles resetting passwords. Sneaky!
  */
 
 angular.module('register', [])
-.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, apiFactory, $ionicPopup, modalFactory, configFactory) {
+.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $stateParams, apiFactory, $ionicPopup, modalFactory, configFactory) {
 
-    $scope.register = function (newUser) {
+    var currentState = $stateParams.state;
 
-        if (!newUser || !newUser.password || !newUser.passwordAgain || !newUser.code) {
+    if (currentState === 'register') {
+        $scope.textTranslation   = 'VERIFY_NUMBER_REGISTER_TEXT';
+        $scope.headerTranslation = 'REGISTER_NUMBER_HEADER';
+        $scope.buttonTranslation = 'REGISTER';
+    } else if (currentState === 'reset_password') {
+        $scope.textTranslation   = 'VERIFY_NUMBER_PASSWORD_TEXT';
+        $scope.headerTranslation = 'RESET_PASSWORD_HEADER';
+        $scope.buttonTranslation = 'RESET_PASSWORD';
+    }
+
+    $scope.register = function (user) {
+
+        if (!user || !user.password || !user.passwordAgain || !user.code) {
             return;
         }
 
-        if (newUser.password !== newUser.passwordAgain) {
+        if (user.password !== user.passwordAgain) {
 
             var callEndedAlert = $ionicPopup.alert({
                 title    : $translate.instant('PASSWORD_ERROR'),
@@ -21,12 +33,12 @@ angular.module('register', [])
             });
 
             callEndedAlert.then(function() {
-                newUser.password      = "";
-                newUser.passwordAgain = "";
+                user.password      = "";
+                user.passwordAgain = "";
             });
 
         } else {
-            apiFactory.auth.register(newUser.code, newUser.password)
+            apiFactory.auth.register(user.code, user.password)
             .then(function success(results) {
                 console.log(results);
                 $localStorage.user = results;

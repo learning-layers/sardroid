@@ -1,22 +1,23 @@
 'use strict';
 
 /*
- * Controller for the verification screen
+ * Controller for the verification screen, verification requests can be made for registering
+ * or resetting your password
  */
 
 angular.module('verify', [])
 .controller('VerifyCtrl', function($scope, $state, $localStorage, $ionicPopup, $translate, $stateParams, modalFactory, apiFactory, configFactory) {
     
     var currentState = $stateParams.state;
-    console.log(currentState);
-    if (currentState === 'signup') {
+
+    if (currentState === 'register') {
         $scope.textTranslation = 'VERIFY_NUMBER_REGISTER_TEXT';
-    } else if (currentState === 'resetpw') {
+    } else if (currentState === 'reset_password') {
         $scope.textTranslation = 'VERIFY_NUMBER_PASSWORD_TEXT';
     }
 
     var goToRegister = function () {
-        $state.go('register')
+        $state.go('register', { state: currentState })
     }
 
     $scope.goToRegister = goToRegister;
@@ -27,7 +28,7 @@ angular.module('verify', [])
             var isNumber = /^\d+$/.test(number);
 
             if (isNumber) {
-                apiFactory.auth.verify(number)
+                apiFactory.auth.verify(number, currentState)
                     .then(function success(results) {
                         goToRegister();
                     })

@@ -1,11 +1,11 @@
-<ion-view view-title="Register" hide-nav-bar="false">
+<ion-view view-title="Register / Reset password" hide-nav-bar="false">
     <ion-content class="padding flex-container flex-container-center center">
         <div class="full-width  card">
             <div class="item item-divider text-center">
-                {{'REGISTER_NUMBER_HEADER' | translate}}
+                {{headerTranslation | translate}}
             </div>
             <div class="item item-text-wrap">
-                {{'REGISTER_NUMBER_TEXT' | translate}}
+                {{textTranslation | translate}}
             </div>
         </div>
         <div>
@@ -13,17 +13,17 @@
                 <form>
                     <label class="item item-input">
                         <i class="icon ion-key placeholder-icon"></i>
-                        <input type="text" placeholder="{{'VERIFY_CODE' | translate}}" ng-model="newUser.code" >
+                        <input type="text" placeholder="{{'VERIFY_CODE' | translate}}" ng-model="user.code" >
                     </label>
                     <label class="item item-input">
                         <i class="icon ion-locked placeholder-icon"></i>
-                        <input type="password" placeholder="{{'PASSWORD' | translate}}" ng-model="newUser.password" >
+                        <input type="password" placeholder="{{'PASSWORD' | translate}}" ng-model="user.password" >
                     </label>
                     <label class="item item-input">
                         <i class="icon ion-locked placeholder-icon"></i>
-                        <input type="password" placeholder="{{'PASSWORD_AGAIN' | translate}}" ng-model="newUser.passwordAgain" >
+                        <input type="password" placeholder="{{'PASSWORD_AGAIN' | translate}}" ng-model="user.passwordAgain" >
                     </label>
-                    <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="register(newUser)" translate="REGISTER"></button>
+                    <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="register(user)" translate="{{buttonTranslation}}"></button>
                 </form>
             </div>
         </div>

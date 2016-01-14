@@ -38,11 +38,11 @@ angular.module('login', ['peerhandler'])
         }
 
         $scope.goToSignUp = function () {
-            $state.go('verify', { state: 'signup' });
+            $state.go('verify', { state: 'register' });
         }
 
         $scope.goToResetPassword = function () {
-            $state.go('verify', { state: 'resetpw' });
+            $state.go('verify', { state: 'reset_password' });
         }
 
         $scope.login = function(user) {

@@ -100,8 +100,8 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
             logout: function () {
                 return del('auth/logout');
             },
-            verify: function (phoneNumber) {
-                return post('auth/verification', { phoneNumber : phoneNumber});
+            verify: function (phoneNumber, verificationType) {
+                return post('auth/verification', { phoneNumber : phoneNumber, verificationType: verificationType});
             },
             register: function (verificationCode, password) {
                 return post('auth/register', { verificationCode: verificationCode, password: password });
