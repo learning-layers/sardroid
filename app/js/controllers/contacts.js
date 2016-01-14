@@ -72,7 +72,13 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
                     buttonClicked: function(index) {
                         switch (index) {
                             case 0:
-                                peerFactory.callPeer(selectedUser);
+                                peerFactory.callPeer(selectedUser)
+                                    .then(function (user) {
+                                         $state.go('call', { user: user });
+                                    })
+                                    .catch(function (error) {
+                                        alert(error);
+                                    })
                                 break;
                         }
                         return true;
