@@ -38,7 +38,11 @@ angular.module('login', ['peerhandler'])
         }
 
         $scope.goToSignUp = function () {
-            $state.go('verify');
+            $state.go('verify', { state: 'signup' });
+        }
+
+        $scope.goToResetPassword = function () {
+            $state.go('verify', { state: 'resetpw' });
         }
 
         $scope.login = function(user) {

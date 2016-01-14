@@ -5,7 +5,15 @@
  */
 
 angular.module('verify', [])
-.controller('VerifyCtrl', function($scope, $state, $localStorage, $ionicPopup, $translate, modalFactory, apiFactory, configFactory) {
+.controller('VerifyCtrl', function($scope, $state, $localStorage, $ionicPopup, $translate, $stateParams, modalFactory, apiFactory, configFactory) {
+    
+    var currentState = $stateParams.state;
+    console.log(currentState);
+    if (currentState === 'signup') {
+        $scope.textTranslation = 'VERIFY_NUMBER_REGISTER_TEXT';
+    } else if (currentState === 'resetpw') {
+        $scope.textTranslation = 'VERIFY_NUMBER_PASSWORD_TEXT';
+    }
 
     var goToRegister = function () {
         $state.go('register')
