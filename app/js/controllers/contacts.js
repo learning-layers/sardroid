@@ -61,8 +61,7 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
                 var sheet = $ionicActionSheet.show({
 
                     buttons: [
-                        { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' },
-                        { text: '<i class="icon ion-android-person"></i> ' + translations.PROFILE },
+                        { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' }
                     ],
                     titleText:  translations.ACTIONS,
                     cancelText: translations.CANCEL,
@@ -74,9 +73,6 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
                         switch (index) {
                             case 0:
                                 peerFactory.callPeer(selectedUser);
-                                break;
-                            case 1:
-                                $state.go('userprofile', { user: selectedUser });
                                 break;
                         }
                         return true;
