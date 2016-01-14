@@ -27,6 +27,13 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
             BCRYPT_ERROR   : 'bcrypt_error',
             WRONG_PASSWORD : 'wrong_password'
         },
+        RESET_PASSWORD       : {
+            NO_VERIFICATION      : 'no_verification',
+            USER_NOT_FOUND       : 'user_not_found',
+            VERIFICATION_EXPIRED : 'verification_expired',
+            VERIFICATION_USED    : 'verification_used',
+            RESET_FAILED         : 'register_failed',
+        },
         GENERIC        : {
             MISSING_PARAMS    : 'missing_params',
             UNSPECIFIED_ERROR : 'unspecified_error'
