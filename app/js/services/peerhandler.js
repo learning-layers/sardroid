@@ -254,6 +254,9 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
         return new Promise(function (resolve, reject) {
 
             currentAnswerStream = call;
+
+            call.answer(localStream);
+
             call.on('stream', function (mediaStream) {
                 setRemoteStreamSrc(mediaStream);
                 resolve();
@@ -267,8 +270,6 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 reject();
                 callAlertModal('Error: ' + error.toString());
             });
-
-            call.answer(localStream);
 
         })
     };
