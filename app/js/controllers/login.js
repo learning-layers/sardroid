@@ -24,6 +24,8 @@ angular.module('login', ['peerhandler'])
                 $state.go('tabs.contacts');
             })
             .catch(function (error) {
+                socketFactory.disconnectFromServer();
+                peerFactory.disconnectFromPeerJS();
                 console.log(error);
             })
         }
