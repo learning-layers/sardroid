@@ -46,22 +46,26 @@ sockethandler.factory('socketFactory', function ($rootScope, $state, configFacto
         eventTypes: eventTypes,
 
         connectToServer: function(token) {
-
-             socket = io.connect(config.url, { query: "token=" + token });
-
-             socket.on(eventTypes.CONTACT_ONLINE, function(data) {
-                console.log('User is online');
-                data.eventType = eventTypes.CONTACT_ONLINE;
-                callCallbacks(eventTypes.CONTACT_ONLINE, data);
-            });
-
-            socket.on(eventTypes.CONTACT_OFFLINE, function(data) {
-                console.log('User is offline');
-                data.eventType = eventTypes.CONTACT_OFFLINE;
-                callCallbacks(eventTypes.CONTACT_OFFLINE, data);
-            });
-
             return new Promise(function (resolve, reject) {
+                if (socket && socket.connected === true ) {
+                    resolve();
+                    return;
+                }
+
+                 socket = io.connect(config.url, { query: "token=" + token });
+
+                 socket.on(eventTypes.CONTACT_ONLINE, function(data) {
+                    console.log('User is online');
+                    data.eventType = eventTypes.CONTACT_ONLINE;
+                    callCallbacks(eventTypes.CONTACT_ONLINE, data);
+                });
+
+                socket.on(eventTypes.CONTACT_OFFLINE, function(data) {
+                    console.log('User is offline');
+                    data.eventType = eventTypes.CONTACT_OFFLINE;
+                    callCallbacks(eventTypes.CONTACT_OFFLINE, data);
+                });
+
                 // These two events are used for authentication
                 socket.on(eventTypes.TOKEN_VALID, function(data) {
                     console.log('Token is valid!');
