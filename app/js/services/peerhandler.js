@@ -355,16 +355,11 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
 
         connectToPeerJS: function(id)   {
             var disconnectRef = this.disconnectFromPeerJS;
+
             return new Promise(function(resolve, reject) {
 
-                 if (me && me.disconnected === false ) {
-                     console.log('already connected!');
-                    if (me.id === id) {
-                         console.log('already connected with same id, resolving...');
-                        resolve();
-                    }
-                    me.disconnect();
-                    me = null;
+                if (me) {
+                    me.disconnect()
                 }
 
                 me = new Peer(id, config);
@@ -471,6 +466,9 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                     }
                 });
 
+                me.on('disconnected', function(id) {
+                    console.log('Disconnected from PeerJS');
+                });
 
                 me.on('open', function(id) {
                     resolve();
