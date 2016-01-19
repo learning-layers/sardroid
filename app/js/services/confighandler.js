@@ -19,7 +19,11 @@ confighandler.factory('configFactory', function () {
             debug: 3,
             secure: false,
             config: {'iceServers': [
-                { 'url': 'turn:188.166.88.67:3478?transport=tcp' },
+                {
+                    'url'        : 'turn:188.166.88.67:3478',
+                    'username'   : '',
+                    'credential' : ''
+                },
                 { 'url': 'stun:stun.l.google.com:19302' },
                 { 'url': 'stun:stun1.l.google.com:19302' },
                 { 'url': 'stun:stun2.l.google.com:19302' },
