@@ -11,3 +11,9 @@
 .button-wrapper {
     margin-top: 10vh;
 }
+
+.tappable-header {
+    &:active {
+        background-color: #f5f5f5;
+    }
+}
