@@ -29,11 +29,15 @@ var minifyJS   = require('gulp-uglify');
 
 var knownOptions = {
     string: 'env',
-    default: { env: process.env.NODE_ENV || 'development'}
+    default: {
+        env          : process.env.NODE_ENV      || 'development',
+        username     : process.env.TURN_USERNAME || '',
+        password     : process.env.TURN_PASSWORD || '',
+        rollbarToken : process.env.ROLLBAR_TOKEN || ''
+    }
 };
 
 var options = minimist(process.argv.slice(2), knownOptions);
-
 var onError = function(err) {
     notify.onError({
         title:    "Gulp error in " + err.plugin,
