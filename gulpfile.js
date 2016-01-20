@@ -6,6 +6,7 @@ var concat   = require('gulp-concat');
 var gulpif   = require('gulp-if');
 var cached   = require('gulp-cached');
 var remember = require('gulp-remember');
+var replace  = require('gulp-replace-task');
 
 var plumber = require('gulp-plumber');
 var beep    = require('beepbeep');
@@ -87,6 +88,27 @@ gulp.task('vendor-js', function() {
        .pipe(gulp.dest('./www/'))
 });
 
+gulp.task('replace-env', function () {
+    return gulp.src('./app/js/env.js')
+       .pipe(replace({
+            patterns: [
+                {
+                    match: 'ROLLBAR_TOKEN',
+                    replacement: 'hi'
+                },
+                {
+                    match: 'TURN_USERNAME',
+                    replacement: 'hi'
+                },
+                {
+                    match: 'TURN_PASSWORD',
+                    replacement: 'hi'
+                }
+            ]
+        }))
+       .pipe(gulp.dest('./www/'))
+})
+
 gulp.task('copy-res', function() {
    return gulp.src(['./app/res/**/*'],
        { base: './app' })
@@ -100,7 +122,7 @@ gulp.task('fonts', function() {
     .pipe(gulp.dest('./www/fonts'))
 });
 
-gulp.task('js', ['vendor-js'], function() {
+gulp.task('js', ['vendor-js', 'replace-env'], function() {
     return gulp.src('./app/js/**/*')
         .pipe(plumber({errorHandler: onError}))
         .pipe(ngAnnotate())

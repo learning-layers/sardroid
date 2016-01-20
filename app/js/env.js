@@ -1,8 +1,8 @@
 window.env = {
-    rollbarToken: "<ROLLBAR_TOKEN>",
+    rollbarToken: "@@ROLLBAR_TOKEN",
     turnServer: {
-        username: "<TURN_USERNAME>",
-        password: "<TURN_PASSWORD>"
+        username: "@@TURN_USERNAME",
+        password: "@@TURN_PASSWORD"
     }
 }
 
