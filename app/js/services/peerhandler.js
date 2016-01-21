@@ -238,11 +238,9 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     };
 
     var callAlertModal = function(reasonMessage) {
-        var callEndedAlert = $ionicPopup.alert({
-            title: 'Call over!',
-            template: reasonMessage
-        });
-        callEndedAlert.then(function() {
+
+        modalFactory.alert('Call over!', reasonMessage)
+        .then(function() {
             endCallAndGoBack();
         });
 
@@ -404,12 +402,11 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                         break;
                     }
 
-                    var errorAlert = $ionicPopup.alert({
-                        title: $translate.instant('ERROR_TITLE'),
-                        template: errorMsg
-                    });
-
-                    errorAlert.then(function(res) {
+                    modalFactory.alert(
+                        $translate.instant('ERROR_TITLE'),
+                        errorMsg
+                    )
+                    .then(function(res) {
                         if (error.type == 'server-error' || error.type == 'network' ) {
                             disconnectRef();
                             $state.go('login');
