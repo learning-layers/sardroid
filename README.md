@@ -54,6 +54,16 @@ gulp watch
 
 ```
 
+## Environment variables
+
+You can pass in a couple of different arguments to Gulp to inject sensitive API keys and credentials and such, things that are
+best left out of version control!
+
+```sh
+ROLLBAR_TOKEN=asd ROLLBAR_ENV=asd TURN_USERNAME=ads TURN_PASSWORD=asd gulp watch
+
+```
+
 ### Mock data
 
 When developing cordova-based applications in the browser instead of the mobile, it's usually a good idea to provide mock functionality for the various device functionalities! [This Chrome extension](https://github.com/pbernasconi/chrome-cordova) is highly recommended for development.
