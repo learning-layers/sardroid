@@ -137,7 +137,7 @@ gulp.task('fonts', function() {
 });
 
 gulp.task('js', ['vendor-js', 'replace-env'], function() {
-    return gulp.src('./app/js/**/*')
+    return gulp.src(['./app/js/**/*', '!./app/js/env.js'])
         .pipe(plumber({errorHandler: onError}))
         .pipe(ngAnnotate())
         .pipe(gulpif(options.env !== 'development', minifyJS()))

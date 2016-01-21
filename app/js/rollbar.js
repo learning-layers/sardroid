@@ -1,8 +1,8 @@
 var _rollbarConfig = {
-    accessToken: "",
+    accessToken: window.env.rollbar.token,
     captureUncaught: true,
     payload: {
-        environment: "production"
+        environment: window.env.rollbar.environment
     }
 };
 // Rollbar Snippet
