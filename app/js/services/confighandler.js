@@ -21,8 +21,8 @@ confighandler.factory('configFactory', function () {
             config: {'iceServers': [
                 {
                     'url'        : 'turn:188.166.88.67:3478',
-                    'username'   : '',
-                    'credential' : ''
+                    'username'   :  window.env.turnServer.username,
+                    'credential' :  window.env.turnServer.password
                 },
                 { 'url': 'stun:stun.l.google.com:19302' },
                 { 'url': 'stun:stun1.l.google.com:19302' },

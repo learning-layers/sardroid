@@ -30,14 +30,20 @@ var minifyJS   = require('gulp-uglify');
 var knownOptions = {
     string: 'env',
     default: {
-        env          : process.env.NODE_ENV      || 'development',
-        username     : process.env.TURN_USERNAME || '',
-        password     : process.env.TURN_PASSWORD || '',
-        rollbarToken : process.env.ROLLBAR_TOKEN || ''
+        env             : process.env.NODE_ENV      || 'development',
+        turnServer : {
+            username    : process.env.TURN_USERNAME || '',
+            password    : process.env.TURN_PASSWORD || '',
+        },
+        rollbar : {
+            token       : process.env.ROLLBAR_TOKEN || '',
+            environment : process.env.ROLLBAR_ENV   || 'development'
+        }
     }
 };
 
 var options = minimist(process.argv.slice(2), knownOptions);
+
 var onError = function(err) {
     notify.onError({
         title:    "Gulp error in " + err.plugin,
@@ -93,20 +99,24 @@ gulp.task('vendor-js', function() {
 });
 
 gulp.task('replace-env', function () {
-    return gulp.src('./app/js/env.js')
+    return gulp.src('./app/js/env.js', { base: './app'})
        .pipe(replace({
             patterns: [
                 {
                     match: 'ROLLBAR_TOKEN',
-                    replacement: 'hi'
+                    replacement: options.rollbar.token
+                },
+                {
+                    match: 'ROLLBAR_ENV',
+                    replacement: options.rollbar.environment
                 },
                 {
                     match: 'TURN_USERNAME',
-                    replacement: 'hi'
+                    replacement: options.turnServer.username
                 },
                 {
                     match: 'TURN_PASSWORD',
-                    replacement: 'hi'
+                    replacement: options.turnServer.password
                 }
             ]
         }))
