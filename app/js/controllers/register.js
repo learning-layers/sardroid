@@ -5,7 +5,7 @@
  */
 
 angular.module('register', [])
-.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $stateParams, apiFactory, $ionicPopup, modalFactory, configFactory) {
+.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory, configFactory) {
 
     var currentState = $stateParams.state;
 
@@ -26,13 +26,11 @@ angular.module('register', [])
         }
 
         if (user.password !== user.passwordAgain) {
-
-            var callEndedAlert = $ionicPopup.alert({
-                title    : $translate.instant('PASSWORD_ERROR'),
-                template : $translate.instant('PASSWORD_NO_MATCH')
-            });
-
-            callEndedAlert.then(function() {
+            modalFactory.alert(
+                $translate.instant('PASSWORD_ERROR'),
+                $translate.instant('PASSWORD_NO_MATCH')
+            )
+            .then(function() {
                 user.password      = "";
                 user.passwordAgain = "";
             });

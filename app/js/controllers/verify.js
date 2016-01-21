@@ -6,7 +6,7 @@
  */
 
 angular.module('verify', [])
-.controller('VerifyCtrl', function($scope, $state, $localStorage, $ionicPopup, $translate, $stateParams, modalFactory, apiFactory, configFactory) {
+.controller('VerifyCtrl', function($scope, $state, $localStorage, $translate, $stateParams, modalFactory, apiFactory, configFactory) {
     
     var currentState = $stateParams.state;
 
