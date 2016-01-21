@@ -68,12 +68,20 @@
     <ion-side-menus enable-menu-with-back-views="false">
         <ion-side-menu-content>
             <ion-nav-bar class="bar-positive">
+                <ion-spinner class=""></ion-spinner>
                 <ion-nav-back-button>
                 </ion-nav-back-button>
+                <ion-nav-buttons side="left">
+                    <div id="spinner-wrapper" ng-hide="hideLoader">
+                        <ion-spinner id="menu-loader" class="spinner-energized"></ion-spinner>
+                    </div>
+                    </button>
+                </ion-nav-buttons>
                 <ion-nav-buttons side="right">
                     <button class="button button-icon button-clear ion-navicon" menu-toggle="right">
                     </button>
                 </ion-nav-buttons>
+
             </ion-nav-bar >
             <ion-nav-view>
             </ion-nav-view>

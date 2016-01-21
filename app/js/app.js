@@ -42,6 +42,8 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'quit', 'verify', 're
                 });
             // Disable showing right menu by default
             $rootScope.showRightMenu = false;
+            $rootScope.hideLoader    = true;
+
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
 })
 }).config(function($stateProvider, $urlRouterProvider, $translateProvider) {

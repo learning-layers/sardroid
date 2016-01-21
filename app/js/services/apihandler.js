@@ -6,10 +6,10 @@
 
 var apihandler = angular.module('apihandler', []);
 
-apihandler.factory('apiFactory', function ($http, configFactory) {
+apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
     // Private API
     var apiUrl = configFactory.getValue('apiUrl');
-
+    
     // Various different kinds of errors that can be returned from the REST API
     var errorTypes = {
         VERIFICATION   : {
@@ -51,8 +51,7 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
             errorType    = errorTypes.GENERIC.UNSPECIFIED_ERROR;
             errorMessage = 'Unspecified error!';
         }
-        console.log(errorType);
-        console.log(errorMessage);
+        console.log(error);
         return {
             name    : errorType.toUpperCase(),
             message : errorMessage
@@ -65,6 +64,7 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
 
     var post = function (path, params) {
         return new Promise(function (resolve, reject) {
+            $rootScope.hideLoader = false;
             $http.post(apiUrl + path, params )
                 .then(function (results) {
                     resolve(results.data)
@@ -72,6 +72,8 @@ apihandler.factory('apiFactory', function ($http, configFactory) {
                 .catch(function (error) {
                     console.log(error);
                     reject(formatError(error));
+                }).finally(function () {
+                    $rootScope.hideLoader = true;
                 })
         })
     };
