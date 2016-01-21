@@ -3,6 +3,7 @@
     "QUIT": "Lopeta sovellus",
     "ERROR" :  "Virhe!",
     "UNSPECIFIED_ERROR" :  "Tuntematon virhe",
+    "CAMERA_NOT_FOUND" :  "Kameraa ei löytynyt!",
     "TIMEOUT_ERROR" :  "Yhteyttä palvelimeen ei saatu",
     "WRONG_PASSWORD": "Väärä salasana!",
     "USER_NOT_FOUND": "Käyttäjää ei löytynyt!",

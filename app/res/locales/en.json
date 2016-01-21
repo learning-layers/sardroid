@@ -4,6 +4,7 @@
     "ERROR" :  "Error!",
     "UNSPECIFIED_ERROR" :  "Unspecified error",
     "TIMEOUT_ERROR" :  "Connection timed out",
+    "CAMERA_NOT_FOUND" :  "No input device found!",
     "WRONG_PASSWORD": "Wrong password!",
     "USER_NOT_FOUND": "User not found!",
     "NO_VERIFICATION": "Verification code not found",

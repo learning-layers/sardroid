@@ -8,7 +8,7 @@
 
 var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
 
-peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $state, $timeout, $translate, $cordovaLocalNotification, audioFactory, contactsFactory) {
+peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $state, $timeout, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -65,7 +65,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     };
 
     // Private api
-    var getLocalStream = function(successCallback) {
+    var getLocalStream = function(successCallback, errorCallback) {
         if (localStream && successCallback) {
             successCallback(localStream)
         } else {
@@ -88,9 +88,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                             successCallback(stream);
                         }
                     },
-                    function(err){
-                        console.log(err);
-                    }
+                    errorCallback
                 )
             })
         }
@@ -383,7 +381,11 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 });
 
                 me.socket._socket.onopen = function() {
-                    getLocalStream();
+                    getLocalStream(null, function (err) {
+                        if (err.name == 'DevicesNotFoundError'){
+                            modalFactory.alert($translate.instant('ERROR_TITLE'), $translate.instant('CAMERA_NOT_FOUND'));
+                        }
+                    });
                 };
 
                 me.on('error', function(error) {
