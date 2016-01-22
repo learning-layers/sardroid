@@ -18,6 +18,11 @@
   <allow-intent href="geo:*"/>
   <allow-navigation href="*"/>
   <platform name="android">
+          <icon src="resources/android/icon/SoARlogo48.png" density="mdpi" />
+          <icon src="resources/android/icon/SoARlogo72.png" density="hdpi" />
+          <icon src="resources/android/icon/SoARlogo96.png" density="xhdpi" />
+          <icon src="resources/android/icon/SoARlogo144.png" density="xxhdpi" />
+          <icon src="resources/android/icon/SoARlogo192.png" density="xxxhdpi" />
     <allow-intent href="market:*"/>
   </platform>
   <platform name="ios">
