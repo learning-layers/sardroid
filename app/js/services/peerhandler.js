@@ -338,7 +338,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
             }
         },
 
-        clearCallback(type) {
+        clearCallback: function(type) {
             console.log('clearing data callback by type: ' + type);
             dataCallbacks = dataCallbacks.filter(function (cbo) {
                 return cbo.eventType !== type;
