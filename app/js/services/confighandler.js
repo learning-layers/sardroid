@@ -10,10 +10,10 @@ confighandler.factory('configFactory', function () {
     
     // Set up configuration variables we can use anywhere in Angular
     var config = {
-        apiUrl: 'http://192.168.0.12:9000/',
-        onlineContactsLocation: 'http://10.100.51.184:9000/peerjs/peerjs/peers',
+        apiUrl: 'http://10.100.46.9:9000/',
+        onlineContactsLocation: 'http://10.100.46.9:9000/peerjs/peerjs/peers',
         peerjs: {
-            host: '192.168.0.12',
+            host: '10.100.46.9',
             port: 9000,
             path: '/peerjs',
             debug: 3,
@@ -40,7 +40,7 @@ confighandler.factory('configFactory', function () {
             drawingRemoveTime: 2000
         },
         socketio: {
-            url: 'http://192.168.0.12:9000'
+            url: 'http://10.100.46.9:9000'
         }
     };
 
