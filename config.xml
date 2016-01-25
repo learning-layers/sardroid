@@ -2,10 +2,10 @@
 <widget id="com.legroup.sardroid" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>SoAR</name>
   <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+       SoAR (Social Augmented Reality) is a mobile app for collaboration and communication in work environments. It consists of one-on-one video streaming with a bidirectional drawing layer for emphasizing details. SoAR is ideal for cooperating in situations that require an effective, visual assessment.
     </description>
-  <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="matti.jokitulppo@aalto.fi" href="http://soar.aalto.fi">
+        Learning Environments Research Group
     </author>
   <content src="index.html"/>
   <plugin name="cordova-plugin-whitelist" spec="1"/>
@@ -18,11 +18,11 @@
   <allow-intent href="geo:*"/>
   <allow-navigation href="*"/>
   <platform name="android">
-          <icon src="resources/android/icon/SoARlogo48.png" density="mdpi" />
-          <icon src="resources/android/icon/SoARlogo72.png" density="hdpi" />
-          <icon src="resources/android/icon/SoARlogo96.png" density="xhdpi" />
-          <icon src="resources/android/icon/SoARlogo144.png" density="xxhdpi" />
-          <icon src="resources/android/icon/SoARlogo192.png" density="xxxhdpi" />
+          <icon src="resources/android/icon/SoAR48.png" density="mdpi" />
+          <icon src="resources/android/icon/SoAR72.png" density="hdpi" />
+          <icon src="resources/android/icon/SoAR96.png" density="xhdpi" />
+          <icon src="resources/android/icon/SoAR144.png" density="xxhdpi" />
+          <icon src="resources/android/icon/SoAR192.png" density="xxxhdpi" />
     <allow-intent href="market:*"/>
   </platform>
   <platform name="ios">
