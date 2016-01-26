@@ -2,12 +2,17 @@
 
 /*
  * Module that contains a controller in charge of
- * viewing a user's profile. TBD
+ * viewing a user's profile, both your own and other's
  */
 
 angular.module('userprofile', [])
 
-.controller('UserProfileCtrl', function($scope, $stateParams) {
-           $scope.user = $stateParams.user;
+.controller('UserProfileCtrl', function($scope, $localStorage, $stateParams) {
+        if ($stateParams.user) {
+           $scope.user  = $stateParams.user;
+        } else {
+            $scope.user = $localStorage.user;
+        }
+        console.log($scope.user);
 });
 
