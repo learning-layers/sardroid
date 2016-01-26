@@ -4,14 +4,12 @@
         <video id="local-video" class="stream-video" autoplay muted ng-src="{{localStreamSrc}}"></video>
         <canvas id="local-canvas"></canvas>
         <i class="icon fullscreen-button" ng-class="determineFullscreenButtonClass()" ng-click="toggleFullscreen('local')"></i>
-        <!-- <button class="fullscreen-button" ng-click="toggleFullscreen('local')">Fullscreen (local)</button> -->
     </div>
 
     <div class="content-wrapper" id="remote-wrapper">
         <video id="remote-video" class="stream-video" autoplay muted ng-src="{{remoteStreamSrc}}"></video>
         <canvas id="remote-canvas"></canvas>
         <i class="icon fullscreen-button" ng-class="determineFullscreenButtonClass()" ng-click="toggleFullscreen('remote')"></i>
-        <!--  <button class="fullscreen-button" ng-click="toggleFullscreen('remote')" >Fullscreen (remote)</button> -->
     </div>
     </ion-content>
 </ion-view>
