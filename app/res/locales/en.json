@@ -1,6 +1,8 @@
 {
     "LOGIN": "Login",
     "QUIT": "Exit the app",
+    "MISCALLENEOUS": "Miscellaneous settings",
+    "REFRESH_CONTACTS": "Refresh your contacts",
     "SETTINGS": "Settings",
     "ERROR" :  "Error!",
     "UNSPECIFIED_ERROR" :  "Unspecified error",

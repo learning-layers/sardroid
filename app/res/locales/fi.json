@@ -1,6 +1,8 @@
 {
     "LOGIN" :  "Kirjaudu sisään",
     "QUIT": "Lopeta sovellus",
+    "MISCALLENEOUS": "Muut asetukset",
+    "REFRESH_CONTACTS": "Päivitä puhelimen kontaktit",
     "SETTINGS": "Asetukset",
     "ERROR" :  "Virhe!",
     "UNSPECIFIED_ERROR" :  "Tuntematon virhe",
