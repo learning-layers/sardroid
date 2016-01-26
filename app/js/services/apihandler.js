@@ -36,6 +36,7 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
         },
         GENERIC        : {
             MISSING_PARAMS    : 'missing_params',
+            TOKEN_MISSING     : 'token_missing',
             UNSPECIFIED_ERROR : 'unspecified_error'
         }
     };
@@ -53,7 +54,7 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
         }
         console.log(error);
         return {
-            name    : errorType.toUpperCase(),
+            name    : errorType ? errorType.toUpperCase() : null ,
             message : errorMessage
         }
     };
