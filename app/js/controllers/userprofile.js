@@ -2,7 +2,7 @@
 
 /*
  * Module that contains a controller in charge of
- * viewing a user's profile, both your own and other's
+ * viewing a user's profile
  */
 
 angular.module('userprofile', [])

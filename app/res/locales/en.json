@@ -1,6 +1,7 @@
 {
     "LOGIN": "Login",
     "QUIT": "Exit the app",
+    "SETTINGS": "Settings",
     "ERROR" :  "Error!",
     "UNSPECIFIED_ERROR" :  "Unspecified error",
     "TIMEOUT_ERROR" :  "Connection timed out",

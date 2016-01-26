@@ -1,6 +1,7 @@
 {
     "LOGIN" :  "Kirjaudu sisään",
     "QUIT": "Lopeta sovellus",
+    "SETTINGS": "Asetukset",
     "ERROR" :  "Virhe!",
     "UNSPECIFIED_ERROR" :  "Tuntematon virhe",
     "CAMERA_NOT_FOUND" :  "Kameraa ei löytynyt!",

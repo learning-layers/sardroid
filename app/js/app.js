@@ -5,7 +5,7 @@
  * Mostly handles setting up configuration variables
  * and wiring up the states, controllers and templates
  */
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
         $ionicPlatform.ready(function() {
@@ -69,6 +69,12 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'quit', 'verify', 're
             url: '/tab',
             abstract: true,
             templateUrl: 'templates/tabs.html'
+        })
+        .state('settings', {
+            cache: false,
+            url: '/settings',
+            templateUrl: 'templates/settings.html',
+            controller: 'SettingsCtrl'
         })
         .state('userprofile', {
             cache: false,
