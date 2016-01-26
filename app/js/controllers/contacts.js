@@ -57,11 +57,13 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
         $scope.user = $localStorage.user;
 
         $scope.selectUser = function(selectedUser) {
-            if (selectedUser.currentState === contactsFactory.contactStates.ONLINE) {
+            //if (selectedUser.currentState === contactsFactory.contactStates.ONLINE) {
+                var sheetClass = selectedUser.currentState === contactsFactory.contactStates.ONLINE ? 'online' : 'offline';
                 var sheet = $ionicActionSheet.show({
-
+                    cssClass: sheetClass,
                     buttons: [
-                        { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' }
+                        { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' },
+                        { text: '<i class="icon ion-android-person"></i> ' + translations.PROFILE }
                     ],
                     titleText:  translations.ACTIONS,
                     cancelText: translations.CANCEL,
@@ -79,12 +81,15 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
                                     .catch(function (error) {
                                         alert(error);
                                     })
-                                break;
+                            break;
+                            case 1:
+                                $state.go('userprofile', { user: selectedUser })
+                            break;
                         }
                         return true;
                     }
                 });
-            }
+           // }
         };
 });
 

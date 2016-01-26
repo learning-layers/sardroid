@@ -1,0 +1,16 @@
+.action-sheet-backdrop.offline {
+    .action-sheet-group:nth-of-type(1) {
+        button:first-of-type {
+            opacity: .4 !important;
+            cursor: default !important;
+            pointer-events: none !important;
+        }
+    }
+}
+
+.action-sheet {
+   .icon {
+    position: initial;
+  }
+}
+
