@@ -7,6 +7,7 @@ window.env = {
     turnServer: {
         username: '@@TURN_USERNAME',
         password: '@@TURN_PASSWORD'
-    }
+    },
+    environment: '@@ENVIRONMENT'
 }
 

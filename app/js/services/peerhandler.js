@@ -15,8 +15,9 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     // Object holding configuration variables
     var config            = configFactory.getValue('peerjs');
 
-    // Stream object;
+    // Stream objects;
     var localStream       = null;
+    var remoteStream      = null;
 
     // Stream sources
     var remoteVideoSource = null;
@@ -115,10 +116,15 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     }
 
     var setRemoteStreamSrc = function (stream) {
+        console.log(stream.getAudioTracks());
+        console.log(stream.getVideoTracks());
+        remoteStream = stream;
         remoteVideoSource = window.URL.createObjectURL(stream);
     };
 
     var setLocalStreamSrc = function (stream) {
+        console.log(stream.getAudioTracks());
+        console.log(stream.getVideoTracks());
         localVideoSource = window.URL.createObjectURL(stream);
     };
 
@@ -254,6 +260,8 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
             call.answer(localStream);
 
             call.on('stream', function (mediaStream) {
+                console.log('audio tracks from answer');
+                console.log(mediaStream.getAudioTracks());
                 setRemoteStreamSrc(mediaStream);
                 resolve();
             })
@@ -320,6 +328,14 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 return null;
             }
             return localVideoSource;
+        },
+
+        getRemoteStream: function() {
+            return remoteStream;
+        },
+
+        getLocalStream: function() {
+            return localStreamSrc;
         },
 
         isConnected: function() {
@@ -439,7 +455,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                             template: $translate.instant('CALL_INCOMING_TEMPLATE')
                         });
 
-                        audioFactory.playSound('.call');
+                        //audioFactory.playSound('.call');
 
                         confirmPopup.then(function(res) {
 
@@ -512,6 +528,8 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                     currentCallStream.on('stream', function(stream) {
                         console.log('going to stream from call')
                         hideCallLoader();
+                        console.log('audio tracks from stream');
+                        console.log(stream.getAudioTracks());
                         setRemoteStreamSrc(stream);
 
                         resolve(userToCall);

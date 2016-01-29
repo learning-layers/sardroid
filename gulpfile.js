@@ -111,6 +111,10 @@ gulp.task('replace-env', function () {
                     replacement: options.rollbar.environment
                 },
                 {
+                    match: 'ENVIRONMENT',
+                    replacement: options.env
+                },
+                {
                     match: 'TURN_USERNAME',
                     replacement: options.turnServer.username
                 },

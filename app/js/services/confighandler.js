@@ -10,20 +10,20 @@ confighandler.factory('configFactory', function () {
     
     // Set up configuration variables we can use anywhere in Angular
     var config = {
-        apiUrl: 'http://10.100.46.9:9000/',
-        onlineContactsLocation: 'http://10.100.46.9:9000/peerjs/peerjs/peers',
+        apiUrl: 'https://layersbox.aalto.fi/',
+        onlineContactsLocation: 'https://layersbox.aalto.fi/peerjs/peerjs/peers',
         peerjs: {
-            host: '10.100.46.9',
-            port: 9000,
+            host: 'layersbox.aalto.fi',
+            port: 443,
             path: '/peerjs',
-            debug: 3,
-            secure: false,
+            debug: 0,
+            secure: true,
             config: {'iceServers': [
-                {
-                    'url'        : 'turn:188.166.88.67:3478',
-                    'username'   :  window.env.turnServer.username,
-                    'credential' :  window.env.turnServer.password
-                },
+//                {
+//                    'url'        : 'turn:188.166.88.67:3478',
+//                    'username'   :  window.env.turnServer.username,
+//                    'credential' :  window.env.turnServer.password
+//                },
                 { 'url': 'stun:stun.l.google.com:19302' },
                 { 'url': 'stun:stun1.l.google.com:19302' },
                 { 'url': 'stun:stun2.l.google.com:19302' },
@@ -40,7 +40,7 @@ confighandler.factory('configFactory', function () {
             drawingRemoveTime: 2000
         },
         socketio: {
-            url: 'http://10.100.46.9:9000'
+            url: 'https://layersbox.aalto.fi'
         }
     };
 
