@@ -34,6 +34,10 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                                     var formattedContacts = _.reduce(allContacts, function (formatted, c) {
                                         if (!(_.isEmpty(c.phoneNumbers)) && c.phoneNumbers.length > 0 && c.phoneNumbers[0].value !== userPhone) {
                                                 var number = c.phoneNumbers[0].value.replace(' ', '');
+                                                var displayName = 'Unknown';
+
+                                                if (c.displayName) displayName = c.displayName;
+                                                else if (!_.isEmpty(c.emails)) displayName = c.emails[0].value
 
                                                 //TODO: Make this more legit
                                                 if (number.substring(0, 1) === '+') {
@@ -43,11 +47,11 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                                                 }
 
                                                 formatted.push({
-                                                    "original": c,
-                                                    "displayName": c.displayName || c.emails[0].value,
-                                                    "phoneNumber": number,
-                                                    "photo": c.photos ? c.photos[0] ? c.photos[0].value : 'res/img/keilamies-small.png' : 'res/img/keilamies-small.png',
-                                                    "currentState": _.includes(onlineUsers, number) ? contactStates.ONLINE : contactStates.OFFLINE
+                                                    "original"     : c,
+                                                    "displayName"  : displayName,
+                                                    "phoneNumber"  : number,
+                                                    "photo"        : c.photos ? c.photos[0] ? c.photos[0].value             : 'res/img/keilamies-small.png' : 'res/img/keilamies-small.png',
+                                                    "currentState" : _.includes(onlineUsers, number) ? contactStates.ONLINE : contactStates.OFFLINE
                                                 });
                                         }
                                         return formatted;
