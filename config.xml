@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.legroup.sardroid" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.legroup.sardroid" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>SoAR</name>
     <description>
        SoAR (Social Augmented Reality) is a mobile app for collaboration and communication in work environments. It consists of one-on-one video streaming with a bidirectional drawing layer for emphasizing details. SoAR is ideal for cooperating in situations that require an effective, visual assessment.
