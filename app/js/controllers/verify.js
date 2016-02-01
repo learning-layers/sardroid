@@ -35,11 +35,16 @@ angular.module('verify', [])
                     .catch(function (error) {
                         var name = error.name;
 
-                        if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {
-                            name = 'TIMEOUT_ERROR';
+                        if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.TWILIO_ERROR ) {
+                            modalFactory.alert($translate.instant('ERROR'), error.message);
                         }
+                        else {
+                            if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {
+                                name = 'TIMEOUT_ERROR';
+                            }
 
-                        modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
+                            modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
+                        }
                     })
             } else {
                 modalFactory.alert($translate.instant('ERROR'), $translate.instant('MALFORMED_NUMBER'))
