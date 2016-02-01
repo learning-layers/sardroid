@@ -38,3 +38,5 @@ app/vendor
 www
 platforms
 .vagrant/
+SoAR-ARM.apk
+SoARx86.apk
