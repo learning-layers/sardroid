@@ -9,6 +9,7 @@ angular.module('login', ['peerhandler'])
 
 .controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, configFactory) {
 
+        $scope.isLoginButtonDisabled = false;
         var loginCompleted = function (number) {
             socketFactory.connectToServer($localStorage.token)
             .then(function () {
@@ -49,8 +50,9 @@ angular.module('login', ['peerhandler'])
         $scope.login = function(user) {
             if (typeof user !== 'undefined' && user.phoneNumber && user.password) {
 
+                $scope.isLoginButtonDisabled = true;
+
                 var number = user.phoneNumber.replace(/[ +]/g, '');
- 
                 apiFactory.auth.login(number, user.password)
                     .then(function success(results) {
                         $localStorage.user  = results.user;
@@ -58,8 +60,7 @@ angular.module('login', ['peerhandler'])
                         loginCompleted(results.user.phoneNumber);
                     })
                     .catch(function (error) {
-
-                        console.log(error);
+                        $scope.isLoginButtonDisabled = false;
                         var name = error.name;
 
                         if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {
@@ -67,7 +68,7 @@ angular.module('login', ['peerhandler'])
                         }
 
                         modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
-                    });
+                    })
             }
         };
 });

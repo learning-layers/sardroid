@@ -15,7 +15,7 @@
                         <i class="icon ion-ios-telephone placeholder-icon"></i>
                         <input type="tel" international-phone-number placeholder="{{'MOBILE_NUMBER_EXAMPLE' | translate}}" default-language='fi' ng-model="phone" >
                     </label>
-                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup(phone)" translate="VERIFY_NUMBER"></button> 
+                        <button ng-disabled="isVerifyButtonDisabled" class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup(phone)" translate="VERIFY_NUMBER"></button> 
                 </form>
             </div>
         </div>

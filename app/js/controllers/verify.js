@@ -8,6 +8,7 @@
 angular.module('verify', [])
 .controller('VerifyCtrl', function($scope, $state, $localStorage, $translate, $stateParams, modalFactory, apiFactory, configFactory) {
 
+    $scope.isVerifyButtonDisabled = false;
     var currentState = $stateParams.state;
 
     if (currentState === 'register') {
@@ -28,12 +29,14 @@ angular.module('verify', [])
             var isNumber = /^\d+$/.test(number);
 
             if (isNumber) {
+                $scope.isVerifyButtonDisabled = true;
                 apiFactory.auth.verify(number, currentState)
                     .then(function success(results) {
                         goToRegister();
                     })
                     .catch(function (error) {
                         var name = error.name;
+                        $scope.isVerifyButtonDisabled = false;
 
                         if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.TWILIO_ERROR ) {
                             modalFactory.alert($translate.instant('ERROR'), error.message);

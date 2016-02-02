@@ -7,6 +7,7 @@
 angular.module('register', [])
 .controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory, configFactory) {
 
+    $scope.isSignUpButtonDisabled = false;
     var currentState = $stateParams.state;
 
     if (currentState === 'register') {
@@ -36,6 +37,7 @@ angular.module('register', [])
             });
 
         } else {
+            $scope.isSignUpButtonDisabled = true;
             var requestType = currentState === 'register' ? apiFactory.auth.register : apiFactory.auth.resetPassword;
 
             requestType(user.code, user.password)
@@ -46,6 +48,7 @@ angular.module('register', [])
             })
             .catch(function (error) {
                 var name = error.name;
+                $scope.isSignUpButtonDisabled = false;
 
                 if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {
                     name = 'TIMEOUT_ERROR';
