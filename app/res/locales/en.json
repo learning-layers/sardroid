@@ -18,6 +18,7 @@
     "LOST_PASSWORD": " Lost password?",
     "MALFORMED_NUMBER": "Your number seems to not be valid!",
     "MISCALLENEOUS": "Miscellaneous settings",
+    "MOBILE_NUMBER_EXAMPLE": "eg. +358 40 123456",
     "MOBILE_NUMBER": "Mobile number",
     "NOTIFICATION_CALL" : "SoAR call from {{displayName}} ( {{mediaConnection}} )",
     "NO_VERIFICATION": "Verification code not found",

@@ -19,6 +19,7 @@
     "MALFORMED_NUMBER": "Tarkista numerosi, kiitos!",
     "MISCALLENEOUS": "Muut asetukset",
     "MOBILE_NUMBER": "Puhelinnumero",
+    "MOBILE_NUMBER_EXAMPLE": "Esim. +358 40 123456",
     "NOTIFICATION_CALL" : "SoAR-puhelu {{displayName}}:lta ( {{mediaConnection}} )",
     "NO_VERIFICATION": "Kyseistä koodia ei löytynyt",
     "PASSWORD": "Salasana",

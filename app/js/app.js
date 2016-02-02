@@ -43,12 +43,13 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
             // Disable showing right menu by default
             $rootScope.showRightMenu = false;
             $rootScope.hideLoader    = true;
-            //$rootScope.lang = $translate.proposedLanguage() || $translate.use(); 
             $rootScope.lang = 'fi'
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
 })
 }).config(function($stateProvider, $urlRouterProvider, $translateProvider, ipnConfig) {
+
     ipnConfig.skipUtilScriptDownload = true;
+
     $stateProvider
         .state('login', {
             cache: false,
