@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"> -->
     <title>SoAR</title>
 
     <!-- App stylesheets which are compiled from SCSS are here -->
@@ -19,11 +19,15 @@
     <script src="js/rollbar.js"></script>
 
     <!-- Vendor things (downloaded from bower) go here -->
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
     <script src="vendor/ionic/js/ionic.bundle.js"></script>
     <script src="vendor/ngCordova/dist/ng-cordova.js"></script>
     <script src="vendor/peerjs/peer.min.js"></script>
     <script src="vendor/lodash/lodash.min.js"></script>
     <script src="vendor/ngstorage/ngStorage.min.js"></script>
+    <script src="vendor/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
+    <script src="vendor/intl-tel-input/build/js/intlTelInput.min.js"></script>
+    <script src="vendor/international-phone-number/releases/international-phone-number.min.js"></script>
     <script src="vendor/angular-translate/angular-translate.min.js"></script>
     <script src="vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
     <script src="vendor/fabric.js/dist/fabric.js"></script>

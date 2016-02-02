@@ -50,7 +50,7 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                                                     "original"     : c,
                                                     "displayName"  : displayName,
                                                     "phoneNumber"  : number,
-                                                    "photo"        : c.photos ? c.photos[0] ? c.photos[0].value             : 'res/img/keilamies-small.png' : 'res/img/keilamies-small.png',
+                                                    "photo"        : c.photos ? c.photos[0] ? c.photos[0].value             : 'img/keilamies-small.png' : 'img/keilamies-small.png',
                                                     "currentState" : _.includes(onlineUsers, number) ? contactStates.ONLINE : contactStates.OFFLINE
                                                 });
                                         }

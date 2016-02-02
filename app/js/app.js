@@ -5,9 +5,9 @@
  * Mostly handles setting up configuration variables
  * and wiring up the states, controllers and templates
  */
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', 'verify', 'register', 'internationalPhoneNumber', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler'])
 
-.run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate) {
+.run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate, $translate) {
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -43,10 +43,12 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
             // Disable showing right menu by default
             $rootScope.showRightMenu = false;
             $rootScope.hideLoader    = true;
-
+            //$rootScope.lang = $translate.proposedLanguage() || $translate.use(); 
+            $rootScope.lang = 'fi'
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
 })
-}).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
+}).config(function($stateProvider, $urlRouterProvider, $translateProvider, ipnConfig) {
+    ipnConfig.skipUtilScriptDownload = true;
     $stateProvider
         .state('login', {
             cache: false,

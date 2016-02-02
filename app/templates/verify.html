@@ -13,7 +13,7 @@
                 <form>
                     <label class="item item-input">
                         <i class="icon ion-ios-telephone placeholder-icon"></i>
-                        <input type="tel" placeholder="{{'MOBILE_NUMBER' | translate}} (+358 40 1234568)" ng-model="phone" >
+                        <input type="tel" international-phone-number placeholder="{{'MOBILE_NUMBER' | translate}} (+358 40 1234568)" default-language='{{lang}}' ng-model="phone" >
                     </label>
                         <button class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup(phone)" translate="VERIFY_NUMBER"></button> 
                 </form>

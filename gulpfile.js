@@ -60,12 +60,12 @@ gulp.task('build', ['scss', 'js', 'html', 'fonts', 'copy-res'], function() {
 });
 
 gulp.task('scss', function() {
-   return gulp.src('app/scss/*.scss')
+   return gulp.src(['app/scss/*.scss', './app/vendor/intl-tel-input/src/css/intlTelInput.scss'])
        .pipe(plumber({errorHandler: onError}))
        .pipe(cached('scss'))
        .pipe(gulpif(options.env === 'development', sourcemaps.init()))
        .pipe(sass())
-       .on('error', sass.logError)
+       .on('error', sass.logError)  
        .pipe(gulpif(options.env !== 'development', minifyCSS()))
        .pipe(remember('scss'))
        .pipe(concat('app.css'))
@@ -86,11 +86,15 @@ gulp.task('vendor-js', function() {
    return gulp.src(
        ['./app/vendor/ionic/js/ionic.bundle.js',
         './app/vendor/ngCordova/dist/*.js',
+        './app/vendor/jquery/dist/jquery.min.js',
         './app/vendor/peerjs/peer.min.js',
         './app/vendor/rollbar/dist/rollbar.min.js',
         './app/vendor/lodash/lodash.min.js',
         './app/vendor/ngstorage/ngStorage.min.js',
         './app/vendor/angular-translate/angular-translate.min.js',
+        './app/vendor/intl-tel-input/lib/libphonenumber/build/utils.js',
+        './app/vendor/intl-tel-input/build/js/intlTelInput.min.js',
+        './app/vendor/international-phone-number/releases/international-phone-number.min.js',
         './app/vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
         './app/vendor/socket.io-client/socket.io.js',
         './app/vendor/fabric.js/dist/fabric.js'],
@@ -127,12 +131,18 @@ gulp.task('replace-env', function () {
        .pipe(gulp.dest('./www/'))
 })
 
-gulp.task('copy-res', function() {
+gulp.task('copy-res', ['copy-img'], function() {
    return gulp.src(['./app/res/**/*'],
        { base: './app' })
        .pipe(cached('res'))
        .pipe(gulp.dest('./www/'))
        .pipe(reload({stream: true}))
+});
+
+gulp.task('copy-img', function() {
+   return gulp.src(['./app/img/*'],
+       { base: './app' })
+       .pipe(gulp.dest('./www/'))
 });
 
 gulp.task('fonts', function() {
