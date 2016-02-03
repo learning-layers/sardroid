@@ -8,8 +8,8 @@
         Learning Environments Research Group
     </author>
     <content src="index.html" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
+    <plugin name="cordova-plugin-whitelist" spec="1"/>
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -30,7 +30,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <preference name="orientation" value="portrait" />
-    <preference name="xwalkVersion" value="16+" />
+    <preference name="xwalkVersion" value="org.xwalk:xwalk_core_library_beta:17+" />
     <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
     <preference name="xwalkMode" value="embedded" />
     <preference name="xwalkMultipleApk" value="true" />
