@@ -1,5 +1,4 @@
-# Soar
-
+# Soar 
 Hi there!
 
 Welcome to the SOcial Augmented Reality mobile application, also kown as SOAR! It's powered by [Cordova](https://cordova.apache.org/) and
@@ -76,6 +75,7 @@ Add the following lines manually to your AndroidManifest.xml under platforms/and
 
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 <uses-permission android:name="android.permission.CAMERA" />
 ```
 
