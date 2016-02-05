@@ -39,6 +39,10 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
             TOKEN_MISSING     : 'token_missing',
             TWILIO_ERROR      : 'twilio_error',
             UNSPECIFIED_ERROR : 'unspecified_error'
+        },
+        CONTACTS        : {
+            SAVE_ERROR    : 'save_error',
+            INVALID_STATE : 'invalid_state'
         }
     };
 
@@ -61,7 +65,20 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
     };
 
     var get = function (path) {
-        return $http.get(apiUrl + path);
+        return new Promise(function (resolve, reject) {
+            $rootScope.hideLoader = false;
+            $http.get(apiUrl + path)
+                .then(function (results) {
+                    resolve(results.data)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    reject(formatError(error));
+                })
+                .finally(function () {
+                    $rootScope.hideLoader = true;
+                })
+        })
     };
 
     var post = function (path, params) {
@@ -74,7 +91,8 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
                 .catch(function (error) {
                     console.log(error);
                     reject(formatError(error));
-                }).finally(function () {
+                })
+                .finally(function () {
                     $rootScope.hideLoader = true;
                 })
         })
@@ -82,6 +100,7 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
 
     var del = function (path) {
         return new Promise(function (resolve, reject) {
+            $rootScope.hideLoader = false;
             $http.delete(apiUrl + path)
                 .then(function (results) {
                     resolve(results.data)
@@ -89,6 +108,9 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
                 .catch(function (error) {
                     console.log(error);
                     reject(formatError(error));
+                })
+                .finally(function () {
+                    $rootScope.hideLoader = true;
                 })
         })
     };
@@ -120,8 +142,16 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
             resetPassword: function (verificationCode, password) {
                 return post('auth/resetpw', { verificationCode: verificationCode, password: password });
             }
+        },
+        user: {
+            contacts: {
+                updateContactsList: function (contactsList) {
+                    return post('user/contacts', {contactsList: contactsList});
+                }, fetchContactsList: function () {
+                    return get('user/contacts');
+                }
+            }
         }
-
     };
 });
 
