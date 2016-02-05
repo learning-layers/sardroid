@@ -18,12 +18,12 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
 
         $scope.preloaderClass = "preloader-on";
 
-        contactsFactory.fetchAllContacts().then(function (results) {
-
-            contactsFactory.sortContactsByState();
+        contactsFactory.fetchContactsFromServer().then(function (results) {
+            contactsFactory.setContacts(results.contactsList)
+            //contactsFactory.sortContactsByState();
 
             $scope.$apply(function () {
-                $scope.contacts = results;
+                $scope.contacts = results.contactsList;
                 $scope.preloaderClass = 'preloader-off';
             });
         }).catch(function(err) {

@@ -7,7 +7,7 @@
 
 angular.module('login', ['peerhandler'])
 
-.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, configFactory) {
+.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, contactsFactory, configFactory) {
 
         $scope.isLoginButtonDisabled = false;
         var loginCompleted = function (number) {
@@ -17,6 +17,9 @@ angular.module('login', ['peerhandler'])
                 return peerFactory.connectToPeerJS(number);
             })
             .then(function () {
+                return contactsFactory.syncContactsWithServer();
+            })
+            .then(function () {
                 // Disable back button so we can't back to login!
                 $ionicHistory.nextViewOptions({
                     disableBack: true
@@ -24,6 +27,7 @@ angular.module('login', ['peerhandler'])
                 $state.go('tabs.contacts');
             })
             .catch(function (error) {
+                $scope.isLoginButtonDisabled = false;
                 socketFactory.disconnectFromServer();
                 peerFactory.disconnectFromPeerJS();
                 console.log(error);

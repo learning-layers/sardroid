@@ -4,9 +4,9 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
     var contacts = [];
 
     var contactStates = {
-        BUSY:    "busy",
-        OFFLINE: "offline",
-        ONLINE:  "online"
+        BUSY:    'busy',
+        OFFLINE: 'offline',
+        ONLINE:  'online'
     };
 
     return {
@@ -44,7 +44,7 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                                         "original"     : c,
                                         "displayName"  : displayName,
                                         "phoneNumber"  : number,
-                                        "photo"        : c.photos ? c.photos[0] ? c.photos[0].value             : 'img/keilamies-small.png' : 'img/keilamies-small.png'
+                                        "photo"        : c.photos ? c.photos[0] ? c.photos[0].value : 'img/keilamies-small.png' : 'img/keilamies-small.png'
                                     });
                             }
                             return formatted;
@@ -67,6 +67,15 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
 
                 })
         },
+
+        fetchContactsFromServer: function () {
+            return apiFactory.user.contacts.fetchContactsList();
+        },
+
+        setContacts: function (newContacts) {
+            contacts = newContacts;
+        },
+
         getContacts: function () {
             return contacts;
         },
