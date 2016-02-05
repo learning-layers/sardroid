@@ -147,7 +147,8 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
             contacts: {
                 updateContactsList: function (contactsList) {
                     return post('user/contacts', {contactsList: contactsList});
-                }, fetchContactsList: function () {
+                },
+                fetchContactsList: function () {
                     return get('user/contacts');
                 }
             }
