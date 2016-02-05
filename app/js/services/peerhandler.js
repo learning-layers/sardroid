@@ -8,7 +8,7 @@
 
 var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
 
-peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $state, $timeout, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
+peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $state, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
     // PeerJS object representing the user
     var me                = null;
 
