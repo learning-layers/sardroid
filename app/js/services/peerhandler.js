@@ -97,7 +97,6 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
 
     var cancelAllLocalNotifications = function() {
             notificationIds.map(function (id) {
-                console.log(id);
                 cancelLocalNotification(id);
             });
     };
@@ -116,15 +115,11 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     }
 
     var setRemoteStreamSrc = function (stream) {
-        console.log(stream.getAudioTracks());
-        console.log(stream.getVideoTracks());
         remoteStream = stream;
         remoteVideoSource = window.URL.createObjectURL(stream);
     };
 
     var setLocalStreamSrc = function (stream) {
-        console.log(stream.getAudioTracks());
-        console.log(stream.getVideoTracks());
         localVideoSource = window.URL.createObjectURL(stream);
     };
 
@@ -260,8 +255,6 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
             call.answer(localStream);
 
             call.on('stream', function (mediaStream) {
-                console.log('audio tracks from answer');
-                console.log(mediaStream.getAudioTracks());
                 setRemoteStreamSrc(mediaStream);
                 resolve();
             })
