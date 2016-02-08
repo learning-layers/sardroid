@@ -49,7 +49,13 @@ confighandler.factory('configFactory', function () {
             return config
         },
         getValue: function (key) {
-            return config[key]
+            var val = config[key];
+
+            if (!val) {
+                console.error('Error, tried to get nonexistant config value of key ' + key)
+            }
+
+            return val;
         }
     };
 });
