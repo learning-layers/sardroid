@@ -23,7 +23,6 @@
     height: 45px; 
     font-size:40px; 
     border-radius: 50%;
-    border: 1px solid #ebebeb;
     background: #305e84;
     color: #fff;
     text-align:center;
@@ -80,7 +79,9 @@
     }
 
     .fullscreen-button {
+        position: relative;
         bottom: 10vh;
+        margin-bottom: 15%;
         margin-left: 0;
         margin-left: 50%;
     }
