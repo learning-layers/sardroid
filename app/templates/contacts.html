@@ -22,10 +22,14 @@
             </div>
         </div>
         <div class="list" ng-hide=filteredContacts.length>
-            <p>No contacts found for that search result</p>
+            <a class="item" href="#">
+                <h2>{{'NO_CONTACTS_SEARCH' | translate}}</h2>
+            </a>
         </div>
         <div class="list" ng-hide="contacts.length">
-            <p>No valid SoAR contacts found!</p>
+            <a class="item" href="#">
+                <h2>{{'NO_CONTACTS_FOUND' | translate}}</h2>
+            </a>
         </div>
     </ion-content>
 </ion-view>
