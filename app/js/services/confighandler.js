@@ -12,8 +12,8 @@ confighandler.factory('configFactory', function () {
     // Set up configuration variables we can use anywhere in Angular
     var config = {
             production: {
-                apiUrl: 'https://layersbox.aalto.fi',
-                onlineContactsLocation: 'http://layersbox.aalto.fi/peerjs/peerjs/peers',
+                apiUrl: 'https://layersbox.aalto.fi/',
+                onlineContactsLocation: 'https://layersbox.aalto.fi/peerjs/peerjs/peers',
                 peerjs: {
                     host: 'layersbox.aalto.fi',
                     port: 443,
