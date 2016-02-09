@@ -11,7 +11,7 @@
         <div class="loader-wrapper">
             <div class="loader"></div>
         </div>
-        <div ng-repeat="contact in contacts | filter:contactSearch" class="list">
+        <div ng-repeat="contact in filteredContacts = (contacts | filter:contactSearch)" class="list">
             <div class="contact-wrapper" ng-class="contact.currentState">
                 <a class="item item-avatar" href ng-click="selectUser(contact)">
                     <img src="{{contact.photo}}">
@@ -20,6 +20,12 @@
                     <p class="contact-state"> {{'CONTACT_CURRENT_STATE' | translate}}  {{contact.currentState}}</p>
                 </a>
             </div>
+        </div>
+        <div class="list" ng-hide=filteredContacts.length>
+            <p>No contacts found for that search result</p>
+        </div>
+        <div class="list" ng-hide="contacts.length">
+            <p>No valid SoAR contacts found!</p>
         </div>
     </ion-content>
 </ion-view>
