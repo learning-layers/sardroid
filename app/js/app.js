@@ -7,8 +7,16 @@
  */
 angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', 'verify', 'register', 'internationalPhoneNumber', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler'])
 
-.run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate, $translate) {
+.run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate, $translate, $cordovaGoogleAnalytics) {
         $ionicPlatform.ready(function() {
+
+            if (window.cordova && window.analytics) {
+                if (window.env.environment !== 'production') {
+                      $cordovaGoogleAnalytics.debugMode();
+                }
+                $cordovaGoogleAnalytics.startTrackerWithId(window.env.ga_token);
+                $cordovaGoogleAnalytics.trackView('Login');
+            }
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if(window.cordova && window.cordova.plugins.Keyboard) {
