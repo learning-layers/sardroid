@@ -26,7 +26,8 @@
       "id": "de.appplant.cordova.plugin.local-notification"
     },
     "org.apache.cordova.device",
-    "cordova-plugin-google-analytics"
+    "cordova-plugin-google-analytics",
+    "cordova-plugin-crosswalk-webview"
   ],
   "cordovaPlatforms": [
     "android"
