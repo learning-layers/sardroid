@@ -21,8 +21,6 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
         contactsFactory.fetchContactsFromServer().then(function (contactsList) {
             console.log(contactsList);
             contactsFactory.setContacts(contactsList)
-            //contactsFactory.sortContactsByState();
-
             $scope.$apply(function () {
                 $scope.contacts = contactsList;
                 $scope.preloaderClass = 'preloader-off';

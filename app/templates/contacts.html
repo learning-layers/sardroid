@@ -21,12 +21,12 @@
                 </a>
             </div>
         </div>
-        <div class="list" ng-hide=filteredContacts.length>
+        <div class="list" ng-show="filteredContacts.length == 0 && contacts.length > 0">
             <a class="item" href="#">
                 <h2>{{'NO_CONTACTS_SEARCH' | translate}}</h2>
             </a>
         </div>
-        <div class="list" ng-hide="contacts.length">
+        <div class="list" ng-hide="contacts.length > 0">
             <a class="item" href="#">
                 <h2>{{'NO_CONTACTS_FOUND' | translate}}</h2>
             </a>
