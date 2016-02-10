@@ -10,6 +10,7 @@
         <video id="remote-video" class="stream-video" autoplay ng-src="{{remoteStreamSrc}}"></video>
         <canvas id="remote-canvas"></canvas>
         <i class="icon call-button fullscreen-button" ng-class="determineFullscreenButtonClass()" ng-click="toggleFullscreen('remote')"></i>
+        <i class="icon ion-android-exit call-button leave-button" ng-click="leave()"></i>
     </div>
     </ion-content>
 </ion-view>
