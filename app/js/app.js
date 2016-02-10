@@ -5,7 +5,7 @@
  * Mostly handles setting up configuration variables
  * and wiring up the states, controllers and templates
  */
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', 'verify', 'register', 'internationalPhoneNumber', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler', 'intlpnIonic'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate, $translate, $cordovaGoogleAnalytics) {
         $ionicPlatform.ready(function() {
@@ -54,9 +54,8 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
             $rootScope.lang = 'fi'
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
 })
-}).config(function($stateProvider, $urlRouterProvider, $translateProvider, ipnConfig) {
+}).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
-    ipnConfig.skipUtilScriptDownload = true;
 
     $stateProvider
         .state('login', {
