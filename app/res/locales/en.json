@@ -47,9 +47,9 @@
     "VERIFICATION_USED": "The code you used has alraedy been used once",
     "VERIFY_CODE": "Verification code",
     "VERIFY_EXIST" :  "Already got a code? Tap here.",
-    "VERIFY_NUMBER" :  "Send verification code",
+    "VERIFY_NUMBER" :  "Send",
     "VERIFY_NUMBER_HEADER" :  "1 / 2 |  Verifying your phone number",
-    "VERIFY_NUMBER_PASSWORD_TEXT" :  "In order to reset your password, we will send you an SMS with a one-time code to verify your phone number. Enter the number you used to register and use this code to reset your password",
-    "VERIFY_NUMBER_REGISTER_TEXT" :  "In order to sign up, we will send you an SMS with a one-time code to verify your phone number. Enter your number below (in international format) and use this code to register your account",
+    "VERIFY_NUMBER_PASSWORD_TEXT" :  "Put in the number you used to register below in international format. You will get an SMS with a one-time code for resetting your password",
+    "VERIFY_NUMBER_REGISTER_TEXT" :  "Sign up with your phone number. Enter the number in international format. You will get an SMS with a one-time code required for registration",
     "WRONG_PASSWORD": "Wrong password!"
 }
