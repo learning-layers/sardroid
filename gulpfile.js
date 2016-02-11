@@ -100,6 +100,7 @@ gulp.task('vendor-js', function() {
         './app/vendor/socket.io-client/socket.io.js',
         './app/vendor/fabric.js/dist/fabric.js'],
        { base: './app' })
+       .pipe(ngAnnotate())
        .pipe(gulp.dest('./www/'))
 });
 
