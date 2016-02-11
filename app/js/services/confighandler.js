@@ -12,14 +12,14 @@ confighandler.factory('configFactory', function () {
     // Set up configuration variables we can use anywhere in Angular
     var config = {
             production: {
-                apiUrl: 'http://192.168.0.12:9000/',
-                onlineContactsLocation: 'http://192.168.0.12:9000/peerjs/peerjs/peers',
+                apiUrl: 'https://layersbox.aalto.fi/',
+                onlineContactsLocation: 'https://layersbox.aalto.fi/peerjs/peerjs/peers',
                 peerjs: {
-                    host: '192.168.0.12',
-                    port: 9000,
+                    host: 'layersbox.aalto.fi',
+                    port: 443,
                     path: '/peerjs',
                     debug: 0,
-                    secure: false,
+                    secure: true,
                     config: {'iceServers': [
         //                {
         //                    'url'        : 'turn:188.166.88.67:3478',
@@ -42,7 +42,7 @@ confighandler.factory('configFactory', function () {
                     drawingRemoveTime: 2000
                 },
                 socketio: {
-                    url: 'http://192.168.0.12:9000'
+                    url: 'https://layersbox.aalto.fi'
                 }
         },
         development: {

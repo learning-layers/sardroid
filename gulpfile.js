@@ -61,7 +61,7 @@ gulp.task('build', ['scss', 'js', 'html', 'fonts', 'copy-res'], function() {
 });
 
 gulp.task('scss', function() {
-   return gulp.src(['app/scss/*.scss', './app/vendor/intl-tel-input/src/css/intlTelInput.scss'])
+   return gulp.src(['app/scss/*.scss', './app/vendor/intlpnIonic/scss/intlpn.scss'])
        .pipe(plumber({errorHandler: onError}))
        .pipe(cached('scss'))
        .pipe(gulpif(options.env === 'development', sourcemaps.init()))
@@ -93,13 +93,14 @@ gulp.task('vendor-js', function() {
         './app/vendor/lodash/lodash.min.js',
         './app/vendor/ngstorage/ngStorage.min.js',
         './app/vendor/angular-translate/angular-translate.min.js',
-        './app/vendor/intl-tel-input/lib/libphonenumber/build/utils.js',
-        './app/vendor/intl-tel-input/build/js/intlTelInput.min.js',
-        './app/vendor/international-phone-number/releases/international-phone-number.min.js',
+        './app/vendor/intlpnIonic/js/intlpnIonic.js',
+        './app/vendor/intlpnIonic/js/data.js',
+        './app/vendor/intlpnIonic/lib/libphonenumber/build/utils.js',
         './app/vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
         './app/vendor/socket.io-client/socket.io.js',
         './app/vendor/fabric.js/dist/fabric.js'],
        { base: './app' })
+       .pipe(ngAnnotate())
        .pipe(gulp.dest('./www/'))
 });
 

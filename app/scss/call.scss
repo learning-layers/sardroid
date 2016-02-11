@@ -16,16 +16,31 @@
 .canvas-container:nth-of-type(2) {
     margin-top: 44vh;
 }
+.call-button {
+    display: inline-block;
+    width: 45px; /* 60*/
+    height: 45px; 
+    font-size:40px; 
+    background: #305e84;
+    border-radius: 50%;
+    color: #fff;
+    text-align:center;
+    position: absolute;
+    bottom: 6px;
+    z-index: 100;
+    transform: translateX(-50%);
+}
+
+.leave-button {
+    margin-left: 16%;
+    float: left;
+}
 
 .fullscreen-button {
     font-size: 3.5em;
     opacity: 0.9;
-    color: lightgray;
-    position: absolute;
-    z-index: 100;
-    bottom: 0%;
     margin-left: 100%;
-    transform: translateX(-50%);
+
     &:hover {
         opacity: 1;
     }
@@ -67,8 +82,14 @@
         margin-top: 0;
     }
 
+    .leave-button {
+        display: none; 
+    }
+
     .fullscreen-button {
+        position: relative;
         bottom: 10vh;
+        margin-bottom: 15%;
         margin-left: 0;
         margin-left: 50%;
     }

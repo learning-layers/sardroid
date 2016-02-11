@@ -72,6 +72,8 @@ angular.module('call', ['peerhandler', 'drawinghandler'])
                 peerFactory.endCurrentCall();
             }
 
+            $scope.leave = leave;
+
             var localStreamSrc = peerFactory.getLocalStreamSrc();
             var remoteStreamSrc = peerFactory.getRemoteStreamSrc();
 
