@@ -59,12 +59,19 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
         },
 
         syncContactsWithServer: function () {
-            this.fetchAllContacts()
-                .then(function (results) {
-                    return apiFactory.user.contacts.updateContactsList(results)
+            var self = this;
+            return new Promise(function (resolve, reject) {
+                self.fetchAllContacts()
+                    .then(function (results) {
+                        return apiFactory.user.contacts.updateContactsList(results)
+                    })
+                    .then(function (contacts) {
+                        resolve(contacts);
+                    })
+                    .catch(function (err) {
+                        console.log('Error syncing contacts!', err);
+                        reject(err);
                 })
-                .catch(function (err) {
-                    console.log('Error syncing contacts!', err);
             })
         },
 
