@@ -6,7 +6,15 @@
 
 angular.module('settings', [])
 
-.controller('SettingsCtrl', function($scope, $localStorage) {
-        console.log('asd');
+.controller('SettingsCtrl', function($scope, $ionicLoading, contactsFactory) {
+
+    $scope.updateContactsList = function () {
+        $ionicLoading.show({template: 'Syncing contacts...'});
+        return contactsFactory.syncContactsWithServer()
+            .then(function (contacts) {
+                contactsFactory.setContacts(contacts);
+                $ionicLoading.hide();
+            })
+    }
 });
 

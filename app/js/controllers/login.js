@@ -17,9 +17,6 @@ angular.module('login', ['peerhandler'])
                 return peerFactory.connectToPeerJS(number);
             })
             .then(function () {
-                return contactsFactory.syncContactsWithServer();
-            })
-            .then(function () {
                 // Disable back button so we can't back to login!
                 $ionicHistory.nextViewOptions({
                     disableBack: true

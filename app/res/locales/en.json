@@ -30,7 +30,7 @@
     "PASSWORD_NO_MATCH": "Passwords do not match!",
     "PROFILE": "Profile",
     "QUIT": "Exit the app",
-    "REFRESH_CONTACTS": "Refresh your contacts",
+    "REFRESH_CONTACTS": "Refresh your contacts list",
     "REGISTER" :  "Sign up",
     "REGISTER_NUMBER_HEADER" :  "2 / 2 | Registering",
     "REGISTER_NUMBER_TEXT" :  "OK, you should receive your code in a moment. You have an hour to use it, input your code and the password you want to use, twice",
