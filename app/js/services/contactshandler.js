@@ -64,7 +64,8 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                     return apiFactory.user.contacts.updateContactsList(results)
                 })
                 .catch(function (err) {
-                })
+                    console.log('Error syncing contacts!', err);
+            })
         },
 
         fetchContactsFromServer: function () {
