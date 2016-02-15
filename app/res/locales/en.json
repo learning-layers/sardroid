@@ -1,7 +1,7 @@
 {
     "ACTIONS": "Actions",
     "NO_CONTACTS_SEARCH": "No contacts found for that search result",
-    "NO_CONTACTS_FOUND": "Looks like your phone doesn't have any valid SoAR contacts",
+    "NO_CONTACTS_FOUND": "Looks like your phone doesn't have any contacts that have SoAR installed",
     "CALL_HEADER": "Call with {{displayName}}",
     "CALL_INCOMING_TEMPLATE": "Incoming call. Answer?",
     "CALL_INCOMING_TITLE":" Call from {{displayName}}",
