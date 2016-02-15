@@ -58,10 +58,10 @@ angular.module('login', ['peerhandler'])
 
                 var number = user.phoneNumber.replace(/[ +]/g, '');
                 apiFactory.auth.login(number, user.password)
-                    .then(function success(results) {
-                        $localStorage.user  = results.user;
-                        $localStorage.token = results.user.token;
-                        loginCompleted(results.user.phoneNumber);
+                    .then(function success(user) {
+                        $localStorage.user  = user;
+                        $localStorage.token = user.token;
+                        loginCompleted(user.phoneNumber);
                     })
                     .catch(function (error) {
                         $scope.isLoginButtonDisabled = false;
