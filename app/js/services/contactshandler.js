@@ -33,13 +33,6 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                                     if (c.displayName) displayName = c.displayName;
                                     else if (!_.isEmpty(c.emails)) displayName = c.emails[0].value
 
-                                    //TODO: Make this more legit
-                                    //if (number.substring(0, 1) === '+') {
-                                    //    number = number.substring(1);
-                                    //} else if (number.substring(0, 1) === '0') {
-                                    //    number = "358" + number.substring(1);
-                                    //}
-
                                     formatted.push({
                                         "original"     : c,
                                         "displayName"  : displayName,
@@ -65,8 +58,9 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                     .then(function (results) {
                         return apiFactory.user.contacts.updateContactsList(results)
                     })
-                    .then(function (contacts) {
-                        resolve(contacts);
+                    .then(function (syncedContacts) {
+                        self.contacts = syncedContacts
+                        resolve(syncedContacts);
                     })
                     .catch(function (err) {
                         console.log('Error syncing contacts!', err);

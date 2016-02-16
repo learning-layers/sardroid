@@ -11,8 +11,7 @@ angular.module('settings', [])
     $scope.updateContactsList = function () {
         $ionicLoading.show({template: 'Syncing contacts...'});
         return contactsFactory.syncContactsWithServer()
-            .then(function (contacts) {
-                contactsFactory.setContacts(contacts);
+            .then(function () {
                 $ionicLoading.hide();
             })
     }

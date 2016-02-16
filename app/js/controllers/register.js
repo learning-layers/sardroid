@@ -48,8 +48,7 @@ angular.module('register', [])
 
                 return contactsFactory.syncContactsWithServer();
             })
-            .then(function (contacts) {
-                contactsFactory.setContacts(contacts)
+            .then(function () {
                 $state.go('login');
             })
             .catch(function (error) {
