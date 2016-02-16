@@ -18,6 +18,10 @@ angular.module('login', ['peerhandler'])
             promises.push(socketFactory.connectToServer($localStorage.token));
             promises.push(peerFactory.connectToPeerJS(number));
 
+            if (!$localStorage.contactsBeenSynced) {
+                promises.push(contactsFactory.syncContactsWithServer());
+            }
+
             Promise.all(promises)
                 .then(function (results) {
                     // Disable back button so we can't back to login!

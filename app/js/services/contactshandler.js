@@ -59,6 +59,7 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                         return apiFactory.user.contacts.updateContactsList(results)
                     })
                     .then(function (syncedContacts) {
+                        $localStorage.contactsBeenSynced = true;
                         self.contacts = syncedContacts
                         resolve(syncedContacts);
                     })
@@ -86,7 +87,6 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
         },
 
         sortContactsByState: function () {
-            console.log('Sorting array!');
             contacts = _.sortBy(contacts, function (c) {
                 return c.currentState === contactStates.OFFLINE;
             });
@@ -94,7 +94,6 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
 
         setContactStateIfApplicable: function (number, state) {
             var index = _.indexOf(contacts, this.getContactByNumber(number));
-            console.log('attempting to set contact ' + number + ' state to ' + state);
 
             if (index === -1) {
                 return false;
