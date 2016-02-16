@@ -80,12 +80,6 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
             abstract: true,
             templateUrl: 'templates/tabs.html'
         })
-        .state('settings', {
-            cache: false,
-            url: '/settings',
-            templateUrl: 'templates/settings.html',
-            controller: 'SettingsCtrl'
-        })
         .state('userprofile', {
             cache: false,
             url: '/userprofile',
@@ -100,6 +94,16 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
             controller: 'CallCtrl',
             params: { user: null }
          })
+        .state('tabs.settings', {
+            url: '/settings',
+            cache: true,
+            views: {
+                 'settings-tab': {
+                    templateUrl: 'templates/settings.html',
+                    controller: 'SettingsCtrl'
+                }
+            }
+        })
         .state('tabs.contacts', {
             url: '/contacts',
             cache: false,
@@ -109,7 +113,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
                     controller: 'ContactsCtrl'
                 }
             }
-    });
+        });
 
     $translateProvider.
         useStaticFilesLoader({
