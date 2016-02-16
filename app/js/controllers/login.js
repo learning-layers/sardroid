@@ -11,24 +11,27 @@ angular.module('login', ['peerhandler'])
 
         $scope.isLoginButtonDisabled = false;
         var loginCompleted = function (number) {
-            socketFactory.connectToServer($localStorage.token)
-            .then(function () {
-                apiFactory.setApiToken($localStorage.token);
-                return peerFactory.connectToPeerJS(number);
-            })
-            .then(function () {
-                // Disable back button so we can't back to login!
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-                $state.go('tabs.contacts');
-            })
-            .catch(function (error) {
-                $scope.isLoginButtonDisabled = false;
-                socketFactory.disconnectFromServer();
-                peerFactory.disconnectFromPeerJS();
-                console.log(error);
-            })
+            apiFactory.setApiToken($localStorage.token);
+
+            var promises = [];
+
+            promises.push(socketFactory.connectToServer($localStorage.token));
+            promises.push(peerFactory.connectToPeerJS(number));
+
+            Promise.all(promises)
+                .then(function (results) {
+                    // Disable back button so we can't back to login!
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+                    $state.go('tabs.contacts');
+                })
+                .catch(function (error) {
+                    $scope.isLoginButtonDisabled = false;
+                    socketFactory.disconnectFromServer();
+                    peerFactory.disconnectFromPeerJS();
+                    console.log(error);
+                })
         }
         // Hack so we're disconnected for sure!
         peerFactory.disconnectFromPeerJS();
