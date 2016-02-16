@@ -19,7 +19,7 @@
     "LOG_OUT": "Kirjaudu ulos",
     "LOST_PASSWORD": "Salasana hukassa?",
     "MALFORMED_NUMBER": "Tarkista numerosi, kiitos!",
-    "MISCALLENEOUS": "Muut asetukset",
+    "MISCALLENEOUS": "Muut",
     "MOBILE_NUMBER": "Puhelinnumero",
     "MOBILE_NUMBER_EXAMPLE": "Esim. +358 40 123456",
     "NOTIFICATION_CALL" : "SoAR-puhelu {{displayName}}:lta ( {{mediaConnection}} )",
