@@ -27,7 +27,7 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
 
                         var formattedContacts = _.reduce(allContacts, function (formatted, c) {
                             if (!(_.isEmpty(c.phoneNumbers)) && c.phoneNumbers.length > 0 && c.phoneNumbers[0].value !== userPhone) {
-                                    var number = c.phoneNumbers[0].value.replace(' ', '');
+                                    var number = c.phoneNumbers[0].value.replace(/[+ ]/g, '');
                                     var displayName = 'Unknown';
 
                                     if (c.displayName) displayName = c.displayName;
