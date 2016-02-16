@@ -60,7 +60,7 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
                     })
                     .then(function (syncedContacts) {
                         $localStorage.contactsBeenSynced = true;
-                        self.contacts = syncedContacts
+                        self.setContacts(syncedContacts);
                         resolve(syncedContacts);
                     })
                     .catch(function (err) {
@@ -93,6 +93,7 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
         },
 
         setContactStateIfApplicable: function (number, state) {
+            console.log(contacts);
             var index = _.indexOf(contacts, this.getContactByNumber(number));
 
             if (index === -1) {

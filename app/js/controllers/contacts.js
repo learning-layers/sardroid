@@ -20,6 +20,7 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
 
         contactsFactory.fetchContactsFromServer().then(function (contactsList) {
             $scope.$apply(function () {
+                contactsFactory.setContacts(contactsList);
                 $scope.contacts = contactsList;
                 $scope.preloaderClass = 'preloader-off';
             });
