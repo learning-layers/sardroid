@@ -6,10 +6,10 @@
 
 angular.module('settings', [])
 
-.controller('SettingsCtrl', function($scope, $ionicLoading, contactsFactory) {
+.controller('SettingsCtrl', function($scope, $ionicLoading, $translate,  contactsFactory) {
 
     $scope.updateContactsList = function () {
-        $ionicLoading.show({template: 'Syncing contacts...'});
+        $ionicLoading.show({template: $translate.instant('SYNCING_CONTACTS')});
         return contactsFactory.syncContactsWithServer()
             .then(function () {
                 $ionicLoading.hide();
