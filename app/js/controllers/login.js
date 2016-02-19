@@ -5,7 +5,7 @@
  * Not much else to say about this one!
  */
 
-angular.module('login', ['peerhandler'])
+angular.module('login', [])
 
 .controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, contactsFactory, configFactory) {
 

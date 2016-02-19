@@ -8,7 +8,7 @@
 var confighandler = angular.module('confighandler', []);
 
 confighandler.factory('configFactory', function () {
-    
+
     // Set up configuration variables we can use anywhere in Angular
     var config = {
             production: {
@@ -46,10 +46,10 @@ confighandler.factory('configFactory', function () {
                 }
         },
         development: {
-            apiUrl: 'http://192.168.0.12:9000/',
-            onlineContactsLocation: 'http://192.168.0.12:9000/peerjs/peerjs/peers',
+            apiUrl: 'http://10.100.28.191:9000/',
+            onlineContactsLocation: 'http://10.100.28.191:9000/peerjs/peerjs/peers',
             peerjs: {
-                host: '192.168.0.12',
+                host: '10.100.28.191',
                 port: 9000,
                 path: '/peerjs',
                 debug: 0,
@@ -76,7 +76,7 @@ confighandler.factory('configFactory', function () {
                     drawingRemoveTime: 2000
                 },
                 socketio: {
-                    url: 'http://192.168.0.12:9000'
+                    url: 'http://10.100.28.191:9000'
                 }
 
         }

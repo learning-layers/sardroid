@@ -7,7 +7,7 @@
  * contacts API. Sweet!
  */
 
-var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
+var contacts = angular.module('contacts', [])
 .controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
 
         var translations = null;

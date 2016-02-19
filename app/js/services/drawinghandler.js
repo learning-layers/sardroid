@@ -6,7 +6,7 @@
  * and draw them accordingly.
  */
 
-var drawinghandler = angular.module('drawinghandler',['sardroid', 'peerhandler']);
+var drawinghandler = angular.module('drawinghandler',[]);
 
 drawinghandler.factory('drawingFactory', function (configFactory, $window, $state, $timeout, peerFactory) {
 
@@ -158,7 +158,7 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
     var zoomOutCanvas = function (canvas) {
         canvas.setWidth(canvasSize.width);
         canvas.setHeight(canvasSize.height);
-        
+
         var objects = canvas.getObjects();
         for (var o in objects) {
             objects[o].set({

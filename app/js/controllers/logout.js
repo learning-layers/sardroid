@@ -5,7 +5,7 @@
  * the login screen
  */
 
-angular.module('logout', ['peerhandler'])
+angular.module('logout', [])
 
     .controller('LogoutCtrl', function($scope, $state, $localStorage,  peerFactory, socketFactory, apiFactory) {
         $scope.logout = function() {
