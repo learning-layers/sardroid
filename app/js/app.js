@@ -5,7 +5,7 @@
  * Mostly handles setting up configuration variables
  * and wiring up the states, controllers and templates
  */
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler', 'intlpnIonic'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler', 'intlpnIonic'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate, $translate, $cordovaGoogleAnalytics) {
         $ionicPlatform.ready(function() {
