@@ -10,7 +10,8 @@
 angular.module('contacts', [])
     .controller('ContactsCtrl', function($scope, $localStorage, $ionicModal, contactsFactory, peerFactory, socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
 
-        var translations = null;
+        var translations    = null;
+        var newContactModal = null;
 
         translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {
             translations = trans;
@@ -56,9 +57,17 @@ angular.module('contacts', [])
             }
         };
 
+        $scope.addNewContactModalSubmit = function () {
+            console.log('asdasd');
+            newContactModal.hide();
+        };
+
         $scope.addNewContact = function () {
-            var newContactModal = null;
-            $ionicModal.fromTemplateUrl('templates/modals/add-contact.html', {aniamiotn: 'slide-in-up'}).then(function (modal) {
+            $ionicModal.fromTemplateUrl('templates/modals/add-contact.html',
+                    { animation: 'slide-in-up',
+                      scope: $scope
+                    }
+               ).then(function (modal) {
                 newContactModal = modal;
                 newContactModal.show();
             })

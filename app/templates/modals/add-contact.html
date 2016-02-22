@@ -1,3 +1,14 @@
 <ion-modal-view>
     <ion-header-bar class="bar-positive center"><h2 class="title">Add new contact</h2></ion-header-bar>
+    <ion-content>
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="text" placeholder="Name">
+            </label>
+            <label class="item item-input">
+                <input type="text" placeholder="Number">
+            </label>
+            <button ng-click="addNewContactModalSubmit()" class="button button-block button-positive">Add</button>
+        </div>
+    </ion-content>
 </ion-modal-view>
