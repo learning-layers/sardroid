@@ -59,7 +59,7 @@ angular.module('login', [])
         }
 
         $scope.determineRegisterButtonClass = function () {
-            return $localStorage.hasBeenInRegister === true ? null : 'notify-pulse' ;
+            return ($localStorage.hasBeenInRegister === true || typeof $localStorage.user !== 'undefined') ? null : 'notify-pulse' ;
         }
 
         $scope.login = function(user) {
