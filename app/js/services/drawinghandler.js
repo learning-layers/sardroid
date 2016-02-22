@@ -81,32 +81,41 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
             var data = JSON.stringify(e.path);
 
             peerFactory.sendDataToPeer(JSON.stringify({
-                type: 'newPathCreated',
-                tag:  canvas.tag,
-                data: data,
-                currentlyZoomedInRemoteCanvas: currentlyZoomedInCanvas
+                type                          : 'newPathCreated',
+                tag                           : canvas.tag,
+                data                          : data,
+                currentlyZoomedInRemoteCanvas : currentlyZoomedInCanvas,
+                remoteCanvasSize              : canvasSize
             }));
 
             createPathRemoveTimer(canvas, e.path);
         });
     };
 
-    var addPathToCanvas = function (canvasTag, pathData, currentlyZoomedInRemoteCanvas) {
-        console.log('addPathToCanvas')
+    var addPathToCanvas = function (canvasTag, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize) {
         if (canvasTag === 'local') {
-            addNewPathToCanvas(remoteCanvas, pathData, currentlyZoomedInRemoteCanvas);
+            addNewPathToCanvas(remoteCanvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize);
         }
         else if (canvasTag === 'remote') {
-            addNewPathToCanvas(localCanvas, pathData, currentlyZoomedInRemoteCanvas);
+            addNewPathToCanvas(localCanvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize);
         }
     };
 
-    var addNewPathToCanvas = function (canvas, pathData, currentlyZoomedInRemoteCanvas) {
+    var addNewPathToCanvas = function (canvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize) {
+        console.log("remoteCanvasSize", remoteCanvasSize);
+        console.log("own canvas size", canvasSize);
         pathData = JSON.parse(pathData);
         fabric.util.enlivenObjects([pathData], function(objects) {
 
         objects.forEach(function (o) {
                 o.stroke = config.remoteColor;
+
+                o.set({
+                    top:    o.top    / (remoteCanvasSize.height / canvasSize.height),
+                    left:   o.left   / (remoteCanvasSize.width  / canvasSize.width),
+                    scaleY: o.scaleX / (remoteCanvasSize.height / canvasSize.height),
+                    scaleX: o.scaleY / (remoteCanvasSize.width  / canvasSize.width)
+                });
 
                 if (currentlyZoomedInCanvas == null && currentlyZoomedInRemoteCanvas != null) {
                     o.set({
@@ -186,7 +195,7 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
            setUpDataCallbacks: function() {
                 peerFactory.registerCallback('newPathCreated', function (data) {
                     var data = JSON.parse(data);
-                    addPathToCanvas(data.tag, data.data, data.currentlyZoomedInRemoteCanvas);
+                    addPathToCanvas(data.tag, data.data, data.currentlyZoomedInRemoteCanvas, data.remoteCanvasSize);
                 });
            },
            zoomInCanvasByTag: function (tag) {
