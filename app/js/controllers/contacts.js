@@ -57,29 +57,30 @@ angular.module('contacts', [])
             }
         };
 
-        $scope.addNewContactModalSubmit = function () {
-            console.log('asdasd');
+        $scope.addNewContactModalSubmit = function (newContact) {
+
             newContactModal.hide();
+
+            contactsFactory.addNewContact(newContact)
+            .then(function (results) {
+                console.log(results);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         };
 
         $scope.addNewContact = function () {
             $ionicModal.fromTemplateUrl('templates/modals/add-contact.html',
-                    { animation: 'slide-in-up',
-                      scope: $scope
+                    {
+                      animation : 'slide-in-up',
+                      scope     : $scope
                     }
                ).then(function (modal) {
                 newContactModal = modal;
                 newContactModal.show();
             })
 
-        //    $cordovaContacts.pickContact().
-        //        then(function (newContact) {
-        //        console.log(newContact);
-        //        contactsFactory.syncContactsWithServer()
-        //            .then(function () {
-        //                reloadContactsList();
-        //            })
-        //    })
         };
 
         $scope.user = $localStorage.user;
