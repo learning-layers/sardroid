@@ -1,5 +1,6 @@
 {
     "ACTIONS": "Actions",
+    "ADD_CONTACT": "Add new contact",
     "CALL_HEADER": "Call with {{displayName}}",
     "CALL_INCOMING_TEMPLATE": "Incoming call. Answer?",
     "CALL_INCOMING_TITLE":" Call from {{displayName}}",
