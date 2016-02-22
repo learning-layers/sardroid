@@ -127,7 +127,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
         console.log('show loader')
         audioFactory.playSound('.dial');
         $ionicLoading.show({
-            templateUrl: 'templates/loader.html',
+            templateUrl: 'templates/modals/loader.html',
             duration: 10000
         });
     };

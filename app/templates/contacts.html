@@ -22,7 +22,7 @@
                     </a>
                 </div>
             </div>
-            <button class="button button-block button-positive icon-right ion-person-add" translate="ADD_CONTACT"></button>
+            <button ng-click="addNewContact()" class="button button-block button-positive icon-right ion-person-add" translate="ADD_CONTACT"></button>
         </div>
         <div class="list" ng-show="filteredContacts.length == 0 && contacts.length > 0">
             <a class="item no-results" href="#">
