@@ -1,6 +1,7 @@
 {
     "ACTIONS": "Toiminnot",
     "ADD_CONTACT": "Lisää uusi kontakti",
+    "ADD": "Lisää",
     "CALL_HEADER": "Puhelu {{displayName}}:n kanssa",
     "CALL_INCOMING_TEMPLATE": "Puhelu tulossa. Vastaa?",
     "CALL_INCOMING_TITLE":" Puhelu {{displayName}}:lta",
