@@ -3,11 +3,9 @@
     <ion-content>
         <div class="list list-inset">
             <label class="item item-input">
-                <input ng-model="newContact.displayName" type="text" placeholder="Name">
+                <input ng-model="newContact.displayName" type="text" placeholder="{{'DISPLAY_NAME' | translate}}">
             </label>
-            <label class="item item-input">
-                <input ng-model="newContact.phoneNumber" type="text" placeholder="Number">
-            </label>
+            <intlpn national-node="false" default-country="fi" ng-model="newContact.phoneNumber" placeholder="{{'MOBILE_NUMBER' | translate}}"></intlpn>
             <button ng-click="addNewContactModalSubmit(newContact)" class="button button-block button-positive">Add</button>
         </div>
     </ion-content>

@@ -9,6 +9,7 @@
     "CONTACTS": "Kontaktit",
     "CONTACT_CURRENT_STATE": "Juuri nyt ",
     "DIAL_WAIT": "Soitetaan, odota hetki...",
+    "DISPLAY_NAME": "Nimi",
     "ERROR" :  "Virhe!",
     "ERROR_NETWORK" : "Yhteysvirhe palvelimen kanssa",
     "ERROR_SERVER" : "Palvelimeen ei saatu yhteyttä!",

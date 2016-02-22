@@ -9,6 +9,7 @@
     "CONTACTS": "Contacts",
     "CONTACT_CURRENT_STATE": "Currently ",
     "DIAL_WAIT": "Dialing, please hold...",
+    "DISPLAY_NAME": "Display name",
     "ERROR" :  "Error!",
     "ERROR_NETWORK" : "Network error with server!",
     "ERROR_SERVER" : "Could not connect to server!",
