@@ -23,13 +23,13 @@ angular.module('logout', [])
                 var number             = $localStorage.user.phoneNumber;
                 var contactsBeenSynced = $localStorage.contactsBeenSynced;
 
-                console.log(contactsBeenSynced);
-                // Remove everything except user number so it doesn't have to be typed in every time
+                // Remove everything about user except user number so it doesn't have to be typed in every time
                 $localStorage.$reset({
                         user: {
                             phoneNumber: number
                         },
-                        contactsBeenSynced: contactsBeenSynced
+                        contactsBeenSynced: contactsBeenSynced,
+                        hasBeenInRegister:  true
                 });
 
                 if (peerFactory.isConnected()) {
