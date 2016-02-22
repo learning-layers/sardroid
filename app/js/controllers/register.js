@@ -5,7 +5,7 @@
  */
 
 angular.module('register', [])
-.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory, configFactory) {
+.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory, configFactory, contactsFactory) {
 
     $scope.isSignUpButtonDisabled = false;
     var currentState = $stateParams.state;
@@ -41,12 +41,18 @@ angular.module('register', [])
             var requestType = currentState === 'register' ? apiFactory.auth.register : apiFactory.auth.resetPassword;
 
             requestType(user.code, user.password)
-            .then(function success(results) {
-                console.log(results);
-                $localStorage.user = results;
+            .then(function success(user) {
+                $localStorage.user = user;
+                $localStorage.token = user.token;
+                apiFactory.setApiToken(user.token);
+
+                return contactsFactory.syncContactsWithServer();
+            })
+            .then(function () {
                 $state.go('login');
             })
             .catch(function (error) {
+                console.log(error);
                 var name = error.name;
                 $scope.isSignUpButtonDisabled = false;
 

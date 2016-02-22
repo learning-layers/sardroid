@@ -5,29 +5,37 @@
  * Not much else to say about this one!
  */
 
-angular.module('login', ['peerhandler'])
+angular.module('login', [])
 
-.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, configFactory) {
+.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, contactsFactory, configFactory) {
 
         $scope.isLoginButtonDisabled = false;
         var loginCompleted = function (number) {
-            socketFactory.connectToServer($localStorage.token)
-            .then(function () {
-                apiFactory.setApiToken($localStorage.token);
-                return peerFactory.connectToPeerJS(number);
-            })
-            .then(function () {
-                // Disable back button so we can't back to login!
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-                $state.go('tabs.contacts');
-            })
-            .catch(function (error) {
-                socketFactory.disconnectFromServer();
-                peerFactory.disconnectFromPeerJS();
-                console.log(error);
-            })
+            apiFactory.setApiToken($localStorage.token);
+
+            var promises = [];
+
+            promises.push(socketFactory.connectToServer($localStorage.token));
+            promises.push(peerFactory.connectToPeerJS(number));
+
+            if (!$localStorage.contactsBeenSynced) {
+                promises.push(contactsFactory.syncContactsWithServer());
+            }
+
+            Promise.all(promises)
+                .then(function (results) {
+                    // Disable back button so we can't back to login!
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+                    $state.go('tabs.contacts');
+                })
+                .catch(function (error) {
+                    $scope.isLoginButtonDisabled = false;
+                    socketFactory.disconnectFromServer();
+                    peerFactory.disconnectFromPeerJS();
+                    console.log(error);
+                })
         }
         // Hack so we're disconnected for sure!
         peerFactory.disconnectFromPeerJS();
@@ -54,10 +62,10 @@ angular.module('login', ['peerhandler'])
 
                 var number = user.phoneNumber.replace(/[ +]/g, '');
                 apiFactory.auth.login(number, user.password)
-                    .then(function success(results) {
-                        $localStorage.user  = results.user;
-                        $localStorage.token = results.user.token;
-                        loginCompleted(results.user.phoneNumber);
+                    .then(function success(user) {
+                        $localStorage.user  = user;
+                        $localStorage.token = user.token;
+                        loginCompleted(user.phoneNumber);
                     })
                     .catch(function (error) {
                         $scope.isLoginButtonDisabled = false;

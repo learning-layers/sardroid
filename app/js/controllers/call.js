@@ -5,7 +5,7 @@
  * Sets up the canvases, and sets up the correct data callbacks and such...
  */
 
-angular.module('call', ['peerhandler', 'drawinghandler'])
+angular.module('call', [])
 
 .controller('CallCtrl', function($scope, $sce, $stateParams, peerFactory, drawingFactory) {
 

@@ -7,7 +7,7 @@
  * contacts API. Sweet!
  */
 
-var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
+var contacts = angular.module('contacts', [])
 .controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
 
         var translations = null;
@@ -18,12 +18,10 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
 
         $scope.preloaderClass = "preloader-on";
 
-        contactsFactory.fetchAllContacts().then(function (results) {
-
-            contactsFactory.sortContactsByState();
-
+        contactsFactory.fetchContactsFromServer().then(function (contactsList) {
             $scope.$apply(function () {
-                $scope.contacts = results;
+                contactsFactory.setContacts(contactsList);
+                $scope.contacts = contactsList;
                 $scope.preloaderClass = 'preloader-off';
             });
         }).catch(function(err) {

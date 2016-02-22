@@ -8,15 +8,14 @@
 var confighandler = angular.module('confighandler', []);
 
 confighandler.factory('configFactory', function () {
-    
+
     // Set up configuration variables we can use anywhere in Angular
     var config = {
             production: {
-                apiUrl: 'https://layersbox.aalto.fi/',
-                onlineContactsLocation: 'https://layersbox.aalto.fi/peerjs/peerjs/peers',
+                apiUrl: 'https://mattij.com:9000/',
                 peerjs: {
-                    host: 'layersbox.aalto.fi',
-                    port: 443,
+                    host: 'mattij.com',
+                    port: 9000,
                     path: '/peerjs',
                     debug: 0,
                     secure: true,
@@ -42,14 +41,13 @@ confighandler.factory('configFactory', function () {
                     drawingRemoveTime: 2000
                 },
                 socketio: {
-                    url: 'https://layersbox.aalto.fi'
+                    url: 'https://mattij.com:9000'
                 }
         },
         development: {
-            apiUrl: 'http://192.168.0.12:9000/',
-            onlineContactsLocation: 'http://192.168.0.12:9000/peerjs/peerjs/peers',
+            apiUrl: 'http://10.100.28.191:9000/',
             peerjs: {
-                host: '192.168.0.12',
+                host: '10.100.28.191',
                 port: 9000,
                 path: '/peerjs',
                 debug: 0,
@@ -76,7 +74,7 @@ confighandler.factory('configFactory', function () {
                     drawingRemoveTime: 2000
                 },
                 socketio: {
-                    url: 'http://192.168.0.12:9000'
+                    url: 'http://10.100.28.191:9000'
                 }
 
         }

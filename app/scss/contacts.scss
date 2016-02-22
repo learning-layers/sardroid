@@ -30,6 +30,12 @@
 
 .list {
 
+    .no-results {
+        h2 {
+            white-space: normal;
+        }
+    }
+
     .contact-wrapper {
         img, p2, h2 {
             transition: opacity 0.5s, filter 0.5s;

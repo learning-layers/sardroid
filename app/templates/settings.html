@@ -1,11 +1,11 @@
 <ion-view view-title="{{'SETTINGS' | translate}}" ng-controller="SettingsCtrl">
     <ion-content class="padding flex-container ">
-        <div class="full-width-vw">
+        <div class=" settings-section full-width-vw">
             <div class="item item-divider text-center">
                 {{'MISCALLENEOUS' | translate}}
             </div>
             <div class="item item-text-wrap">
-                <button class="button button-block button-positive icon-right ion-chevron-right" translate="REFRESH_CONTACTS"></button>
+                <button  ng-click='updateContactsList()' class="button button-block button-positive icon-right ion-chevron-right" translate="REFRESH_CONTACTS"></button>
             </div>
         </div>
     </ion-content>

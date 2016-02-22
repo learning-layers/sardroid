@@ -5,7 +5,7 @@
  * Mostly handles setting up configuration variables
  * and wiring up the states, controllers and templates
  */
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler', 'intlpnIonic'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler', 'intlpnIonic'])
 
 .run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate, $translate, $cordovaGoogleAnalytics) {
         $ionicPlatform.ready(function() {
@@ -80,12 +80,6 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
             abstract: true,
             templateUrl: 'templates/tabs.html'
         })
-        .state('settings', {
-            cache: false,
-            url: '/settings',
-            templateUrl: 'templates/settings.html',
-            controller: 'SettingsCtrl'
-        })
         .state('userprofile', {
             cache: false,
             url: '/userprofile',
@@ -100,6 +94,16 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
             controller: 'CallCtrl',
             params: { user: null }
          })
+        .state('tabs.settings', {
+            url: '/settings',
+            cache: true,
+            views: {
+                 'settings-tab': {
+                    templateUrl: 'templates/settings.html',
+                    controller: 'SettingsCtrl'
+                }
+            }
+        })
         .state('tabs.contacts', {
             url: '/contacts',
             cache: false,
@@ -109,7 +113,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
                     controller: 'ContactsCtrl'
                 }
             }
-    });
+        });
 
     $translateProvider.
         useStaticFilesLoader({
@@ -121,8 +125,8 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
         'fi': 'fi'
         })
         .preferredLanguage('en')
-        .fallbackLanguage('en')
         .determinePreferredLanguage()
+        .fallbackLanguage('en')
         .useSanitizeValueStrategy('sanitizeParameters')
 
     $urlRouterProvider.otherwise('/login');
