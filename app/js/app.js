@@ -15,7 +15,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login', 'setting
             .then(function (results) {
                 $rootScope.defaultCountry = results.data.country.toLowerCase();
             })
-            .catch(function () {
+            .catch(function (err) {
                 $rootScope.defaultCountry = 'fi';
             });
 
@@ -60,7 +60,6 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login', 'setting
             // Disable showing right menu by default
             $rootScope.showRightMenu = false;
             $rootScope.hideLoader    = true;
-            $rootScope.lang = 'fi'
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
 })
 }).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
