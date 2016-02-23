@@ -59,15 +59,22 @@ angular.module('contacts', [])
 
         $scope.addNewContactModalSubmit = function (newContact) {
 
-            newContactModal.hide();
+            if (newContact && newContact.phoneNumber && newContact.displayName) {
+                newContactModal.hide();
 
-            contactsFactory.addNewContact(newContact)
-            .then(function (results) {
-                console.log(results);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+                $scope.preloaderClass = 'preloader-on';
+
+                contactsFactory.addNewContact(newContact)
+                .then(function (results) {
+                    return contactsFactory.syncContactsWithServer();
+                })
+                .then(function (contacts) {
+                    reloadContactsList();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
         };
 
         $scope.addNewContact = function () {
