@@ -34,7 +34,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     var dataConnection = null;
 
     // Variable to store a reference to the reconnection setTimeout function
-    var reconnectTimeoutHandle = null;
+    var reconnectIntervalHandle = null;
     // How many times have we already tried to reconnect unsuccesfully
     var reconnectAttempts     = 0;
 
@@ -280,25 +280,36 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
             template: 'Lost connection. Attemping to reconnect'
         });
 
-        reconnectTimeoutHandle = $timeout(function () {
-            if (me != null)  {
-                if (me.disconnected === true) {
-                    me.reconnect();
-                    reconnectAttempts = reeconnectAttempts + 1;
-                } else {
-                    stopReconnectAttempt();
-                }
+        reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
+    }
+
+    var attemptReconnect = function () {
+            if (me.disconnected === true) {
+                me.reconnect();
+                reconnectAttempts = reconnectAttempts + 1;
+                reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
+            } else {
+                stopReconnectAttempt({ failed: false });
             }
-        })
-    }
 
-    var stopReconnectAttempt = function () {
+            if (reconnectAttempts > 2) {
+                stopReconnectAttempt({ failed: true });
+            }
+    };
 
-        $timeout.cancel(reconnectTimeoutHandle);
+    var stopReconnectAttempt = function (opts) {
+
+        console.log(opts);
+        console.log(reconnectIntervalHandle);
+        $timeout.cancel(reconnectIntervalHandle);
+        reconnectAttempts = 0;
         $ionicLoading.hide();
-        disconnectRef();
-        $state.go('login');
-    }
+
+        if (opts.failed === true ){
+            disconnectFromPeerJS();
+            $state.go('login');
+        }
+    };
 
     var endCurrentCall = function() {
         cancelAllLocalNotifications();
@@ -424,7 +435,6 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 };
 
                 me.on('error', function(error) {
-                    hideCallLoader();
                     var errorMsg = error.toString();
 
                     switch (error.type) {
@@ -441,7 +451,12 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
 
                     if (error.type === 'network') {
 
+                        if (reconnectAttempts === 0){
+                            setupReconnectAttempts();
+                        }
+
                     } else {
+                        hideCallLoader();
                         modalFactory.alert(
                             $translate.instant('ERROR_TITLE'),
                             errorMsg
