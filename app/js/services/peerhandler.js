@@ -8,7 +8,8 @@
 
 var peerhandler = angular.module('peerhandler', []);
 
-peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $state, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
+peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $timeout, $state, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
+
     // PeerJS object representing the user
     var me                = null;
 
@@ -23,8 +24,6 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     var remoteVideoSource = null;
     var localVideoSource  = null;
 
-    // currentCallStream   = local
-    // currentAnswerStream = remote
     var currentCallStream   = null;
     var currentAnswerStream = null;
 
@@ -33,6 +32,11 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
 
     // Seperate data connection for sending data
     var dataConnection = null;
+
+    // Variable to store a reference to the reconnection setTimeout function
+    var reconnectTimeoutHandle = null;
+    // How many times have we already tried to reconnect unsuccesfully
+    var reconnectAttempts     = 0;
 
     // Array of callback functions to handle data
     var dataCallbacks   = [];
@@ -271,6 +275,30 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
         })
     };
 
+    var setupReconnectAttempts = function () {
+        $ionicLoading.show({
+            template: 'Lost connection. Attemping to reconnect'
+        });
+
+        reconnectTimeoutHandle = $timeout(function () {
+            if (me != null)  {
+                if (me.disconnected === true) {
+                    me.reconnect();
+                    reconnectAttempts = reeconnectAttempts + 1;
+                } else {
+                    stopReconnectAttempt();
+                }
+            }
+        })
+    }
+
+    var stopReconnectAttempt = function () {
+
+        $timeout.cancel(reconnectTimeoutHandle);
+        $ionicLoading.hide();
+        disconnectRef();
+        $state.go('login');
+    }
 
     var endCurrentCall = function() {
         cancelAllLocalNotifications();
@@ -398,7 +426,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 me.on('error', function(error) {
                     hideCallLoader();
                     var errorMsg = error.toString();
-                    console.log(error.type);
+
                     switch (error.type) {
                         case 'peer-unavailable':
                             errorMsg = $translate.instant('ERROR_USER_OFFLINE');
@@ -411,16 +439,21 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                         break;
                     }
 
-                    modalFactory.alert(
-                        $translate.instant('ERROR_TITLE'),
-                        errorMsg
-                    )
-                    .then(function(res) {
-                        if (error.type == 'server-error' || error.type == 'network' ) {
-                            disconnectRef();
-                            $state.go('login');
-                        }
-                    });
+                    if (error.type === 'network') {
+
+                    } else {
+                        modalFactory.alert(
+                            $translate.instant('ERROR_TITLE'),
+                            errorMsg
+                        )
+                        .then(function(res) {
+                            if (error.type == 'server-error' || error.type == 'network' ) {
+                                disconnectRef();
+                                $state.go('login');
+                            }
+                        });
+                    }
+
                 });
                 me.on('call', function(mediaConnection) {
                     if (isInCallCurrently === false) {
