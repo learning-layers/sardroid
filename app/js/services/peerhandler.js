@@ -284,7 +284,13 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     }
 
     var attemptReconnect = function () {
-            if (me.disconnected === true) {
+
+            if (!me) {
+                stopReconnectAttempt({ failed: true });
+                return;
+            }
+
+            if (me.disconnected === true ) {
                 me.reconnect();
                 reconnectAttempts = reconnectAttempts + 1;
                 reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
@@ -327,7 +333,6 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     };
 
      var disconnectFromPeerJS = function() {
-            console.log("Disconnecting from PeerJS")
          if (me) {
             me.disconnect();
             me.destroy();
