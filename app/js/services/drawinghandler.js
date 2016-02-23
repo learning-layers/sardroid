@@ -56,20 +56,18 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
     var removePathFromCanvas = function (canvas, path) {
         console.log('removing path');
         canvas.remove(path);
-        canvas.renderAll(true);
+        canvas.renderAll(false);
     };
 
     var createPathRemoveTimer = function(canvas, path) {
-        console.log('creating timer')
         var timer = $timeout(function () {
              removePathFromCanvas(canvas, path);
-         }, config.drawingRemoveTime);
+        }, config.drawingRemoveTime);
 
          pathRemoveTimers.push(timer);
     };
 
     var cancelPathRemoveTimers = function() {
-        console.log('cancel timers');
         pathRemoveTimers.map(function (t){
             $timeout.cancel(t);
         })
@@ -102,8 +100,6 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
     };
 
     var addNewPathToCanvas = function (canvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize) {
-        console.log("remoteCanvasSize", remoteCanvasSize);
-        console.log("own canvas size", canvasSize);
         pathData = JSON.parse(pathData);
         fabric.util.enlivenObjects([pathData], function(objects) {
 
@@ -223,7 +219,6 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
            tearDownDrawingFactory: function () {
                 cancelPathRemoveTimers();
                 peerFactory.clearCallback('newPathCreated');
-                //peerFactory.clearAllCallbacks();
            }
         }
 });
