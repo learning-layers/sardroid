@@ -59,6 +59,7 @@ angular.module('contacts', [])
 
         $scope.addNewContactModalSubmit = function (newContact) {
 
+            console.log(newContact);
             if (newContact && newContact.phoneNumber && newContact.displayName) {
                 newContactModal.hide();
 
@@ -75,6 +76,10 @@ angular.module('contacts', [])
                     console.log(error);
                 });
             }
+        };
+
+        $scope.cancelAddContact = function () {
+            newContactModal.hide();
         };
 
         $scope.addNewContact = function () {
