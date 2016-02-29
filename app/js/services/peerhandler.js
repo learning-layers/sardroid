@@ -30,11 +30,15 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     // Simple boolean flag to check if we're currently in a call
     var isInCallCurrently = false;
 
+    // Flag for checking if we've connected succesfully during the current session at least once
+    var hasConnectionEverSucceeded = false;
+
     // Seperate data connection for sending data
     var dataConnection = null;
 
     // Variable to store a reference to the reconnection setTimeout function
     var reconnectIntervalHandle = null;
+
     // How many times have we already tried to reconnect unsuccesfully
     var reconnectAttempts     = 0;
 
@@ -452,7 +456,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                         break;
                     }
 
-                    if (error.type === 'network' && me) {
+                    if (error.type === 'network' && me && hasConnectionEverSucceeded === true) {
                         if (reconnectAttempts === 0) {
                             setupReconnectAttempts();
                         }
@@ -471,6 +475,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                     }
 
                 });
+
                 me.on('call', function(mediaConnection) {
                     if (isInCallCurrently === false) {
                         isInCallCurrently = true;
@@ -529,8 +534,9 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 });
 
                 me.on('open', function(id) {
-                    resolve();
+                    hasConnectionEverSucceeded = true
                     console.log('Connection opened: ' + id);
+                    resolve();
                 });
 
             })
