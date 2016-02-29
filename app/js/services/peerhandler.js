@@ -283,7 +283,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
         console.log('Setting up reconnect interval handle');
         reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
         $ionicLoading.show({
-            template: $translate.instant('RECONNECT_STARTED')
+            templateUrl: 'templates/modals/reconnect-loader.html'
         });
 
     }

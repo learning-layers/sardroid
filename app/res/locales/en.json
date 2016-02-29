@@ -34,7 +34,7 @@
     "PROFILE": "Profile",
     "QUIT": "Exit the app",
     "RECONNECT_FAILED": "Reconnecting failed. Please wait and try again later",
-    "RECONNECT_STARTED": "Lost connection. Attemping to reconnect",
+    "RECONNECT_STARTED": "Lost connection. Attemping to reconnect...",
     "REFRESH_CONTACTS": "Refresh your contacts list",
     "REGISTER" :  "Sign up",
     "REGISTER_NUMBER_HEADER" :  "2 / 2 | Registering",
