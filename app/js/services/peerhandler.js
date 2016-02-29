@@ -276,24 +276,22 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     };
 
     var setupReconnectAttempts = function () {
+        console.log('Setting up reconnect interval handle');
+        reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
         $ionicLoading.show({
             template: $translate.instant('RECONNECT_STARTED')
         });
 
-        reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
     }
 
     var attemptReconnect = function () {
 
-            if (!me) {
-                stopReconnectAttempt({ failed: true });
-                return;
-            }
-
-            if (me.disconnected === true ) {
+            if (me && me.disconnected === true ) {
                 me.reconnect();
                 reconnectAttempts = reconnectAttempts + 1;
-                reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
+                if (reconnectIntervalHandle !== null) {
+                    reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
+                }
             } else {
                 stopReconnectAttempt({ failed: false });
             }
@@ -306,6 +304,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     var stopReconnectAttempt = function (opts) {
         console.log(opts);
         $timeout.cancel(reconnectIntervalHandle);
+        reconnectIntervalHandle = null;
         reconnectAttempts = 0;
         $ionicLoading.hide();
 
@@ -453,12 +452,10 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                         break;
                     }
 
-                    if (error.type === 'network') {
-
-                        if (reconnectAttempts === 0){
+                    if (error.type === 'network' && me) {
+                        if (reconnectAttempts === 0) {
                             setupReconnectAttempts();
                         }
-
                     } else {
                         hideCallLoader();
                         modalFactory.alert(
