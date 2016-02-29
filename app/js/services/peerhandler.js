@@ -277,7 +277,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
 
     var setupReconnectAttempts = function () {
         $ionicLoading.show({
-            template: 'Lost connection. Attemping to reconnect'
+            template: $translate.instant('RECONNECT_STARTED')
         });
 
         reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
@@ -298,15 +298,13 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 stopReconnectAttempt({ failed: false });
             }
 
-            if (reconnectAttempts > 2) {
+            if (reconnectAttempts > 10) {
                 stopReconnectAttempt({ failed: true });
             }
     };
 
     var stopReconnectAttempt = function (opts) {
-
         console.log(opts);
-        console.log(reconnectIntervalHandle);
         $timeout.cancel(reconnectIntervalHandle);
         reconnectAttempts = 0;
         $ionicLoading.hide();
@@ -314,6 +312,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
         if (opts.failed === true ){
             disconnectFromPeerJS();
             $state.go('login');
+            modalFactory.alert($translate.instant('ERROR_TITLE'), $translate.instant('RECONNECT_FAILED'))
         }
     };
 

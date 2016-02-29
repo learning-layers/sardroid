@@ -1,7 +1,7 @@
 {
     "ACTIONS": "Toiminnot",
-    "ADD_CONTACT": "Lisää uusi kontakti",
     "ADD": "Lisää",
+    "ADD_CONTACT": "Lisää uusi kontakti",
     "CALL_HEADER": "Puhelu {{displayName}}:n kanssa",
     "CALL_INCOMING_TEMPLATE": "Puhelu tulossa. Vastaa?",
     "CALL_INCOMING_TITLE":" Puhelu {{displayName}}:lta",
@@ -33,6 +33,8 @@
     "PASSWORD_NO_MATCH": "Salasanat eivät täsmää!",
     "PROFILE": "Profiili",
     "QUIT": "Lopeta sovellus",
+    "RECONNECT_FAILED": "Yhteyden uudelleenmuodostaminen ei onnistunut. Ole hyvä ja yritä myöhemmin uudestaan.",
+    "RECONNECT_STARTED": "Yhteys menetetty. Yritetään yhdistää uudelleen...",
     "REFRESH_CONTACTS": "Päivitä kontaktilistasi",
     "REGISTER" :  "Rekisteröidy",
     "REGISTER_NUMBER_HEADER" :  "2 / 2 | Rekisteröityminen ",

@@ -41,6 +41,7 @@ angular.module('login', [])
         }
         // Hack so we're disconnected for sure!
         peerFactory.disconnectFromPeerJS();
+        socketFactory.disconnectFromServer()
 
         // Already got a valid token, we can just log in
         if ($localStorage.user && $localStorage.token) {
