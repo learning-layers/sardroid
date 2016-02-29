@@ -1,5 +1,6 @@
 {
     "ACTIONS": "Actions",
+    "OR": "or",
     "ADD": "Add",
     "ADD_CONTACT": "Add new contact",
     "CALL_HEADER": "Call with {{displayName}}",

@@ -1,5 +1,6 @@
 {
     "ACTIONS": "Toiminnot",
+    "OR": "Tai",
     "ADD_CONTACT": "Lisää uusi kontakti",
     "ADD": "Lisää",
     "CALL_HEADER": "Puhelu {{displayName}}:n kanssa",
