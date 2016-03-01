@@ -7,26 +7,31 @@
  * contacts API. Sweet!
  */
 
-var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
-.controller('ContactsCtrl', function($scope, $localStorage, contactsFactory, peerFactory, socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
+angular.module('contacts', [])
+    .controller('ContactsCtrl', function($scope, $localStorage, $ionicModal, contactsFactory, peerFactory, socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
 
-        var translations = null;
+        var translations    = null;
+        var newContactModal = null;
 
-        var translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {
+        translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {
             translations = trans;
         });
 
-        $scope.preloaderClass = "preloader-on";
+        var reloadContactsList = function () {
+            $scope.preloaderClass = 'preloader-on';
 
-        contactsFactory.fetchContactsFromServer().then(function (contactsList) {
-            $scope.$apply(function () {
-                contactsFactory.setContacts(contactsList);
-                $scope.contacts = contactsList;
-                $scope.preloaderClass = 'preloader-off';
+            contactsFactory.fetchContactsFromServer().then(function (contactsList) {
+                $scope.$apply(function () {
+                    contactsFactory.setContacts(contactsList);
+                    $scope.contacts = contactsList;
+                    $scope.preloaderClass = 'preloader-off';
+                });
+            }).catch(function(err) {
+                console.log(err);
             });
-        }).catch(function(err) {
-            console.log(err);
-        });
+        };
+
+        reloadContactsList();
 
         var updateContactState = function(data) {
 
@@ -40,16 +45,54 @@ var contacts = angular.module('contacts', ['ngCordova', 'peerhandler'])
                 });
             }
 
-        }
+        };
 
         socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_ONLINE,  updateContactState);
         socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_OFFLINE, updateContactState);
 
         $scope.searchKeyPress = function(keyCode) {
-            // Enter and Android keyboard 'GO' keycodes to close the keyboard
+            // Enter and Android keyboard 'GO' key codes to close the keyboard
             if ((keyCode === 66 || keyCode === 13) && typeof cordova !== 'undefined') {
                 cordova.plugins.Keyboard.close();
             }
+        };
+
+        $scope.addNewContactModalSubmit = function (newContact) {
+
+            console.log(newContact);
+            if (newContact && newContact.phoneNumber && newContact.displayName) {
+                newContactModal.hide();
+
+                $scope.preloaderClass = 'preloader-on';
+
+                contactsFactory.addNewContact(newContact)
+                .then(function (results) {
+                    return contactsFactory.syncContactsWithServer();
+                })
+                .then(function (contacts) {
+                    reloadContactsList();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+        };
+
+        $scope.cancelAddContact = function () {
+            newContactModal.hide();
+        };
+
+        $scope.addNewContact = function () {
+            $ionicModal.fromTemplateUrl('templates/modals/add-contact.html',
+                    {
+                      animation : 'slide-in-up',
+                      scope     : $scope
+                    }
+               ).then(function (modal) {
+                newContactModal = modal;
+                newContactModal.show();
+            })
+
         };
 
         $scope.user = $localStorage.user;

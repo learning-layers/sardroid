@@ -5,13 +5,15 @@
  * Not much else to say about this one!
  */
 
-angular.module('login', ['peerhandler'])
+angular.module('login', [])
 
 .controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, contactsFactory, configFactory) {
 
         $scope.isLoginButtonDisabled = false;
+
         var loginCompleted = function (number) {
             apiFactory.setApiToken($localStorage.token);
+            $localStorage.hasBeenInRegister = true;
 
             var promises = [];
 
@@ -48,6 +50,7 @@ angular.module('login', ['peerhandler'])
         }
 
         $scope.goToSignUp = function () {
+            $localStorage.hasBeenInRegister = true;
             $state.go('verify', { state: 'register' });
         }
 
@@ -55,9 +58,12 @@ angular.module('login', ['peerhandler'])
             $state.go('verify', { state: 'reset_password' });
         }
 
+        $scope.determineRegisterButtonClass = function () {
+            return ($localStorage.hasBeenInRegister === true || typeof $localStorage.user !== 'undefined') ? null : 'notify-pulse' ;
+        }
+
         $scope.login = function(user) {
             if (typeof user !== 'undefined' && user.phoneNumber && user.password) {
-
                 $scope.isLoginButtonDisabled = true;
 
                 var number = user.phoneNumber.replace(/[ +]/g, '');

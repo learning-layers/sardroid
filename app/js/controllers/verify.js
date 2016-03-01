@@ -8,15 +8,6 @@
 angular.module('verify', [])
 .controller('VerifyCtrl', function($scope, $state, $localStorage, $translate, $http, $stateParams, modalFactory, apiFactory, configFactory) {
 
-    // Attempt to determine current locale from ipinfo for the number picker!
-    $http.get('http://ipinfo.io')
-    .then(function (results) {
-        $scope.defaultCountry = results.data.country.toLowerCase();
-    })
-    .catch(function (err) {
-        $scope.defaultCountry = 'fi';
-    });
-
     $scope.isVerifyButtonDisabled = false;
     var currentState = $stateParams.state;
 

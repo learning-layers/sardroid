@@ -6,7 +6,7 @@
  * You should refer to the PeerJS docs if something is puzzling.
  */
 
-var peerhandler = angular.module('peerhandler', ['ngCordova' ]);
+var peerhandler = angular.module('peerhandler', []);
 
 peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $state, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
     // PeerJS object representing the user
@@ -127,7 +127,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
         console.log('show loader')
         audioFactory.playSound('.dial');
         $ionicLoading.show({
-            templateUrl: 'templates/loader.html',
+            templateUrl: 'templates/modals/loader.html',
             duration: 10000
         });
     };

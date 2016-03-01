@@ -13,7 +13,6 @@ confighandler.factory('configFactory', function () {
     var config = {
             production: {
                 apiUrl: 'https://mattij.com:9000/',
-                onlineContactsLocation: 'https://mattij.com:9000/peerjs/peerjs/peers',
                 peerjs: {
                     host: 'mattij.com',
                     port: 9000,
@@ -46,7 +45,6 @@ confighandler.factory('configFactory', function () {
                 }
         },
         development: {
-            onlineContactsLocation: 'http://192.168.0.12:9000/peerjs/peerjs/peers',
             apiUrl: 'http://192.168.0.13:9000/',
             peerjs: {
                 host: '192.168.0.13',

@@ -5,10 +5,19 @@
  * Mostly handles setting up configuration variables
  * and wiring up the states, controllers and templates
  */
-angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler', 'intlpnIonic'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler', 'intlpnIonic'])
 
-.run(function($ionicPlatform, $rootScope, $ionicSideMenuDelegate, $translate, $cordovaGoogleAnalytics) {
+.run(function($ionicPlatform, $http, $rootScope, $ionicSideMenuDelegate, $translate, $cordovaGoogleAnalytics) {
         $ionicPlatform.ready(function() {
+
+            // Attempt to determine current locale from ipinfo for the number picker!
+            $http.get('http://ipinfo.io')
+            .then(function (results) {
+                $rootScope.defaultCountry = results.data.country.toLowerCase();
+            })
+            .catch(function (err) {
+                $rootScope.defaultCountry = 'fi';
+            });
 
             if (window.cordova && window.analytics) {
                 if (window.env.environment !== 'production') {
@@ -51,7 +60,6 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'login', 'settings', 'quit', '
             // Disable showing right menu by default
             $rootScope.showRightMenu = false;
             $rootScope.hideLoader    = true;
-            $rootScope.lang = 'fi'
             $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
 })
 }).config(function($stateProvider, $urlRouterProvider, $translateProvider) {

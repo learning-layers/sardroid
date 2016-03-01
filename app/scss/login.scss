@@ -10,10 +10,40 @@
 
 .button-wrapper {
     margin-top: 10vh;
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    fieldset.title {
+        padding: 0;
+        margin-left: -6px;
+        border-top: 1px solid #aaa;
+        border-bottom: none;
+        border-left: none;
+        border-right: none;
+        width: 100%;
+        display: inline-block;
+    }
+
+    fieldset.title legend {
+        width: 50px;
+        border: none;
+    }
 }
 
 .tappable-header {
     &:active {
         background-color: #f5f5f5;
     }
+}
+
+@keyframes notify-pulse {
+    0%   { opacity: 1;}
+    50%  { opacity: 0.6;}
+    100% { opacity: 1;}
+}
+
+.notify-pulse {
+    animation: notify-pulse 1.75s infinite;
 }

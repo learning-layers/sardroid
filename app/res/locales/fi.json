@@ -1,5 +1,8 @@
 {
     "ACTIONS": "Toiminnot",
+    "OR": "tai",
+    "ADD_CONTACT": "Lisää uusi kontakti",
+    "ADD": "Lisää",
     "CALL_HEADER": "Puhelu {{displayName}}:n kanssa",
     "CALL_INCOMING_TEMPLATE": "Puhelu tulossa. Vastaa?",
     "CALL_INCOMING_TITLE":" Puhelu {{displayName}}:lta",
@@ -8,6 +11,7 @@
     "CONTACTS": "Kontaktit",
     "CONTACT_CURRENT_STATE": "Juuri nyt ",
     "DIAL_WAIT": "Soitetaan, odota hetki...",
+    "DISPLAY_NAME": "Nimi",
     "ERROR" :  "Virhe!",
     "ERROR_NETWORK" : "Yhteysvirhe palvelimen kanssa",
     "ERROR_SERVER" : "Palvelimeen ei saatu yhteyttä!",
@@ -15,7 +19,7 @@
     "ERROR_USER_OFFLINE": "Näyttää siltä että käyttäjä on offline!",
     "LOGIN" :  "Kirjaudu sisään",
     "LOG_OUT": "Kirjaudu ulos",
-    "LOST_PASSWORD": "Salasana hukassa?",
+    "LOST_PASSWORD": "Unohditko salasanasi?",
     "MALFORMED_NUMBER": "Tarkista numerosi, kiitos!",
     "MISCALLENEOUS": "Muut",
     "MOBILE_NUMBER": "Puhelinnumero",
@@ -50,10 +54,10 @@
     "VERIFICATION_USED": "Koodi on jo käytetty kerran!",
     "VERIFY_CODE": "Varmistusluku",
     "VERIFY_EXIST" :  "Onko sinulla jo koodi? Klikkaa tästä.",
-    "VERIFY_NUMBER" :  "Lähetä varmistuskoodi",
+    "VERIFY_NUMBER" :  "Lähetä",
     "VERIFY_NUMBER_HEADER" :  "1 / 2 |  Numerosi varmentaminen",
-    "VERIFY_NUMBER_PASSWORD_TEXT" :  " Uusiaksesi salasaasi lähetämme sinulle kertakäyttöisen koodin tekstiviestinä varmentaaksemme numerosi. Kirjoita käyttämäsi numerosi alas ja käytä saamaasi koodia salasanan uusimisessa",
-    "VERIFY_NUMBER_REGISTER_TEXT" :  "Rekisteröityäksesi lähetämme sinulle kertakäyttöisen koodin tekstiviestinä varmentaaksemme numerosi. Kirjoita numerosi alas (kansainvälisesssä formaatissa) ja käytä tätä koodia rekisteröidessäsi tilin",
+    "VERIFY_NUMBER_PASSWORD_TEXT" :  "Kirjoita alas rekisteröimäsi numero. Lähetämme sinulle koodin, jolla voit vaihtaa salasanan.",
+    "VERIFY_NUMBER_REGISTER_TEXT" :  "Palveluun rekisteröidytään puhelinnumerolla. Syötä numero kenttään kansainvälisessä muodossa. Saat tekstiviestillä koodin, joka vaaditaan rekisteröitymiseen. ",
     "WRONG_PASSWORD": "Väärä salasana!"
 }
 

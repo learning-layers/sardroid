@@ -11,15 +11,18 @@
         <div class="loader-wrapper">
             <div class="loader"></div>
         </div>
-        <div ng-repeat="contact in filteredContacts = (contacts | filter:contactSearch)" class="list">
-            <div class="contact-wrapper" ng-class="contact.currentState">
-                <a class="item item-avatar" href ng-click="selectUser(contact)">
-                    <img src="{{contact.photo}}">
-                    <h2>{{contact.displayName}}</h2>
-                    <p class="contact-number"><i class="icon ion-ios-telephone contact-telephone"></i> {{contact.phoneNumber | formatNumber}}</p>
-                    <p class="contact-state"> {{'CONTACT_CURRENT_STATE' | translate}}  {{contact.currentState}}</p>
-                </a>
+        <div class="list">
+            <div ng-repeat="contact in filteredContacts = (contacts | filter:contactSearch)">
+                <div class="contact-wrapper" ng-class="contact.currentState">
+                    <a class="item item-avatar" href ng-click="selectUser(contact)">
+                        <img src="{{contact.photo}}">
+                        <h2>{{contact.displayName}}</h2>
+                        <p class="contact-number"><i class="icon ion-ios-telephone contact-telephone"></i> {{contact.phoneNumber | formatNumber}}</p>
+                        <p class="contact-state"> {{'CONTACT_CURRENT_STATE' | translate}}  {{contact.currentState}}</p>
+                    </a>
+                </div>
             </div>
+            <button ng-click="addNewContact()" class="button button-block button-positive icon-right ion-person-add" translate="ADD_CONTACT"></button>
         </div>
         <div class="list" ng-show="filteredContacts.length == 0 && contacts.length > 0">
             <a class="item no-results" href="#">

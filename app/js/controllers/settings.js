@@ -6,13 +6,14 @@
 
 angular.module('settings', [])
 
-.controller('SettingsCtrl', function($scope, $ionicLoading, $translate,  contactsFactory) {
+.controller('SettingsCtrl', function($scope, $ionicHistory, $ionicLoading, $translate,  contactsFactory) {
 
     $scope.updateContactsList = function () {
         $ionicLoading.show({template: $translate.instant('SYNCING_CONTACTS')});
         return contactsFactory.syncContactsWithServer()
             .then(function () {
                 $ionicLoading.hide();
+                $ionicHistory.goBack();
             })
     }
 });

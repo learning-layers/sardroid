@@ -74,6 +74,25 @@ angular.module('contacts').factory('contactsFactory', function($cordovaContacts,
             return apiFactory.user.contacts.fetchContactsList();
         },
 
+        addNewContact: function (newContact) {
+            return new Promise(function (resolve, reject) {
+                $cordovaContacts.save(
+                    {
+                        phoneNumbers: [new ContactField('mobile', newContact.phoneNumber, true)],
+                        displayName: newContact.displayName
+                    }
+                )
+                .then(function (results) {
+                    console.log(results);
+                    resolve(results);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    reject(error);
+                });
+            })
+        },
+
         setContacts: function (newContacts) {
             contacts = newContacts;
         },
