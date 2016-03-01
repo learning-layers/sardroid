@@ -1,6 +1,6 @@
 {
     "ACTIONS": "Toiminnot",
-    "OR": "Tai",
+    "OR": "tai",
     "ADD_CONTACT": "Lisää uusi kontakti",
     "ADD": "Lisää",
     "CALL_HEADER": "Puhelu {{displayName}}:n kanssa",
@@ -19,7 +19,7 @@
     "ERROR_USER_OFFLINE": "Näyttää siltä että käyttäjä on offline!",
     "LOGIN" :  "Kirjaudu sisään",
     "LOG_OUT": "Kirjaudu ulos",
-    "LOST_PASSWORD": "Salasana hukassa?",
+    "LOST_PASSWORD": "Unohditko salasanasi?",
     "MALFORMED_NUMBER": "Tarkista numerosi, kiitos!",
     "MISCALLENEOUS": "Muut",
     "MOBILE_NUMBER": "Puhelinnumero",

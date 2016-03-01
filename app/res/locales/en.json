@@ -17,7 +17,7 @@
     "ERROR_SERVER" : "Could not connect to server!",
     "ERROR_TITLE" : "Something went wrong!",
     "ERROR_USER_OFFLINE": "Looks like that user is offline!",
-    "LOGIN": "Login",
+    "LOGIN": "Log in",
     "LOG_OUT": "Log out",
     "LOST_PASSWORD": " Lost password?",
     "MALFORMED_NUMBER": "Your number seems to not be valid!",
