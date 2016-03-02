@@ -20,11 +20,11 @@ confighandler.factory('configFactory', function () {
                     debug: 0,
                     secure: true,
                     config: {'iceServers': [
-        //                {
-        //                    'url'        : 'turn:188.166.88.67:3478',
-        //                    'username'   :  window.env.turnServer.username,
-        //                    'credential' :  window.env.turnServer.password
-        //                },
+                        {
+                            'url'        : 'turn:layersbox.aalto.fi:3478',
+                            'username'   :  window.env.turnServer.username,
+                            'credential' :  window.env.turnServer.password
+                        },
                         { 'url': 'stun:stun.l.google.com:19302' },
                         { 'url': 'stun:stun1.l.google.com:19302' },
                         { 'url': 'stun:stun2.l.google.com:19302' },
