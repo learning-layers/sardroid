@@ -9,6 +9,18 @@
         margin-left:  9px;
         margin-right: 17px;
     }
+    .contact-button-wrapper {
+        padding: 0;
+
+        .cancel-button-col {
+            padding-left: 0;
+        }
+
+        .add-button-col {
+            padding-right: 0;
+        }
+
+    }
 }
 
 .contact-telephone {

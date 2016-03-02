@@ -10,6 +10,26 @@
 
 .button-wrapper {
     margin-top: 10vh;
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    fieldset.title {
+        padding: 0;
+        margin-left: -6px;
+        border-top: 1px solid #aaa;
+        border-bottom: none;
+        border-left: none;
+        border-right: none;
+        width: 100%;
+        display: inline-block;
+    }
+
+    fieldset.title legend {
+        width: 50px;
+        border: none;
+    }
 }
 
 .tappable-header {

@@ -18,7 +18,10 @@
                     </label>
                     <div class="button-wrapper">
                         <button ng-disabled="isLoginButtonDisabled"  class="button button-block button-positive icon-right ion-chevron-right" ng-click="login(user)" translate="LOGIN"></button>
-                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-class="determineRegisterButtonClass()" ng-click="goToSignUp()" translate="REGISTER"></button>
+                        <fieldset class="title text-center">
+                            <legend>{{'OR' | translate}}</legend>
+                        </fieldset>
+                        <button class="button  button-block button-positive icon-right ion-chevron-right" ng-class="determineRegisterButtonClass()" ng-click="goToSignUp()" translate="REGISTER"></button>
                     </div>
                 </form>
             </div>
