@@ -48,6 +48,18 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
     // Scope for the reconnect loader pop-up
     var reconnectScope = $rootScope.$new(true);
 
+    reconnectScope.reconnectTimer = function () {
+        reconnectScope.countdown = nextReconnectIn / 1000;
+
+        reconnectScope.countdownTimer = setInterval(function () {
+            reconnectScope.countdown--;
+            reconnectScope.$apply();
+        }, 1000)
+    };
+
+    reconnectScope.stopTimer = function () {
+        clearTimeout(reconnectScope.countdownTimer);
+    };
     // Array of callback functions to handle data
     var dataCallbacks   = [];
 
@@ -289,7 +301,9 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
         console.log('Setting up reconnect interval handle');
         reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn)
 
-        reconnectScope.nextReconnectIn = { nextReconnectIn: nextReconnectIn / 1000 };
+        reconnectScope.nextReconnectIn =  nextReconnectIn;
+
+        reconnectScope.reconnectTimer();
 
         $ionicLoading.show({
             templateUrl: 'templates/modals/reconnect-loader.html',
@@ -308,7 +322,8 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                     nextReconnectIn = Math.pow(reconnectAttempts, 2) * 1000;
                     console.log('reconnecting in ', nextReconnectIn);
                     reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn);
-                    reconnectScope.nextReconnectIn = { nextReconnectIn: nextReconnectIn / 1000 };
+                    reconnectScope.nextReconnectIn = nextReconnectIn;
+                    reconnectScope.countdown = nextReconnectIn / 1000;
                 } else {
                     console.log('timeout already set, fuck!');
                 }
@@ -324,8 +339,8 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
     };
 
     var stopReconnectAttempt = function (opts) {
+        reconnectScope.stopTimer();
         $timeout.cancel(reconnectIntervalHandle);
-
         reconnectIntervalHandle = null;
         reconnectAttempts       = 0;
         nextReconnectIn         = 1000;

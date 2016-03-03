@@ -23,7 +23,7 @@
     "MISCALLENEOUS": "Miscellaneous",
     "MOBILE_NUMBER": "Mobile number",
     "MOBILE_NUMBER_EXAMPLE": "eg. +358 40 123456",
-    "NEXT_RECONNECT_IN": "Next attempt in {{nextReconnectIn}} seconds...",
+    "NEXT_RECONNECT_IN": "Next attempt in {{countdown}} seconds...",
     "NOTIFICATION_CALL" : "SoAR call from {{displayName}} ( {{mediaConnection}} )",
     "NO_CONTACTS_FOUND": "Looks like your phone doesn't have any contacts that have SoAR installed",
     "NO_CONTACTS_SEARCH": "No matching contacts",
