@@ -546,6 +546,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                     hasConnectionEverSucceeded = true
                     console.log('Connection opened: ' + id);
                     resolve();
+                    stopReconnectAttempt({failed: false});
                 });
 
             })
