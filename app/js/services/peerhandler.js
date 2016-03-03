@@ -42,6 +42,9 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     // How many times have we already tried to reconnect unsuccesfully
     var reconnectAttempts     = 0;
 
+    // In milliseconds, how long until the next reconnect attempt.
+    var nextReconnectIn = 1000;
+
     // Array of callback functions to handle data
     var dataCallbacks   = [];
 
@@ -281,7 +284,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
 
     var setupReconnectAttempts = function () {
         console.log('Setting up reconnect interval handle');
-        reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
+        reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn)
         $ionicLoading.show({
             templateUrl: 'templates/modals/reconnect-loader.html'
         });
@@ -291,22 +294,28 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     var attemptReconnect = function () {
 
             if (me && me.disconnected === true ) {
+                console.log('attempting to reconnect...');
                 me.reconnect();
                 reconnectAttempts = reconnectAttempts + 1;
                 if (reconnectIntervalHandle !== null) {
-                    reconnectIntervalHandle = $timeout(attemptReconnect, 2000)
+                    nextReconnectIn = Math.pow(reconnectAttempts, 2) * 1000;
+                    console.log('reconnecting in ', nextReconnectIn);
+                    reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn);
+                } else {
+                    console.log('timeout already set, fuck!');
                 }
             } else {
+                console.log('me is undefined or disconnected is true, stopping!');
                 stopReconnectAttempt({ failed: false });
             }
 
             if (reconnectAttempts > 10) {
+                console.log('Attempted to connect over 10 times, stopping');
                 stopReconnectAttempt({ failed: true });
             }
     };
 
     var stopReconnectAttempt = function (opts) {
-        console.log(opts);
         $timeout.cancel(reconnectIntervalHandle);
         reconnectIntervalHandle = null;
         reconnectAttempts = 0;
