@@ -8,7 +8,7 @@
 
 var peerhandler = angular.module('peerhandler', []);
 
-peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $timeout, $state, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
+peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPopup, $ionicLoading, $ionicHistory, $timeout, $state, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
 
     // PeerJS object representing the user
     var me                = null;
@@ -40,10 +40,13 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     var reconnectIntervalHandle = null;
 
     // How many times have we already tried to reconnect unsuccesfully
-    var reconnectAttempts     = 0;
+    var reconnectAttempts = 0;
 
     // In milliseconds, how long until the next reconnect attempt.
     var nextReconnectIn = 1000;
+
+    // Scope for the reconnect loader pop-up
+    var reconnectScope = $rootScope.$new(true);
 
     // Array of callback functions to handle data
     var dataCallbacks   = [];
@@ -285,8 +288,12 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     var setupReconnectAttempts = function () {
         console.log('Setting up reconnect interval handle');
         reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn)
+
+        reconnectScope.nextReconnectIn = nextReconnectIn / 1000;
+
         $ionicLoading.show({
-            templateUrl: 'templates/modals/reconnect-loader.html'
+            templateUrl: 'templates/modals/reconnect-loader.html',
+            scope: reconnectScope
         });
 
     }
@@ -301,6 +308,7 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                     nextReconnectIn = Math.pow(reconnectAttempts, 2) * 1000;
                     console.log('reconnecting in ', nextReconnectIn);
                     reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn);
+                    reconnectScope.nextReconnectIn = nextReconnectIn / 1000;
                 } else {
                     console.log('timeout already set, fuck!');
                 }
