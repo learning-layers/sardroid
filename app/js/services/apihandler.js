@@ -9,7 +9,7 @@ var apihandler = angular.module('apihandler', []);
 apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
     // Private API
     var apiUrl = configFactory.getValue('apiUrl');
-    
+
     // Various different kinds of errors that can be returned from the REST API
     var errorTypes = {
         VERIFICATION   : {
@@ -72,7 +72,6 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
                     resolve(results.data)
                 })
                 .catch(function (error) {
-                    console.log(error);
                     reject(formatError(error));
                 })
                 .finally(function () {

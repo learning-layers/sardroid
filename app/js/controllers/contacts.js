@@ -8,7 +8,7 @@
  */
 
 angular.module('contacts', [])
-    .controller('ContactsCtrl', function($scope, $localStorage, $ionicModal, contactsFactory, peerFactory, socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
+    .controller('ContactsCtrl', function($scope, $localStorage, $ionicModal, contactsFactory, modalFactory,  peerFactory, socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
 
         var translations    = null;
         var newContactModal = null;
@@ -27,7 +27,8 @@ angular.module('contacts', [])
                     $scope.preloaderClass = 'preloader-off';
                 });
             }).catch(function(err) {
-                console.log(err);
+                modalFactory.alert($translate.instant('ERROR_TITLE', $translate.instant('ERROR_FETCH_CONTACTS')))
+                $scope.preloaderClass = 'preloader-off';
             });
         };
 
@@ -73,6 +74,7 @@ angular.module('contacts', [])
                     reloadContactsList();
                 })
                 .catch(function (error) {
+
                     console.log(error);
                 });
             }

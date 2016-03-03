@@ -22,7 +22,6 @@ modalhandler.factory('modalFactory', function($ionicPopup) {
     _
     return {
         alert: function (title, template) {
-
             return new Promise(function (resolve, reject) {
                 if (getPopupsByType(title).length === 0) {
                     var alertPopup = $ionicPopup.alert({

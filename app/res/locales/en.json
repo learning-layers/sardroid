@@ -22,6 +22,7 @@
     "MALFORMED_NUMBER": "Your number seems to not be valid!",
     "MISCALLENEOUS": "Miscellaneous",
     "MOBILE_NUMBER": "Mobile number",
+    "ERROR_FETCH_CONTACTS": "Failed to fetch contacts",
     "MOBILE_NUMBER_EXAMPLE": "eg. +358 40 123456",
     "NEXT_RECONNECT_IN": "Next attempt in {{countdown}} seconds...",
     "NOTIFICATION_CALL" : "SoAR call from {{displayName}} ( {{mediaConnection}} )",
