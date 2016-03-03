@@ -27,6 +27,16 @@ var reload      = browserSync.reload;
 var ngAnnotate = require('gulp-ng-annotate');
 var minifyJS   = require('gulp-uglify');
 
+
+var fs     = require('fs');
+var xml2js = require('xml2js');
+
+
+var parser = new xml2js.Parser({ async: false });
+
+var xmlConfig = fs.readFileSync(__dirname + '/config.xml');
+
+
 var knownOptions = {
     string: 'env',
     default: {
@@ -45,16 +55,19 @@ var knownOptions = {
 
 var options = minimist(process.argv.slice(2), knownOptions);
 
+parser.parseString(xmlConfig, function (err, results) {
+    options.version = results.widget.$.version
+});
+
 var onError = function(err) {
     notify.onError({
         title:    "Gulp error in " + err.plugin,
         message:  err.toString()
     })(err);
-    
+
     beep(3);
     this.emit('end');
 };
-
 
 gulp.task('build', ['scss', 'js', 'html', 'fonts', 'copy-res'], function() {
     gutil.log('Finished building app to folder www');
@@ -66,7 +79,7 @@ gulp.task('scss', function() {
        .pipe(cached('scss'))
        .pipe(gulpif(options.env === 'development', sourcemaps.init()))
        .pipe(sass())
-       .on('error', sass.logError)  
+       .on('error', sass.logError)
        .pipe(gulpif(options.env !== 'development', minifyCSS()))
        .pipe(remember('scss'))
        .pipe(concat('app.css'))
@@ -123,6 +136,10 @@ gulp.task('replace-env', function () {
                 {
                     match: 'ENVIRONMENT',
                     replacement: options.env
+                },
+                {
+                    match: 'VERSION',
+                    replacement: options.version
                 },
                 {
                     match: 'TURN_USERNAME',

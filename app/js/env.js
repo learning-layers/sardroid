@@ -8,7 +8,8 @@ window.env = {
         username: '@@TURN_USERNAME',
         password: '@@TURN_PASSWORD'
     },
-    environment: '@@ENVIRONMENT',
-    ga_token: '@@GA_TOKEN'
+    environment : '@@ENVIRONMENT',
+    version     : '@@VERSION',
+    ga_token    : '@@GA_TOKEN'
 }
 
