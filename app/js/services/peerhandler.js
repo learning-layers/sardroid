@@ -8,7 +8,8 @@
 
 var peerhandler = angular.module('peerhandler', []);
 
-peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLoading, $ionicHistory, $state, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
+peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPopup, $ionicLoading, $ionicHistory, $timeout, $state, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
+
     // PeerJS object representing the user
     var me                = null;
 
@@ -23,16 +24,46 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     var remoteVideoSource = null;
     var localVideoSource  = null;
 
-    // currentCallStream   = local
-    // currentAnswerStream = remote
     var currentCallStream   = null;
     var currentAnswerStream = null;
 
     // Simple boolean flag to check if we're currently in a call
     var isInCallCurrently = false;
 
+    // Flag for checking if we've connected succesfully during the current session at least once
+    var hasConnectionEverSucceeded = false;
+
     // Seperate data connection for sending data
     var dataConnection = null;
+
+    // Variable to store a reference to the reconnection setTimeout function
+    var reconnectIntervalHandle = null;
+
+    // How many times have we already tried to reconnect unsuccesfully
+    var reconnectAttempts = 0;
+
+    // In milliseconds, how long until the next reconnect attempt.
+    var nextReconnectIn = 1000;
+
+    // Scope for the reconnect loader pop-up
+    var reconnectScope = $rootScope.$new(true);
+
+    reconnectScope.reconnectTimer = function () {
+        reconnectScope.countdown = nextReconnectIn / 1000;
+
+        reconnectScope.countdownTimer = setInterval(function () {
+            reconnectScope.countdown--;
+            reconnectScope.$apply();
+        }, 1000)
+    };
+
+    reconnectScope.stopTimer = function () {
+        clearTimeout(reconnectScope.countdownTimer);
+    };
+
+    reconnectScope.forceReconnect = function () {
+        me.reconnect();
+    };
 
     // Array of callback functions to handle data
     var dataCallbacks   = [];
@@ -271,6 +302,62 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
         })
     };
 
+    var setupReconnectAttempts = function () {
+        console.log('Setting up reconnect interval handle');
+        reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn)
+
+        reconnectScope.nextReconnectIn =  nextReconnectIn;
+
+        reconnectScope.reconnectTimer();
+
+        $ionicLoading.show({
+            templateUrl: 'templates/modals/reconnect-loader.html',
+            scope: reconnectScope
+        });
+
+    }
+
+    var attemptReconnect = function () {
+
+            if (me && me.disconnected === true && me.open === false ) {
+                console.log('attempting to reconnect...');
+                me.reconnect();
+                reconnectAttempts = reconnectAttempts + 1;
+                if (reconnectIntervalHandle !== null) {
+                    nextReconnectIn = Math.pow(reconnectAttempts, 2) * 1000;
+                    console.log('reconnecting in ', nextReconnectIn);
+                    reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn);
+                    reconnectScope.nextReconnectIn = nextReconnectIn;
+                    reconnectScope.countdown = nextReconnectIn / 1000;
+                } else {
+                    console.log('timeout already set, fuck!');
+                }
+            } else {
+                console.log('me is undefined or disconnected is true, stopping!');
+                stopReconnectAttempt({ failed: false });
+            }
+
+            if (reconnectAttempts > 10) {
+                console.log('Attempted to connect over 10 times, stopping');
+                stopReconnectAttempt({ failed: true });
+            }
+    };
+
+    var stopReconnectAttempt = function (opts) {
+        reconnectScope.stopTimer();
+        $timeout.cancel(reconnectIntervalHandle);
+        reconnectIntervalHandle = null;
+        reconnectAttempts       = 0;
+        nextReconnectIn         = 1000;
+
+        $ionicLoading.hide();
+
+        if (opts.failed === true ){
+            disconnectFromPeerJS();
+            $state.go('login');
+            modalFactory.alert($translate.instant('ERROR_TITLE'), $translate.instant('RECONNECT_FAILED'))
+        }
+    };
 
     var endCurrentCall = function() {
         cancelAllLocalNotifications();
@@ -288,7 +375,6 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
     };
 
      var disconnectFromPeerJS = function() {
-            console.log("Disconnecting from PeerJS")
          if (me) {
             me.disconnect();
             me.destroy();
@@ -396,9 +482,8 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 };
 
                 me.on('error', function(error) {
-                    hideCallLoader();
                     var errorMsg = error.toString();
-                    console.log(error.type);
+
                     switch (error.type) {
                         case 'peer-unavailable':
                             errorMsg = $translate.instant('ERROR_USER_OFFLINE');
@@ -411,17 +496,26 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                         break;
                     }
 
-                    modalFactory.alert(
-                        $translate.instant('ERROR_TITLE'),
-                        errorMsg
-                    )
-                    .then(function(res) {
-                        if (error.type == 'server-error' || error.type == 'network' ) {
-                            disconnectRef();
-                            $state.go('login');
+                    if (error.type === 'network' && me && hasConnectionEverSucceeded === true) {
+                        if (reconnectAttempts === 0) {
+                            setupReconnectAttempts();
                         }
-                    });
+                    } else {
+                        hideCallLoader();
+                        modalFactory.alert(
+                            $translate.instant('ERROR_TITLE'),
+                            errorMsg
+                        )
+                        .then(function(res) {
+                            if (error.type == 'server-error' || error.type == 'network' ) {
+                                disconnectRef();
+                                $state.go('login');
+                            }
+                        });
+                    }
+
                 });
+
                 me.on('call', function(mediaConnection) {
                     if (isInCallCurrently === false) {
                         isInCallCurrently = true;
@@ -480,8 +574,10 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
                 });
 
                 me.on('open', function(id) {
-                    resolve();
+                    hasConnectionEverSucceeded = true
                     console.log('Connection opened: ' + id);
+                    resolve();
+                    stopReconnectAttempt({failed: false});
                 });
 
             })

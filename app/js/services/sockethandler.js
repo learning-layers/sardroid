@@ -55,39 +55,39 @@ sockethandler.factory('socketFactory', function ($rootScope, $state, configFacto
                  socket = io.connect(config.url, { query: "token=" + token });
 
                  socket.on(eventTypes.CONTACT_ONLINE, function(data) {
-                    console.log('User is online');
+                    console.log('Socket.io: User is online');
                     data.eventType = eventTypes.CONTACT_ONLINE;
                     callCallbacks(eventTypes.CONTACT_ONLINE, data);
                 });
 
                 socket.on(eventTypes.CONTACT_OFFLINE, function(data) {
-                    console.log('User is offline');
+                    console.log('Socket.io: User is offline');
                     data.eventType = eventTypes.CONTACT_OFFLINE;
                     callCallbacks(eventTypes.CONTACT_OFFLINE, data);
                 });
 
                 // These two events are used for authentication
                 socket.on(eventTypes.TOKEN_VALID, function(data) {
-                    console.log('Token is valid!');
+                    console.log('Socket.io: Token is valid!');
                     resolve();
                 });
 
                 socket.on(eventTypes.TOKEN_INVALID, function(data) {
-                    console.log('Token is invalid!');
+                    console.log('Socket.io: Token is invalid!');
                     socket.disconnect();
                     reject();
                 });
 
                 socket.on(eventTypes.CONNECT, function() {
-                    console.log('Succesfully connected!');
+                    console.log('Socket.io: Succesfully connected!');
                 });
 
                 socket.on(eventTypes.DISCONNECT, function() {
-                    console.log('Disconnected!');
+                    console.log('Socket.io: Disconnected!');
                 });
 
                 socket.on(eventTypes.CONNECT_ERROR, function(err) {
-                    console.log(err);
+                    console.log('Socket.io: ', err);
                     reject();
                 });
             })

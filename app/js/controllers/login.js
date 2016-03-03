@@ -39,10 +39,12 @@ angular.module('login', [])
                     console.log(error);
                 })
         }
+
         // Hack so we're disconnected for sure!
         peerFactory.disconnectFromPeerJS();
+        socketFactory.disconnectFromServer()
 
-        // Already got a valid token, we can just log in
+        // Already got a valid token, we can just initiate the log in process
         if ($localStorage.user && $localStorage.token) {
             loginCompleted($localStorage.user.phoneNumber);
         } else if ($localStorage.user) {
