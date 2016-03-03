@@ -13,26 +13,32 @@ modalhandler.factory('modalFactory', function($ionicPopup) {
     var currentPopups = [];
 
     var pruneUsedPopupsByType = function (type) {
-        console.log('pruning used popups, old array: ', currentPopups);
-        currentPopups = _.reject(currentPopups, function (p) { return p.type === type; });
-        console.log('pruning used popups, new array: ', currentPopups);
+        return _.reject(currentPopups, function (p) { return p.type === type; });
     };
 
+    var getPopupsByType = function (type) {
+        return _.where(currentPopups, { type: type });
+    };
+    _
     return {
         alert: function (title, template) {
 
             return new Promise(function (resolve, reject) {
-                var alertPopup = $ionicPopup.alert({
-                    title    : title,
-                    template : template
-                });
+                if (getPopupsByType(title).length === 0) {
+                    var alertPopup = $ionicPopup.alert({
+                        title    : title,
+                        template : template
+                    });
+                    currentPopups.push({type: title, popupRef: alertPopup});
 
-                currentPopups.push({type: title, popupRef: alertPopup});
-
-                alertPopup.then(function () {
-                    pruneUsedPopupsByType(title)
+                    alertPopup.then(function () {
+                        currentPopups = pruneUsedPopupsByType(title)
+                        resolve();
+                    })
+                } else {
+                    // Same kind of popup is already visible, just resolve without spamming
                     resolve();
-                })
+                }
             })
         }
     }
