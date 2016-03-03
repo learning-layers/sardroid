@@ -60,6 +60,11 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
     reconnectScope.stopTimer = function () {
         clearTimeout(reconnectScope.countdownTimer);
     };
+
+    reconnectScope.forceReconnect = function () {
+        me.reconnect();
+    };
+
     // Array of callback functions to handle data
     var dataCallbacks   = [];
 
@@ -314,7 +319,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
     var attemptReconnect = function () {
 
-            if (me && me.disconnected === true ) {
+            if (me && me.disconnected === true && me.open === false ) {
                 console.log('attempting to reconnect...');
                 me.reconnect();
                 reconnectAttempts = reconnectAttempts + 1;
