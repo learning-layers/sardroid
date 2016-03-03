@@ -8,6 +8,8 @@ angular.module('settings', [])
 
 .controller('SettingsCtrl', function($scope, $ionicHistory, $ionicLoading, $translate,  contactsFactory) {
 
+    $scope.appVersion = window.env.version;
+
     $scope.updateContactsList = function () {
         $ionicLoading.show({template: $translate.instant('SYNCING_CONTACTS')});
         return contactsFactory.syncContactsWithServer()
@@ -16,5 +18,6 @@ angular.module('settings', [])
                 $ionicHistory.goBack();
             })
     }
+
 });
 

@@ -1,4 +1,5 @@
 {
+    "ABOUT": "Tietoja SoAR:sta",
     "ACTIONS": "Toiminnot",
     "ADD": "Lisää",
     "ADD_CONTACT": "Lisää uusi kontakti",
@@ -63,6 +64,7 @@
     "VERIFY_NUMBER_HEADER" :  "1 / 2 |  Numerosi varmentaminen",
     "VERIFY_NUMBER_PASSWORD_TEXT" :  "Kirjoita alas rekisteröimäsi numero. Lähetämme sinulle koodin, jolla voit vaihtaa salasanan.",
     "VERIFY_NUMBER_REGISTER_TEXT" :  "Palveluun rekisteröidytään puhelinnumerolla. Syötä numero kenttään kansainvälisessä muodossa. Saat tekstiviestillä koodin, joka vaaditaan rekisteröitymiseen. ",
+    "VERSION": "Asennettu sovelluksen versio",
     "WRONG_PASSWORD": "Väärä salasana!"
 }
 

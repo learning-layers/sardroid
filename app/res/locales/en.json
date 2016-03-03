@@ -1,4 +1,5 @@
 {
+    "ABOUT": "About SoAR",
     "ACTIONS": "Actions",
     "ADD": "Add",
     "ADD_CONTACT": "Add new contact",
@@ -63,5 +64,6 @@
     "VERIFY_NUMBER_HEADER" :  "1 / 2 |  Verifying your phone number",
     "VERIFY_NUMBER_PASSWORD_TEXT" :  "Put in the number you used to register below in international format. You will get an SMS with a one-time code for resetting your password",
     "VERIFY_NUMBER_REGISTER_TEXT" :  "Sign up with your phone number. Enter the number in international format. You will get an SMS with a one-time code required for registration",
+    "VERSION": "Current app version",
     "WRONG_PASSWORD": "Wrong password!"
 }

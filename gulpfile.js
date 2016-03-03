@@ -31,11 +31,9 @@ var minifyJS   = require('gulp-uglify');
 var fs     = require('fs');
 var xml2js = require('xml2js');
 
-
 var parser = new xml2js.Parser({ async: false });
 
 var xmlConfig = fs.readFileSync(__dirname + '/config.xml');
-
 
 var knownOptions = {
     string: 'env',
@@ -56,6 +54,7 @@ var knownOptions = {
 var options = minimist(process.argv.slice(2), knownOptions);
 
 parser.parseString(xmlConfig, function (err, results) {
+    if (err) { throw err; }
     options.version = results.widget.$.version
 });
 
