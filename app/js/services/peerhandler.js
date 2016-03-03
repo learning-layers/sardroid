@@ -317,8 +317,11 @@ peerhandler.factory('peerFactory', function(configFactory, $ionicPopup, $ionicLo
 
     var stopReconnectAttempt = function (opts) {
         $timeout.cancel(reconnectIntervalHandle);
+
         reconnectIntervalHandle = null;
-        reconnectAttempts = 0;
+        reconnectAttempts       = 0;
+        nextReconnectIn         = 1000;
+
         $ionicLoading.hide();
 
         if (opts.failed === true ){
