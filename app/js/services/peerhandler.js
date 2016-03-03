@@ -289,7 +289,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
         console.log('Setting up reconnect interval handle');
         reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn)
 
-        reconnectScope.nextReconnectIn = nextReconnectIn / 1000;
+        reconnectScope.nextReconnectIn = { nextReconnectIn: nextReconnectIn / 1000 };
 
         $ionicLoading.show({
             templateUrl: 'templates/modals/reconnect-loader.html',
@@ -308,7 +308,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                     nextReconnectIn = Math.pow(reconnectAttempts, 2) * 1000;
                     console.log('reconnecting in ', nextReconnectIn);
                     reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn);
-                    reconnectScope.nextReconnectIn = nextReconnectIn / 1000;
+                    reconnectScope.nextReconnectIn = { nextReconnectIn: nextReconnectIn / 1000 };
                 } else {
                     console.log('timeout already set, fuck!');
                 }
