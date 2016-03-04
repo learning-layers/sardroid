@@ -2,26 +2,27 @@
     <ion-content class="padding center">
         <div class="row">
             <div class="col text-center">
-                <h1 class="sar-header positive">SOAR</h1>
+                <h1 class="sar-header positive">SoAR</h1>
             </div>
         </div>
         <div>
             <div class="list list-inset padding-vertical login-form">
-                <form>
-                    <label class="item item-input">
-                        <i class="icon ion-ios-telephone placeholder-icon"></i>
-                        <input type="tel" placeholder="{{'MOBILE_NUMBER' | translate}}" ng-model="user.phoneNumber" >
-                    </label>
-                    <label class="item item-input">
-                        <i class="icon ion-locked placeholder-icon"></i>
-                        <input type="password" placeholder="{{'PASSWORD' | translate}}" ng-model="user.password" >
-                    </label>
+                    <div class="login-wrapper">
+                        <label class="item item-input">
+                            <i class="icon ion-ios-telephone placeholder-icon"></i>
+                            <input type="tel" placeholder="{{'MOBILE_NUMBER' | translate}}" ng-model="user.phoneNumber" >
+                        </label>
+                        <label class="item item-input">
+                            <i class="icon ion-locked placeholder-icon"></i>
+                            <input type="password" placeholder="{{'PASSWORD' | translate}}" ng-model="user.password" >
+                        </label>
+                            <button ng-disabled="isLoginButtonDisabled" class="button button-block button-positive icon-right ion-chevron-right" ng-click="login(user)" translate="LOGIN"></button>
+                    </div>
                     <div class="button-wrapper">
-                        <button ng-disabled="isLoginButtonDisabled"  class="button button-block button-positive icon-right ion-chevron-right" ng-click="login(user)" translate="LOGIN"></button>
                         <fieldset class="title text-center">
                             <legend>{{'OR' | translate}}</legend>
                         </fieldset>
-                        <button class="button  button-block button-positive icon-right ion-chevron-right" ng-class="determineRegisterButtonClass()" ng-click="goToSignUp()" translate="REGISTER"></button>
+                        <button class="button button-block button-positive icon-right ion-chevron-right" ng-class="determineRegisterButtonClass()" ng-click="goToSignUp()" translate="REGISTER"></button>
                     </div>
                 </form>
             </div>
