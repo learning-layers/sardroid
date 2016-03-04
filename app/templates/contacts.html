@@ -12,6 +12,7 @@
             <div class="loader"></div>
         </div>
         <div class="list">
+            <button ng-click="addNewContact()" class="button button-block button-positive icon-right ion-person-add" translate="ADD_CONTACT"></button>
             <div ng-repeat="contact in filteredContacts = (contacts | filter:contactSearch)">
                 <div class="contact-wrapper" ng-class="contact.currentState">
                     <a class="item item-avatar" href ng-click="selectUser(contact)">
@@ -22,7 +23,6 @@
                     </a>
                 </div>
             </div>
-            <button ng-click="addNewContact()" class="button button-block button-positive icon-right ion-person-add" translate="ADD_CONTACT"></button>
         </div>
         <div class="list" ng-show="filteredContacts.length == 0 && contacts.length > 0">
             <a class="item no-results" href="#">
