@@ -136,7 +136,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
     var cancelLocalNotification = function(id) {
         if (window.cordova) {
-            //$cordovaLocalNotification.cancel(id);
+            $cordovaLocalNotification.cancel(id);
         }
 
         var index = notificationIds.indexOf(id);
@@ -538,13 +538,13 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                             user = { displayName: mediaConnection.peer }
                         }
 
-                       // $cordovaLocalNotification.schedule({
-                       //     id: id,
-                       //     title: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
-                       //     text: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
-                       // }).then(function (result) {
-                       //     console.log(result);
-                       // });
+                        $cordovaLocalNotification.schedule({
+                            id: id,
+                            title: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
+                            text: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
+                        }).then(function (result) {
+                            console.log(result);
+                        });
 
                         var confirmPopup = $ionicPopup.confirm({
                             title: $translate.instant('CALL_INCOMING_TITLE', {displayName: user.displayName}),

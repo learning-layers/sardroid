@@ -23,7 +23,11 @@
     "cordova-plugin-contacts",
     "org.apache.cordova.device",
     "cordova-plugin-google-analytics",
-    "cordova-plugin-crosswalk-webview"
+    "cordova-plugin-crosswalk-webview",
+    {
+      "locator": "https://github.com/katzer/cordova-plugin-local-notifications.git",
+      "id": "de.appplant.cordova.plugin.local-notification"
+    }
   ],
   "cordovaPlatforms": [
     "android"
