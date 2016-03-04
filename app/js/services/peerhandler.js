@@ -62,7 +62,9 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
     };
 
     reconnectScope.forceReconnect = function () {
-        me.reconnect();
+        if (me.destroyed === false ){
+            me.reconnect();
+        }
     };
 
     // Array of callback functions to handle data
@@ -319,6 +321,12 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
     var attemptReconnect = function () {
 
+            if (me.destroyed === true) {
+                stopReconnectAttempt({ failed: true });
+                return;
+
+            }
+
             if (me && me.disconnected === true && me.open === false ) {
                 console.log('attempting to reconnect...');
                 me.reconnect();
@@ -471,6 +479,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
                 me.on('close', function() {
                     console.log('closed Peerjs connection');
+                    reject();
                 });
 
                 me.socket._socket.onopen = function() {
