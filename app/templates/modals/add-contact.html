@@ -6,7 +6,7 @@
                 <i class="icon name-icon ion-person placeholder-icon"></i>
                 <input ng-model="newContact.displayName" type="text" placeholder="{{'DISPLAY_NAME' | translate}}">
             </label>
-            <intlpn national-node="false" default-country="{{defaultCountry}}" ng-model="newContact.phoneNumber" placeholder="{{'MOBILE_NUMBER' | translate}}"></intlpn>
+            <intlpn national-node="false" default-country="{{::defaultCountry}}" ng-model="newContact.phoneNumber" placeholder="{{'MOBILE_NUMBER' | translate}}"></intlpn>
 
             <div class="row contact-button-wrapper">
                 <div class="col col-33 cancel-button-col">

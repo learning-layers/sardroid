@@ -11,14 +11,14 @@
             </div>
             <div class="list list-inset padding-vertical login-form">
                 <form>
-                    <intlpn national-node="false" default-country="{{defaultCountry}}" ng-model="phone" placeholder="{{'MOBILE_NUMBER_EXAMPLE' | translate}}"></intlpn>
-                        <button ng-disabled="isVerifyButtonDisabled" class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup(phone)" initial-country="auto" translate="VERIFY_NUMBER"></button> 
+                    <intlpn national-node="false" default-country="{{::defaultCountry}}" ng-model="phone" placeholder="{{'MOBILE_NUMBER_EXAMPLE' | translate}}"></intlpn>
+                        <button ng-disabled="isVerifyButtonDisabled" class="button button-block button-positive icon-right ion-chevron-right" ng-click="signup(phone)" initial-country="auto" translate="VERIFY_NUMBER"></button>
                 </form>
             </div>
         </div>
     </ion-content>
     <ion-footer-bar align-title="center" ng-click="goToRegister()">
-        <h1 class="tappable-header title positive">{{'VERIFY_EXIST' | translate}}</h1>  
+        <h1 class="tappable-header title positive">{{'VERIFY_EXIST' | translate}}</h1>
     </ion-footer-bar>
 </ion-view>
 
