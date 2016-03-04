@@ -551,11 +551,11 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                             template: $translate.instant('CALL_INCOMING_TEMPLATE')
                         });
 
-                        //audioFactory.playSound('.call');
+                        audioFactory.playSound('.call');
 
                         confirmPopup.then(function(res) {
 
-                            audioFactory.stopSound('.call');
+                            audioFactory.stopAllSounds();
                             cancelLocalNotification(id);
 
                             if(res) {
