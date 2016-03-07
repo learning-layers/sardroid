@@ -7,7 +7,7 @@
 
 angular.module('login', [])
 
-.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, contactsFactory, configFactory) {
+.controller('LoginCtrl', function($scope, $state, $localStorage, $ionicPlatform, $ionicHistory, $translate, apiFactory, modalFactory,  peerFactory, socketFactory, contactsFactory, configFactory) {
 
         $scope.isLoginButtonDisabled = false;
 
@@ -46,7 +46,9 @@ angular.module('login', [])
 
         // Already got a valid token, we can just initiate the log in process
         if ($localStorage.user && $localStorage.token) {
-            loginCompleted($localStorage.user.phoneNumber);
+            $ionicPlatform.ready(function () {
+                loginCompleted($localStorage.user.phoneNumber);
+            });
         } else if ($localStorage.user) {
             $scope.user = $localStorage.user;
         }
