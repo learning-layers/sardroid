@@ -19,8 +19,8 @@
 .call-button {
     display: inline-block;
     width: 45px; /* 60*/
-    height: 45px; 
-    font-size:40px; 
+    height: 45px;
+    font-size:40px;
     background: #305e84;
     border-radius: 50%;
     color: #fff;
@@ -31,7 +31,19 @@
     transform: translateX(-50%);
 }
 
+
+.leave-button::after{
+    content:"";
+    position:absolute;
+    border-top: 3px solid white;
+    width: 100%;
+    margin-top: 44%;
+    margin-left: -35%;
+    transform: translateX(-50%) rotate(135deg);
+}
+
 .leave-button {
+    background-color: #ef473a;
     margin-left: 16%;
     float: left;
 }
@@ -83,7 +95,7 @@
     }
 
     .leave-button {
-        display: none; 
+        display: none;
     }
 
     .fullscreen-button {
