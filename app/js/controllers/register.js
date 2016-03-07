@@ -7,6 +7,7 @@
 angular.module('register', [])
 .controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory, configFactory, contactsFactory) {
 
+    console.log($translate);
     $scope.isSignUpButtonDisabled = false;
     var currentState = $stateParams.state;
 
@@ -22,7 +23,18 @@ angular.module('register', [])
 
     $scope.submit = function (user) {
 
-        if (!user || !user.password || !user.passwordAgain || !user.code) {
+        if (!user.code) {
+            modalFactory.alert($translate.instant('ERROR'), $translate.instant('CODE_MISSING'));
+            return;
+        }
+
+        if (!user.password) {
+            modalFactory.alert($translate.instant('ERROR'), $translate.instant('PASSWORD_MISSING'));
+            return;
+        }
+
+        if (!user.passwordAgain) {
+            modalFactory.alert($translate.instant('ERROR'), $translate.instant('PASSWORD_AGAIN_MISSING'));
             return;
         }
 

@@ -1,5 +1,8 @@
 {
     "ABOUT": "About SoAR",
+    "CODE_MISSING": "Your verification code is missing!",
+    "PASSWORD_MISSING": "Your password is missing",
+    "PASSWORD_AGAIN_MISSING": "Please put in your password twice.",
     "ACTIONS": "Actions",
     "ADD": "Add",
     "ADD_CONTACT": "Add new contact",

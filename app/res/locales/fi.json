@@ -1,5 +1,8 @@
 {
     "ABOUT": "Tietoja SoAR:sta",
+    "CODE_MISSING": "Varmistuslukusi puuttuu",
+    "PASSWORD_MISSING": "Salasanasi puuttuu",
+    "PASSWORD_AGAIN_MISSING": "Ole hyvä ja laita salasanasi kahdesti",
     "ACTIONS": "Toiminnot",
     "ADD": "Lisää",
     "ADD_CONTACT": "Lisää uusi kontakti",
