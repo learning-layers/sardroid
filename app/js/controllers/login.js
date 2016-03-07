@@ -85,6 +85,11 @@ angular.module('login', [])
 
                         modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
                     })
+            } else if (user && !user.phoneNumber) {
+                modalFactory.alert($translate.instant('ERROR'), $translate.instant('MALFORMED_NUMBER'));
+
+            } else if (user && !user.password) {
+                modalFactory.alert($translate.instant('ERROR'), $translate.instant('PASSWORD_MISSING'));
             }
         };
 });

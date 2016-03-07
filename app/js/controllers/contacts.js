@@ -77,6 +77,11 @@ angular.module('contacts', [])
 
                     console.log(error);
                 });
+            } else if (newContact && !newContact.phoneNumber) {
+                modalFactory.alert($translate.instant('ERROR'), $translate.instant('NUMBER_WRONG_FORMAT'));
+
+            } else if (newContact && !newContact.displayName) {
+                modalFactory.alert($translate.instant('ERROR'), $translate.instant('NAME_MISSING'));
             }
         };
 
