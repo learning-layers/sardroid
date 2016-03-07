@@ -528,6 +528,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                 me.on('call', function(mediaConnection) {
                     if (isInCallCurrently === false) {
                         isInCallCurrently = true;
+                        audioFactory.playSound('.call');
 
                         console.log('call from ' + mediaConnection.peer);
                         var user = contactsFactory.getContactByNumber(mediaConnection.peer);
@@ -551,11 +552,13 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                             template: $translate.instant('CALL_INCOMING_TEMPLATE')
                         });
 
-                        audioFactory.playSound('.call');
 
                         confirmPopup.then(function(res) {
 
-                            audioFactory.stopAllSounds();
+                            $timeout(function () {
+                                audioFactory.stopAllSounds();
+                            }, 100)
+
                             cancelLocalNotification(id);
 
                             if(res) {
@@ -567,6 +570,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                                         alert(error)
                                     })
                             } else {
+                                isInCallCurrently = false;
                                 closeDataConnection('User is busy!');
                                 mediaConnection.close();
                                 return false;
