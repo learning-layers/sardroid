@@ -38,7 +38,7 @@ confighandler.factory('configFactory', function () {
                     remoteColor: 'red',
                     localColor:  '#387ef5',
                     brushWidth:   5,
-                    drawingRemoveTime: 2000
+                    drawingRemoveTime: 6000
                 },
                 socketio: {
                     url: 'https://mattij.com:9000'

@@ -555,6 +555,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
                         confirmPopup.then(function(res) {
 
+                            // TODO: Investigate why cancelling the sound fails unless in timeout
                             $timeout(function () {
                                 audioFactory.stopAllSounds();
                             }, 100)

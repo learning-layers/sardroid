@@ -46,6 +46,7 @@ angular.module('login', [])
 
         // Already got a valid token, we can just initiate the log in process
         if ($localStorage.user && $localStorage.token) {
+            // Wait until Ionic is fully loaded before moving on
             $ionicPlatform.ready(function () {
                 loginCompleted($localStorage.user.phoneNumber);
             });
