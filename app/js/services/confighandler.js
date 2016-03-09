@@ -53,11 +53,11 @@ confighandler.factory('configFactory', function () {
                 debug: 0,
                 secure: false,
                 config: {'iceServers': [
-                    //                {
-                    //                    'url'        : 'turn:188.166.88.67:3478',
-                    //                    'username'   :  window.env.turnServer.username,
-                    //                    'credential' :  window.env.turnServer.password
-                    //                },
+                    {
+                        'url'        : 'turn:layersbox.aalto.fi:3478',
+                        'username'   :  window.env.turnServer.username,
+                        'credential' :  window.env.turnServer.password
+                    },
                     { 'url': 'stun:stun.l.google.com:19302' },
                     { 'url': 'stun:stun1.l.google.com:19302' },
                     { 'url': 'stun:stun2.l.google.com:19302' },
@@ -71,7 +71,7 @@ confighandler.factory('configFactory', function () {
                     remoteColor: 'red',
                     localColor:  '#387ef5',
                     brushWidth:   5,
-                    drawingRemoveTime: 2000
+                    drawingRemoveTime: 6000
                 },
                 socketio: {
                     url: 'http://10.100.28.191:9000'
