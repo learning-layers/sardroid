@@ -224,7 +224,6 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
         dataConn.on('error', function(err) {
              console.log('dataconnection error!')
              console.log(err);
-             alert(err);
          });
 
         dataConn.on('close', function() {
