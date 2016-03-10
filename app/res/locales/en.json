@@ -44,7 +44,7 @@
     "PASSWORD_NO_MATCH": "Passwords do not match!",
     "PROFILE": "Profile",
     "QUIT": "Exit the app",
-    "QUIT_CALLLING": "Quit calling",
+    "QUIT_CALLING": "Quit calling",
     "RECONNECT_FAILED": "Reconnecting failed. Please wait and try again later",
     "RECONNECT_STARTED": "Lost connection. Attemping to reconnect...",
     "REFRESH_CONTACTS": "Refresh your contacts list",
