@@ -21,6 +21,11 @@ modalhandler.factory('modalFactory', function($ionicPopup) {
     };
     _
     return {
+        closeAllPopups: function () {
+            currentPopups.map(function (p) {
+                p.popupRef.close();
+            })
+        },
         alert: function (title, template) {
             return new Promise(function (resolve, reject) {
                 if (getPopupsByType(title).length === 0) {
@@ -39,7 +44,36 @@ modalhandler.factory('modalFactory', function($ionicPopup) {
                     resolve();
                 }
             })
+        },
+
+        confirm: function (title, template) {
+            return new Promise(function (resolve, reject) {
+                if (getPopupsByType(title).length === 0) {
+
+                    console.log(title);
+                    console.log(template);
+
+                    var confirmPopup = $ionicPopup.confirm({
+                        title    : title,
+                        template : template
+                    });
+
+                    currentPopups.push({type: title, popupRef: confirmPopup});
+
+                    confirmPopup.then(function (res) {
+                        console.log(res);
+                        currentPopups = pruneUsedPopupsByType(title)
+                        resolve(res);
+                    })
+
+                } else {
+                    // Same kind of popup is already visible, just resolve without spamming
+                    resolve();
+                }
+            })
+
         }
+
     }
 });
 

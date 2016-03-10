@@ -68,11 +68,17 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
         }
     };
 
-    var callUserScope = $rootScope.new(true);
+    var callUserScope = $rootScope.$new(true);
 
     callUserScope.cancelCalling = function () {
+        stopCallAttempt();
         hideCallLoader();
-    }
+    };
+
+
+    var stopCallAttempt = function () {
+        closeDataConnection({type: 'callerClosed', message: 'User changed his mind!'});
+    };
 
     // Array of callback functions to handle data
     var dataCallbacks   = [];
@@ -205,16 +211,17 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
         dataConn.reliable = true;
 
         dataConn.on('open', function() {
-            console.log('Dataconnection opened')
             dataConn.on('data', function(data) {
-                console.log('data received!');
-
                 var dataJSON = JSON.parse(data);
                 if (dataJSON.type == 'connectionClose') {
                     hideCallLoader();
                     callAlertModal(dataJSON.message);
-                }
-                else {
+                } else if (dataJSON.type === 'callerClosed') {
+                    cancelAllLocalNotifications();
+                    modalFactory.closeAllPopups();
+                    closeDataConnection();
+                    isInCallCurrently = false;
+                } else {
                     var callbackArray = getCallbacksByType(dataJSON.type)
                     if (callbackArray) {
                         var len = callbackArray.length;
@@ -236,8 +243,13 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
         });
 
         dataConnection = dataConn;
+
         })
     };
+
+    var closeIncomingCall = function (modal) {
+        cancelAllLocalNotifications();
+    }
 
     var sendData = function(data) {
 
@@ -252,18 +264,22 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
         }
     }
 
-    var closeDataConnection = function(reason) {
+    var closeDataConnection = function(opts) {
         console.log('closing data connection')
-      if (dataConnection) {
-        if (reason) {
-            sendData({
-                type:    'connectionClose',
-                message: reason
-            });
+
+        if (typeof opts !== 'undefined' && typeof opts.type === 'undefined') {
+            opts.type = 'connectionClose';
         }
-        dataConnection.close();
-        dataConnection = null;
-      }
+
+        if (dataConnection) {
+
+            if (typeof opts !== 'undefined') {
+                sendData(opts);
+            }
+
+            dataConnection.close();
+            dataConnection = null;
+        }
     };
 
     var endCallAndGoBack = function() {
@@ -374,6 +390,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
     var endCurrentCall = function() {
         cancelAllLocalNotifications();
         closeDataConnection();
+
         if (currentCallStream) {
             currentCallStream.close();
             currentCallStream = null;
@@ -475,7 +492,6 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
                 me.on('connection', function(dataConn) {
                     console.log('dataconnetion received');
-                    console.log(dataConn);
                     if (checkIfDataConnectionIsSet(dataConn) === false) {
                         setDataConnection(dataConn);
                     }
@@ -534,7 +550,6 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                         isInCallCurrently = true;
                         audioFactory.playSound('.call');
 
-                        console.log('call from ' + mediaConnection.peer);
                         var user = contactsFactory.getContactByNumber(mediaConnection.peer);
                         var id = Math.floor(Math.random() * 10000);
                         notificationIds.push(id);
@@ -545,20 +560,17 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
                         $cordovaLocalNotification.schedule({
                             id: id,
-                            title: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
-                            text: $translate.instant('NOTIFICATION_CALL', {displayName: user.displayName, mediaConnection: mediaConnection.peer}),
+                            title: $translate.instant('NOTIFICATION_CALL', { displayName: user.displayName, mediaConnection: mediaConnection.peer}),
+                            text: $translate.instant('NOTIFICATION_CALL',  { displayName: user.displayName, mediaConnection: mediaConnection.peer}),
                         }).then(function (result) {
                             console.log(result);
                         });
 
-                        var confirmPopup = $ionicPopup.confirm({
-                            title: $translate.instant('CALL_INCOMING_TITLE', {displayName: user.displayName}),
-                            template: $translate.instant('CALL_INCOMING_TEMPLATE')
-                        });
-
-
-                        confirmPopup.then(function(res) {
-
+                        modalFactory.confirm(
+                             $translate.instant('CALL_INCOMING_TITLE', { displayName: user.displayName }),
+                             $translate.instant('CALL_INCOMING_TEMPLATE')
+                        )
+                        .then(function(res) {
                             // TODO: Investigate why cancelling the sound fails unless in timeout
                             $timeout(function () {
                                 audioFactory.stopAllSounds();
@@ -568,21 +580,21 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
                             if(res) {
                                 answer(mediaConnection)
-                                    .then(function () {
-                                        $state.go('call', {user: user});
-                                    })
-                                    .catch(function (error) {
-                                        alert(error)
-                                    })
+                                .then(function () {
+                                    $state.go('call', {user: user});
+                                })
+                                .catch(function (error) {
+                                    alert(error)
+                                })
                             } else {
                                 isInCallCurrently = false;
-                                closeDataConnection('User is busy!');
+                                closeDataConnection({ type: 'connectionClose', message: 'User is busy!' });
                                 mediaConnection.close();
                                 return false;
                             }
                         });
                     } else {
-                        console.log('ALready in call, closing media')
+                        console.log('Already in call, closing media')
                         mediaConnection.close();
                     }
                 });
@@ -627,18 +639,14 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                     currentCallStream = me.call(userToCall.phoneNumber,  stream, { metadata: me.id});
 
                     currentCallStream.on('error', function (err) {
-                        //hideCallLoader();
+                        hideCallLoader();
                         isInCallCurrently = false;
-                        alert(err);
                     });
 
                     currentCallStream.on('stream', function(stream) {
                         console.log('going to stream from call')
-                        //hideCallLoader();
-                        console.log('audio tracks from stream');
-                        console.log(stream.getAudioTracks());
+                        hideCallLoader();
                         setRemoteStreamSrc(stream);
-
                         resolve(userToCall);
                     });
 
