@@ -61,11 +61,18 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
         clearTimeout(reconnectScope.countdownTimer);
     };
 
+    // Force a new reconnect attempt on button press
     reconnectScope.forceReconnect = function () {
         if (me.destroyed === false ){
             me.reconnect();
         }
     };
+
+    var callUserScope = $rootScope.new(true);
+
+    callUserScope.cancelCalling = function () {
+        hideCallLoader();
+    }
 
     // Array of callback functions to handle data
     var dataCallbacks   = [];
@@ -145,7 +152,7 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
     var getCallbacksByType = function (type) {
         return _.where(dataCallbacks, { eventType: type });
-    }
+    };
 
     var setRemoteStreamSrc = function (stream) {
         remoteStream = stream;
@@ -157,19 +164,17 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
     };
 
     var showCallLoader = function () {
-        console.log('show loader')
         audioFactory.playSound('.dial');
         $ionicLoading.show({
-            templateUrl: 'templates/modals/loader.html',
-            duration: 10000
+            templateUrl: 'templates/modals/call-loader.html',
+            scope: callUserScope
         });
     };
 
     var hideCallLoader = function () {
-        console.log('hide loader')
         audioFactory.stopSound('.dial');
         $ionicLoading.hide();
-    }
+    };
 
     // TODO: Make closing dataconnection more modular?
     var checkIfDataConnectionIsSet = function (incomingConnection) {
@@ -622,14 +627,14 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                     currentCallStream = me.call(userToCall.phoneNumber,  stream, { metadata: me.id});
 
                     currentCallStream.on('error', function (err) {
-                        hideCallLoader();
+                        //hideCallLoader();
                         isInCallCurrently = false;
                         alert(err);
                     });
 
                     currentCallStream.on('stream', function(stream) {
                         console.log('going to stream from call')
-                        hideCallLoader();
+                        //hideCallLoader();
                         console.log('audio tracks from stream');
                         console.log(stream.getAudioTracks());
                         setRemoteStreamSrc(stream);
