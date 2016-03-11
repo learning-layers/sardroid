@@ -4,9 +4,9 @@
  * Abstration layer for various RESTful API calls
  */
 
-var apihandler = angular.module('apihandler', []);
+angular.module('apihandler', [])
+.factory('apiFactory', function ($http, $log, $rootScope, configFactory) {
 
-apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
     // Private API
     var apiUrl = configFactory.getValue('apiUrl');
 
@@ -20,7 +20,7 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
             NO_VERIFICATION      : 'no_verification',
             VERIFICATION_EXPIRED : 'verification_expired',
             VERIFICATION_USED    : 'verification_used',
-            REGISTER_FAILED      : 'register_failed',
+            REGISTER_FAILED      : 'register_failed'
         },
         LOGIN          : {
             USER_NOT_FOUND : 'user_not_found',
@@ -32,7 +32,7 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
             USER_NOT_FOUND       : 'user_not_found',
             VERIFICATION_EXPIRED : 'verification_expired',
             VERIFICATION_USED    : 'verification_used',
-            RESET_FAILED         : 'register_failed',
+            RESET_FAILED         : 'register_failed'
         },
         GENERIC        : {
             MISSING_PARAMS    : 'missing_params',
@@ -47,71 +47,109 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
     };
 
     var formatError = function (error) {
+
         var errorMessage;
         var errorType;
 
         if (error.name || error.data) {
-            errorType    = typeof error.data === 'undefined' ? error.name    : error.data.type
-            errorMessage = typeof error.data === 'undefined' ? error.message : error.data.message
+
+            errorType    = angular.isUndefined(error.data) ? error.name    : error.data.type;
+            errorMessage = angular.isUndefined(error.data) ? error.message : error.data.message;
+
         } else {
+
             errorType    = errorTypes.GENERIC.UNSPECIFIED_ERROR;
             errorMessage = 'Unspecified error!';
+
         }
-        console.log(error);
+
+        $log.log(error);
+
         return {
-            name    : errorType ? errorType.toUpperCase() : null ,
+            name    : errorType ? errorType.toUpperCase() : null,
             message : errorMessage
-        }
+        };
+
     };
 
     var get = function (path) {
+
         return new Promise(function (resolve, reject) {
+
             $rootScope.hideLoader = false;
             $http.get(apiUrl + path)
                 .then(function (results) {
-                    resolve(results.data)
+
+                    resolve(results.data);
+
                 })
                 .catch(function (error) {
+
                     reject(formatError(error));
+
                 })
                 .finally(function () {
+
                     $rootScope.hideLoader = true;
-                })
-        })
+
+                });
+
+        });
+
     };
 
     var post = function (path, params) {
+
         return new Promise(function (resolve, reject) {
+
             $rootScope.hideLoader = false;
-            $http.post(apiUrl + path, params )
+            $http.post(apiUrl + path, params)
                 .then(function (results) {
-                    resolve(results.data)
+
+                    resolve(results.data);
+
                 })
                 .catch(function (error) {
-                    console.log(error);
+
+                    $log.log(error);
                     reject(formatError(error));
+
                 })
                 .finally(function () {
+
                     $rootScope.hideLoader = true;
-                })
-        })
+
+                });
+
+        });
+
     };
 
     var del = function (path) {
+
         return new Promise(function (resolve, reject) {
+
             $rootScope.hideLoader = false;
             $http.delete(apiUrl + path)
                 .then(function (results) {
-                    resolve(results.data)
+
+                    resolve(results.data);
+
                 })
                 .catch(function (error) {
-                    console.log(error);
+
+                    $log.log(error);
                     reject(formatError(error));
+
                 })
                 .finally(function () {
+
                     $rootScope.hideLoader = true;
-                })
-        })
+
+                });
+
+        });
+
     };
 
     // Public API
@@ -119,39 +157,58 @@ apihandler.factory('apiFactory', function ($http, $rootScope, configFactory) {
         errorTypes: errorTypes,
 
         setApiToken: function (token) {
+
             $http.defaults.headers.common.Authorization = 'Bearer: ' + token;
+
         },
         deleteApiToken: function () {
+
             delete $http.defaults.headers.common.Authorization;
+
         },
 
         auth: {
             login: function (phoneNumber, password) {
+
                 return post('auth/login', { phoneNumber : phoneNumber, password : password });
+
             },
             logout: function () {
+
                 return del('auth/logout');
+
             },
             verify: function (phoneNumber, verificationType) {
-                return post('auth/verification', { phoneNumber : phoneNumber, verificationType: verificationType});
+
+                return post('auth/verification', { phoneNumber : phoneNumber, verificationType: verificationType });
+
             },
             register: function (verificationCode, password) {
+
                 return post('auth/register', { verificationCode: verificationCode, password: password });
+
             },
             resetPassword: function (verificationCode, password) {
+
                 return post('auth/resetpw', { verificationCode: verificationCode, password: password });
+
             }
         },
         user: {
             contacts: {
                 updateContactsList: function (contactsList) {
-                    return post('user/contacts', {contactsList: contactsList});
+
+                    return post('user/contacts', { contactsList: contactsList });
+
                 },
                 fetchContactsList: function () {
+
                     return get('user/contacts');
+
                 }
             }
         }
     };
+
 });
 
