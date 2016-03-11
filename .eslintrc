@@ -9,6 +9,8 @@
     },
     "globals": {
         "cordova": true,
+        "_": true,
+        "ContactField": true,
         "Promise": true
     },
     "rules": {
