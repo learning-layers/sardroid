@@ -7,13 +7,19 @@
     "env": {
         "angular/angular": true
     },
+    "globals": {
+        "cordova": true,
+        "Promise": true
+    },
     "rules": {
         "indent":  [2, 4],
         "max-len": [2, 120, 4],
         "func-names": 0,
         "no-param-reassign": 0,
         "no-multi-spaces": 0,
+        "no-console": 0,
         "padded-blocks": [1, "always"],
+        "key-spacing": 0,
         "angular/controller-as-route": 0
     }
 }
