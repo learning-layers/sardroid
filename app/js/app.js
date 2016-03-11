@@ -5,84 +5,111 @@
  * Mostly handles setting up configuration variables
  * and wiring up the states, controllers and templates
  */
-angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login', 'settings', 'quit', 'verify', 'register', 'pascalprecht.translate', 'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler', 'apihandler', 'modalhandler', 'intlpnIonic'])
+angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
+                            'settings', 'quit', 'verify', 'register', 'pascalprecht.translate',
+                            'logout', 'contacts', 'userprofile', 'call', 'peerhandler',
+                            'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
+                            'apihandler', 'modalhandler', 'intlpnIonic'])
 
-.run(function($ionicPlatform, $http, $rootScope, $ionicSideMenuDelegate, $translate, $cordovaGoogleAnalytics) {
-        $ionicPlatform.ready(function() {
+.run(function ($ionicPlatform, $http, $rootScope, $ionicSideMenuDelegate, $window, $cordovaGoogleAnalytics) {
 
-            // Attempt to determine current locale from ipinfo for the number picker!
-            $http.get('http://ipinfo.io')
-            .then(function (results) {
-                $rootScope.defaultCountry = results.data.country.toLowerCase();
-            })
-            .catch(function (err) {
-                $rootScope.defaultCountry = 'fi';
-            });
+    $ionicPlatform.ready(function () {
 
-            if (window.cordova && window.analytics) {
-                if (window.env.environment !== 'production') {
-                      $cordovaGoogleAnalytics.debugMode();
+        // Attempt to determine current locale from ipinfo for the number picker!
+        $http.get('http://ipinfo.io')
+        .then(function (results) {
+
+            $rootScope.defaultCountry = results.data.country.toLowerCase();
+
+        })
+        .catch(function () {
+
+            $rootScope.defaultCountry = 'fi';
+
+        });
+
+        if ($window.cordova && $window.analytics) {
+
+            if ($window.env.environment !== 'production') {
+
+                $cordovaGoogleAnalytics.debugMode();
+
+            }
+
+            $cordovaGoogleAnalytics.startTrackerWithId($window.env.ga_token);
+            $cordovaGoogleAnalytics.trackView('Login');
+
+        }
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if ($window.cordova && $window.cordova.plugins.Keyboard) {
+
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+
+        }
+
+        if ($window.StatusBar) {
+
+            $window.StatusBar.styleDefault();
+
+        }
+
+        // WARNING! Mega hack to disable side menu login
+        // TODO: Fix this somehow?
+        $rootScope.$on('$stateChangeSuccess',
+            function (event, toState) {
+
+                if (toState.name === 'login' || toState.name === 'verify' || toState.name === 'register') {
+
+                    $rootScope.showRightMenu = false;
+                    $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
+
+                } else {
+
+                    $rootScope.showRightMenu = true;
+                    $ionicSideMenuDelegate.canDragContent(true);
+                    $ionicSideMenuDelegate._instances[0].right.isEnabled = true;
+
                 }
-                $cordovaGoogleAnalytics.startTrackerWithId(window.env.ga_token);
-                $cordovaGoogleAnalytics.trackView('Login');
-            }
-            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-            // for form inputs)
-            if(window.cordova && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-            }
-            if(window.StatusBar) {
-                StatusBar.styleDefault();
-            }
 
-            // WARNING! Mega hack to disable side menu login
-            // TODO: Fix this somehow?
-            $rootScope.$on('$stateChangeSuccess',
-                function(event, toState, toParams, fromState, fromParams){
-                    if (toState.name === 'login' || toState.name === 'verify' || toState.name === 'register' ){
-                        $rootScope.showRightMenu = false;
-                        $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
-                    }
-                    else {
-                        $rootScope.showRightMenu = true;
-                        $ionicSideMenuDelegate.canDragContent(true);
-                        $ionicSideMenuDelegate._instances[0].right.isEnabled = true;
-                    }
+                if (toState.name === 'call') {
 
-                    if (toState.name === 'call') {
-                        $ionicSideMenuDelegate.canDragContent(false);
-                    }
-                    else {
-                        $ionicSideMenuDelegate.canDragContent(true);
-                    }
+                    $ionicSideMenuDelegate.canDragContent(false);
 
-                });
-            // Disable showing right menu by default
-            $rootScope.showRightMenu = false;
-            $rootScope.hideLoader    = true;
-            $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
-})
-}).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
+                } else {
 
+                    $ionicSideMenuDelegate.canDragContent(true);
+
+                }
+
+            });
+        // Disable showing right menu by default
+        $rootScope.showRightMenu = false;
+        $rootScope.hideLoader    = true;
+        $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
+
+    });
+
+}).config(function ($stateProvider, $urlRouterProvider, $translateProvider) {
 
     $stateProvider
         .state('login', {
             cache: false,
             url: '/login',
             templateUrl: 'templates/login.html',
-            controller: 'LoginCtrl'})
+            controller: 'LoginCtrl' })
         .state('verify', {
             cache: false,
             url: '/verify',
             templateUrl: 'templates/verify.html',
             params: { state: null },
-            controller: 'VerifyCtrl'})
+            controller: 'VerifyCtrl' })
         .state('register', {
             cache: false,
             url: '/register',
             templateUrl: 'templates/register.html',
             params: { state: null },
-            controller: 'RegisterCtrl'})
+            controller: 'RegisterCtrl' })
         .state('tabs', {
             url: '/tab',
             abstract: true,
@@ -96,17 +123,17 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login', 'setting
             params: { user: null }
         })
          .state('call', {
-            cache: false,
-            url: '/call',
-            templateUrl: 'templates/call.html',
-            controller: 'CallCtrl',
-            params: { user: null }
+             cache: false,
+             url: '/call',
+             templateUrl: 'templates/call.html',
+             controller: 'CallCtrl',
+             params: { user: null }
          })
         .state('tabs.settings', {
             url: '/settings',
             cache: true,
             views: {
-                 'settings-tab': {
+                'settings-tab': {
                     templateUrl: 'templates/settings.html',
                     controller: 'SettingsCtrl'
                 }
@@ -116,7 +143,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login', 'setting
             url: '/contacts',
             cache: false,
             views: {
-                 'contacts-tab': {
+                'contacts-tab': {
                     templateUrl: 'templates/contacts.html',
                     controller: 'ContactsCtrl'
                 }
@@ -129,13 +156,13 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login', 'setting
             suffix: '.json'
         })
         .registerAvailableLanguageKeys(['en', 'fi'], {
-        'en': 'en', 'en_GB': 'en', 'en_US': 'en',
-        'fi': 'fi'
+            en: 'en', en_GB: 'en', en_US: 'en',
+            fi: 'fi'
         })
         .preferredLanguage('en')
         .determinePreferredLanguage()
         .fallbackLanguage('en')
-        .useSanitizeValueStrategy('sanitizeParameters')
+        .useSanitizeValueStrategy('sanitizeParameters');
 
     $urlRouterProvider.otherwise('/login');
 
