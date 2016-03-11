@@ -25,7 +25,6 @@ angular.module('call', [])
     var localCanvas =  $document[0].querySelector('#local-canvas');
     var remoteCanvas = $document[0].querySelector('#remote-canvas');
 
-
     // Sweet hack for browser if you can't be bothered to make a call
     if (localStreamSrc === null) { localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'; }
     if (remoteStreamSrc === null) { remoteStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'; }
