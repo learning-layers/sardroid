@@ -19,12 +19,14 @@ modalhandler.factory('modalFactory', function($ionicPopup) {
     var getPopupsByType = function (type) {
         return _.where(currentPopups, { type: type });
     };
-    _
+
     return {
         closeAllPopups: function () {
             currentPopups.map(function (p) {
                 p.popupRef.close();
-            })
+            });
+
+            currentPopups = [];
         },
         alert: function (title, template) {
             return new Promise(function (resolve, reject) {
@@ -49,9 +51,6 @@ modalhandler.factory('modalFactory', function($ionicPopup) {
         confirm: function (title, template) {
             return new Promise(function (resolve, reject) {
                 if (getPopupsByType(title).length === 0) {
-
-                    console.log(title);
-                    console.log(template);
 
                     var confirmPopup = $ionicPopup.confirm({
                         title    : title,
