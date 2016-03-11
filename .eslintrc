@@ -26,6 +26,7 @@
         "no-console": 0,
         "padded-blocks": 0,
         "key-spacing": 0,
-        "angular/controller-as-route": 0
+        "angular/controller-as-route": 0,
+        "angular/controller-name": 0
     }
 }
