@@ -6,13 +6,11 @@
  */
 
 angular.module('userprofile', [])
-
-.controller('UserProfileCtrl', function($scope, $localStorage, $stateParams) {
-        if ($stateParams.user) {
-           $scope.user  = $stateParams.user;
-        } else {
-            $scope.user = $localStorage.user;
-        }
-        console.log($scope.user);
+.controller('UserProfileCtrl', function ($scope, $localStorage, $stateParams) {
+    if ($stateParams.user) {
+        $scope.user  = $stateParams.user;
+    } else {
+        $scope.user = $localStorage.user;
+    }
 });
 

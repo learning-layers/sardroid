@@ -7,7 +7,6 @@
 angular.module('register', [])
 .controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory, configFactory, contactsFactory) {
 
-    console.log($translate);
     $scope.isSignUpButtonDisabled = false;
     var currentState = $stateParams.state;
 

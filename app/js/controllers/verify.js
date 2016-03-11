@@ -6,10 +6,13 @@
  */
 
 angular.module('verify', [])
-.controller('VerifyCtrl', function($scope, $state, $localStorage, $translate, $http, $stateParams, modalFactory, apiFactory, configFactory) {
+.controller('VerifyCtrl', function ($scope, $state, $localStorage, $translate, $stateParams, modalFactory, apiFactory) {
 
-    $scope.isVerifyButtonDisabled = false;
     var currentState = $stateParams.state;
+
+    var goToRegister = function () {
+        $state.go('register', { state: currentState });
+    };
 
     if (currentState === 'register') {
         $scope.textTranslation = 'VERIFY_NUMBER_REGISTER_TEXT';
@@ -17,42 +20,45 @@ angular.module('verify', [])
         $scope.textTranslation = 'VERIFY_NUMBER_PASSWORD_TEXT';
     }
 
-    var goToRegister = function () {
-        $state.go('register', { state: currentState })
-    }
+
+    $scope.isVerifyButtonDisabled = false;
 
     $scope.goToRegister = goToRegister;
 
     $scope.signup = function (phone) {
+
+        var number;
+        var isNumber;
+
         if (phone) {
-            var number = phone.replace(/[ +]/g, '');
-            var isNumber = /^\d+$/.test(number);
+            number   = phone.replace(/[ +]/g, '');
+            isNumber = /^\d+$/.test(number);
 
             if (isNumber) {
                 $scope.isVerifyButtonDisabled = true;
                 apiFactory.auth.verify(number, currentState)
-                    .then(function success(results) {
+                    .then(function success() {
                         goToRegister();
                     })
                     .catch(function (error) {
                         var name = error.name;
                         $scope.isVerifyButtonDisabled = false;
 
-                        if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.TWILIO_ERROR ) {
+                        if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.TWILIO_ERROR) {
                             modalFactory.alert($translate.instant('ERROR'), error.message);
-                        }
-                        else {
+                        } else {
+
                             if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {
                                 name = 'TIMEOUT_ERROR';
                             }
 
                             modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
                         }
-                    })
+                    });
             } else {
-                modalFactory.alert($translate.instant('ERROR'), $translate.instant('MALFORMED_NUMBER'))
+                modalFactory.alert($translate.instant('ERROR'), $translate.instant('MALFORMED_NUMBER'));
             }
         }
-    }
+    };
 });
 
