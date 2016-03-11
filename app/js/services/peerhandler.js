@@ -225,7 +225,10 @@ angular.module('peerhandler', [])
 
             dataConn.on('data', function (data) {
 
-                var dataJSON = angular.fromJson(data);
+                var dataJSON      = angular.fromJson(data);
+                var callbackArray = getCallbacksByType(dataJSON.type);
+                var len           = callbackArray.length;
+                var i;
 
                 if (dataJSON.type === 'connectionClose') {
 
@@ -241,13 +244,9 @@ angular.module('peerhandler', [])
 
                 } else {
 
-                    var callbackArray = getCallbacksByType(dataJSON.type);
-
                     if (callbackArray) {
 
-                        var len = callbackArray.length;
-
-                        for (var i = 0; i < len; i++) {
+                        for (i = 0; i < len; i++) {
                             callbackArray[i].callback(data);
                         }
 
@@ -524,21 +523,12 @@ angular.module('peerhandler', [])
             if (!localVideoSource) {
                 return null;
             }
-
             return localVideoSource;
 
         },
 
         getRemoteStream: function () {
-
             return remoteStream;
-
-        },
-
-        getLocalStream: function () {
-
-            return localStreamSrc;
-
         },
 
         isConnected: function () {
@@ -546,7 +536,6 @@ angular.module('peerhandler', [])
             if (!me) {
                 return false;
             }
-
             return !me.disconnected;
 
         },
@@ -757,19 +746,14 @@ angular.module('peerhandler', [])
         isDataConnectionOpen: function () {
 
             if (dataConnection === null && dataConnection.open === false) {
-
                 return false;
-
             }
-
             return true;
 
         },
 
         sendDataToPeer: function (dataToSend) {
-
             sendData(dataToSend);
-
         },
 
         callPeer: function (userToCall) {
@@ -779,14 +763,11 @@ angular.module('peerhandler', [])
                 var dataConn;
 
                 if (!me) {
-
                     $log.log('Warning! no peerjs connection');
                     return;
-
                 }
 
                 isInCallCurrently = true;
-
                 showCallLoader();
 
                 getLocalStream(function (stream) {

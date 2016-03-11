@@ -18,22 +18,16 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
         // Attempt to determine current locale from ipinfo for the number picker!
         $http.get('http://ipinfo.io')
         .then(function (results) {
-
             $rootScope.defaultCountry = results.data.country.toLowerCase();
-
         })
         .catch(function () {
-
             $rootScope.defaultCountry = 'fi';
-
         });
 
         if ($window.cordova && $window.analytics) {
 
             if ($window.env.environment !== 'production') {
-
                 $cordovaGoogleAnalytics.debugMode();
-
             }
 
             $cordovaGoogleAnalytics.startTrackerWithId($window.env.ga_token);
@@ -43,15 +37,11 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if ($window.cordova && $window.cordova.plugins.Keyboard) {
-
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
         }
 
         if ($window.StatusBar) {
-
             $window.StatusBar.styleDefault();
-
         }
 
         // WARNING! Mega hack to disable side menu login
