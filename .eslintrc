@@ -8,11 +8,12 @@
         "angular/angular": true
     },
     "globals": {
-        "cordova": true,
-        "fabric": true,
-        "_": true,
         "ContactField": true,
         "Promise": true
+        "_": true,
+        "cordova": true,
+        "fabric": true,
+        "io": true,
     },
     "rules": {
         "indent":  [2, 4],
@@ -22,7 +23,7 @@
         "no-param-reassign": 0,
         "no-multi-spaces": 0,
         "no-console": 0,
-        "padded-blocks": [1, "always"],
+        "padded-blocks": 0,
         "key-spacing": 0,
         "angular/controller-as-route": 0
     }
