@@ -9,6 +9,7 @@
     },
     "globals": {
         "ContactField": true,
+        "Peer": true,
         "Promise": true,
         "_": true,
         "cordova": true,

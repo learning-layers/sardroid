@@ -6,9 +6,10 @@
  * You should refer to the PeerJS docs if something is puzzling.
  */
 
-var peerhandler = angular.module('peerhandler', []);
-
-peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPopup, $ionicLoading, $ionicHistory, $timeout, $state, $translate, $cordovaLocalNotification, audioFactory, contactsFactory, modalFactory) {
+angular.module('peerhandler', [])
+.factory('peerFactory', function (configFactory, $log, $window, $rootScope, $ionicPopup, $ionicLoading, $ionicHistory,
+                                  $timeout, $state, $translate, $cordovaLocalNotification, audioFactory,
+                                  contactsFactory, modalFactory) {
 
     // PeerJS object representing the user
     var me                = null;
@@ -48,36 +49,11 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
     // Scope for the reconnect loader pop-up
     var reconnectScope = $rootScope.$new(true);
 
-    reconnectScope.reconnectTimer = function () {
-        reconnectScope.countdown = nextReconnectIn / 1000;
-
-        reconnectScope.countdownTimer = setInterval(function () {
-            reconnectScope.countdown--;
-            reconnectScope.$apply();
-        }, 1000)
-    };
-
-    reconnectScope.stopTimer = function () {
-        clearTimeout(reconnectScope.countdownTimer);
-    };
-
-    // Force a new reconnect attempt on button press
-    reconnectScope.forceReconnect = function () {
-        if (me.destroyed === false ){
-            me.reconnect();
-        }
-    };
-
     var callUserScope = $rootScope.$new(true);
-
-    callUserScope.cancelCalling = function () {
-        stopCallAttempt();
-        hideCallLoader();
-    };
 
 
     var stopCallAttempt = function () {
-        closeDataConnection({type: 'callerClosed', message: 'User changed his mind!'});
+        closeDataConnection({ type: 'callerClosed', message: 'User changed his mind!' });
     };
 
     // Array of callback functions to handle data
@@ -87,13 +63,23 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
     var notificationIds = [];
 
     // Get a suitable camera for video (first choice is backwards-facing camera)
-    var getDeviceCameraID= function() {
-        return new Promise(function(resolve, reject) {
+    var getDeviceCameraID = function () {
+
+        return new Promise(function (resolve, reject) {
+
             var first = false;
             var back  = false;
 
-            MediaStreamTrack.getSources(function(src) {
-                for (var i in src) {
+            MediaStreamTrack.getSources(function (src) {
+
+                var i;
+
+                if (!src) {
+                    reject('No sources found!');
+                }
+
+                for (i in src) {
+
                     if (src[i].kind === 'video') {
 
                         if (!first) {
@@ -105,22 +91,28 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                         }
 
                     }
+
                 }
+
                 resolve(back || first);
+
             });
-        })
+        });
     };
 
     // Private api
-    var getLocalStream = function(successCallback, errorCallback) {
+    var getLocalStream = function (successCallback, errorCallback) {
+
         if (localStream && successCallback) {
-            successCallback(localStream)
+            successCallback(localStream);
         } else {
+
             getDeviceCameraID().then(function (id) {
+
                 var videoSettings = {};
 
                 if (id) {
-                    videoSettings.optional = [{sourceId: id}];
+                    videoSettings.optional = [{ sourceId: id }];
                 }
 
                 navigator.webkitGetUserMedia(
@@ -136,24 +128,32 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
                         }
                     },
                     errorCallback
-                )
-            })
+                );
+
+            });
+
         }
     };
 
-    var cancelAllLocalNotifications = function() {
-            notificationIds.map(function (id) {
-                cancelLocalNotification(id);
-            });
+    var cancelAllLocalNotifications = function () {
+
+        notificationIds.forEach(function (id) {
+            cancelLocalNotification(id);
+        });
+
+        notificationIds = [];
+
     };
 
-    var cancelLocalNotification = function(id) {
-        if (window.cordova) {
+    var cancelLocalNotification = function (id) {
+        var index = notificationIds.indexOf(id);
+
+        if ($window.cordova) {
             $cordovaLocalNotification.cancel(id);
         }
 
-        var index = notificationIds.indexOf(id);
         notificationIds.splice(index, 1);
+
     };
 
     var getCallbacksByType = function (type) {
@@ -161,146 +161,175 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
     };
 
     var setRemoteStreamSrc = function (stream) {
-        remoteStream = stream;
-        remoteVideoSource = window.URL.createObjectURL(stream);
+        remoteStream      = stream;
+        remoteVideoSource = $window.URL.createObjectURL(stream);
     };
 
     var setLocalStreamSrc = function (stream) {
-        localVideoSource = window.URL.createObjectURL(stream);
+        localVideoSource = $window.URL.createObjectURL(stream);
     };
 
     var showCallLoader = function () {
+
         audioFactory.playSound('.dial');
         $ionicLoading.show({
             templateUrl: 'templates/modals/call-loader.html',
             scope: callUserScope
         });
+
     };
 
     var hideCallLoader = function () {
+
         audioFactory.stopSound('.dial');
         $ionicLoading.hide();
+
     };
 
     // TODO: Make closing dataconnection more modular?
     var checkIfDataConnectionIsSet = function (incomingConnection) {
-       if (typeof dataConnnection != 'undefined' || dataConnection != null) {
-        incomingConnection.serialization = 'none';
-        incomingConnection.reliable = true;
 
-        incomingConnection.on('open', function () {
-            incomingConnection.send(
-                JSON.stringify({
-                    type: 'connectionClose',
-                    message: 'User is already in call!'
-                })
-            );
-            incomingConnection.close();
-            incomingConnection = null;
-        })
+        if (angular.isDefined(dataConnnection) || dataConnection !== null) {
 
-        return true;
-       }
-       else {
+            incomingConnection.serialization = 'none';
+            incomingConnection.reliable = true;
+
+            incomingConnection.on('open', function () {
+
+                incomingConnection.send(
+                    angular.toJson({
+                        type    : 'connectionClose',
+                        message : 'User is already in call!'
+                    })
+                );
+
+                incomingConnection.close();
+                incomingConnection = null;
+
+            });
+
+            return true;
+
+        }
+
         return false;
-       }
+
     };
 
-    var setDataConnection = function(dataConn) {
+    var setDataConnection = function (dataConn) {
+
         dataConn.serialization = 'none';
         dataConn.reliable = true;
 
-        dataConn.on('open', function() {
-            dataConn.on('data', function(data) {
-                var dataJSON = JSON.parse(data);
-                if (dataJSON.type == 'connectionClose') {
+        dataConn.on('open', function () {
+
+            dataConn.on('data', function (data) {
+
+                var dataJSON = angular.fromJson(data);
+
+                if (dataJSON.type === 'connectionClose') {
+
                     hideCallLoader();
                     callAlertModal(dataJSON.message);
+
                 } else if (dataJSON.type === 'callerClosed') {
+
                     cancelAllLocalNotifications();
                     modalFactory.closeAllPopups();
                     closeDataConnection();
                     isInCallCurrently = false;
+
                 } else {
-                    var callbackArray = getCallbacksByType(dataJSON.type)
+
+                    var callbackArray = getCallbacksByType(dataJSON.type);
+
                     if (callbackArray) {
+
                         var len = callbackArray.length;
 
                         for (var i = 0; i < len; i++) {
-                            callbackArray[i].callback(data)
+                            callbackArray[i].callback(data);
                         }
+
                     }
+
                 }
+
+            });
+
+            dataConn.on('error', function (err) {
+
+                $log.log('dataconnection error!');
+                $log.log(err);
+
+            });
+
+            dataConn.on('close', function () {
+                $log.log('dataconn closed');
+            });
+
+            dataConnection = dataConn;
+
         });
-
-        dataConn.on('error', function(err) {
-             console.log('dataconnection error!')
-             console.log(err);
-         });
-
-        dataConn.on('close', function() {
-            console.log('dataconn closed')
-        });
-
-        dataConnection = dataConn;
-
-        })
     };
 
-    var closeIncomingCall = function (modal) {
-        cancelAllLocalNotifications();
-    }
+    var sendData = function (data) {
 
-    var sendData = function(data) {
+        var jsonData;
 
-        if (typeof data != 'string') {
-                data = JSON.stringify(data);
-         }
+        if (!angular.isString(data)) {
+            jsonData = angular.toJson(data);
+        }
+
         if (dataConnection) {
-            dataConnection.send(data);
+            dataConnection.send(jsonData);
+        } else {
+            $log.log('uhoh! data was null');
         }
-        else {
-            console.log('uhoh! data was null')
-        }
-    }
+    };
 
-    var closeDataConnection = function(opts) {
-        console.log('closing data connection')
+    var closeDataConnection = function (opts) {
 
-        if (typeof opts !== 'undefined' && typeof opts.type === 'undefined') {
+        if (angular.isDefined((opts) && angular.isUndefined(opts.type))) {
             opts.type = 'connectionClose';
         }
 
         if (dataConnection) {
 
-            if (typeof opts !== 'undefined') {
+            if (angular.isDefined(opts)) {
                 sendData(opts);
             }
 
             dataConnection.close();
             dataConnection = null;
+
         }
+
     };
 
-    var endCallAndGoBack = function() {
-        console.log('end call and go back!');
+    var endCallAndGoBack = function () {
+
+        $log.log('end call and go back!');
         isInCallCurrently = false;
         endCurrentCall();
-        if ($state.current.name === "call") {
+
+        if ($state.current.name === 'call') {
             $ionicHistory.goBack();
         }
+
     };
 
-    var callAlertModal = function(reasonMessage) {
+    var callAlertModal = function (reasonMessage) {
 
         modalFactory.alert('Call over!', reasonMessage)
-        .then(function() {
+        .then(function () {
             endCallAndGoBack();
         });
 
     };
 
-    var answer = function(call) {
+    var answer = function (call) {
+
         return new Promise(function (resolve, reject) {
 
             currentAnswerStream = call;
@@ -310,23 +339,25 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
             call.on('stream', function (mediaStream) {
                 setRemoteStreamSrc(mediaStream);
                 resolve();
-            })
+            });
 
-            call.on('close', function() {
+            call.on('close', function () {
                 endCallAndGoBack();
             });
 
-            call.on('error', function(error) {
+            call.on('error', function (error) {
                 reject();
                 callAlertModal('Error: ' + error.toString());
             });
 
-        })
+        });
+
     };
 
     var setupReconnectAttempts = function () {
-        console.log('Setting up reconnect interval handle');
-        reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn)
+
+        $log.log('Setting up reconnect interval handle');
+        reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn);
 
         reconnectScope.nextReconnectIn =  nextReconnectIn;
 
@@ -337,41 +368,52 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
             scope: reconnectScope
         });
 
-    }
+    };
 
     var attemptReconnect = function () {
 
-            if (me.destroyed === true) {
-                stopReconnectAttempt({ failed: true });
-                return;
+        if (me.destroyed === true) {
+            stopReconnectAttempt({ failed: true });
+            return;
+        }
 
-            }
+        if (me && me.disconnected === true && me.open === false) {
 
-            if (me && me.disconnected === true && me.open === false ) {
-                console.log('attempting to reconnect...');
-                me.reconnect();
-                reconnectAttempts = reconnectAttempts + 1;
-                if (reconnectIntervalHandle !== null) {
-                    nextReconnectIn = Math.pow(reconnectAttempts, 2) * 1000;
-                    console.log('reconnecting in ', nextReconnectIn);
-                    reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn);
-                    reconnectScope.nextReconnectIn = nextReconnectIn;
-                    reconnectScope.countdown = nextReconnectIn / 1000;
-                } else {
-                    console.log('timeout already set, fuck!');
-                }
+            $log.log('attempting to reconnect...');
+            me.reconnect();
+            reconnectAttempts = reconnectAttempts + 1;
+
+            if (reconnectIntervalHandle !== null) {
+
+                nextReconnectIn = Math.pow(reconnectAttempts, 2) * 1000;
+                $log.log('reconnecting in ', nextReconnectIn);
+                reconnectIntervalHandle = $timeout(attemptReconnect, nextReconnectIn);
+                reconnectScope.nextReconnectIn = nextReconnectIn;
+                reconnectScope.countdown = nextReconnectIn / 1000;
+
             } else {
-                console.log('me is undefined or disconnected is true, stopping!');
-                stopReconnectAttempt({ failed: false });
-            }
 
-            if (reconnectAttempts > 10) {
-                console.log('Attempted to connect over 10 times, stopping');
-                stopReconnectAttempt({ failed: true });
+                $log.log('timeout already set, fuck!');
+
             }
+        } else {
+
+            $log.log('me is undefined or disconnected is true, stopping!');
+            stopReconnectAttempt({ failed: false });
+
+        }
+
+        if (reconnectAttempts > 10) {
+
+            $log.log('Attempted to connect over 10 times, stopping');
+            stopReconnectAttempt({ failed: true });
+
+        }
+
     };
 
     var stopReconnectAttempt = function (opts) {
+
         reconnectScope.stopTimer();
         $timeout.cancel(reconnectIntervalHandle);
         reconnectIntervalHandle = null;
@@ -380,298 +422,429 @@ peerhandler.factory('peerFactory', function(configFactory, $rootScope, $ionicPop
 
         $ionicLoading.hide();
 
-        if (opts.failed === true ){
+        if (opts.failed === true) {
+
             disconnectFromPeerJS();
             $state.go('login');
-            modalFactory.alert($translate.instant('ERROR_TITLE'), $translate.instant('RECONNECT_FAILED'))
+            modalFactory.alert($translate.instant('ERROR_TITLE'), $translate.instant('RECONNECT_FAILED'));
+
         }
+
     };
 
-    var endCurrentCall = function() {
+    var endCurrentCall = function () {
+
         cancelAllLocalNotifications();
         closeDataConnection();
 
         if (currentCallStream) {
+
             currentCallStream.close();
             currentCallStream = null;
+
         }
 
         if (currentAnswerStream) {
+
             currentAnswerStream.close();
             currentAnswerStream = null;
+
         }
 
     };
 
-     var disconnectFromPeerJS = function() {
-         if (me) {
+    var disconnectFromPeerJS = function () {
+
+        if (me) {
             me.disconnect();
             me.destroy();
             me = null;
             endCurrentCall();
-        } else {
-            console.log("Warning! Attempted to disconnect without connecting")
+        }
+
+    };
+
+    reconnectScope.reconnectTimer = function () {
+
+        reconnectScope.countdown = nextReconnectIn / 1000;
+
+        reconnectScope.countdownTimer = setInterval(function () {
+            reconnectScope.countdown--;
+            reconnectScope.$apply();
+        }, 1000);
+
+    };
+
+    reconnectScope.stopTimer = function () {
+        clearTimeout(reconnectScope.countdownTimer);
+    };
+
+    // Force a new reconnect attempt on button press
+    reconnectScope.forceReconnect = function () {
+        if (me.destroyed === false) {
+            me.reconnect();
         }
     };
+
+
+    callUserScope.cancelCalling = function () {
+        stopCallAttempt();
+        hideCallLoader();
+    };
+
 
     // Public PeerJS api
     return {
 
-        getMe: function() {
-            if (!me) {return null;}
+        getMe: function () {
+
+            if (!me) {
+                return null;
+            }
+
             return me;
+
         },
 
-        getRemoteStreamSrc: function() {
+        getRemoteStreamSrc: function () {
+
             if (!remoteVideoSource) {
-                console.log('No video remote source!');
+
+                $log.log('No video remote source!');
                 return null;
+
             }
+
             return remoteVideoSource;
+
         },
 
-        getLocalStreamSrc: function() {
+        getLocalStreamSrc: function () {
+
             if (!localVideoSource) {
-                console.log('No video remote source!')
                 return null;
             }
+
             return localVideoSource;
+
         },
 
-        getRemoteStream: function() {
+        getRemoteStream: function () {
+
             return remoteStream;
+
         },
 
-        getLocalStream: function() {
+        getLocalStream: function () {
+
             return localStreamSrc;
+
         },
 
-        isConnected: function() {
-            if (!me) {return false}
-            else {return !me.disconnected}
+        isConnected: function () {
+
+            if (!me) {
+                return false;
+            }
+
+            return !me.disconnected;
+
         },
 
         registerCallback: function (eventType, callback) {
+
             // Quick hack since callbacks seem to be registered twice at the moment
             if (getCallbacksByType(eventType).length === 0) {
-                console.log('adding callback ' + eventType);
+
+                $log.log('adding callback ' + eventType);
                 dataCallbacks.push({
-                   eventType: eventType,
-                   callback: callback
+                    eventType: eventType,
+                    callback: callback
                 });
+
             }
+
         },
 
-        clearCallback: function(type) {
-            console.log('clearing data callback by type: ' + type);
+        clearCallback: function (type) {
+
             dataCallbacks = dataCallbacks.filter(function (cbo) {
                 return cbo.eventType !== type;
-            })
-            console.log(dataCallbacks.length);
+            });
+
         },
 
-        clearAllCallbacks: function() {
+        clearAllCallbacks: function () {
             dataCallbacks = [];
         },
 
-        connectToPeerJS: function(id)   {
+        connectToPeerJS: function (id)   {
+
             var disconnectRef = this.disconnectFromPeerJS;
 
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
 
                 if (me) {
-                    me.disconnect()
+                    me.disconnect();
                 }
 
                 me = new Peer(id, config);
 
                 if (!me) {
-                    alert('Error creating peer!');
                     reject();
                 }
 
-                me.on('connection', function(dataConn) {
-                    console.log('dataconnetion received');
+                me.on('connection', function (dataConn) {
+
                     if (checkIfDataConnectionIsSet(dataConn) === false) {
                         setDataConnection(dataConn);
                     }
+
                 });
 
-                me.on('close', function() {
-                    console.log('closed Peerjs connection');
+                me.on('close', function () {
+
+                    $log.log('closed Peerjs connection');
                     reject();
+
                 });
 
-                me.socket._socket.onopen = function() {
+                me.socket._socket.onopen = function () {
+
                     getLocalStream(null, function (err) {
-                        if (err.name == 'DevicesNotFoundError'){
-                            modalFactory.alert($translate.instant('ERROR_TITLE'), $translate.instant('CAMERA_NOT_FOUND'));
+
+                        if (err.name === 'DevicesNotFoundError') {
+                            modalFactory.alert($translate.instant('ERROR_TITLE'),
+                                               $translate.instant('CAMERA_NOT_FOUND'));
                         }
+
                     });
+
                 };
 
-                me.on('error', function(error) {
+                me.on('error', function (error) {
+
                     var errorMsg = error.toString();
 
                     switch (error.type) {
-                        case 'peer-unavailable':
-                            errorMsg = $translate.instant('ERROR_USER_OFFLINE');
+                    case 'peer-unavailable':
+                        errorMsg = $translate.instant('ERROR_USER_OFFLINE');
                         break;
-                        case 'server-error':
-                            errorMsg =  $translate.instant('ERROR_SERVER');
+                    case 'server-error':
+                        errorMsg =  $translate.instant('ERROR_SERVER');
                         break;
-                        case 'network':
-                            errorMsg =  $translate.instant('ERROR_NETWORK');
+                    case 'network':
+                        errorMsg =  $translate.instant('ERROR_NETWORK');
                         break;
                     }
 
                     if (error.type === 'network' && me && hasConnectionEverSucceeded === true) {
+
                         if (reconnectAttempts === 0) {
+
                             setupReconnectAttempts();
                         }
+
                     } else {
+
                         hideCallLoader();
                         modalFactory.alert(
                             $translate.instant('ERROR_TITLE'),
                             errorMsg
                         )
-                        .then(function(res) {
-                            if (error.type == 'server-error' || error.type == 'network' ) {
+                        .then(function () {
+
+                            if (error.type === 'server-error' || error.type === 'network') {
                                 disconnectRef();
                                 $state.go('login');
                             }
+
                         });
                     }
 
                 });
 
-                me.on('call', function(mediaConnection) {
+                me.on('call', function (mediaConnection) {
+
+                    var user;
+                    var notificationsId;
+                    var notificationText;
+
                     if (isInCallCurrently === false) {
+
                         isInCallCurrently = true;
                         audioFactory.playSound('.call');
 
-                        var user = contactsFactory.getContactByNumber(mediaConnection.peer);
-                        var id = Math.floor(Math.random() * 10000);
-                        notificationIds.push(id);
+                        user = contactsFactory.getContactByNumber(mediaConnection.peer);
+
+                        notificationsId = Math.floor(Math.random() * 10000);
+                        notificationIds.push(notificationsId);
 
                         if (!user) {
-                            user = { displayName: mediaConnection.peer }
+                            user = { displayName: mediaConnection.peer };
                         }
 
+                        notificationText = $translate.instant('NOTIFICATION_CALL',
+                                                              { displayName: user.displayName,
+                                                                mediaConnection: mediaConnection.peer });
+
                         $cordovaLocalNotification.schedule({
-                            id: id,
-                            title: $translate.instant('NOTIFICATION_CALL', { displayName: user.displayName, mediaConnection: mediaConnection.peer}),
-                            text: $translate.instant('NOTIFICATION_CALL',  { displayName: user.displayName, mediaConnection: mediaConnection.peer}),
-                        }).then(function (result) {
-                            console.log(result);
+                            id    : notificationsId,
+                            title : notificationText,
+                            text  : notificationText
                         });
 
                         modalFactory.confirm(
                              $translate.instant('CALL_INCOMING_TITLE', { displayName: user.displayName }),
                              $translate.instant('CALL_INCOMING_TEMPLATE')
                         )
-                        .then(function(res) {
+                        .then(function (res) {
+
                             // TODO: Investigate why cancelling the sound fails unless in timeout
                             $timeout(function () {
                                 audioFactory.stopAllSounds();
-                            }, 100)
+                            }, 100);
 
                             cancelLocalNotification(id);
 
-                            if(res) {
+                            if (res) {
+
                                 answer(mediaConnection)
                                 .then(function () {
-                                    $state.go('call', {user: user});
+
+                                    $state.go('call', { user: user });
+
                                 })
                                 .catch(function (error) {
-                                    alert(error)
-                                })
+
+                                    $log.log(error);
+
+                                });
+
                             } else {
+
                                 isInCallCurrently = false;
                                 closeDataConnection({ type: 'connectionClose', message: 'User is busy!' });
                                 mediaConnection.close();
-                                return false;
                             }
                         });
+
                     } else {
-                        console.log('Already in call, closing media')
+
                         mediaConnection.close();
+
                     }
                 });
 
-                me.on('disconnected', function(id) {
-                    console.log('Disconnected from PeerJS');
+                me.on('disconnected', function () {
+
+                    $log.log('Disconnected from PeerJS');
+
                 });
 
-                me.on('open', function(id) {
-                    hasConnectionEverSucceeded = true
-                    console.log('Connection opened: ' + id);
+                me.on('open', function (openedId) {
+
+                    hasConnectionEverSucceeded = true;
+                    $log.log('Connection opened: ' + openedId);
                     resolve();
-                    stopReconnectAttempt({failed: false});
+                    stopReconnectAttempt({ failed: false });
+
                 });
 
-            })
+            });
         },
 
-        isDataConnectionOpen: function() {
-          if (dataConnection === null && dataConnection.open === false) { return false}
-          return true;
+        isDataConnectionOpen: function () {
+
+            if (dataConnection === null && dataConnection.open === false) {
+
+                return false;
+
+            }
+
+            return true;
+
         },
 
-        sendDataToPeer: function(dataToSend) {
-            console.log(typeof dataToSend);
+        sendDataToPeer: function (dataToSend) {
+
             sendData(dataToSend);
+
         },
 
         callPeer: function (userToCall) {
-            if (!me) {
-                console.log("Warning! no peerjs connection");
-                return;
-            }
 
             return new Promise(function (resolve, reject) {
+
+                var dataConn;
+
+                if (!me) {
+
+                    $log.log('Warning! no peerjs connection');
+                    return;
+
+                }
 
                 isInCallCurrently = true;
 
                 showCallLoader();
+
                 getLocalStream(function (stream) {
 
-                    currentCallStream = me.call(userToCall.phoneNumber,  stream, { metadata: me.id});
+                    currentCallStream = me.call(userToCall.phoneNumber,  stream, { metadata: me.id });
 
                     currentCallStream.on('error', function (err) {
+
+                        reject(err);
+                        $log.log(err);
                         hideCallLoader();
                         isInCallCurrently = false;
+
                     });
 
-                    currentCallStream.on('stream', function(stream) {
-                        console.log('going to stream from call')
+                    currentCallStream.on('stream', function (incomingRemoteStream) {
+
                         hideCallLoader();
-                        setRemoteStreamSrc(stream);
+                        setRemoteStreamSrc(incomingRemoteStream);
                         resolve(userToCall);
+
                     });
 
-                    currentCallStream.on('close', function() {
+                    currentCallStream.on('close', function () {
+
+                        reject();
                         endCallAndGoBack();
+
                     });
+
                 });
 
-                var dataConn = me.connect(userToCall.phoneNumber, {reliable: true, serialization: "none"});
+                dataConn = me.connect(userToCall.phoneNumber, { reliable: true, serialization: 'none' });
 
                 if (checkIfDataConnectionIsSet(dataConn) === false) {
+
                     setDataConnection(dataConn);
+
                 }
-            })
+
+            });
+
         },
 
-        endCurrentCall: function() {
-            console.log('ending current call')
+        endCurrentCall: function () {
+
             isInCallCurrently = false;
             endCurrentCall();
+
         },
 
-        disconnectFromPeerJS: function() {
+        disconnectFromPeerJS: function () {
+
             disconnectFromPeerJS();
+
         }
-    }
+
+    };
+
 });
 
