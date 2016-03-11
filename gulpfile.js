@@ -26,7 +26,7 @@ var reload      = browserSync.reload;
 
 var ngAnnotate = require('gulp-ng-annotate');
 var minifyJS   = require('gulp-uglify');
-
+var eslint     = require('gulp-eslint');
 
 var fs     = require('fs');
 var xml2js = require('xml2js');
@@ -114,6 +114,13 @@ gulp.task('vendor-js', function() {
        { base: './app' })
        .pipe(ngAnnotate())
        .pipe(gulp.dest('./www/'))
+});
+
+gulp.task('lint', function () {
+    return gulp.src('./app/js/**/*.js')
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError())
 });
 
 gulp.task('replace-env', function () {
