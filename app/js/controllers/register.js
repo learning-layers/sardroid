@@ -5,9 +5,9 @@
  */
 
 angular.module('register', [])
-.controller('RegisterCtrl', function($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory, configFactory, contactsFactory) {
+.controller('RegisterCtrl', function ($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory,
+                                      configFactory, contactsFactory) {
 
-    $scope.isSignUpButtonDisabled = false;
     var currentState = $stateParams.state;
 
     if (currentState === 'register') {
@@ -20,7 +20,11 @@ angular.module('register', [])
         $scope.buttonTranslation = 'RESET_PASSWORD';
     }
 
+    $scope.isSignUpButtonDisabled = false;
+
     $scope.submit = function (user) {
+
+        var requestType;
 
         if (!user.code) {
             modalFactory.alert($translate.instant('ERROR'), $translate.instant('CODE_MISSING'));
@@ -42,20 +46,21 @@ angular.module('register', [])
                 $translate.instant('PASSWORD_ERROR'),
                 $translate.instant('PASSWORD_NO_MATCH')
             )
-            .then(function() {
-                user.password      = "";
-                user.passwordAgain = "";
+            .then(function () {
+                user.password      = '';
+                user.passwordAgain = '';
             });
 
         } else {
             $scope.isSignUpButtonDisabled = true;
-            var requestType = currentState === 'register' ? apiFactory.auth.register : apiFactory.auth.resetPassword;
+            requestType = currentState === 'register' ? apiFactory.auth.register : apiFactory.auth.resetPassword;
 
             requestType(user.code, user.password)
-            .then(function success(user) {
-                $localStorage.user = user;
-                $localStorage.token = user.token;
-                apiFactory.setApiToken(user.token);
+            .then(function success(verifiedUser) {
+
+                $localStorage.user = verifiedUser;
+                $localStorage.token = verifiedUser.token;
+                apiFactory.setApiToken(verifiedUser.token);
 
                 return contactsFactory.syncContactsWithServer();
             })
@@ -63,7 +68,7 @@ angular.module('register', [])
                 $state.go('login');
             })
             .catch(function (error) {
-                console.log(error);
+
                 var name = error.name;
                 $scope.isSignUpButtonDisabled = false;
 
@@ -72,7 +77,7 @@ angular.module('register', [])
                 }
 
                 modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
-            })
+            });
         }
     };
 });

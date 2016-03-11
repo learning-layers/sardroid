@@ -13,7 +13,7 @@ angular.module('quit', [])
             })
             .catch(function () {
                 navigator.app.exitApp();
-        });
+            });
     };
 });
 

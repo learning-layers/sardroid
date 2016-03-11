@@ -71,7 +71,7 @@ angular.module('login', [])
 
         var number;
 
-        if (typeof user !== 'undefined' && user.phoneNumber && user.password) {
+        if (angular.isDefined(user) && user.phoneNumber && user.password) {
             $scope.isLoginButtonDisabled = true;
             number = user.phoneNumber.replace(/[ +]/g, '');
 
