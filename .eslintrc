@@ -1,6 +1,9 @@
 {
     "extends" : "airbnb/legacy",
     plugins   : ["angular"],
+    "env": {
+        "angular/angular": true
+    },
     "rules": {
         "indent":  [2, 4],
         "max-len": [2, 120, 4]
