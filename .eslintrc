@@ -1,5 +1,8 @@
 {
-    "extends" : "airbnb/legacy",
+    "extends": [
+        "airbnb/legacy",
+        "angular"
+    ],
     plugins   : ["angular"],
     "env": {
         "angular/angular": true
@@ -8,6 +11,9 @@
         "indent":  [2, 4],
         "max-len": [2, 120, 4],
         "func-names": 0,
-        "no-param-reassign": 0
+        "no-param-reassign": 0,
+        "no-multi-spaces": 0,
+        "padded-blocks": [1, "always"],
+        "angular/controller-as-route": 0
     }
 }
