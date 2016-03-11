@@ -6,9 +6,8 @@
  * and draw them accordingly.
  */
 
-var drawinghandler = angular.module('drawinghandler',[]);
-
-drawinghandler.factory('drawingFactory', function (configFactory, $window, $state, $timeout, peerFactory) {
+angular.module('drawinghandler', [])
+.factory('drawingFactory', function (configFactory, $window, $state, $timeout, peerFactory) {
 
     // References to two of the canvasi
     var remoteCanvas = null;
@@ -32,6 +31,7 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
     // Takes in a selector and an optionals object
     // Size of canvas has to be calculated at runtime
     var initFabricJS = function (canvasId, opts) {
+
         var fabricCanvas = new fabric.Canvas(canvasId, {
             isDrawingMode: true,
             renderOnAddRemove: false,
@@ -44,41 +44,57 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
         fabricCanvas.freeDrawingBrush.color = config.localColor;
 
         if (opts.isRemote === true) {
+
             remoteCanvas = fabricCanvas;
             fabricCanvas.tag = 'remote';
+
         } else if (opts.isRemote === false) {
+
             localCanvas = fabricCanvas;
             fabricCanvas.tag = 'local';
+
         }
+
         return fabricCanvas;
+
     };
 
     var removePathFromCanvas = function (canvas, path) {
-        console.log('removing path');
+
         canvas.remove(path);
         canvas.renderAll(false);
+
     };
 
-    var createPathRemoveTimer = function(canvas, path) {
+    var createPathRemoveTimer = function (canvas, path) {
+
         var timer = $timeout(function () {
-             removePathFromCanvas(canvas, path);
+
+            removePathFromCanvas(canvas, path);
+
         }, config.drawingRemoveTime);
 
-         pathRemoveTimers.push(timer);
+        pathRemoveTimers.push(timer);
+
     };
 
-    var cancelPathRemoveTimers = function() {
-        pathRemoveTimers.map(function (t){
+    var cancelPathRemoveTimers = function () {
+
+        pathRemoveTimers.forEach(function (t) {
+
             $timeout.cancel(t);
-        })
+
+        });
+
     };
 
-    var setUpCanvasEvents = function(canvas) {
-        canvas.on('path:created', function(e) {
+    var setUpCanvasEvents = function (canvas) {
 
-            var data = JSON.stringify(e.path);
+        canvas.on('path:created', function (e) {
 
-            peerFactory.sendDataToPeer(JSON.stringify({
+            var data = angular.toJson(e.path);
+
+            peerFactory.sendDataToPeer(angular.toJson({
                 type                          : 'newPathCreated',
                 tag                           : canvas.tag,
                 data                          : data,
@@ -87,23 +103,32 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
             }));
 
             createPathRemoveTimer(canvas, e.path);
+
         });
+
     };
 
     var addPathToCanvas = function (canvasTag, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize) {
+
         if (canvasTag === 'local') {
+
             addNewPathToCanvas(remoteCanvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize);
-        }
-        else if (canvasTag === 'remote') {
+
+        } else if (canvasTag === 'remote') {
+
             addNewPathToCanvas(localCanvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize);
+
         }
+
     };
 
     var addNewPathToCanvas = function (canvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize) {
-        pathData = JSON.parse(pathData);
-        fabric.util.enlivenObjects([pathData], function(objects) {
 
-        objects.forEach(function (o) {
+        pathData = angular.fromJson(pathData);
+        fabric.util.enlivenObjects([pathData], function (objects) {
+
+            objects.forEach(function (o) {
+
                 o.stroke = config.remoteColor;
 
                 o.set({
@@ -113,113 +138,162 @@ drawinghandler.factory('drawingFactory', function (configFactory, $window, $stat
                     scaleX: o.scaleY / (remoteCanvasSize.width  / canvasSize.width)
                 });
 
-                if (currentlyZoomedInCanvas == null && currentlyZoomedInRemoteCanvas != null) {
+                if (currentlyZoomedInCanvas === null && currentlyZoomedInRemoteCanvas !== null) {
+
                     o.set({
                         top:    o.top    * config.size.height,
                         left:   o.left   * config.size.width,
                         scaleY: o.scaleX * config.size.height,
                         scaleX: o.scaleY * config.size.width
                     });
-                } else if (currentlyZoomedInCanvas != null && currentlyZoomedInRemoteCanvas == null) {
+
+                } else if (currentlyZoomedInCanvas !== null && currentlyZoomedInRemoteCanvas === null) {
+
                     o.set({
                         top:    o.top    / config.size.height,
                         left:   o.left   / config.size.width,
                         scaleY: o.scaleX / config.size.height,
                         scaleX: o.scaleY / config.size.width
                     });
+
                 }
 
                 canvas.add(o);
                 canvas.renderAll(true);
                 createPathRemoveTimer(canvas, o);
-            })
-        })
+
+            });
+
+        });
+
     };
 
     var setUpDrawingCanvas = function (canvasId, opts) {
-           var canvas = initFabricJS(canvasId, opts);
-           setUpCanvasEvents(canvas);
+
+        var canvas = initFabricJS(canvasId, opts);
+        setUpCanvasEvents(canvas);
+
     };
 
     var zoomInCanvas = function (canvas) {
+
+        var objects = canvas.getObjects();
+        var o;
+
         canvas.setWidth($window.innerWidth);
         canvas.setHeight($window.innerHeight * 0.87);
 
-        var objects = canvas.getObjects();
-        for (var o in objects) {
-            objects[o].set({
-                top:    o.top    * config.size.height,
-                left:   o.left   * config.size.width,
-                scaleY: o.scaleX * config.size.height,
-                scaleX: o.scaleY * config.size.width
-            })
+
+        for (o in objects) {
+
+            if (objects.hasOwnProperty(o)) {
+
+                objects[o].set({
+                    top:    o.top    * config.size.height,
+                    left:   o.left   * config.size.width,
+                    scaleY: o.scaleX * config.size.height,
+                    scaleX: o.scaleY * config.size.width
+                });
+
+            }
+
         }
 
         canvas.renderAll(true);
 
         canvas.calcOffset();
+
     };
 
     var zoomOutCanvas = function (canvas) {
+
+        var objects = canvas.getObjects();
+        var o;
+
         canvas.setWidth(canvasSize.width);
         canvas.setHeight(canvasSize.height);
 
-        var objects = canvas.getObjects();
-        for (var o in objects) {
-            objects[o].set({
-                top:    o.top    / config.size.height,
-                left:   o.left   / config.size.width,
-                scaleY: o.scaleX / config.size.height,
-                scaleX: o.scaleY / config.size.width
-            })
+
+        for (o in objects) {
+
+            if (objects.hasOwnProperty(o)) {
+
+                objects[o].set({
+                    top:    o.top    / config.size.height,
+                    left:   o.left   / config.size.width,
+                    scaleY: o.scaleX / config.size.height,
+                    scaleX: o.scaleY / config.size.width
+                });
+
+            }
+
         }
 
         canvas.renderAll(true);
         canvas.calcOffset();
+
     };
 
     // Public API begins here
     return {
-           setUpRemoteCanvas: function(canvasId, opts) {
-                opts.isRemote = true;
-                setUpDrawingCanvas(canvasId, opts);
-           },
-           setUpLocalCanvas: function(canvasId, opts) {
-                opts.isRemote = false;
-                setUpDrawingCanvas(canvasId, opts);
-           },
-           setUpDataCallbacks: function() {
-                peerFactory.registerCallback('newPathCreated', function (data) {
-                    var data = JSON.parse(data);
-                    addPathToCanvas(data.tag, data.data, data.currentlyZoomedInRemoteCanvas, data.remoteCanvasSize);
-                });
-           },
-           zoomInCanvasByTag: function (tag) {
-               currentlyZoomedInCanvas = tag;
-               switch (tag) {
-                   case 'local':
-                       zoomInCanvas(localCanvas);
-                   break;
-                   case 'remote':
-                       zoomInCanvas(remoteCanvas);
-                   break;
-               }
-           },
-           zoomOutCanvasByTag: function (tag) {
-               currentlyZoomedInCanvas = null;
-               switch (tag) {
-                   case 'local':
-                       zoomOutCanvas(localCanvas);
-                   break;
-                   case 'remote':
-                       zoomOutCanvas(remoteCanvas);
-                   break;
-               }
-           },
-           tearDownDrawingFactory: function () {
-                cancelPathRemoveTimers();
-                peerFactory.clearCallback('newPathCreated');
-           }
+        setUpRemoteCanvas: function (canvasId, opts) {
+
+            opts.isRemote = true;
+            setUpDrawingCanvas(canvasId, opts);
+
+        },
+        setUpLocalCanvas: function (canvasId, opts) {
+
+            opts.isRemote = false;
+            setUpDrawingCanvas(canvasId, opts);
+
+        },
+        setUpDataCallbacks: function () {
+
+            peerFactory.registerCallback('newPathCreated', function (data) {
+
+                var parsedData = angular.fromJson(data);
+                addPathToCanvas(parsedData.tag, parsedData.data,
+                                parsedData.currentlyZoomedInRemoteCanvas, parsedData.remoteCanvasSize);
+
+            });
+
+        },
+        zoomInCanvasByTag: function (tag) {
+
+            currentlyZoomedInCanvas = tag;
+
+            switch (tag) {
+            case 'local':
+                zoomInCanvas(localCanvas);
+                break;
+            case 'remote':
+                zoomInCanvas(remoteCanvas);
+                break;
+            }
+
+        },
+        zoomOutCanvasByTag: function (tag) {
+
+            currentlyZoomedInCanvas = null;
+
+            switch (tag) {
+            case 'local':
+                zoomOutCanvas(localCanvas);
+                break;
+            case 'remote':
+                zoomOutCanvas(remoteCanvas);
+                break;
+            }
+
+        },
+        tearDownDrawingFactory: function () {
+
+            cancelPathRemoveTimers();
+            peerFactory.clearCallback('newPathCreated');
+
         }
+    };
+
 });
 
