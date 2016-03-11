@@ -4,27 +4,38 @@
  * Module for playing audio, now the Angular way!
  */
 
-var audiohandler = angular.module('audiohandler', []);
+angular.module('audiohandler', [])
+.factory('audioFactory', function ($document) {
 
-audiohandler.factory('audioFactory', function() {
     return {
-        playSound: function(selector) {
-            var audio = document.querySelector(selector);
+        playSound: function (selector) {
+
+            var audio = $document[0].querySelector(selector);
             audio.play();
+
         },
-        stopSound: function(selector) {
-            var audio = document.querySelector(selector);
+        stopSound: function (selector) {
+
+            var audio = $document[0].querySelector(selector);
             audio.pause();
             audio.currentTime = 0;
+
         },
-        stopAllSounds: function() {
-            var elements = document.querySelectorAll('audio');
-            var len = elements.length;
-            for (var i = 0; i < len; i++) {
+        stopAllSounds: function () {
+
+            var elements = $document[0].querySelectorAll('audio');
+            var len      = elements.length;
+            var i        = 0;
+
+            for (i = 0; i < len; i++) {
+
                 elements[i].pause();
                 elements[i].currentTime = 0;
+
             }
+
         }
-    }
+    };
+
 });
 
