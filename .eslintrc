@@ -6,6 +6,8 @@
     },
     "rules": {
         "indent":  [2, 4],
-        "max-len": [2, 120, 4]
+        "max-len": [2, 120, 4],
+        "func-names": 0,
+        "no-param-reassign": 0
     }
 }
