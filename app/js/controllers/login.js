@@ -8,7 +8,6 @@
 angular.module('login', [])
 .controller('LoginCtrl', function ($scope, $state, $localStorage, $ionicPlatform, $ionicHistory, $translate, apiFactory,
                                   modalFactory,  peerFactory, socketFactory, contactsFactory) {
-
     var loginCompleted = function (number) {
         var promises = [];
 
@@ -68,7 +67,6 @@ angular.module('login', [])
     };
 
     $scope.login = function (user) {
-
         var number;
 
         if (angular.isDefined(user) && user.phoneNumber && user.password) {
@@ -91,12 +89,9 @@ angular.module('login', [])
                 }
 
                 modalFactory.alert($translate.instant('ERROR'), $translate.instant(name));
-
             });
-
         } else if (user && !user.phoneNumber) {
             modalFactory.alert($translate.instant('ERROR'), $translate.instant('MALFORMED_NUMBER'));
-
         } else if (user && !user.password) {
             modalFactory.alert($translate.instant('ERROR'), $translate.instant('PASSWORD_MISSING'));
         }

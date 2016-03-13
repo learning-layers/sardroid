@@ -10,7 +10,6 @@
 angular.module('contacts', [])
 .controller('ContactsCtrl', function ($scope, $localStorage, $ionicModal, contactsFactory, modalFactory,  peerFactory,
                                      socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
-
     var newContactModal = null;
 
     var translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {
@@ -34,7 +33,6 @@ angular.module('contacts', [])
 
 
     var updateContactState = function (data) {
-
         var stateToSet = data.eventType === socketFactory.eventTypes.CONTACT_ONLINE ?
             contactsFactory.contactStates.ONLINE : contactsFactory.contactStates.OFFLINE;
 
@@ -46,7 +44,6 @@ angular.module('contacts', [])
                 $scope.contacts = contactsFactory.getContacts();
             });
         }
-
     };
 
     socketFactory.registerCallback(socketFactory.eventTypes.CONTACT_ONLINE,  updateContactState);
@@ -60,7 +57,6 @@ angular.module('contacts', [])
     };
 
     $scope.addNewContactModalSubmit = function (newContact) {
-
         if (newContact && newContact.phoneNumber && newContact.displayName) {
             newContactModal.hide();
 
@@ -75,10 +71,8 @@ angular.module('contacts', [])
             })
             .catch(function () {
             });
-
         } else if (newContact && !newContact.phoneNumber) {
             modalFactory.alert($translate.instant('ERROR'), $translate.instant('NUMBER_WRONG_FORMAT'));
-
         } else if (newContact && !newContact.displayName) {
             modalFactory.alert($translate.instant('ERROR'), $translate.instant('NAME_MISSING'));
         }
@@ -133,6 +127,5 @@ angular.module('contacts', [])
     };
 
     reloadContactsList();
-
 });
 

@@ -7,7 +7,6 @@
 angular.module('register', [])
 .controller('RegisterCtrl', function ($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory,
                                       configFactory, contactsFactory) {
-
     var currentState = $stateParams.state;
 
     if (currentState === 'register') {
@@ -23,7 +22,6 @@ angular.module('register', [])
     $scope.isSignUpButtonDisabled = false;
 
     $scope.submit = function (user) {
-
         var requestType;
 
         if (!user.code) {
@@ -50,14 +48,12 @@ angular.module('register', [])
                 user.password      = '';
                 user.passwordAgain = '';
             });
-
         } else {
             $scope.isSignUpButtonDisabled = true;
             requestType = currentState === 'register' ? apiFactory.auth.register : apiFactory.auth.resetPassword;
 
             requestType(user.code, user.password)
             .then(function success(verifiedUser) {
-
                 $localStorage.user = verifiedUser;
                 $localStorage.token = verifiedUser.token;
                 apiFactory.setApiToken(verifiedUser.token);
@@ -68,7 +64,6 @@ angular.module('register', [])
                 $state.go('login');
             })
             .catch(function (error) {
-
                 var name = error.name;
                 $scope.isSignUpButtonDisabled = false;
 

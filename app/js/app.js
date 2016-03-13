@@ -12,9 +12,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
                             'apihandler', 'modalhandler', 'intlpnIonic'])
 
 .run(function ($ionicPlatform, $http, $rootScope, $ionicSideMenuDelegate, $window, $cordovaGoogleAnalytics) {
-
     $ionicPlatform.ready(function () {
-
         // Attempt to determine current locale from ipinfo for the number picker!
         $http.get('http://ipinfo.io')
         .then(function (results) {
@@ -25,15 +23,13 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
         });
 
         if ($window.cordova && $window.analytics) {
-
             if ($window.env.environment !== 'production') {
                 $cordovaGoogleAnalytics.debugMode();
             }
-
             $cordovaGoogleAnalytics.startTrackerWithId($window.env.ga_token);
             $cordovaGoogleAnalytics.trackView('Login');
-
         }
+
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if ($window.cordova && $window.cordova.plugins.Keyboard) {
@@ -48,40 +44,28 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
         // TODO: Fix this somehow?
         $rootScope.$on('$stateChangeSuccess',
             function (event, toState) {
-
                 if (toState.name === 'login' || toState.name === 'verify' || toState.name === 'register') {
-
                     $rootScope.showRightMenu = false;
                     $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
-
                 } else {
-
                     $rootScope.showRightMenu = true;
                     $ionicSideMenuDelegate.canDragContent(true);
                     $ionicSideMenuDelegate._instances[0].right.isEnabled = true;
-
                 }
 
                 if (toState.name === 'call') {
-
                     $ionicSideMenuDelegate.canDragContent(false);
-
                 } else {
-
                     $ionicSideMenuDelegate.canDragContent(true);
-
                 }
-
             });
+
         // Disable showing right menu by default
         $rootScope.showRightMenu = false;
         $rootScope.hideLoader    = true;
         $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
-
     });
-
 }).config(function ($stateProvider, $urlRouterProvider, $translateProvider) {
-
     $stateProvider
         .state('login', {
             cache: false,
@@ -155,6 +139,5 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
         .useSanitizeValueStrategy('sanitizeParameters');
 
     $urlRouterProvider.otherwise('/login');
-
 });
 

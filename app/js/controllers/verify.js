@@ -7,7 +7,6 @@
 
 angular.module('verify', [])
 .controller('VerifyCtrl', function ($scope, $state, $localStorage, $translate, $stateParams, modalFactory, apiFactory) {
-
     var currentState = $stateParams.state;
 
     var goToRegister = function () {
@@ -20,13 +19,11 @@ angular.module('verify', [])
         $scope.textTranslation = 'VERIFY_NUMBER_PASSWORD_TEXT';
     }
 
-
     $scope.isVerifyButtonDisabled = false;
 
     $scope.goToRegister = goToRegister;
 
     $scope.signup = function (phone) {
-
         var number;
         var isNumber;
 
@@ -47,7 +44,6 @@ angular.module('verify', [])
                         if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.TWILIO_ERROR) {
                             modalFactory.alert($translate.instant('ERROR'), error.message);
                         } else {
-
                             if (name.toLowerCase() === apiFactory.errorTypes.GENERIC.UNSPECIFIED_ERROR) {
                                 name = 'TIMEOUT_ERROR';
                             }

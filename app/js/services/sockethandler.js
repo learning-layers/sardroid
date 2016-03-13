@@ -6,7 +6,6 @@
 
 angular.module('sockethandler', [])
 .factory('socketFactory', function ($rootScope, $log, $state, configFactory) {
-
     // The actual websocket connection where most of the magic happens
     var socket = null;
 
@@ -35,7 +34,6 @@ angular.module('sockethandler', [])
         var i             = 0;
 
         if (callbackArray) {
-
             for (i = 0; i < len; i++) {
                 callbackArray[i].callback(data);
             }
@@ -46,14 +44,11 @@ angular.module('sockethandler', [])
         eventTypes: eventTypes,
 
         connectToServer: function (token) {
-
             return new Promise(function (resolve, reject) {
-
                 if (socket && socket.connected === true) {
                     resolve();
                     return;
                 }
-
                 socket = io.connect(config.url, { query: 'token=' + token });
 
                 socket.on(eventTypes.CONTACT_ONLINE, function (data) {
@@ -92,10 +87,7 @@ angular.module('sockethandler', [])
                     $log.log('Socket.io: ', err);
                     reject();
                 });
-
             });
-
-
         },
 
         disconnectFromServer: function () {

@@ -6,7 +6,6 @@
 
 angular.module('apihandler', [])
 .factory('apiFactory', function ($http, $log, $rootScope, configFactory) {
-
     // Private API
     var apiUrl = configFactory.getValue('apiUrl');
 
@@ -47,20 +46,15 @@ angular.module('apihandler', [])
     };
 
     var formatError = function (error) {
-
         var errorMessage;
         var errorType;
 
         if (error.name || error.data) {
-
             errorType    = angular.isUndefined(error.data) ? error.name    : error.data.type;
             errorMessage = angular.isUndefined(error.data) ? error.message : error.data.message;
-
         } else {
-
             errorType    = errorTypes.GENERIC.UNSPECIFIED_ERROR;
             errorMessage = 'Unspecified error!';
-
         }
 
         $log.log(error);
@@ -69,87 +63,56 @@ angular.module('apihandler', [])
             name    : errorType ? errorType.toUpperCase() : null,
             message : errorMessage
         };
-
     };
 
     var get = function (path) {
-
         return new Promise(function (resolve, reject) {
-
             $rootScope.hideLoader = false;
             $http.get(apiUrl + path)
                 .then(function (results) {
-
                     resolve(results.data);
-
                 })
                 .catch(function (error) {
-
                     reject(formatError(error));
-
                 })
                 .finally(function () {
-
                     $rootScope.hideLoader = true;
-
                 });
-
         });
-
     };
 
     var post = function (path, params) {
-
         return new Promise(function (resolve, reject) {
-
             $rootScope.hideLoader = false;
             $http.post(apiUrl + path, params)
                 .then(function (results) {
-
                     resolve(results.data);
-
                 })
                 .catch(function (error) {
-
                     $log.log(error);
                     reject(formatError(error));
-
                 })
                 .finally(function () {
-
                     $rootScope.hideLoader = true;
-
                 });
-
         });
-
     };
 
     var del = function (path) {
-
         return new Promise(function (resolve, reject) {
-
             $rootScope.hideLoader = false;
             $http.delete(apiUrl + path)
                 .then(function (results) {
-
                     resolve(results.data);
-
                 })
                 .catch(function (error) {
-
                     $log.log(error);
                     reject(formatError(error));
-
                 })
                 .finally(function () {
-
                     $rootScope.hideLoader = true;
-
                 });
-
         });
-
     };
 
     // Public API
@@ -157,58 +120,39 @@ angular.module('apihandler', [])
         errorTypes: errorTypes,
 
         setApiToken: function (token) {
-
             $http.defaults.headers.common.Authorization = 'Bearer: ' + token;
-
         },
         deleteApiToken: function () {
-
             delete $http.defaults.headers.common.Authorization;
-
         },
 
         auth: {
             login: function (phoneNumber, password) {
-
                 return post('auth/login', { phoneNumber : phoneNumber, password : password });
-
             },
             logout: function () {
-
                 return del('auth/logout');
-
             },
             verify: function (phoneNumber, verificationType) {
-
                 return post('auth/verification', { phoneNumber : phoneNumber, verificationType: verificationType });
-
             },
             register: function (verificationCode, password) {
-
                 return post('auth/register', { verificationCode: verificationCode, password: password });
-
             },
             resetPassword: function (verificationCode, password) {
-
                 return post('auth/resetpw', { verificationCode: verificationCode, password: password });
-
             }
         },
         user: {
             contacts: {
                 updateContactsList: function (contactsList) {
-
                     return post('user/contacts', { contactsList: contactsList });
-
                 },
                 fetchContactsList: function () {
-
                     return get('user/contacts');
-
                 }
             }
         }
     };
-
 });
 

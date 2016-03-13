@@ -7,7 +7,6 @@
 
 angular.module('call', [])
 .controller('CallCtrl', function ($scope, $document, $sce, $stateParams, peerFactory, drawingFactory) {
-
     var localWrapper  = $document[0].querySelector('#local-wrapper');
     var remoteWrapper = $document[0].querySelector('#remote-wrapper');
 
@@ -28,7 +27,6 @@ angular.module('call', [])
     // Sweet hack for browser if you can't be bothered to make a call
     if (localStreamSrc === null) { localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'; }
     if (remoteStreamSrc === null) { remoteStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'; }
-
 
     drawingFactory.setUpDataCallbacks();
     drawingFactory.setUpRemoteCanvas(remoteCanvas, {});
@@ -58,9 +56,7 @@ angular.module('call', [])
 
     // TODO: Refactor this into something more elegant
     $scope.toggleFullscreen = function (canvasId) {
-
         if ($scope.currentFullscreenCanvas === canvasId) {
-
             $scope.currentFullscreenCanvas = null;
             drawingFactory.zoomOutCanvasByTag(canvasId);
 
@@ -74,9 +70,7 @@ angular.module('call', [])
                 localWrapper.style.display = '';
                 break;
             }
-
         } else {
-
             drawingFactory.zoomInCanvasByTag(canvasId);
             $scope.currentFullscreenCanvas = canvasId;
 
@@ -91,7 +85,6 @@ angular.module('call', [])
                 break;
             }
         }
-
     };
 
     $scope.$on('$ionicView.leave', function () {

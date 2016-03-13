@@ -7,8 +7,6 @@
 
 angular.module('confighandler', [])
 .factory('configFactory', function ($log, $window) {
-
-
     // Set up configuration variables we can use anywhere in Angular
     var config = {
         production: {
@@ -76,30 +74,22 @@ angular.module('confighandler', [])
             socketio: {
                 url: 'http://10.100.28.191:9000'
             }
-
         }
     };
 
     return {
         getConfig: function () {
-
             return config;
-
         },
         getValue: function (key) {
-
             var val = config[$window.env.environment][key];
 
             if (!val) {
-
                 $log.error('Error, tried to get nonexistant config value of key ' + key);
-
             }
 
             return val;
-
         }
     };
-
 });
 
