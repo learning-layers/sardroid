@@ -7,15 +7,28 @@
 
 angular.module('call', [])
 .controller('CallCtrl', function ($scope, $document, $sce, $stateParams, peerFactory, drawingFactory) {
-    var localWrapper  = $document[0].querySelector('#local-wrapper');
-    var remoteWrapper = $document[0].querySelector('#remote-wrapper');
 
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
         drawingFactory.tearDownDrawingFactory();
         peerFactory.clearCallback('otherPeerLeft');
+        peerFactory.clearCallback('toggleVideos');
         peerFactory.endCurrentCall();
     };
+
+    var toggleVideos = function () {
+        var videos = $document[0].querySelectorAll('video');
+        var len = videos.length;
+        var i;
+
+        for (i = 0; i < len; i++) {
+            if (videos[i].paused) {
+                videos[i].play();
+            } else {
+                videos[i].pause();
+            }
+        }
+    }
 
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc())
@@ -28,8 +41,14 @@ angular.module('call', [])
     drawingFactory.setUpRemoteCanvas('remote-canvas', {});
     drawingFactory.setUpLocalCanvas('local-canvas', {});
 
+
     peerFactory.registerCallback('otherPeerLeft', function () {
         leave();
+    });
+
+    peerFactory.registerCallback('toggleVideos', function (data) {
+        $scope.isOwnStreamPaused = !$scope.isOwnStreamPaused;
+        toggleVideos();
     });
 
     if ($stateParams && $stateParams.user) {
@@ -37,6 +56,7 @@ angular.module('call', [])
     } else {
         $scope.user = { displayName: '?????' };
     }
+
 
     $scope.currentBigScreen = 'remote-big';
 
@@ -67,7 +87,8 @@ angular.module('call', [])
     };
 
     $scope.togglePause = function () {
-        peerFactory.toggleStream();
+        peerFactory.sendDataToPeer({ type: 'toggleVideos' });
+        toggleVideos();
         $scope.isOwnStreamPaused = !$scope.isOwnStreamPaused;
     };
 
