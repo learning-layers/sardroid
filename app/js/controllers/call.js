@@ -57,6 +57,7 @@ angular.module('call', [])
         $scope.user = { displayName: '?????' };
     }
 
+    $scope.remoteAudioSrc = remoteStreamSrc;
 
     $scope.currentBigScreen = 'remote-big';
 
