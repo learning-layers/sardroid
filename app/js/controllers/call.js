@@ -52,6 +52,10 @@ angular.module('call', [])
         return 'ion-arrow-expand';
     };
 
+    $scope.determineFullscreenCanvas = function () {
+        return $scope.currentBigScreen;
+    };
+
     $scope.smallStreamSrc  =  localStreamSrc;
     $scope.bigStreamSrc    =  remoteStreamSrc;
 
