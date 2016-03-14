@@ -58,11 +58,11 @@ angular.module('drawinghandler', [])
     };
 
     var createPathRemoveTimer = function (canvas, path) {
-        var timer = $timeout(function () {
-            removePathFromCanvas(canvas, path);
-        }, config.drawingRemoveTime);
+       // var timer = $timeout(function () {
+       //     removePathFromCanvas(canvas, path);
+       // }, config.drawingRemoveTime);
 
-        pathRemoveTimers.push(timer);
+       //pathRemoveTimers.push(timer);
     };
 
     var cancelPathRemoveTimers = function () {
@@ -84,8 +84,10 @@ angular.module('drawinghandler', [])
             };
 
             peerFactory.sendDataToPeer(angular.toJson(dataToSend));
+            canvasDrawings.push({type: canvas.tag, drawing: e});
 
-            createPathRemoveTimer(canvas, e.path);
+
+            //createPathRemoveTimer(canvas, e.path);
         });
     };
 
@@ -136,6 +138,10 @@ angular.module('drawinghandler', [])
     var setUpDrawingCanvas = function (canvasId, opts) {
         var canvas = initFabricJS(canvasId, opts);
         setUpCanvasEvents(canvas);
+    };
+
+    var clearCanvas = function (canvas) {
+        canvas.clear();
     };
 
     var zoomInCanvas = function (canvas) {
@@ -199,6 +205,12 @@ angular.module('drawinghandler', [])
                 addPathToCanvas(parsedData.tag, parsedData.data,
                                 parsedData.currentlyZoomedInRemoteCanvas, parsedData.remoteCanvasSize);
             });
+        },
+        clearLocalCanvas: function () {
+            clearCanvas(localCanvas);
+        },
+        clearRemoteCanvas: function () {
+            clearCanvas(remoteCanvas);
         },
         zoomInCanvasByTag: function (tag) {
             currentlyZoomedInCanvas = tag;

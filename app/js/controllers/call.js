@@ -49,6 +49,14 @@ angular.module('call', [])
         return $scope.currentBigScreen;
     };
 
+    $scope.clearActiveCanvas = function () {
+        if ($scope.currentBigScreen === 'remote-big') {
+            drawingFactory.clearRemoteCanvas();
+        } else if ($scope.currentBigScreen === 'local-big') {
+            drawingFactory.clearLocalCanvas();
+        }
+    }
+
     $scope.smallStreamSrc  =  localStreamSrc;
     $scope.bigStreamSrc    =  remoteStreamSrc;
 
