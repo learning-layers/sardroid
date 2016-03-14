@@ -20,16 +20,13 @@ angular.module('call', [])
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc())
 
-    var localCanvas =  $document[0].querySelector('#local-canvas');
-    var remoteCanvas = $document[0].querySelector('#remote-canvas');
-
     // Sweet hack for browser if you can't be bothered to make a call
     if (localStreamSrc === null) { localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'; }
     if (remoteStreamSrc === null) { remoteStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'; }
 
     drawingFactory.setUpDataCallbacks();
-    drawingFactory.setUpRemoteCanvas(remoteCanvas, {});
-    drawingFactory.setUpLocalCanvas(localCanvas, {});
+    drawingFactory.setUpRemoteCanvas('remote-canvas', {});
+    drawingFactory.setUpLocalCanvas('local-canvas', {});
 
     peerFactory.registerCallback('otherPeerLeft', function () {
         leave();
@@ -44,6 +41,20 @@ angular.module('call', [])
     $scope.currentBigScreen = 'remote-big';
 
     $scope.leave = leave;
+
+    $scope.isOwnStreamPaused = false;
+
+    $scope.determinePauseButtonClass = function () {
+        if ($scope.isOwnStreamPaused === true) {
+            return 'ion-play';
+        } else if ($scope.isOwnStreamPaused === false) {
+            return 'ion-pause';
+        }
+    };
+
+    $scope.togglePause = function () {
+        $scope.isOwnStreamPaused = !$scope.isOwnStreamPaused;
+    };
 
     $scope.determineFullscreenCanvas = function () {
         return $scope.currentBigScreen;

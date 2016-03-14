@@ -33,6 +33,7 @@ angular.module('drawinghandler', [])
         var fabricCanvas = new fabric.Canvas(canvasId, {
             isDrawingMode: true,
             renderOnAddRemove: false,
+            stateful: false,
             width: canvasSize.width,
             height: canvasSize.height
         });
@@ -72,6 +73,7 @@ angular.module('drawinghandler', [])
     };
 
     var setUpCanvasEvents = function (canvas) {
+
         canvas.on('path:created', function (e) {
             var data = angular.toJson(e.path);
 
@@ -84,8 +86,6 @@ angular.module('drawinghandler', [])
             };
 
             peerFactory.sendDataToPeer(angular.toJson(dataToSend));
-            canvasDrawings.push({type: canvas.tag, drawing: e});
-
 
             //createPathRemoveTimer(canvas, e.path);
         });
@@ -141,7 +141,7 @@ angular.module('drawinghandler', [])
     };
 
     var clearCanvas = function (canvas) {
-        canvas.clear();
+        canvas.dispose();
     };
 
     var zoomInCanvas = function (canvas) {

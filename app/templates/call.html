@@ -5,7 +5,7 @@
             <video id="small-video" autoplay ng-click="toggleFullscreen()" ng-src="{{smallStreamSrc}}"></video>
             <div class="controls">
                 <i class="icon assertive ion-trash-a control-button remove-button" ng-click="clearActiveCanvas()"></i>
-                <i class="icon assertive ion-pause control-button pause-button" ng-click=""></i>
+                <i class="icon assertive control-button pause-button" ng-class="determinePauseButtonClass()" ng-click="togglePause()"></i>
                 <i class="icon ion-ios-telephone control-button leave-button" ng-click="leave()"></i>
             </div>
             <div class="canvas-wrapper local-canvas-wrapper">
