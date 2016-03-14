@@ -53,6 +53,7 @@ angular.module('call', [])
     };
 
     $scope.togglePause = function () {
+        peerFactory.toggleStream();
         $scope.isOwnStreamPaused = !$scope.isOwnStreamPaused;
     };
 

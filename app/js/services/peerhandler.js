@@ -447,6 +447,15 @@ angular.module('peerhandler', [])
             }
         },
 
+        toggleStream: function () {
+            if (localStream) {
+                var videoTracks = localStream.getVideoTracks();
+                videoTracks.forEach(function (v) {
+                    v.enabled = !v.enabled;
+                });
+            }
+        },
+
         clearCallback: function (type) {
             dataCallbacks = dataCallbacks.filter(function (cbo) {
                 return cbo.eventType !== type;
