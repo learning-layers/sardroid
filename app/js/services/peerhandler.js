@@ -235,14 +235,15 @@ angular.module('peerhandler', [])
     };
 
     var closeDataConnection = function (opts) {
-        if (angular.isDefined((opts) && angular.isUndefined(opts.type))) {
+        if (typeof opts !== 'undefined' && typeof opts.type === 'undefined') {
             opts.type = 'connectionClose';
         }
 
         if (dataConnection) {
-            if (angular.isDefined(opts)) {
+            if (typeof opts !== 'undefined') {
                 sendData(opts);
             }
+
             dataConnection.close();
             dataConnection = null;
         }
