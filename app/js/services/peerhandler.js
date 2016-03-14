@@ -186,12 +186,12 @@ angular.module('peerhandler', [])
     };
 
     var setDataConnection = function (dataConn) {
-        dataConn.serialization = 'none';
+        dataConn.serialization = 'json';
         dataConn.reliable = true;
 
         dataConn.on('open', function () {
-            dataConn.on('data', function (data) {
-                var dataJSON      = angular.fromJson(data);
+            dataConn.on('data', function (incomingData) {
+                var dataJSON      = angular.fromJson(incomingData);
                 var callbackArray = getCallbacksByType(dataJSON.type);
                 var len           = callbackArray.length;
                 var i;
@@ -207,7 +207,7 @@ angular.module('peerhandler', [])
                 } else {
                     if (callbackArray) {
                         for (i = 0; i < len; i++) {
-                            callbackArray[i].callback(data);
+                            callbackArray[i].callback(incomingData);
                         }
                     }
                 }
@@ -226,15 +226,9 @@ angular.module('peerhandler', [])
         });
     };
 
-    var sendData = function (data) {
-        var jsonData;
-
-        if (!angular.isString(data)) {
-            jsonData = angular.toJson(data);
-        }
-
+    var sendData = function (dataToSend) {
         if (dataConnection) {
-            dataConnection.send(jsonData);
+            dataConnection.send(dataToSend);
         } else {
             $log.log('uhoh! data was null');
         }

@@ -75,13 +75,15 @@ angular.module('drawinghandler', [])
         canvas.on('path:created', function (e) {
             var data = angular.toJson(e.path);
 
-            peerFactory.sendDataToPeer(angular.toJson({
+            var dataToSend = {
                 type                          : 'newPathCreated',
                 tag                           : canvas.tag,
                 data                          : data,
                 currentlyZoomedInRemoteCanvas : currentlyZoomedInCanvas,
                 remoteCanvasSize              : canvasSize
-            }));
+            };
+
+            peerFactory.sendDataToPeer(angular.toJson(dataToSend));
 
             createPathRemoveTimer(canvas, e.path);
         });
