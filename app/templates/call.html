@@ -4,9 +4,9 @@
             <video id="big-video" autoplay muted="muted" ng-src="{{bigStreamSrc}}"></video>
             <video id="small-video" autoplay ng-click="toggleFullscreen()" ng-src="{{smallStreamSrc}}"></video>
             <div class="controls">
+                <i class="icon assertive ion-trash-a control-button remove-button" ng-click=""></i>
+                <i class="icon assertive ion-pause control-button pause-button" ng-click=""></i>
                 <i class="icon ion-ios-telephone control-button leave-button" ng-click="leave()"></i>
-                <i class="icon assertive ion-ios-telephone-outline control-button" ng-click="leave()"></i>
-                <i class="icon assertive ion-ios-telephone-outline control-button" ng-click="leave()"></i>
             </div>
             <div class="canvas-wrapper local-canvas-wrapper">
                 <canvas id="local-canvas" ></canvas>
