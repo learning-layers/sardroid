@@ -3,15 +3,15 @@
     <div class="content-wrapper" id="local-wrapper">
         <video id="local-video" class="stream-video" autoplay muted="muted" ng-src="{{localStreamSrc}}"></video>
         <canvas id="local-canvas"></canvas>
-        <i class="icon call-button fullscreen-button" ng-class="determineFullscreenButtonClass()" ng-click="toggleFullscreen('local')"></i>
     </div>
 
     <div class="content-wrapper" id="remote-wrapper">
         <video id="remote-video" class="stream-video" autoplay ng-src="{{remoteStreamSrc}}"></video>
         <canvas id="remote-canvas"></canvas>
-        <i class="icon call-button fullscreen-button" ng-class="determineFullscreenButtonClass()" ng-click="toggleFullscreen('remote')"></i>
-            <i class="icon assertive ion-ios-telephone-outline call-button leave-button" ng-click="leave()"></i>
     </div>
     </ion-content>
 </ion-view>
 
+<!-- <i class="icon call-button fullscreen-button" ng-class="determineFullscreenButtonClass()" ng-click="toggleFullscreen('local')"></i> -->
+<!-- <i class="icon call-button fullscreen-button" ng-class="determineFullscreenButtonClass()" ng-click="toggleFullscreen('remote')"></i> -->
+<!-- <i class="icon assertive ion-ios-telephone-outline call-button leave-button" ng-click="leave()"></i> -->

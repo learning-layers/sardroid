@@ -30,8 +30,8 @@ angular.module('confighandler', [])
                 ] } },
             drawings: {
                 size: {
-                    width:  0.56,
-                    height: 0.44
+                    width:  1,
+                    height: 1
                 },
                 remoteColor: 'red',
                 localColor:  '#387ef5',
@@ -63,8 +63,8 @@ angular.module('confighandler', [])
                 ] } },
             drawings: {
                 size: {
-                    width:  0.56,
-                    height: 0.44
+                    width:  1,
+                    height: 1
                 },
                 remoteColor: 'red',
                 localColor:  '#387ef5',
