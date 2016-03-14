@@ -39,7 +39,9 @@ angular.module('contacts').factory('contactsFactory', function ($cordovaContacts
                                 if (c.displayName) displayName = c.displayName;
                                 else if (!_.isEmpty(c.emails)) displayName = c.emails[0].value;
 
-                                if (!_.isEmpty(c.photos) && angular.isDefined(c.photos[0]) && angular.isDefined(c.photos[0].value)) {
+                                if (!_.isEmpty(c.photos)
+                                    && angular.isDefined(c.photos[0])
+                                    && angular.isDefined(c.photos[0].value)) {
                                     photo = c.photos[0].value;
                                 }
 
