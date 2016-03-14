@@ -70,35 +70,6 @@ angular.module('call', [])
             $scope.smallStreamSrc  = localStreamSrc;
             $scope.bigStreamSrc    = remoteStreamSrc;
         }
-//        if ($scope.currentFullscreenCanvas === canvasId) {
-//            $scope.currentFullscreenCanvas = null;
-//            drawingFactory.zoomOutCanvasByTag(canvasId);
-//
-//            switch (canvasId) {
-//            case 'local':
-//                localWrapper.classList.remove('fullscreen');
-//                remoteWrapper.style.display = '';
-//                break;
-//            case 'remote':
-//                remoteWrapper.classList.remove('fullscreen');
-//                localWrapper.style.display = '';
-//                break;
-//            }
-//        } else {
-//            drawingFactory.zoomInCanvasByTag(canvasId);
-//            $scope.currentFullscreenCanvas = canvasId;
-//
-//            switch (canvasId) {
-//            case 'local':
-//                localWrapper.classList.add('fullscreen');
-//                remoteWrapper.style.display = 'none';
-//                break;
-//            case 'remote':
-//                remoteWrapper.classList.add('fullscreen');
-//                localWrapper.style.display = 'none';
-//                break;
-//            }
-//        }
     };
 
     $scope.$on('$ionicView.leave', function () {

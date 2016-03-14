@@ -21,9 +21,9 @@
 }
 
 #small-video {
-    border: 5px solid black;
+    border: 3px solid black;
     //background-color: green;
-    height: 30vh;
+    max-height: 30vh;
     width: 20vw;
     position:absolute;
     bottom: 20px;
@@ -32,11 +32,11 @@
 }
 
 .local-canvas-wrapper {
-    background-color: yellow;
+//    background-color: yellow;
 }
 
 .remote-canvas-wrapper {
-    background-color: green;
+ //   background-color: green;
 }
 
 .canvas-wrapper {
