@@ -43,6 +43,7 @@ angular.module('call', [])
     $scope.leave = leave;
 
     $scope.isOwnStreamPaused = false;
+    $scope.isOwnStreamMuted  = false;
 
     $scope.determinePauseButtonClass = function () {
         if ($scope.isOwnStreamPaused === true) {
@@ -50,6 +51,19 @@ angular.module('call', [])
         } else if ($scope.isOwnStreamPaused === false) {
             return 'ion-pause';
         }
+    };
+
+    $scope.determineMuteButtonClass = function () {
+        if ($scope.isOwnStreamMuted === true) {
+            return 'ion-android-microphone-off';
+        } else if ($scope.isOwnStreamMuted === false) {
+            return 'ion-android-microphone';
+        }
+    };
+
+    $scope.toggleMute = function () {
+        peerFactory.toggleAudioStream();
+        $scope.isOwnStreamMuted = !$scope.isOwnStreamMuted;
     };
 
     $scope.togglePause = function () {
