@@ -45,13 +45,6 @@ angular.module('call', [])
 
     $scope.leave = leave;
 
-    $scope.determineFullscreenButtonClass = function () {
-        if ($scope.currentFullscreenCanvas) {
-            return 'ion-arrow-shrink';
-        }
-        return 'ion-arrow-expand';
-    };
-
     $scope.determineFullscreenCanvas = function () {
         return $scope.currentBigScreen;
     };
