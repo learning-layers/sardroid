@@ -1,15 +1,20 @@
 <ion-view view-title="{{'CALL_HEADER' | translate:user}}" hide-nav-bar="true" hide-back-button="true" ng-controller="CallCtrl">
     <ion-content scroll="false">
         <div class="content-wrapper" id="local-wrapper" ng-class="determineFullscreenCanvas()">
-        <video id="big-video" autoplay muted="muted" ng-src="{{bigStreamSrc}}"></video>
-        <video id="small-video" autoplay ng-click="toggleFullscreen()" ng-src="{{smallStreamSrc}}"></video>
-        <div class="canvas-wrapper local-canvas-wrapper">
-            <canvas id="local-canvas" ></canvas>
+            <video id="big-video" autoplay muted="muted" ng-src="{{bigStreamSrc}}"></video>
+            <video id="small-video" autoplay ng-click="toggleFullscreen()" ng-src="{{smallStreamSrc}}"></video>
+            <div class="controls">
+                <i class="icon ion-ios-telephone control-button leave-button" ng-click="leave()"></i>
+                <i class="icon assertive ion-ios-telephone-outline control-button" ng-click="leave()"></i>
+                <i class="icon assertive ion-ios-telephone-outline control-button" ng-click="leave()"></i>
+            </div>
+            <div class="canvas-wrapper local-canvas-wrapper">
+                <canvas id="local-canvas" ></canvas>
+            </div>
+            <div class="canvas-wrapper remote-canvas-wrapper">
+                <canvas id="remote-canvas"></canvas>
+            </div>
         </div>
-        <div class="canvas-wrapper remote-canvas-wrapper">
-            <canvas id="remote-canvas"></canvas>
-        </div>
-    </div>
     </ion-content>
 </ion-view>
 

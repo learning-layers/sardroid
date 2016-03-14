@@ -31,6 +31,34 @@
     z-index: 1000;
 }
 
+.controls {
+    top: 30%;
+    left: 5%;
+    width: 10%;
+    height: 50%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    .control-button {
+        opacity: 0.8;
+        width: 50px; /* 60*/
+        height: 50px;
+        font-size:45px;
+        background: #305e84;
+        border-radius: 50%;
+        color: #fff;
+        text-align:center;
+        z-index: 100;
+    }
+
+    .leave-button {
+        background-color: #ef473a;
+        transform: rotate(136deg);
+    }
+}
+
 .local-canvas-wrapper {
 //    background-color: yellow;
 }
