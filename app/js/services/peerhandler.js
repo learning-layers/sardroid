@@ -166,7 +166,7 @@ angular.module('peerhandler', [])
 
     // TODO: Make closing dataconnection more modular?
     var checkIfDataConnectionIsSet = function (incomingConnection) {
-        if (angular.isDefined(dataConnnection) || dataConnection !== null) {
+        if (dataConnection !== null) {
             incomingConnection.serialization = 'none';
             incomingConnection.reliable = true;
 
