@@ -5,6 +5,7 @@
   height: 44vh;
   width: 56vw;
   top: 0;
+  z-index: 0;
 }
 
 .call-button {
@@ -58,6 +59,7 @@
     background-color: yellow;
     height: 100%;
     width: 100%;
+    z-index: -100;
 }
 
 #small-video {
@@ -67,5 +69,6 @@
     position:absolute;
     bottom: 20px;
     right: 20px;
+    z-index: 1000;
 }
 

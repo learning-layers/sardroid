@@ -1,8 +1,8 @@
 <ion-view view-title="{{'CALL_HEADER' | translate:user}}" hide-nav-bar="true" hide-back-button="true" ng-controller="CallCtrl">
-    <ion-content>
-    <div class="content-wrapper" id="local-wrapper">
-        <video id="big-video" class="stream-video" autoplay muted="muted" ng-src="{{localStreamSrc}}"></video>
-        <video id="small-video" class="stream-video" autoplay ng-src="{{remoteStreamSrc}}"></video>
+    <ion-content scroll="false">
+        <div class="content-wrapper" id="local-wrapper" ng-class={{currentBigScreen}}>
+        <video id="big-video" autoplay muted="muted" ng-src="{{bigStreamSrc}}"></video>
+        <video id="small-video" autoplay ng-click="toggleFullscreen('local')" ng-src="{{smallStreamSrc}}"></video>
         <canvas id="local-canvas" class="hide"></canvas>
         <canvas id="remote-canvas" class="hide"></canvas>
     </div>
