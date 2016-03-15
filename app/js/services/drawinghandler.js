@@ -136,8 +136,7 @@ angular.module('drawinghandler', [])
         setUpDataCallbacks: function () {
             peerFactory.registerCallback('newPathCreated', function (data) {
                 var parsedData = angular.fromJson(data);
-                addPathToCanvas(parsedData.tag, parsedData.data,
-                                parsedData.currentlyZoomedInRemoteCanvas, parsedData.remoteCanvasSize);
+                addPathToCanvas(parsedData.tag, parsedData.data, parsedData.remoteCanvasSize);
             });
         },
         clearLocalCanvas: function () {
