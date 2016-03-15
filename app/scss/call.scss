@@ -27,8 +27,8 @@
     max-height: 30vh;
     width: 20vw;
     position:absolute;
-    bottom: 20px;
-    right: 20px;
+    left: 75vw;
+    top: 80vh;
     z-index: 1000;
 }
 
@@ -83,11 +83,11 @@
 }
 
 .local-canvas-wrapper {
-//    background-color: yellow;
+    //background-color: yellow;
 }
 
 .remote-canvas-wrapper {
- //   background-color: green;
+   //background-color: green;
 }
 
 .canvas-wrapper {

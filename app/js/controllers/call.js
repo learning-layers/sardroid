@@ -31,6 +31,21 @@ angular.module('call', [])
         }
     }
 
+    var draggableVideo = new Draggabilly('#small-video', {});
+
+    draggableVideo.on('staticClick', function () {
+        // TODO: Refactor this into something more elegant
+            if ($scope.currentBigScreen === 'remote-big') {
+                $scope.currentBigScreen = 'local-big';
+                $scope.smallStreamSrc  = remoteStreamSrc;
+                $scope.bigStreamSrc    = localStreamSrc;
+            } else if ($scope.currentBigScreen === 'local-big') {
+                $scope.currentBigScreen = 'remote-big';
+                $scope.smallStreamSrc  = localStreamSrc;
+                $scope.bigStreamSrc    = remoteStreamSrc;
+        };
+        $scope.$apply();
+    })
     var callAudio = $document[0].querySelector('#call-audio');
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc())
@@ -120,18 +135,6 @@ angular.module('call', [])
     $scope.smallStreamSrc  =  localStreamSrc;
     $scope.bigStreamSrc    =  remoteStreamSrc;
 
-    // TODO: Refactor this into something more elegant
-    $scope.toggleFullscreen = function () {
-        if ($scope.currentBigScreen === 'remote-big') {
-            $scope.currentBigScreen = 'local-big';
-            $scope.smallStreamSrc  = remoteStreamSrc;
-            $scope.bigStreamSrc    = localStreamSrc;
-        } else if ($scope.currentBigScreen === 'local-big') {
-            $scope.currentBigScreen = 'remote-big';
-            $scope.smallStreamSrc  = localStreamSrc;
-            $scope.bigStreamSrc    = remoteStreamSrc;
-        }
-    };
 
     $scope.$on('$ionicView.leave', function () {
         leave();
