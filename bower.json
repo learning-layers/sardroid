@@ -29,7 +29,8 @@
     "socket.io": "https://github.com/socketio/socket.io-client/blob/master/socket.io.js",
     "socket.io-client": "https://github.com/socketio/socket.io-client.git#6580a7f9b50be02c70efe308f7d80501c8d6379b",
     "rollbar": "~1.8.1",
-    "jquery": "^2.2.0"
+    "jquery": "^2.2.0",
+    "draggabilly": "^2.1.0"
   },
   "resolutions": {
     "angular": "~1.4.7"
