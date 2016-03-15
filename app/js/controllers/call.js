@@ -17,15 +17,15 @@ angular.module('call', [])
         peerFactory.endCurrentCall();
     };
 
-    var toggleVideos = function () {
+    var setVideoPlayingState = function (isPlaying) {
         var videos = $document[0].querySelectorAll('video');
         var len = videos.length;
         var i;
 
         for (i = 0; i < len; i++) {
-            if (videos[i].paused) {
+            if (isPlaying === true) {
                 videos[i].play();
-            } else {
+            } else if (isPlaying === false) {
                 videos[i].pause();
             }
         }
@@ -57,8 +57,9 @@ angular.module('call', [])
     });
 
     peerFactory.registerCallback('toggleVideos', function (data) {
-        $scope.isOwnStreamPaused = !$scope.isOwnStreamPaused;
-        toggleVideos();
+        console.log(data);
+        $scope.isOwnStreamPaused = !data.isPlaying;
+        setVideoPlayingState(data.isPlaying);
     });
 
     if ($stateParams && $stateParams.user) {
@@ -73,14 +74,13 @@ angular.module('call', [])
 
     $scope.leave = leave;
 
-    $scope.isOwnStreamPaused = false;
+    $scope.isStreamPlaying = true;
     $scope.isOwnStreamMuted  = false;
 
     $scope.determinePauseButtonClass = function () {
-        console.log('pause button func');
-        if ($scope.isOwnStreamPaused === true) {
+        if ($scope.isStreamPlaying === false) {
             return 'ion-play';
-        } else if ($scope.isOwnStreamPaused === false) {
+        } else if ($scope.isStreamPlaying === true) {
             return 'ion-pause';
         }
     };
@@ -100,9 +100,9 @@ angular.module('call', [])
     };
 
     $scope.togglePause = function () {
-        peerFactory.sendDataToPeer({ type: 'toggleVideos' });
-        toggleVideos();
-        $scope.isOwnStreamPaused = !$scope.isOwnStreamPaused;
+        $scope.isStreamPlaying = !$scope.isStreamPlaying;
+        peerFactory.sendDataToPeer({ type: 'toggleVideos', isPlaying: $scope.isStreamPlaying });
+        setVideoPlayingState($scope.isStreamPlaying);
     };
 
     $scope.determineFullscreenCanvas = function () {
