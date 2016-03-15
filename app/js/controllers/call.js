@@ -17,17 +17,14 @@ angular.module('call', [])
         peerFactory.endCurrentCall();
     };
 
-    var setVideoPlayingState = function (isPlaying) {
-        var videos = $document[0].querySelectorAll('video');
-        var len = videos.length;
-        var i;
-
-        for (i = 0; i < len; i++) {
-            if (isPlaying === true) {
-                videos[i].play();
-            } else if (isPlaying === false) {
-                videos[i].pause();
-            }
+    var setVideoPlayingState = function () {
+        var video = $document[0].querySelector($scope.currentRemoteVideoLocation);
+        if (video.paused === true) {
+            console.log('Playing ' + $scope.currentRemoteVideoLocation);
+            video.play();
+        } else {
+            console.log('Pausing ' + $scope.currentRemoteVideoLocation);
+            video.pause();
         }
     }
 
@@ -39,13 +36,16 @@ angular.module('call', [])
                 $scope.currentBigScreen = 'local-big';
                 $scope.smallStreamSrc  = remoteStreamSrc;
                 $scope.bigStreamSrc    = localStreamSrc;
+                $scope.currentRemoteVideoLocation = '#small-video';
             } else if ($scope.currentBigScreen === 'local-big') {
                 $scope.currentBigScreen = 'remote-big';
                 $scope.smallStreamSrc  = localStreamSrc;
                 $scope.bigStreamSrc    = remoteStreamSrc;
+                $scope.currentRemoteVideoLocation = '#big-video';
         };
         $scope.$apply();
-    })
+    });
+
     var callAudio = $document[0].querySelector('#call-audio');
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc())
@@ -71,10 +71,9 @@ angular.module('call', [])
         }
     });
 
-    peerFactory.registerCallback('toggleVideos', function (data) {
-        $scope.isStreamPlaying = data.isPlaying;
-        setVideoPlayingState(data.isPlaying);
-        console.log($scope.isStreamPlaying);
+    peerFactory.registerCallback('toggleVideos', function () {
+        console.log('got command to turn off remote video');
+        setVideoPlayingState();
     });
 
     if ($stateParams && $stateParams.user) {
@@ -84,18 +83,18 @@ angular.module('call', [])
     }
 
     $scope.remoteAudioSrc = remoteStreamSrc;
-
+    $scope.currentRemoteVideoLocation = '#big-video';
     $scope.currentBigScreen = 'remote-big';
 
     $scope.leave = leave;
 
-    $scope.isStreamPlaying = true;
+    $scope.isOwnVideoPaused = true;
     $scope.isOwnStreamMuted  = false;
 
     $scope.determinePauseButtonClass = function () {
-        if ($scope.isStreamPlaying === false) {
+        if ($scope.isOwnVideoPaused === false) {
             return 'ion-play';
-        } else if ($scope.isStreamPlaying === true) {
+        } else if ($scope.isOwnVideoPaused === true) {
             return 'ion-pause';
         }
     };
@@ -115,9 +114,9 @@ angular.module('call', [])
     };
 
     $scope.togglePause = function () {
-        $scope.isStreamPlaying = !$scope.isStreamPlaying;
-        peerFactory.sendDataToPeer({ type: 'toggleVideos', isPlaying: $scope.isStreamPlaying });
-        setVideoPlayingState($scope.isStreamPlaying);
+        $scope.isOwnVideoPaused = !$scope.isOwnVideoPaused;
+        peerFactory.sendDataToPeer({ type: 'toggleVideos' });
+        setVideoPlayingState();
     };
 
     $scope.determineFullscreenCanvas = function () {
@@ -134,7 +133,6 @@ angular.module('call', [])
 
     $scope.smallStreamSrc  =  localStreamSrc;
     $scope.bigStreamSrc    =  remoteStreamSrc;
-
 
     $scope.$on('$ionicView.leave', function () {
         leave();
