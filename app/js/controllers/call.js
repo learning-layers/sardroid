@@ -72,9 +72,9 @@ angular.module('call', [])
     });
 
     peerFactory.registerCallback('toggleVideos', function (data) {
-        console.log(data);
-        $scope.isOwnStreamPaused = !data.isPlaying;
+        $scope.isStreamPlaying = data.isPlaying;
         setVideoPlayingState(data.isPlaying);
+        console.log($scope.isStreamPlaying);
     });
 
     if ($stateParams && $stateParams.user) {
