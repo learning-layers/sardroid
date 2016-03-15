@@ -448,8 +448,10 @@ angular.module('peerhandler', [])
         },
 
         toggleAudioStream: function () {
+            var audioTracks;
+
             if (localStream) {
-                var audioTracks = localStream.getAudioTracks();
+                audioTracks = localStream.getAudioTracks();
                 audioTracks.forEach(function (a) {
                     a.enabled = !a.enabled;
                 });
@@ -457,8 +459,9 @@ angular.module('peerhandler', [])
         },
 
         toggleVideoStream: function () {
+            var videoTracks;
             if (localStream) {
-                var videoTracks = localStream.getVideoTracks();
+                videoTracks = localStream.getVideoTracks();
                 videoTracks.forEach(function (v) {
                     v.enabled = !v.enabled;
                 });

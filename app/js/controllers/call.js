@@ -7,7 +7,6 @@
 
 angular.module('call', [])
 .controller('CallCtrl', function ($scope, $document, $sce, $stateParams, peerFactory, drawingFactory) {
-
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
         drawingFactory.tearDownDrawingFactory();
@@ -21,10 +20,8 @@ angular.module('call', [])
         var remoteVideo = $document[0].querySelector($scope.currentRemoteVideoLocation);
 
         if (remoteVideo.paused === true) {
-            console.log('Playing remote ' + $scope.currentRemoteVideoLocation);
             remoteVideo.play();
         } else {
-            console.log('Pausing remote ' + $scope.currentRemoteVideoLocation);
             remoteVideo.pause();
         }
     };
@@ -33,37 +30,36 @@ angular.module('call', [])
         var localVideo = $document[0].querySelector($scope.currentLocalVideoLocation);
 
         if (localVideo.paused === true) {
-            console.log('Playing local ' + $scope.currentLocalVideoLocation);
             localVideo.play();
         } else {
-            console.log('Pausing local ' + $scope.currentLocalVideoLocation);
             localVideo.pause();
         }
     };
 
     var draggableVideo = new Draggabilly('#small-video', {});
 
-    draggableVideo.on('staticClick', function () {
-        // TODO: Refactor this into something more elegant
-            if ($scope.currentBigScreen === 'remote-big') {
-                $scope.currentBigScreen = 'local-big';
-                $scope.smallStreamSrc  = remoteStreamSrc;
-                $scope.bigStreamSrc    = localStreamSrc;
-                $scope.currentRemoteVideoLocation = '#small-video';
-                $scope.currentLocalVideoLocation = '#big-video';
-            } else if ($scope.currentBigScreen === 'local-big') {
-                $scope.currentBigScreen = 'remote-big';
-                $scope.smallStreamSrc  = localStreamSrc;
-                $scope.bigStreamSrc    = remoteStreamSrc;
-                $scope.currentRemoteVideoLocation = '#big-video';
-                $scope.currentLocalVideoLocation = '#small-video';
-        };
-        $scope.$apply();
-    });
 
     var callAudio = $document[0].querySelector('#call-audio');
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
-    var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc())
+    var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc());
+
+    draggableVideo.on('staticClick', function () {
+        // TODO: Refactor this into something more elegant
+        if ($scope.currentBigScreen === 'remote-big') {
+            $scope.currentBigScreen = 'local-big';
+            $scope.smallStreamSrc  = remoteStreamSrc;
+            $scope.bigStreamSrc    = localStreamSrc;
+            $scope.currentRemoteVideoLocation = '#small-video';
+            $scope.currentLocalVideoLocation = '#big-video';
+        } else if ($scope.currentBigScreen === 'local-big') {
+            $scope.currentBigScreen = 'remote-big';
+            $scope.smallStreamSrc  = localStreamSrc;
+            $scope.bigStreamSrc    = remoteStreamSrc;
+            $scope.currentRemoteVideoLocation = '#big-video';
+            $scope.currentLocalVideoLocation = '#small-video';
+        }
+        $scope.$apply();
+    });
 
     // Sweet hack for browser if you can't be bothered to make a call
     if (localStreamSrc === null) { localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'; }
@@ -129,18 +125,17 @@ angular.module('call', [])
         if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#big-video')
            || ($scope.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#big-video')) {
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     };
 
     $scope.determineIfSmallVideoIsAutoplay = function () {
         if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#small-video')
            || ($scope.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#small-video')) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     };
 
     $scope.toggleMute = function () {
@@ -165,7 +160,7 @@ angular.module('call', [])
         } else if ($scope.currentBigScreen === 'local-big') {
             drawingFactory.clearLocalCanvas();
         }
-    }
+    };
 
     $scope.smallStreamSrc  =  localStreamSrc;
     $scope.bigStreamSrc    =  remoteStreamSrc;

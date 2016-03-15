@@ -60,7 +60,7 @@ angular.module('drawinghandler', [])
             removePathFromCanvas(canvas, path);
         }, config.drawingRemoveTime);
 
-       pathRemoveTimers.push(timer);
+        pathRemoveTimers.push(timer);
     };
 
     var cancelPathRemoveTimers = function () {
@@ -70,7 +70,6 @@ angular.module('drawinghandler', [])
     };
 
     var setUpCanvasEvents = function (canvas) {
-
         canvas.on('path:created', function (e) {
             var data = angular.toJson(e.path);
 
