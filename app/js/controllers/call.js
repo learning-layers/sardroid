@@ -87,6 +87,7 @@ angular.module('call', [])
     });
 
     peerFactory.registerCallback('toggleRemoteVideo', function () {
+        $scope.isRemoteVideoPaused = true;
         toggleRemoteVideoPlayingState();
     });
 
@@ -101,16 +102,17 @@ angular.module('call', [])
 
     $scope.leave = leave;
 
-    $scope.isOwnVideoPaused = true;
+    $scope.isOwnVideoPaused = false;
+    $scope.isRemoteVideoPaused = false;
     $scope.isOwnStreamMuted  = false;
 
     $scope.currentRemoteVideoLocation = '#big-video';
     $scope.currentLocalVideoLocation = '#small-video';
 
     $scope.determinePauseButtonClass = function () {
-        if ($scope.isOwnVideoPaused === false) {
+        if ($scope.isOwnVideoPaused === true) {
             return 'ion-play';
-        } else if ($scope.isOwnVideoPaused === true) {
+        } else if ($scope.isOwnVideoPaused === false) {
             return 'ion-pause';
         }
     };
@@ -120,6 +122,24 @@ angular.module('call', [])
             return 'ion-android-microphone-off';
         } else if ($scope.isOwnStreamMuted === false) {
             return 'ion-android-microphone';
+        }
+    };
+
+    $scope.determineIfBigVideoIsAutoplay = function () {
+        if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#big-video')
+           || ($scope.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#big-video')) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    $scope.determineIfSmallVideoIsAutoplay = function () {
+        if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#small-video')
+           || ($scope.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#small-video')) {
+            return false;
+        } else {
+            return true;
         }
     };
 
