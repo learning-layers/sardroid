@@ -83,7 +83,7 @@ angular.module('call', [])
     });
 
     peerFactory.registerCallback('toggleRemoteVideo', function () {
-        $scope.isRemoteVideoPaused = true;
+        $scope.isRemoteVideoPaused = !$scope.isRemoteVideoPaused;
         toggleRemoteVideoPlayingState();
     });
 
