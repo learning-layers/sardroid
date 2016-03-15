@@ -11,7 +11,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
                             'apihandler', 'modalhandler', 'intlpnIonic'])
 
-.run(function ($ionicPlatform, $http, $rootScope, $ionicSideMenuDelegate, $window, $cordovaGoogleAnalytics) {
+.run(function ($ionicPlatform, audioFactory, $http, $rootScope, $ionicSideMenuDelegate, $window, $cordovaGoogleAnalytics) {
     $ionicPlatform.ready(function () {
         // Attempt to determine current locale from ipinfo for the number picker!
         $http.get('http://ipinfo.io')
@@ -54,6 +54,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
                 }
 
                 if (toState.name === 'call') {
+                    audioFactory.stopAllSounds();
                     $ionicSideMenuDelegate.canDragContent(false);
                 } else {
                     $ionicSideMenuDelegate.canDragContent(true);

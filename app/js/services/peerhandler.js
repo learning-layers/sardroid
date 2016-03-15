@@ -579,11 +579,6 @@ angular.module('peerhandler', [])
                              $translate.instant('CALL_INCOMING_TEMPLATE')
                         )
                         .then(function (res) {
-                            // TODO: Investigate why cancelling the sound fails unless in timeout
-                            $timeout(function () {
-                                audioFactory.stopAllSounds();
-                            }, 100);
-
                             cancelLocalNotification(id);
 
                             if (res) {
