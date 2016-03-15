@@ -12,9 +12,6 @@ angular.module('drawinghandler', [])
     var remoteCanvas = null;
     var localCanvas  = null;
 
-    // Tag of the canvas that is currently fullscreen
-    var currentlyZoomedInCanvas = null;
-
     // Configuration object
     var config = configFactory.getValue('drawings');
 
@@ -59,11 +56,11 @@ angular.module('drawinghandler', [])
     };
 
     var createPathRemoveTimer = function (canvas, path) {
-       // var timer = $timeout(function () {
-       //     removePathFromCanvas(canvas, path);
-       // }, config.drawingRemoveTime);
+        var timer = $timeout(function () {
+            removePathFromCanvas(canvas, path);
+        }, config.drawingRemoveTime);
 
-       //pathRemoveTimers.push(timer);
+       pathRemoveTimers.push(timer);
     };
 
     var cancelPathRemoveTimers = function () {
@@ -81,25 +78,24 @@ angular.module('drawinghandler', [])
                 type                          : 'newPathCreated',
                 tag                           : canvas.tag,
                 data                          : data,
-                currentlyZoomedInRemoteCanvas : currentlyZoomedInCanvas,
                 remoteCanvasSize              : canvasSize
             };
 
             peerFactory.sendDataToPeer(angular.toJson(dataToSend));
 
-            //createPathRemoveTimer(canvas, e.path);
+            createPathRemoveTimer(canvas, e.path);
         });
     };
 
-    var addPathToCanvas = function (canvasTag, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize) {
+    var addPathToCanvas = function (canvasTag, pathData, remoteCanvasSize) {
         if (canvasTag === 'local') {
-            addNewPathToCanvas(remoteCanvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize);
+            addNewPathToCanvas(remoteCanvas, pathData, remoteCanvasSize);
         } else if (canvasTag === 'remote') {
-            addNewPathToCanvas(localCanvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize);
+            addNewPathToCanvas(localCanvas, pathData, remoteCanvasSize);
         }
     };
 
-    var addNewPathToCanvas = function (canvas, pathData, currentlyZoomedInRemoteCanvas, remoteCanvasSize) {
+    var addNewPathToCanvas = function (canvas, pathData, remoteCanvasSize) {
         pathData = angular.fromJson(pathData);
         fabric.util.enlivenObjects([pathData], function (objects) {
             objects.forEach(function (o) {
@@ -111,22 +107,6 @@ angular.module('drawinghandler', [])
                     scaleY: o.scaleX / (remoteCanvasSize.height / canvasSize.height),
                     scaleX: o.scaleY / (remoteCanvasSize.width  / canvasSize.width)
                 });
-
-                if (currentlyZoomedInCanvas === null && currentlyZoomedInRemoteCanvas !== null) {
-                    o.set({
-                        top:    o.top    * config.size.height,
-                        left:   o.left   * config.size.width,
-                        scaleY: o.scaleX * config.size.height,
-                        scaleX: o.scaleY * config.size.width
-                    });
-                } else if (currentlyZoomedInCanvas !== null && currentlyZoomedInRemoteCanvas === null) {
-                    o.set({
-                        top:    o.top    / config.size.height,
-                        left:   o.left   / config.size.width,
-                        scaleY: o.scaleX / config.size.height,
-                        scaleX: o.scaleY / config.size.width
-                    });
-                }
 
                 canvas.add(o);
                 canvas.renderAll(true);
@@ -141,52 +121,7 @@ angular.module('drawinghandler', [])
     };
 
     var clearCanvas = function (canvas) {
-        canvas.dispose();
-    };
-
-    var zoomInCanvas = function (canvas) {
-        var objects = canvas.getObjects();
-        var o;
-
-        canvas.setWidth($window.innerWidth);
-        canvas.setHeight($window.innerHeight * 0.87);
-
-        for (o in objects) {
-            if (objects.hasOwnProperty(o)) {
-                objects[o].set({
-                    top:    o.top    * config.size.height,
-                    left:   o.left   * config.size.width,
-                    scaleY: o.scaleX * config.size.height,
-                    scaleX: o.scaleY * config.size.width
-                });
-            }
-        }
-
-        canvas.renderAll(true);
-
-        canvas.calcOffset();
-    };
-
-    var zoomOutCanvas = function (canvas) {
-        var objects = canvas.getObjects();
-        var o;
-
-        canvas.setWidth(canvasSize.width);
-        canvas.setHeight(canvasSize.height);
-
-        for (o in objects) {
-            if (objects.hasOwnProperty(o)) {
-                objects[o].set({
-                    top:    o.top    / config.size.height,
-                    left:   o.left   / config.size.width,
-                    scaleY: o.scaleX / config.size.height,
-                    scaleX: o.scaleY / config.size.width
-                });
-            }
-        }
-
-        canvas.renderAll(true);
-        canvas.calcOffset();
+        canvas.clear();
     };
 
     // Public API begins here
@@ -211,30 +146,6 @@ angular.module('drawinghandler', [])
         },
         clearRemoteCanvas: function () {
             clearCanvas(remoteCanvas);
-        },
-        zoomInCanvasByTag: function (tag) {
-            currentlyZoomedInCanvas = tag;
-
-            switch (tag) {
-            case 'local':
-                zoomInCanvas(localCanvas);
-                break;
-            case 'remote':
-                zoomInCanvas(remoteCanvas);
-                break;
-            }
-        },
-        zoomOutCanvasByTag: function (tag) {
-            currentlyZoomedInCanvas = null;
-
-            switch (tag) {
-            case 'local':
-                zoomOutCanvas(localCanvas);
-                break;
-            case 'remote':
-                zoomOutCanvas(remoteCanvas);
-                break;
-            }
         },
         tearDownDrawingFactory: function () {
             cancelPathRemoveTimers();
