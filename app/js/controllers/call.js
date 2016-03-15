@@ -32,7 +32,6 @@ angular.module('call', [])
     }
 
     var callAudio = $document[0].querySelector('#call-audio');
-    console.log(callAudio);
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc())
 
