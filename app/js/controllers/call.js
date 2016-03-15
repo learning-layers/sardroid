@@ -13,6 +13,7 @@ angular.module('call', [])
         drawingFactory.tearDownDrawingFactory();
         peerFactory.clearCallback('otherPeerLeft');
         peerFactory.clearCallback('toggleVideos');
+        peerFactory.clearCallback('toggleVideoMute');
         peerFactory.endCurrentCall();
     };
 
@@ -30,6 +31,8 @@ angular.module('call', [])
         }
     }
 
+    var callAudio = $document[0].querySelector('#call-audio');
+    console.log(callAudio);
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc())
 
@@ -44,6 +47,14 @@ angular.module('call', [])
 
     peerFactory.registerCallback('otherPeerLeft', function () {
         leave();
+    });
+
+    peerFactory.registerCallback('toggleVideoMute', function () {
+        if (callAudio.paused) {
+            callAudio.play();
+        } else {
+            callAudio.pause();
+        }
     });
 
     peerFactory.registerCallback('toggleVideos', function (data) {
@@ -67,6 +78,7 @@ angular.module('call', [])
     $scope.isOwnStreamMuted  = false;
 
     $scope.determinePauseButtonClass = function () {
+        console.log('pause button func');
         if ($scope.isOwnStreamPaused === true) {
             return 'ion-play';
         } else if ($scope.isOwnStreamPaused === false) {
@@ -83,6 +95,7 @@ angular.module('call', [])
     };
 
     $scope.toggleMute = function () {
+        peerFactory.sendDataToPeer({ type: 'toggleVideoMute' });
         peerFactory.toggleAudioStream();
         $scope.isOwnStreamMuted = !$scope.isOwnStreamMuted;
     };

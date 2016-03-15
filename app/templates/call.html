@@ -3,7 +3,7 @@
         <div class="content-wrapper" id="local-wrapper" ng-class="determineFullscreenCanvas()">
             <video id="big-video" autoplay muted="muted" ng-src="{{bigStreamSrc}}"></video>
             <video id="small-video" autoplay muted="muted" ng-click="toggleFullscreen()" ng-src="{{smallStreamSrc}}"></video>
-            <audio ng-src="{{remoteAudioSrc}}" autoplay></audio>
+            <audio id="call-audio" ng-src="{{remoteAudioSrc}}" autoplay></audio>
             <div class="controls">
                 <i class="icon assertive ion-trash-a control-button remove-button" ng-click="clearActiveCanvas()"></i>
                 <i class="icon assertive control-button mute-button" ng-class="determineMuteButtonClass()" ng-click="toggleMute()"></i>
