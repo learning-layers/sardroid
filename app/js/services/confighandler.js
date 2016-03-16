@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Just a boring ol' data storage for configration
+ * Just a boring ol' data storage for configuration
  * DEV VERSION FOR EASE OF USAGE!!!
  */
 
@@ -43,9 +43,9 @@ angular.module('confighandler', [])
             }
         },
         development: {
-            apiUrl: 'http://192.168.0.14:9000/',
+            apiUrl: 'http://10.100.28.191:9000/',
             peerjs: {
-                host: '192.168.0.14',
+                host: '10.100.28.191',
                 port: 9000,
                 path: '/peerjs',
                 debug: 0,
@@ -72,7 +72,7 @@ angular.module('confighandler', [])
                 drawingRemoveTime: 6000
             },
             socketio: {
-                url: 'http://192.168.0.14:9000'
+                url: 'http://10.100.28.191:9000'
             }
         }
     };

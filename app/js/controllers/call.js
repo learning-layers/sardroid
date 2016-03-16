@@ -16,30 +16,36 @@ angular.module('call', [])
         peerFactory.endCurrentCall();
     };
 
-    var toggleRemoteVideoPlayingState = function () {
-        var remoteVideo = $document[0].querySelector($scope.currentRemoteVideoLocation);
+    var toggleVideoPlayingState = function (videoSelector) {
+        var video = $document[0].querySelector(videoSelector);
 
-        if (remoteVideo.paused === true) {
-            remoteVideo.play();
+        if (video.paused === true) {
+            video.play();
         } else {
-            remoteVideo.pause();
+            video.pause();
         }
+    };
+
+    var toggleAudioPlayingState = function (audioSelector) {
+        var audio = $document[0].querySelector(audioSelector);
+
+        if (audio.paused === true) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    };
+
+    var toggleRemoteVideoPlayingState = function () {
+        toggleVideoPlayingState($scope.currentRemoteVideoLocation);
     };
 
     var toggleLocalVideoPlayingState = function () {
-        var localVideo = $document[0].querySelector($scope.currentLocalVideoLocation);
-
-        if (localVideo.paused === true) {
-            localVideo.play();
-        } else {
-            localVideo.pause();
-        }
+        toggleVideoPlayingState($scope.currentLocalVideoLocation);
     };
 
-    var draggableVideo = new Draggabilly('#small-video', {});
+    var draggableVideo = new Draggabilly('#small-video');
 
-
-    var callAudio = $document[0].querySelector('#call-audio');
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc());
 
@@ -61,25 +67,16 @@ angular.module('call', [])
         $scope.$apply();
     });
 
-    // Sweet hack for browser if you can't be bothered to make a call
-    if (localStreamSrc === null) { localStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'; }
-    if (remoteStreamSrc === null) { remoteStreamSrc = 'res/img/SampleVideo_1080x720_10mb.mp4'; }
-
     drawingFactory.setUpDataCallbacks();
     drawingFactory.setUpRemoteCanvas('remote-canvas', {});
     drawingFactory.setUpLocalCanvas('local-canvas', {});
-
 
     peerFactory.registerCallback('otherPeerLeft', function () {
         leave();
     });
 
     peerFactory.registerCallback('toggleVideoMute', function () {
-        if (callAudio.paused) {
-            callAudio.play();
-        } else {
-            callAudio.pause();
-        }
+        toggleAudioPlayingState('#call-audio');
     });
 
     peerFactory.registerCallback('toggleRemoteVideo', function () {
@@ -87,23 +84,14 @@ angular.module('call', [])
         toggleRemoteVideoPlayingState();
     });
 
-    if ($stateParams && $stateParams.user) {
-        $scope.user = $stateParams.user;
-    } else {
-        $scope.user = { displayName: '?????' };
-    }
-
-    $scope.remoteAudioSrc = remoteStreamSrc;
     $scope.currentBigScreen = 'remote-big';
 
-    $scope.leave = leave;
-
-    $scope.isOwnVideoPaused = false;
+    $scope.isOwnVideoPaused    = false;
     $scope.isRemoteVideoPaused = false;
-    $scope.isOwnStreamMuted  = false;
+    $scope.isOwnStreamMuted    = false;
 
     $scope.currentRemoteVideoLocation = '#big-video';
-    $scope.currentLocalVideoLocation = '#small-video';
+    $scope.currentLocalVideoLocation  = '#small-video';
 
     $scope.determinePauseButtonClass = function () {
         if ($scope.isOwnVideoPaused === true) {
@@ -162,9 +150,11 @@ angular.module('call', [])
         }
     };
 
-    $scope.smallStreamSrc  =  localStreamSrc;
-    $scope.bigStreamSrc    =  remoteStreamSrc;
+    $scope.smallStreamSrc = localStreamSrc;
+    $scope.bigStreamSrc   = remoteStreamSrc;
+    $scope.remoteAudioSrc = remoteStreamSrc;
 
+    $scope.leave = leave;
     $scope.$on('$ionicView.leave', function () {
         leave();
     });

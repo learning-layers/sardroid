@@ -1,5 +1,8 @@
 'use strict';
 
+/*
+ * Factory for manipulating the phone's native contacts.
+ */
 angular.module('contacts').factory('contactsFactory', function ($cordovaContacts, $http, $log,
                                                                $localStorage, apiFactory) {
     // Array to store all the devices contacts so we don't have to re-fetch them all the time

@@ -2,14 +2,12 @@
 
 /*
  * Controller for the contacts view with the listing of the device's contacts
- * Also, a factory wrapping ngCordova's contact plugin, which is a wrapper
- * around Cordova's contact plugin, which is a wrapper around the native
- * contacts API. Sweet!
+ * See related controller under services-folder
  */
 
 angular.module('contacts', [])
 .controller('ContactsCtrl', function ($scope, $localStorage, $ionicModal, contactsFactory, modalFactory,  peerFactory,
-                                     socketFactory, configFactory, $state, $ionicActionSheet, $translate) {
+                                     socketFactory, configFactory, $state, $ionicActionSheet, $translate, audioFactory) {
     var newContactModal = null;
 
     var translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {
@@ -111,8 +109,10 @@ angular.module('contacts', [])
             buttonClicked: function (index) {
                 switch (index) {
                 case 0:
+                    audioFactory.playSound('.dial');
                     peerFactory.callPeer(selectedUser)
                     .then(function (user) {
+                        audioFactory.stopSound('.dial');
                         $state.go('call', { user: user });
                     })
                     .catch(function () {
