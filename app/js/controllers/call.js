@@ -36,6 +36,7 @@ angular.module('call', [])
         }
     };
 
+
     var toggleRemoteVideoPlayingState = function () {
         toggleVideoPlayingState($scope.currentRemoteVideoLocation);
     };
@@ -80,14 +81,17 @@ angular.module('call', [])
     });
 
     peerFactory.registerCallback('toggleRemoteVideo', function () {
-        $scope.isRemoteVideoPaused = !$scope.isRemoteVideoPaused;
+        window.isRemoteVideoPaused = !window.isRemoteVideoPaused
         toggleRemoteVideoPlayingState();
     });
 
     $scope.currentBigScreen = 'remote-big';
 
+    // I have no idea what is so special about this variable
+    // but we have to declare it as a global so angular doesn't
+    // override it
+    window.isRemoteVideoPaused = false;
     $scope.isOwnVideoPaused    = false;
-    $scope.isRemoteVideoPaused = false;
     $scope.isOwnStreamMuted    = false;
 
     $scope.currentRemoteVideoLocation = '#big-video';
@@ -111,7 +115,8 @@ angular.module('call', [])
 
     $scope.determineIfBigVideoIsAutoplay = function () {
         if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#big-video')
-           || ($scope.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#big-video')) {
+           || (window.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#big-video')) {
+
             return false;
         }
 
@@ -120,9 +125,10 @@ angular.module('call', [])
 
     $scope.determineIfSmallVideoIsAutoplay = function () {
         if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#small-video')
-           || ($scope.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#small-video')) {
+           || (window.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#small-video')) {
             return false;
         }
+
         return true;
     };
 
