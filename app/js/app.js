@@ -54,7 +54,6 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
                 }
 
                 if (toState.name === 'call') {
-                    audioFactory.stopAllSounds();
                     $ionicSideMenuDelegate.canDragContent(false);
                 } else {
                     $ionicSideMenuDelegate.canDragContent(true);

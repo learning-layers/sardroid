@@ -152,7 +152,7 @@ angular.module('peerhandler', [])
     };
 
     var showCallLoader = function () {
-        audioFactory.playSound('.dial');
+        audioFactory.loopSound('dial');
         $ionicLoading.show({
             templateUrl: 'templates/modals/call-loader.html',
             scope: callUserScope
@@ -160,7 +160,7 @@ angular.module('peerhandler', [])
     };
 
     var hideCallLoader = function () {
-        audioFactory.stopSound('.dial');
+        audioFactory.stopSound('dial');
         $ionicLoading.hide();
     };
 
@@ -553,7 +553,7 @@ angular.module('peerhandler', [])
 
                     if (isInCallCurrently === false) {
                         isInCallCurrently = true;
-                        audioFactory.playSound('.call');
+                        audioFactory.loopSound('call');
 
                         user = contactsFactory.getContactByNumber(mediaConnection.peer);
 
@@ -579,6 +579,7 @@ angular.module('peerhandler', [])
                              $translate.instant('CALL_INCOMING_TEMPLATE')
                         )
                         .then(function (res) {
+                            audioFactory.stopSound('call');
                             cancelLocalNotification(id);
 
                             if (res) {

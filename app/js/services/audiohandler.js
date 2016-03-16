@@ -5,25 +5,33 @@
  */
 
 angular.module('audiohandler', [])
-.factory('audioFactory', function ($document) {
+.factory('audioFactory', function ($ionicPlatform, $window, $cordovaNativeAudio) {
+    $ionicPlatform.ready(function () {
+        if ($window.cordova) {
+            $cordovaNativeAudio.preloadComplex('call', 'res/sounds/dial.wav', 1, 1);
+            $cordovaNativeAudio.preloadComplex('dial', 'res/sounds/incoming.mp3', 1, 1);
+        }
+    });
     return {
-        playSound: function (selector) {
-            var audio = $document[0].querySelector(selector);
-            audio.play();
+        playSound: function (sound) {
+            if ($window.cordova) {
+                $cordovaNativeAudio.play(sound);
+            }
         },
-        stopSound: function (selector) {
-            var audio = $document[0].querySelector(selector);
-            audio.pause();
-            audio.currentTime = 0;
+        loopSound: function (sound) {
+            if ($window.cordova) {
+                $cordovaNativeAudio.loop(sound);
+            }
+        },
+        stopSound: function (sound) {
+            if ($window.cordova) {
+                $cordovaNativeAudio.stop(sound);
+            }
         },
         stopAllSounds: function () {
-            var elements = $document[0].querySelectorAll('audio');
-            var len      = elements.length;
-            var i        = 0;
-
-            for (i = 0; i < len; i++) {
-                elements[i].pause();
-                elements[i].currentTime = 0;
+            if ($window.cordova) {
+                this.stopSound('call');
+                this.stopSound('dial');
             }
         }
     };
