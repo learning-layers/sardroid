@@ -78,7 +78,9 @@ angular.module('drawinghandler', [])
         });
     };
 
+
     var setUpCanvasEvents = function (canvas) {
+
         canvas.on('path:created', function (e) {
             var data = angular.toJson(e.path);
 
@@ -104,6 +106,7 @@ angular.module('drawinghandler', [])
                     strokeWidth: config.arrows.strokeWidth,
                     fill: config.localColor,
                     stroke: config.localColor,
+                    selectable: false,
                     originX: 'center',
                     originY: 'center'
                 });
@@ -116,6 +119,7 @@ angular.module('drawinghandler', [])
                     height: config.arrows.headHeight,
                     fill: config.localColor,
                     stroke: config.localColor,
+                    selectable: false,
                     originX: 'center',
                     originY: 'center',
                     top: pointer.y,
@@ -151,6 +155,16 @@ angular.module('drawinghandler', [])
         canvas.on('mouse:up', function (e) {
             if (this.isArrowModeOn === true) {
                 this.isMouseCurrentlyPressed = false;
+                var arrowData = { line: this.currentArrow, head: this.currentArrowHead };
+
+                var dataToSend = {
+                    type                          : 'newArrowCreated',
+                    tag                           : canvas.tag,
+                    data                          : arrowData,
+                    remoteCanvasSize              : canvasSize
+                };
+
+                peerFactory.sendDataToPeer(angular.toJson(dataToSend));
             }
         });
     };
@@ -165,9 +179,39 @@ angular.module('drawinghandler', [])
 
     var addNewPathToCanvas = function (canvas, pathData, remoteCanvasSize) {
         pathData = angular.fromJson(pathData);
+        console.log(pathData);
         fabric.util.enlivenObjects([pathData], function (objects) {
             objects.forEach(function (o) {
                 o.stroke = config.remoteColor;
+
+                o.set({
+                    top:    o.top    / (remoteCanvasSize.height / canvasSize.height),
+                    left:   o.left   / (remoteCanvasSize.width  / canvasSize.width),
+                    scaleY: o.scaleX / (remoteCanvasSize.height / canvasSize.height),
+                    scaleX: o.scaleY / (remoteCanvasSize.width  / canvasSize.width),
+                    selectable: false
+                });
+
+                canvas.add(o);
+                canvas.renderAll(true);
+                createPathRemoveTimer(canvas, o);
+            });
+        });
+    };
+
+    var addArrowToCanvas = function (canvasTag, arrowData, remoteCanvasSize) {
+        if (canvasTag === 'local') {
+            addNewArrowToCanvas(remoteCanvas, arrowData, remoteCanvasSize);
+        } else if (canvasTag === 'remote') {
+            addNewArrowToCanvas(localCanvas, arrowData, remoteCanvasSize);
+        }
+    };
+
+    var addNewArrowToCanvas = function (canvas, arrowData, remoteCanvasSize) {
+        fabric.util.enlivenObjects([arrowData.line, arrowData.head], function (objects) {
+            objects.forEach(function (o) {
+                o.stroke = config.remoteColor;
+                o.fill = config.remoteColor;
 
                 o.set({
                     top:    o.top    / (remoteCanvasSize.height / canvasSize.height),
@@ -178,7 +222,6 @@ angular.module('drawinghandler', [])
 
                 canvas.add(o);
                 canvas.renderAll(true);
-                createPathRemoveTimer(canvas, o);
             });
         });
     };
@@ -216,6 +259,11 @@ angular.module('drawinghandler', [])
                 var parsedData = angular.fromJson(data);
                 addPathToCanvas(parsedData.tag, parsedData.data, parsedData.remoteCanvasSize);
             });
+
+            peerFactory.registerCallback('newArrowCreated', function (data) {
+                var parsedData = angular.fromJson(data);
+                addArrowToCanvas(parsedData.tag, parsedData.data, parsedData.remoteCanvasSize);
+            });
         },
         clearLocalCanvas: function () {
             clearCanvas(localCanvas);
@@ -226,6 +274,7 @@ angular.module('drawinghandler', [])
         tearDownDrawingFactory: function () {
             cancelPathRemoveTimers();
             peerFactory.clearCallback('newPathCreated');
+            peerFactory.clearCallback('newArrowCreated');
         }
     };
 });
