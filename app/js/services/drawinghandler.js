@@ -39,6 +39,7 @@ angular.module('drawinghandler', [])
         fabricCanvas.freeDrawingBrush.width = config.brushWidth;
         fabricCanvas.freeDrawingBrush.color = config.localColor;
         fabricCanvas.toggleArrowDrawingMode = function () {
+            console.log(this.isDrawingMode);
             this.isDrawingMode = !this.isDrawingMode;
         };
 
@@ -129,12 +130,17 @@ angular.module('drawinghandler', [])
     // Public API begins here
     return {
         setUpRemoteCanvas: function (canvasId, opts) {
-            opts.isRemote = true;
-            setUpDrawingCanvas(canvasId, opts);
+            if (!remoteCanvas) {
+                console.log(remoteCanvas);
+                opts.isRemote = true;
+                setUpDrawingCanvas(canvasId, opts);
+            }
         },
         setUpLocalCanvas: function (canvasId, opts) {
-            opts.isRemote = false;
-            setUpDrawingCanvas(canvasId, opts);
+            if (!localCanvas) {
+                opts.isRemote = false;
+                setUpDrawingCanvas(canvasId, opts);
+            }
         },
         toggleArrowDrawingMode: function () {
             remoteCanvas.toggleArrowDrawingMode();
