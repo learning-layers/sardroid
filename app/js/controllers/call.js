@@ -143,7 +143,6 @@ angular.module('call', [])
     $scope.toggleArrowMode = function () {
         $scope.isArrowModeOn = !$scope.isArrowModeOn;
         drawingFactory.toggleArrowDrawingMode();
-        $scope.$apply();
     };
 
     $scope.toggleMute = function () {
