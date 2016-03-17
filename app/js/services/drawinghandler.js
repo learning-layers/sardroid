@@ -30,6 +30,7 @@ angular.module('drawinghandler', [])
         var fabricCanvas = new fabric.Canvas(canvasId, {
             isDrawingMode: true,
             renderOnAddRemove: false,
+            selection: false,
             stateful: false,
             width: canvasSize.width,
             height: canvasSize.height
@@ -38,9 +39,13 @@ angular.module('drawinghandler', [])
         fabricCanvas.calcOffset();
         fabricCanvas.freeDrawingBrush.width = config.brushWidth;
         fabricCanvas.freeDrawingBrush.color = config.localColor;
+
+        fabricCanvas.isArrowModeOn = false;
+        fabricCanvas.isMouseCurrentlyPressed = false;
+
         fabricCanvas.toggleArrowDrawingMode = function () {
-            console.log(this.isDrawingMode);
-            this.isDrawingMode = !this.isDrawingMode;
+            this.isDrawingMode   = !this.isDrawingMode;
+            this.isArrowModeOn   = !this.isArrowModeOn;
         };
 
         if (opts.isRemote === true) {
@@ -87,6 +92,39 @@ angular.module('drawinghandler', [])
             peerFactory.sendDataToPeer(angular.toJson(dataToSend));
 
             createPathRemoveTimer(canvas, e.path);
+        });
+
+        canvas.on('mouse:down', function (e) {
+            if (canvas.isArrowModeOn === true) {
+                this.isMouseCurrentlyPressed = true;
+                var pointer = canvas.getPointer(e.e);
+                var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
+                this.currentArrow = new fabric.Line(points, {
+                    strokeWidth: 6,
+                    fill: config.localColor,
+                    stroke: config.localColor,
+                    originX: 'center',
+                    originY: 'center'
+                });
+
+                canvas.add(this.currentArrow);
+        }});
+
+        canvas.on('mouse:move', function (e) {
+            if (this.isArrowModeOn === true) {
+                if (!this.isMouseCurrentlyPressed) return;
+
+                var pointer = canvas.getPointer(e.e);
+
+                this.currentArrow.set({ x2: pointer.x, y2: pointer.y });
+                canvas.renderAll();
+            }
+        });
+
+        canvas.on('mouse:up', function (e) {
+            if (this.isArrowModeOn === true) {
+                this.isMouseCurrentlyPressed = false;
+            }
         });
     };
 
