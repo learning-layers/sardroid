@@ -94,7 +94,7 @@ angular.module('drawinghandler', [])
 
             e.path.selectable = false;
 
-            createPathRemoveTimer(canvas, e.path);
+            //createPathRemoveTimer(canvas, e.path);
         });
 
         canvas.on('mouse:down', function (e) {
@@ -210,7 +210,7 @@ angular.module('drawinghandler', [])
 
                 canvas.add(o);
                 canvas.renderAll(true);
-                createPathRemoveTimer(canvas, o);
+                //createPathRemoveTimer(canvas, o);
             });
         });
     };
