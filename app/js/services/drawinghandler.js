@@ -99,8 +99,9 @@ angular.module('drawinghandler', [])
                 this.isMouseCurrentlyPressed = true;
                 var pointer = canvas.getPointer(e.e);
                 var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
+
                 this.currentArrow = new fabric.Line(points, {
-                    strokeWidth: 6,
+                    strokeWidth: config.arrows.strokeWidth,
                     fill: config.localColor,
                     stroke: config.localColor,
                     originX: 'center',
@@ -111,8 +112,8 @@ angular.module('drawinghandler', [])
                 this.currentArrow.startingY = pointer.y;
 
                 this.currentArrowHead = new fabric.Triangle({
-                    width: 50,
-                    height: 50,
+                    width: config.arrows.headWidth,
+                    height: config.arrows.headHeight,
                     fill: config.localColor,
                     stroke: config.localColor,
                     originX: 'center',

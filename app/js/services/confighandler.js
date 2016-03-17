@@ -36,7 +36,12 @@ angular.module('confighandler', [])
                 remoteColor: 'red',
                 localColor:  '#387ef5',
                 brushWidth:   5,
-                drawingRemoveTime: 6000
+                drawingRemoveTime: 6000,
+                arrows: {
+                    strokeWidth : 6,
+                    headWidth   : 40,
+                    headHeight  : 35,
+                }
             },
             socketio: {
                 url: 'https://mattij.com:9000'
@@ -69,7 +74,12 @@ angular.module('confighandler', [])
                 remoteColor: 'red',
                 localColor:  '#387ef5',
                 brushWidth:   5,
-                drawingRemoveTime: 6000
+                drawingRemoveTime: 6000,
+                arrows: {
+                    strokeWidth : 6,
+                    headWidth   : 40,
+                    headHeight  : 35,
+                }
             },
             socketio: {
                 url: 'http://192.168.0.14:9000'
