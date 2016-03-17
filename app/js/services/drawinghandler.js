@@ -80,9 +80,7 @@ angular.module('drawinghandler', [])
 
 
     var setUpCanvasEvents = function (canvas) {
-
         canvas.on('path:created', function (e) {
-            e.path.selectable = false;
             var data = angular.toJson(e.path);
 
             var dataToSend = {
@@ -94,14 +92,19 @@ angular.module('drawinghandler', [])
 
             peerFactory.sendDataToPeer(angular.toJson(dataToSend));
 
+            e.path.selectable = false;
+
             createPathRemoveTimer(canvas, e.path);
         });
 
         canvas.on('mouse:down', function (e) {
+            var pointer;
+            var points;
+
             if (canvas.isArrowModeOn === true) {
                 this.isMouseCurrentlyPressed = true;
-                var pointer = canvas.getPointer(e.e);
-                var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
+                pointer = canvas.getPointer(e.e);
+                points = [pointer.x, pointer.y, pointer.x, pointer.y];
 
                 this.currentArrow = new fabric.Line(points, {
                     strokeWidth: config.arrows.strokeWidth,
@@ -128,22 +131,32 @@ angular.module('drawinghandler', [])
                 });
 
                 canvas.add(this.currentArrow);
-                canvas.add(this.currentArrowHead)
-        }});
+                canvas.add(this.currentArrowHead);
+            }});
 
         canvas.on('mouse:move', function (e) {
+            var pointer;
+
+            var startingX;
+            var startingY;
+
+            var currentY;
+            var currentX;
+
+            var headAngle;
+
             if (this.isArrowModeOn === true) {
                 if (!this.isMouseCurrentlyPressed) return;
 
-                var pointer = canvas.getPointer(e.e);
+                pointer = canvas.getPointer(e.e);
 
-                var startingX = this.currentArrow.startingX;
-                var startingY = this.currentArrow.startingY;
+                startingX = this.currentArrow.startingX;
+                startingY = this.currentArrow.startingY;
 
-                var currentY = pointer.y;
-                var currentX = pointer.x;
+                currentY = pointer.y;
+                currentX = pointer.x;
 
-                var headAngle = Math.atan2(currentY - startingY, currentX - startingX);
+                headAngle = Math.atan2(currentY - startingY, currentX - startingX);
                 headAngle *= 180 / Math.PI;
                 headAngle += 90;
 
@@ -153,12 +166,15 @@ angular.module('drawinghandler', [])
             }
         });
 
-        canvas.on('mouse:up', function (e) {
+        canvas.on('mouse:up', function () {
+            var arrowData;
+            var dataToSend;
+
             if (this.isArrowModeOn === true) {
                 this.isMouseCurrentlyPressed = false;
-                var arrowData = { line: this.currentArrow, head: this.currentArrowHead };
+                arrowData = { line: this.currentArrow, head: this.currentArrowHead };
 
-                var dataToSend = {
+                dataToSend = {
                     type                          : 'newArrowCreated',
                     tag                           : canvas.tag,
                     data                          : arrowData,
@@ -239,7 +255,6 @@ angular.module('drawinghandler', [])
     return {
         setUpRemoteCanvas: function (canvasId, opts) {
             if (!remoteCanvas) {
-                console.log(remoteCanvas);
                 opts.isRemote = true;
                 setUpDrawingCanvas(canvasId, opts);
             }

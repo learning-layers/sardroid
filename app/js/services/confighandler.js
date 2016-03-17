@@ -40,7 +40,7 @@ angular.module('confighandler', [])
                 arrows: {
                     strokeWidth : 6,
                     headWidth   : 40,
-                    headHeight  : 35,
+                    headHeight  : 35
                 }
             },
             socketio: {
@@ -78,7 +78,7 @@ angular.module('confighandler', [])
                 arrows: {
                     strokeWidth : 6,
                     headWidth   : 40,
-                    headHeight  : 35,
+                    headHeight  : 35
                 }
             },
             socketio: {
