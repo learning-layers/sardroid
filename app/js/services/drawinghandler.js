@@ -38,6 +38,9 @@ angular.module('drawinghandler', [])
         fabricCanvas.calcOffset();
         fabricCanvas.freeDrawingBrush.width = config.brushWidth;
         fabricCanvas.freeDrawingBrush.color = config.localColor;
+        fabricCanvas.toggleArrowDrawingMode = function () {
+            this.isDrawingMode = !this.isDrawingMode;
+        };
 
         if (opts.isRemote === true) {
             remoteCanvas = fabricCanvas;
@@ -132,6 +135,10 @@ angular.module('drawinghandler', [])
         setUpLocalCanvas: function (canvasId, opts) {
             opts.isRemote = false;
             setUpDrawingCanvas(canvasId, opts);
+        },
+        toggleArrowDrawingMode: function () {
+            remoteCanvas.toggleArrowDrawingMode();
+            localCanvas.toggleArrowDrawingMode();
         },
         setUpDataCallbacks: function () {
             peerFactory.registerCallback('newPathCreated', function (data) {

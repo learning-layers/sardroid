@@ -6,7 +6,7 @@
  */
 
 angular.module('call', [])
-.controller('CallCtrl', function ($scope, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
+.controller('CallCtrl', function ($scope, $timeout, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
         drawingFactory.tearDownDrawingFactory();
@@ -142,6 +142,8 @@ angular.module('call', [])
 
     $scope.toggleArrowMode = function () {
         $scope.isArrowModeOn = !$scope.isArrowModeOn;
+        drawingFactory.toggleArrowDrawingMode();
+        $scope.$apply();
     };
 
     $scope.toggleMute = function () {
