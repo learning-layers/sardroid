@@ -82,6 +82,7 @@ angular.module('drawinghandler', [])
     var setUpCanvasEvents = function (canvas) {
 
         canvas.on('path:created', function (e) {
+            e.path.selectable = false;
             var data = angular.toJson(e.path);
 
             var dataToSend = {
@@ -179,7 +180,6 @@ angular.module('drawinghandler', [])
 
     var addNewPathToCanvas = function (canvas, pathData, remoteCanvasSize) {
         pathData = angular.fromJson(pathData);
-        console.log(pathData);
         fabric.util.enlivenObjects([pathData], function (objects) {
             objects.forEach(function (o) {
                 o.stroke = config.remoteColor;
