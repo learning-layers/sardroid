@@ -9,7 +9,7 @@
 angular.module('peerhandler', [])
 .factory('peerFactory', function (configFactory, $log, $window, $rootScope, $ionicPopup, $ionicLoading, $ionicHistory,
                                   $timeout, $state, $translate, $cordovaLocalNotification, audioFactory,
-                                  contactsFactory, modalFactory) {
+                                  contactsFactory, modalFactory, $cordovaVibration) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -44,6 +44,9 @@ angular.module('peerhandler', [])
 
     // In milliseconds, how long until the next reconnect attempt.
     var nextReconnectIn = 1000;
+
+    // Pattern for phone vibration
+    var vibrationPattern = [500, 1000, 500, 1000];
 
     // Scope for the reconnect loader pop-up
     var reconnectScope = $rootScope.$new(true);
@@ -564,6 +567,8 @@ angular.module('peerhandler', [])
                             user = { displayName: mediaConnection.peer };
                         }
 
+                        $cordovaVibration.vibrateWithPattern(vibrationPattern, 0);
+
                         notificationText = $translate.instant('NOTIFICATION_CALL',
                                                               { displayName: user.displayName,
                                                                 mediaConnection: mediaConnection.peer });
@@ -579,6 +584,7 @@ angular.module('peerhandler', [])
                              $translate.instant('CALL_INCOMING_TEMPLATE')
                         )
                         .then(function (res) {
+                            $cordovaVibration.cancelVibration();
                             audioFactory.stopSound('call');
                             cancelLocalNotification(id);
 

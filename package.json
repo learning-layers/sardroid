@@ -31,7 +31,8 @@
     {
       "locator": "https://github.com/SidneyS/cordova-plugin-nativeaudio.git",
       "id": "cordova-plugin-nativeaudio"
-    }
+    },
+    "cordova-plugin-vibration"
   ],
   "cordovaPlatforms": [
     "android"
