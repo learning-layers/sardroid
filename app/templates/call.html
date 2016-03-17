@@ -1,13 +1,14 @@
-<ion-view view-title="{{'CALL_HEADER' | translate:user}}" hide-nav-bar="true" hide-back-button="true" ng-controller="CallCtrl">
+<ion-view hide-nav-bar="true" hide-back-button="true" ng-controller="CallCtrl">
     <ion-content scroll="false">
         <div class="content-wrapper" id="local-wrapper" ng-class="determineFullscreenCanvas()">
-            <video id="big-video"  ng-attr-autoplay="{{ determineIfBigVideoIsAutoplay() || undefined}}" muted="muted" ng-src="{{bigStreamSrc}}"></video>
+            <video id="big-video"  ng-attr-autoplay="{{true || undefined}}" muted="muted" ng-src="{{bigStreamSrc}}"></video>
             <video id="small-video" ng-attr-autoplay="{{ determineIfSmallVideoIsAutoplay() || undefined}}" muted="muted" ng-src="{{smallStreamSrc}}"></video>
-            <audio id="call-audio" ng-src="{{remoteAudioSrc}}" autoplay></audio>
+            <audio id="call-audio" ng-src="{{::remoteAudioSrc}}" autoplay></audio>
             <div class="controls">
-                <i class="icon assertive ion-trash-a control-button remove-button" ng-click="clearActiveCanvas()"></i>
+                <i class="icon control-button arrow-button" ng-class="determineArrowSwitchClass()" ng-click="toggleArrowMode()"></i>
                 <i class="icon assertive control-button mute-button" ng-class="determineMuteButtonClass()" ng-click="toggleMute()"></i>
-                <i class="icon assertive control-button pause-button" ng-class="determinePauseButtonClass()" ng-click="togglePause()"></i>
+                <i class="icon control-button pause-button" ng-class="determinePauseButtonClass()" ng-click="togglePause()"></i>
+                <i class="icon ion-trash-a control-button remove-button" ng-click="clearActiveCanvas()"></i>
                 <i class="icon ion-ios-telephone control-button leave-button" ng-click="leave()"></i>
             </div>
             <div class="canvas-wrapper local-canvas-wrapper">

@@ -64,7 +64,17 @@
         padding-top: 6px;
     }
 
+    .arrow-button {
+        font-size: 35px;
+        padding-top: 8px;
+
+        &.ion-edit {
+            font-size: 30px;
+        }
+    }
+
     .remove-button {
+        background-color: #ffc900;
         font-size: 35px;
         padding-top: 8px;
     }

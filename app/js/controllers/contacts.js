@@ -6,8 +6,9 @@
  */
 
 angular.module('contacts', [])
-.controller('ContactsCtrl', function ($scope, $localStorage, $ionicModal, contactsFactory, modalFactory,  peerFactory,
-                                     socketFactory, configFactory, $state, $ionicActionSheet, $translate, audioFactory) {
+.controller('ContactsCtrl', function ($scope, $localStorage, $ionicModal, contactsFactory,
+                                      modalFactory,  peerFactory, socketFactory, configFactory,
+                                      $state, $ionicActionSheet, $translate, audioFactory) {
     var newContactModal = null;
 
     var translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {

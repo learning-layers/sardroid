@@ -6,7 +6,7 @@
  */
 
 angular.module('call', [])
-.controller('CallCtrl', function ($scope, $document, $sce, $stateParams, peerFactory, drawingFactory) {
+.controller('CallCtrl', function ($scope, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
         drawingFactory.tearDownDrawingFactory();
@@ -81,7 +81,7 @@ angular.module('call', [])
     });
 
     peerFactory.registerCallback('toggleRemoteVideo', function () {
-        window.isRemoteVideoPaused = !window.isRemoteVideoPaused
+        $window.isRemoteVideoPaused = !$window.isRemoteVideoPaused;
         toggleRemoteVideoPlayingState();
     });
 
@@ -90,9 +90,10 @@ angular.module('call', [])
     // I have no idea what is so special about this variable
     // but we have to declare it as a global so angular doesn't
     // override it
-    window.isRemoteVideoPaused = false;
-    $scope.isOwnVideoPaused    = false;
-    $scope.isOwnStreamMuted    = false;
+    $window.isRemoteVideoPaused = false;
+    $scope.isOwnVideoPaused     = false;
+    $scope.isOwnStreamMuted     = false;
+    $scope.isArrowModeOn        = false;
 
     $scope.currentRemoteVideoLocation = '#big-video';
     $scope.currentLocalVideoLocation  = '#small-video';
@@ -102,6 +103,14 @@ angular.module('call', [])
             return 'ion-play';
         } else if ($scope.isOwnVideoPaused === false) {
             return 'ion-pause';
+        }
+    };
+
+    $scope.determineArrowSwitchClass = function () {
+        if ($scope.isArrowModeOn === true) {
+            return 'ion-edit';
+        } else if ($scope.isArrowModeOn === false) {
+            return 'ion-arrow-swap';
         }
     };
 
@@ -115,8 +124,7 @@ angular.module('call', [])
 
     $scope.determineIfBigVideoIsAutoplay = function () {
         if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#big-video')
-           || (window.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#big-video')) {
-
+           || ($window.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#big-video')) {
             return false;
         }
 
@@ -125,11 +133,15 @@ angular.module('call', [])
 
     $scope.determineIfSmallVideoIsAutoplay = function () {
         if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#small-video')
-           || (window.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#small-video')) {
+           || ($window.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#small-video')) {
             return false;
         }
 
         return true;
+    };
+
+    $scope.toggleArrowMode = function () {
+        $scope.isArrowModeOn = !$scope.isArrowModeOn;
     };
 
     $scope.toggleMute = function () {
