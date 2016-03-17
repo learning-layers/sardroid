@@ -107,7 +107,22 @@ angular.module('drawinghandler', [])
                     originY: 'center'
                 });
 
+                this.currentArrow.startingX = pointer.x;
+                this.currentArrow.startingY = pointer.y;
+
+                this.currentArrowHead = new fabric.Triangle({
+                    width: 50,
+                    height: 50,
+                    fill: config.localColor,
+                    stroke: config.localColor,
+                    originX: 'center',
+                    originY: 'center',
+                    top: pointer.y,
+                    left: pointer.x
+                });
+
                 canvas.add(this.currentArrow);
+                canvas.add(this.currentArrowHead)
         }});
 
         canvas.on('mouse:move', function (e) {
@@ -116,7 +131,18 @@ angular.module('drawinghandler', [])
 
                 var pointer = canvas.getPointer(e.e);
 
+                var startingX = this.currentArrow.startingX;
+                var startingY = this.currentArrow.startingY;
+
+                var currentY = pointer.y;
+                var currentX = pointer.x;
+
+                var headAngle = Math.atan2(currentY - startingY, currentX - startingX);
+                headAngle *= 180 / Math.PI;
+                headAngle += 90;
+
                 this.currentArrow.set({ x2: pointer.x, y2: pointer.y });
+                this.currentArrowHead.set({ left: pointer.x, top: pointer.y, angle: headAngle });
                 canvas.renderAll();
             }
         });
