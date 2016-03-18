@@ -1,7 +1,7 @@
 <ion-view hide-nav-bar="true" hide-back-button="true" ng-controller="CallCtrl">
     <ion-content scroll="false">
         <div class="content-wrapper" id="local-wrapper" ng-class="determineFullscreenCanvas()">
-            <video id="big-video"  ng-attr-autoplay="{{true || undefined}}" muted="muted" ng-src="{{bigStreamSrc}}"></video>
+            <video id="big-video"  ng-attr-autoplay="{{ determineIfBigVideoIsAutoplay() || undefined}}" muted="muted" ng-src="{{bigStreamSrc}}"></video>
             <video id="small-video" ng-attr-autoplay="{{ determineIfSmallVideoIsAutoplay() || undefined}}" muted="muted" ng-src="{{smallStreamSrc}}"></video>
             <audio id="call-audio" ng-src="{{::remoteAudioSrc}}" autoplay></audio>
             <div class="controls">
