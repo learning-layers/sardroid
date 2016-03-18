@@ -15,16 +15,19 @@ angular.module('audiohandler', [])
     return {
         playSound: function (sound) {
             if ($window.cordova) {
+                console.log('playing sound: ' + sound);
                 $cordovaNativeAudio.play(sound);
             }
         },
         loopSound: function (sound) {
             if ($window.cordova) {
+                console.log('looping sound: ' + sound);
                 $cordovaNativeAudio.loop(sound);
             }
         },
         stopSound: function (sound) {
             if ($window.cordova) {
+                console.log('stopping sound: ' + sound);
                 $cordovaNativeAudio.stop(sound);
             }
         },

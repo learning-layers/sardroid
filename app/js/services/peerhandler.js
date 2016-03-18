@@ -155,7 +155,7 @@ angular.module('peerhandler', [])
     };
 
     var showCallLoader = function () {
-        audioFactory.loopSound('dial');
+        audioFactory.playSound('dial');
         $ionicLoading.show({
             templateUrl: 'templates/modals/call-loader.html',
             scope: callUserScope

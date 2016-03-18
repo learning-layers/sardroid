@@ -110,10 +110,8 @@ angular.module('contacts', [])
             buttonClicked: function (index) {
                 switch (index) {
                 case 0:
-                    audioFactory.playSound('.dial');
                     peerFactory.callPeer(selectedUser)
                     .then(function (user) {
-                        audioFactory.stopSound('.dial');
                         $state.go('call', { user: user });
                     })
                     .catch(function () {
