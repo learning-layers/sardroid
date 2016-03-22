@@ -6,7 +6,9 @@
  */
 
 angular.module('call', [])
-.controller('CallCtrl', function ($scope, recordingFactory, fileFactory,  $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
+.controller('CallCtrl', function ($scope, recordingFactory, fileFactory, settingsFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
+    var saveCalls = settingsFactory.getSetting('saveCalls');
+
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
         drawingFactory.tearDownDrawingFactory();
@@ -14,28 +16,32 @@ angular.module('call', [])
         peerFactory.clearCallback('toggleRemoteVideo');
         peerFactory.clearCallback('toggleVideoMute');
 
-        recordingFactory.stopRecording()
-        .then(function (results) {
-            var fileNamePrefix = 'call-with-' + $stateParams.user.displayName + '-' + Date.now();
-            return Promise.all([
-                fileFactory.writeToFile({
-                    fileName: fileNamePrefix + '.webm',
-                    data: results.videoBblob
-                }),
-                fileFactory.writeToFile({
-                    fileName: fileNamePrefix + '-local.wav',
-                    data: results.audioBlob
-                })
-            ]);
-        })
-        .then(function (results) {
-            recordingFactory.clearRecordedData();
+        if (saveCalls) {
+            recordingFactory.stopRecording()
+            .then(function (results) {
+                var fileNamePrefix = 'call-with-' + $stateParams.user.displayName + '-' + Date.now();
+                return Promise.all([
+                    fileFactory.writeToFile({
+                        fileName: fileNamePrefix + '.webm',
+                        data: results.videoBblob
+                    }),
+                    fileFactory.writeToFile({
+                        fileName: fileNamePrefix + '-local.wav',
+                        data: results.audioBlob
+                    })
+                ]);
+            })
+            .then(function (results) {
+                recordingFactory.clearRecordedData();
+                peerFactory.endCurrentCall();
+            })
+            .catch(function (error) {
+                recordingFactory.clearRecordedData();
+                peerFactory.endCurrentCall();
+            })
+        } else {
             peerFactory.endCurrentCall();
-        })
-        .catch(function (error) {
-            recordingFactory.clearRecordedData();
-            peerFactory.endCurrentCall();
-        })
+        }
     };
 
     var toggleVideoPlayingState = function (videoSelector) {
@@ -72,8 +78,10 @@ angular.module('call', [])
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc());
 
-    recordingFactory.initializeRecordingVideo(document.getElementById('local-wrapper'));
-    recordingFactory.initializeRecordingAudio(peerFactory.getLocalStream());
+    if (saveCalls) {
+        recordingFactory.initializeRecordingVideo(document.getElementById('local-wrapper'));
+        recordingFactory.initializeRecordingAudio(peerFactory.getLocalStream());
+    }
 
     draggableVideo.on('staticClick', function () {
         // TODO: Refactor this into something more elegant
