@@ -1,5 +1,7 @@
 {
     "ABOUT": "About SoAR",
+    "SOAR_PREFERENCES": "SoAR preferences",
+    "PREFERENCES_SAVE_CALLS": "Save video calls for debugging?",
     "ACTIONS": "Actions",
     "ADD": "Add",
     "ADD_CONTACT": "Add new contact",

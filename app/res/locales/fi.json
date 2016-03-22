@@ -1,5 +1,7 @@
 {
     "ABOUT": "Tietoja SoAR:sta",
+    "SOAR_PREFERENCES": "SoAR-asetukset",
+    "PREFERENCES_SAVE_CALLS": "Tallenna puhelut testausta varten?",
     "ACTIONS": "Toiminnot",
     "ADD": "Lisää",
     "ADD_CONTACT": "Lisää uusi kontakti",

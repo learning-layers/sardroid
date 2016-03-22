@@ -5,7 +5,8 @@
  */
 
 angular.module('settings', [])
-.controller('SettingsCtrl', function ($scope, $window, $ionicHistory, $ionicLoading, $translate,  contactsFactory) {
+.controller('SettingsCtrl', function ($scope, $window, $ionicHistory, $ionicLoading, $translate, settingsFactory, contactsFactory) {
+    $scope.settings = settingsFactory.getAllSettings();
     $scope.appVersion = $window.env.version;
 
     $scope.updateContactsList = function () {
@@ -16,6 +17,11 @@ angular.module('settings', [])
                 $ionicLoading.hide();
                 $ionicHistory.goBack();
             });
+    };
+
+    $scope.toggleVideoSave = function (videoSaveState) {
+        console.log(videoSaveState);
+        settingsFactory.setSettings({ saveCalls: videoSaveState });
     };
 });
 

@@ -11,10 +11,12 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
                             'apihandler', 'modalhandler', 'intlpnIonic', 'recordinghandler'])
 
-.run(function ($ionicPlatform, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window, $cordovaGoogleAnalytics) {
+.run(function ($ionicPlatform, settingsFactory,  $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window, $cordovaGoogleAnalytics) {
     $ionicPlatform.ready(function () {
 
         fileFactory.createDataDirIfNotExist();
+        settingsFactory.setInitialSettingsIfApplicable();
+
         // Attempt to determine current locale from ipinfo for the number picker!
         $http.get('http://ipinfo.io')
         .then(function (results) {

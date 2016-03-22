@@ -45,6 +45,9 @@ angular.module('confighandler', [])
             },
             socketio: {
                 url: 'https://mattij.com:9000'
+            },
+            initialUserSettings: {
+                saveCalls: true
             }
         },
         development: {
@@ -83,6 +86,9 @@ angular.module('confighandler', [])
             },
             socketio: {
                 url: 'http://192.168.0.14:9000'
+            },
+            initialUserSettings: {
+                saveCalls: true
             }
         }
     };
