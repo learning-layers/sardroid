@@ -9,9 +9,6 @@
 angular.module('logout', [])
 .controller('LogoutCtrl', function ($scope, $log, $state, $localStorage,  peerFactory, socketFactory, apiFactory) {
     $scope.logout = function () {
-        var number             = $localStorage.user.phoneNumber;
-        var contactsBeenSynced = $localStorage.contactsBeenSynced;
-
         apiFactory.auth.logout()
         .then(function (results) {
             $log.log(results);
@@ -22,15 +19,8 @@ angular.module('logout', [])
 
         apiFactory.deleteApiToken();
 
-
-        // Remove everything about user except user number so it doesn't have to be typed in every time
-        $localStorage.$reset({
-            user: {
-                phoneNumber: number
-            },
-            contactsBeenSynced: contactsBeenSynced,
-            hasBeenInRegister:  true
-        });
+        delete $localStorage.user;
+        delete $localStorage.token;
 
         if (peerFactory.isConnected()) {
             peerFactory.disconnectFromPeerJS();
