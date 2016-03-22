@@ -16,18 +16,17 @@ angular.module('call', [])
 
         recordingFactory.stopRecording()
         .then(function (results) {
-            console.log(results);
+            var fileNamePrefix = 'call-with-' + $stateParams.user.displayName + '-' + Date.now();
             return fileFactory.writeToFile({
-                fileName: 'call-with' + $stateParams.user.displayName + '-' + Date.now() + '.webm',
-                data: results.blob});
+                fileName: fileNamePrefix + '.webm',
+                data: results.blob
+            });
         })
         .then(function (results) {
-            console.log(results);
             recordingFactory.clearRecordedData();
             peerFactory.endCurrentCall();
         })
         .catch(function (error) {
-            console.log(error);
             recordingFactory.clearRecordedData();
             peerFactory.endCurrentCall();
         })

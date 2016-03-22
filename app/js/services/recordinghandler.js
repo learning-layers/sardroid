@@ -13,7 +13,8 @@ angular.module('recordinghandler', [])
             if (!recorder) {
                 recorder = RecordRTC(elementToRecord, {
                     type: 'canvas',
-                    bitsPerSecond: 32000
+                    bitsPerSecond: 32000,
+                    frameInterval: 1000
                 });
                 recorder.startRecording();
             }
