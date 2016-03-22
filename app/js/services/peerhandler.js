@@ -556,7 +556,7 @@ angular.module('peerhandler', [])
 
                     if (isInCallCurrently === false) {
                         isInCallCurrently = true;
-                        audioFactory.loopSound('call');
+                        audioFactory.playSound('call');
 
                         user = contactsFactory.getContactByNumber(mediaConnection.peer);
 
