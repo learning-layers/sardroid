@@ -17,7 +17,9 @@ angular.module('call', [])
         recordingFactory.stopRecording()
         .then(function (results) {
             console.log(results);
-            return fileFactory.writeToFile({fileName: 'test.webm', data: results.blob});
+            return fileFactory.writeToFile({
+                fileName: 'call-with' + $stateParams.user.displayName + '-' + Date.now() + '.webm',
+                data: results.blob});
         })
         .then(function (results) {
             console.log(results);
