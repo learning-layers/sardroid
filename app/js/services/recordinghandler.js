@@ -6,32 +6,66 @@
 
 angular.module('recordinghandler', [])
 .factory('recordingFactory', function () {
-    var recorder = null;
+    var videoRecorder = null;
+    var audioRecorder = null;
 
     return {
-        startRecording: function (elementToRecord) {
-            if (!recorder) {
-                recorder = RecordRTC(elementToRecord, {
+        initializeRecordingVideo: function (elementToRecord) {
+            if (!videoRecorder) {
+                videoRecorder = RecordRTC(elementToRecord, {
                     type: 'canvas',
                     bitsPerSecond: 32000,
                     frameInterval: 1000
                 });
-                recorder.startRecording();
             }
+
+        },
+        initializeRecordingAudio: function (audioStream) {
+            if (!audioRecorder) {
+                audioRecorder = RecordRTC(audioStream, {
+                    type: 'audio',
+                    numberOfAudioChannels: 1
+                });
+            }
+        },
+        startRecording: function () {
+            return new Promise(function (resolve, reject) {
+                if (videoRecorder && audioRecorder) {
+                    videoRecorder.initRecorder(function () {
+                        audioRecorder.initRecorder(function () {
+                            videoRecorder.startRecording();
+                            audioRecorder.startRecording();
+                            resolve();
+                        });
+                    });
+                } else {
+                    reject();
+                }
+            });
         },
         stopRecording: function () {
             return new Promise(function (resolve, reject) {
-                recorder.stopRecording(function (videoUrl) {
-                    var blob = recorder.getBlob();
+                videoRecorder.stopRecording(function (videoUrl) {
+                    audioRecorder.stopRecording(function (audioUrl) {
+                        var videoBlob = videoRecorder.getBlob();
+                        var audioBlob = audioRecorder.getBlob();
 
-                    resolve({ videoUrl: recorder.toURL(), blob: blob });
+                        resolve({ videoUrl: videoRecorder.toURL(), videoBlob: videoBlob,
+                                audioUrl: audioRecorder.toURL(), audioBlob: audioBlob });
+                    })
+
                 });
             });
         },
         clearRecordedData: function () {
-            if (recorder) {
-                recorder.clearRecordedData();
-                recorder = null;
+            if (videoRecorder) {
+                videoRecorder.clearRecordedData();
+                videoRecorder = null;
+            }
+
+            if (audioRecorder) {
+                audioRecorder.clearRecordedData();
+                audioRecorder = null;
             }
         }
     };

@@ -17,10 +17,16 @@ angular.module('call', [])
         recordingFactory.stopRecording()
         .then(function (results) {
             var fileNamePrefix = 'call-with-' + $stateParams.user.displayName + '-' + Date.now();
-            return fileFactory.writeToFile({
-                fileName: fileNamePrefix + '.webm',
-                data: results.blob
-            });
+            return Promise.all([
+                fileFactory.writeToFile({
+                    fileName: fileNamePrefix + '.webm',
+                    data: results.videoBblob
+                }),
+                fileFactory.writeToFile({
+                    fileName: fileNamePrefix + '.wav',
+                    data: results.audioBlob
+                })
+            ]);
         })
         .then(function (results) {
             recordingFactory.clearRecordedData();
@@ -65,6 +71,9 @@ angular.module('call', [])
 
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc());
+
+    recordingFactory.initializeRecordingVideo(document.getElementById('local-wrapper'));
+    recordingFactory.initializeRecordingAudio(peerFactory.getLocalStream());
 
     draggableVideo.on('staticClick', function () {
         // TODO: Refactor this into something more elegant
@@ -191,7 +200,7 @@ angular.module('call', [])
 
     $scope.leave = leave;
 
-    recordingFactory.startRecording(document.getElementById('local-wrapper'));
+    recordingFactory.startRecording();
 
     setTimeout(function() {
 

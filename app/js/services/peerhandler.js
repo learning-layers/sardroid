@@ -427,6 +427,10 @@ angular.module('peerhandler', [])
             return localVideoSource;
         },
 
+        getLocalStream: function () {
+            return localStream;
+        },
+
         getRemoteStream: function () {
             return remoteStream;
         },
