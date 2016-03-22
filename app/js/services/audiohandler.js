@@ -8,8 +8,8 @@ angular.module('audiohandler', [])
 .factory('audioFactory', function ($ionicPlatform, $window, $cordovaNativeAudio) {
     $ionicPlatform.ready(function () {
         if ($window.cordova) {
-            $cordovaNativeAudio.preloadComplex('call', 'res/sounds/dial.wav', 1, 1);
-            $cordovaNativeAudio.preloadComplex('dial', 'res/sounds/incoming.mp3', 1, 1);
+            $cordovaNativeAudio.preloadComplex('dial', 'res/sounds/dial.wav', 1, 1);
+            $cordovaNativeAudio.preloadComplex('call', 'res/sounds/incoming.mp3', 1, 1);
         }
     });
     return {
