@@ -8,6 +8,7 @@
 angular.module('call', [])
 .controller('CallCtrl', function ($scope, recordingFactory, fileFactory, settingsFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
     var saveCalls = settingsFactory.getSetting('saveCalls');
+    console.log(saveCalls);
 
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
@@ -22,12 +23,16 @@ angular.module('call', [])
                 var fileNamePrefix = 'call-with-' + $stateParams.user.displayName + '-' + Date.now();
                 return Promise.all([
                     fileFactory.writeToFile({
-                        fileName: fileNamePrefix + '.webm',
-                        data: results.videoBblob
+                        fileName : fileNamePrefix + '.webm',
+                        data     : results.videoBblob
                     }),
                     fileFactory.writeToFile({
-                        fileName: fileNamePrefix + '-local.wav',
-                        data: results.audioBlob
+                        fileName : fileNamePrefix + '-local.wav',
+                        data     : results.localAudioBlob
+                    }),
+                    fileFactory.writeToFile({
+                        fileName : fileNamePrefix + '-remote.wav',
+                        data     : results.remoteAudioBlob
                     })
                 ]);
             })
@@ -80,7 +85,8 @@ angular.module('call', [])
 
     if (saveCalls) {
         recordingFactory.initializeRecordingVideo(document.getElementById('local-wrapper'));
-        recordingFactory.initializeRecordingAudio(peerFactory.getLocalStream());
+        recordingFactory.initializeRecordingAudio({ source: 'local',  audioStream: peerFactory.getLocalStream() });
+        recordingFactory.initializeRecordingAudio({ source: 'remote', audioStream: peerFactory.getRemoteStream() });
     }
 
     draggableVideo.on('staticClick', function () {
@@ -208,12 +214,9 @@ angular.module('call', [])
 
     $scope.leave = leave;
 
-    recordingFactory.startRecording();
-
-    setTimeout(function() {
-
-    }, 10000);
-
+    if (saveCalls) {
+        recordingFactory.startRecording();
+    }
 
     $scope.$on('$ionicView.leave', function () {
         leave();

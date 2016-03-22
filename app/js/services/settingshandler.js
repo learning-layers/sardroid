@@ -7,7 +7,6 @@
 
 angular.module('settings')
 .factory('settingsFactory', function ($localStorage, configFactory) {
-
     return {
         setInitialSettingsIfApplicable: function () {
             if ($localStorage.settings) return;
@@ -16,12 +15,11 @@ angular.module('settings')
         },
 
         setSettings: function (settingOpt) {
-            if (!$localStorage.settings) $localStorage.settings = {};
-
             var keys   = _.keys(settingOpt);
             var values = _.values(settingOpt);
+            var i = 0;
 
-            for (var i = 0; i < values.length; i++) {
+            for (i = 0; i < values.length; i++) {
                 $localStorage.settings[keys[i]] = values[i];
             }
         },

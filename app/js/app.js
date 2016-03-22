@@ -13,7 +13,6 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
 
 .run(function ($ionicPlatform, settingsFactory,  $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window, $cordovaGoogleAnalytics) {
     $ionicPlatform.ready(function () {
-
         fileFactory.createDataDirIfNotExist();
         settingsFactory.setInitialSettingsIfApplicable();
 

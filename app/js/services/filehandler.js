@@ -26,7 +26,7 @@ angular.module('filehandler', [])
                         reject(error);
                     });
                 } else {
-                    resolve('Dummy resolve')
+                    resolve('Dummy resolve');
                 }
             });
         }

@@ -9,6 +9,7 @@
     },
     "globals": {
         "ContactField": true,
+        "RecordRTC": true,
         "Peer": true,
         "Draggabilly": true,
         "Promise": true,

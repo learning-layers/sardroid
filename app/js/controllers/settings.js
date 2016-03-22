@@ -20,7 +20,6 @@ angular.module('settings', [])
     };
 
     $scope.toggleVideoSave = function (videoSaveState) {
-        console.log(videoSaveState);
         settingsFactory.setSettings({ saveCalls: videoSaveState });
     };
 });

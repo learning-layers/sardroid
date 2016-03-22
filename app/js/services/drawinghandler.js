@@ -15,10 +15,6 @@ angular.module('drawinghandler', [])
     // Configuration object
     var config = configFactory.getValue('drawings');
 
-    // Array that will eventually contain a bunch of angular $timeouts
-    // We need to keep track of em so we can easily cancel them all if need be
-    var pathRemoveTimers = [];
-
     var canvasSize = {
         width:  $window.innerWidth *  config.size.width,
         height: $window.innerHeight * config.size.height
@@ -59,26 +55,6 @@ angular.module('drawinghandler', [])
         return fabricCanvas;
     };
 
-    var removePathFromCanvas = function (canvas, path) {
-        canvas.remove(path);
-        canvas.renderAll(false);
-    };
-
-    var createPathRemoveTimer = function (canvas, path) {
-        var timer = $timeout(function () {
-            removePathFromCanvas(canvas, path);
-        }, config.drawingRemoveTime);
-
-        pathRemoveTimers.push(timer);
-    };
-
-    var cancelPathRemoveTimers = function () {
-        pathRemoveTimers.forEach(function (t) {
-            $timeout.cancel(t);
-        });
-    };
-
-
     var setUpCanvasEvents = function (canvas) {
         canvas.on('path:created', function (e) {
             var data = angular.toJson(e.path);
@@ -94,7 +70,6 @@ angular.module('drawinghandler', [])
 
             e.path.selectable = false;
 
-            //createPathRemoveTimer(canvas, e.path);
         });
 
         canvas.on('mouse:down', function (e) {
@@ -210,7 +185,6 @@ angular.module('drawinghandler', [])
 
                 canvas.add(o);
                 canvas.renderAll(true);
-                //createPathRemoveTimer(canvas, o);
             });
         });
     };
@@ -287,7 +261,6 @@ angular.module('drawinghandler', [])
             clearCanvas(remoteCanvas);
         },
         tearDownDrawingFactory: function () {
-            cancelPathRemoveTimers();
             peerFactory.clearCallback('newPathCreated');
             peerFactory.clearCallback('newArrowCreated');
         }
