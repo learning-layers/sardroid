@@ -23,7 +23,7 @@ angular.module('call', [])
                     data: results.videoBblob
                 }),
                 fileFactory.writeToFile({
-                    fileName: fileNamePrefix + '.wav',
+                    fileName: fileNamePrefix + '-local.wav',
                     data: results.audioBlob
                 })
             ]);
