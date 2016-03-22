@@ -1,4 +1,4 @@
-<ion-view hide-nav-bar="true" hide-back-button="true" ng-controller="CallCtrl">
+<ion-view hide-nav-bar="true" hide-back-button="true">
     <ion-content scroll="false">
         <div class="content-wrapper" id="local-wrapper" ng-class="determineFullscreenCanvas()">
             <video id="big-video"  ng-attr-autoplay="{{ determineIfBigVideoIsAutoplay() || undefined}}" muted="muted" ng-src="{{bigStreamSrc}}"></video>

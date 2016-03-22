@@ -9,7 +9,7 @@ angular.module('sardroid', ['ionic', 'ngStorage', 'ngCordova', 'login',
                             'settings', 'quit', 'verify', 'register', 'pascalprecht.translate',
                             'logout', 'contacts', 'userprofile', 'call', 'peerhandler',
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
-                            'apihandler', 'modalhandler', 'intlpnIonic'])
+                            'apihandler', 'modalhandler', 'intlpnIonic', 'recordinghandler'])
 
 .run(function ($ionicPlatform, $http, $rootScope, $ionicSideMenuDelegate, $window, $cordovaGoogleAnalytics) {
     $ionicPlatform.ready(function () {

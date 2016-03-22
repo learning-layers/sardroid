@@ -6,7 +6,7 @@
  */
 
 angular.module('call', [])
-.controller('CallCtrl', function ($scope, $timeout, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
+.controller('CallCtrl', function ($scope, recordingFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
         drawingFactory.tearDownDrawingFactory();
@@ -174,6 +174,19 @@ angular.module('call', [])
     $scope.remoteAudioSrc = remoteStreamSrc;
 
     $scope.leave = leave;
+
+    recordingFactory.startRecording(document.getElementById('local-wrapper'));
+
+    setTimeout(function() {
+
+        recordingFactory.stopRecording()
+            .then(function (results) {
+                console.log(results);
+                window.open($sce.trustAsResourceUrl(results.videoUrl));
+            });
+    }, 10000);
+
+
     $scope.$on('$ionicView.leave', function () {
         leave();
     });
