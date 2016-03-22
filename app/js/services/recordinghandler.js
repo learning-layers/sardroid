@@ -5,14 +5,15 @@
  */
 
 angular.module('recordinghandler', [])
-.factory('recordingFactory', function ($ionicPlatform, $sce) {
+.factory('recordingFactory', function () {
     var recorder = null;
 
     return {
         startRecording: function (elementToRecord) {
             if (!recorder) {
                 recorder = RecordRTC(elementToRecord, {
-                    type: 'canvas'
+                    type: 'canvas',
+                    bitsPerSecond: 64000
                 });
                 recorder.startRecording();
             }
@@ -27,8 +28,10 @@ angular.module('recordinghandler', [])
             });
         },
         clearRecordedData: function () {
-            recorder.clearRecordedData();
-            recorder = null;
+            if (recorder) {
+                recorder.clearRecordedData();
+                recorder = null;
+            }
         }
     };
 });

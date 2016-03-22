@@ -6,14 +6,29 @@
  */
 
 angular.module('call', [])
-.controller('CallCtrl', function ($scope, recordingFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
+.controller('CallCtrl', function ($scope, recordingFactory, fileFactory,  $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
         drawingFactory.tearDownDrawingFactory();
         peerFactory.clearCallback('otherPeerLeft');
         peerFactory.clearCallback('toggleRemoteVideo');
         peerFactory.clearCallback('toggleVideoMute');
-        peerFactory.endCurrentCall();
+
+        recordingFactory.stopRecording()
+        .then(function (results) {
+            console.log(results);
+            return fileFactory.writeToFile({fileName: 'test.webm', data: results.blob});
+        })
+        .then(function (results) {
+            console.log(results);
+            recordingFactory.clearRecordedData();
+            peerFactory.endCurrentCall();
+        })
+        .catch(function (error) {
+            console.log(error);
+            recordingFactory.clearRecordedData();
+            peerFactory.endCurrentCall();
+        })
     };
 
     var toggleVideoPlayingState = function (videoSelector) {
@@ -179,11 +194,6 @@ angular.module('call', [])
 
     setTimeout(function() {
 
-        recordingFactory.stopRecording()
-            .then(function (results) {
-                console.log(results);
-                window.open($sce.trustAsResourceUrl(results.videoUrl));
-            });
     }, 10000);
 
 
