@@ -3,6 +3,7 @@
     "ACTIONS": "Toiminnot",
     "ADD": "Lisää",
     "ADD_CONTACT": "Lisää uusi kontakti",
+    "RECORDING_PREFERENCES": "Nauhoitusasetukset",
     "CALL_HEADER": "Puhelu {{displayName}}:n kanssa",
     "CALL_INCOMING_TEMPLATE": "Puhelu tulossa. Vastaa?",
     "CALL_INCOMING_TITLE":" Puhelu {{displayName}}:lta",
