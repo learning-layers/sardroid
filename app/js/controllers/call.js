@@ -6,7 +6,7 @@
  */
 
 angular.module('call', [])
-.controller('CallCtrl', function ($scope, recordingFactory, fileFactory, settingsFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
+.controller('CallCtrl', function ($scope, recordingFactory, fileFactory, $ionicLoading, settingsFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
     var saveCalls = settingsFactory.getSetting('saveCalls');
 
     var leave = function () {
@@ -17,11 +17,11 @@ angular.module('call', [])
         peerFactory.clearCallback('toggleVideoMute');
 
         if (saveCalls) {
+            $ionicLoading.show({ templateUrl: 'templates/modals/save-video-loader.html' });
             recordingFactory.stopRecording()
             .then(function (results) {
                 var name = _.kebabCase($stateParams.user.displayName);
                 var fileNamePrefix = 'call-with-' + name + '-' + Date.now();
-
                 return Promise.all([
                     fileFactory.writeToFile({
                         fileName : fileNamePrefix + '.webm',
@@ -38,10 +38,12 @@ angular.module('call', [])
                 ]);
             })
             .then(function (results) {
+                $ionicLoading.hide();
                 recordingFactory.clearRecordedData();
                 peerFactory.endCurrentCall();
             })
             .catch(function (error) {
+                $ionicLoading.hide();
                 recordingFactory.clearRecordedData();
                 peerFactory.endCurrentCall();
             })
