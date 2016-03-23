@@ -47,7 +47,7 @@ angular.module('confighandler', [])
                 url: 'https://mattij.com:9000'
             },
             initialUserSettings: {
-                saveCalls: true
+                saveCalls: false
             }
         },
         development: {
@@ -88,7 +88,7 @@ angular.module('confighandler', [])
                 url: 'http://10.100.28.191:9000'
             },
             initialUserSettings: {
-                saveCalls: true
+                saveCalls: false
             }
         }
     };
