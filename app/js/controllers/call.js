@@ -8,7 +8,6 @@
 angular.module('call', [])
 .controller('CallCtrl', function ($scope, recordingFactory, fileFactory, settingsFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
     var saveCalls = settingsFactory.getSetting('saveCalls');
-    console.log(saveCalls);
 
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
@@ -20,7 +19,8 @@ angular.module('call', [])
         if (saveCalls) {
             recordingFactory.stopRecording()
             .then(function (results) {
-                var fileNamePrefix = 'call-with-' + $stateParams.user.displayName + '-' + Date.now();
+                var name = _.kebabCase($stateParams.user.displayName);
+                var fileNamePrefix = 'call-with-' + name + '-' + Date.now();
                 return Promise.all([
                     fileFactory.writeToFile({
                         fileName : fileNamePrefix + '.webm',
