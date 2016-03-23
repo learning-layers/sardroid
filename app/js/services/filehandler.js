@@ -11,10 +11,29 @@ angular.module('filehandler', [])
     return {
         createDataDirIfNotExist: function () {
             if ($window.cordova) {
+                console.log('creating datadir!!!!!');
                 $cordovaFile.createDir(cordova.file.externalRootDirectory, dataDir, false);
             }
         },
+        emptyCallDataDir: function () {
+            var self = this;
+            return new Promise(function (resolve, reject) {
+                console.log(cordova.file.externalRootDirectory + dataDir);
 
+                if ($window.cordova) {
+                    $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, dataDir)
+                        .then(function () {
+                            self.createDataDirIfNotExist();
+                            resolve();
+                        })
+                        .catch(function (err) {
+                            reject(err);
+                        });
+                } else {
+                    resolve('Dummy resolve');
+                }
+            });
+        },
         writeToFile: function (opts) {
             return new Promise(function (resolve, reject) {
                 if ($window.cordova) {
