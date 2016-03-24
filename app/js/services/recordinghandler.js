@@ -39,6 +39,7 @@ angular.module('recordinghandler', [])
             if (!videoRecorder) {
                 videoRecorder = RecordRTC(elementToRecord, {
                     type: 'canvas',
+                    showMousePointer: false,
                     bitsPerSecond: 32000,
                     frameInterval: frameInterval,
                     disableLogs: ($window.env.environment === 'production')
