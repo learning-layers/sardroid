@@ -11,7 +11,6 @@ angular.module('filehandler', [])
     return {
         createDataDirIfNotExist: function () {
             if ($window.cordova) {
-                console.log('creating datadir!!!!!');
                 $cordovaFile.createDir(cordova.file.externalRootDirectory, dataDir, false);
             }
         },

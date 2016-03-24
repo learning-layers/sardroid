@@ -22,7 +22,6 @@ angular.module('call', [])
             .then(function (results) {
                 var name = _.kebabCase($stateParams.user.displayName);
                 var fileNamePrefix = 'call-with-' + name + '-' + Date.now();
-                console.log(results.remoteAudioBlob);
                 return Promise.all([
                     fileFactory.writeToFile({
                         fileName : fileNamePrefix + '.webm',
