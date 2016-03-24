@@ -1,8 +1,10 @@
 <ion-view view-title="{{'CONTACTS' | translate}} - {{user.phoneNumber | formatNumber }}" ng-cloak>
     <ion-header-bar class="bar-light bar-subheader has-tabs-top search-bar">
-        <div class="list">
+        <div class="list" ng-show="isSearchBarVisible">
             <label class="item item-input">
-                <i class="icon ion-search placeholder-icon"></i>
+                <span on-tap="toggleSearchBar()">
+                    <i class="icon ion-ios-arrow-back search-icon placeholder-icon"></i>
+                </span>
                 <input type="text" placeholder="{{'SEARCH' | translate}}" ng-model="contactSearch" ng-keyup="searchKeyPress($event.keyCode)">
             </label>
         </div>
@@ -12,8 +14,8 @@
             <div class="loader"></div>
         </div>
         <div class="list">
-            <div class="button-bar contacts-buttons">
-                <button ng-click="toggleSearchbar" class="button button-block button-positive icon-left ion-search" translate="SEARCH"></button>
+            <div class="button-bar contacts-buttons" ng-hide="isSearchBarVisible">
+                <button ng-click="toggleSearchBar()" class="button button-block button-positive icon-left ion-search" translate="SEARCH"></button>
                 <button ng-click="addNewContact()" class="button button-block button-positive icon-left ion-person-add" translate="ADD_CONTACT"></button>
                 <button ng-click="reloadContactsList()" class="button button-block button-positive icon-left ion-refresh" translate="REFRESH_CONTACTS"></button>
             </div>

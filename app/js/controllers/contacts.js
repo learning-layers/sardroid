@@ -7,8 +7,8 @@
 
 angular.module('contacts', [])
 .controller('ContactsCtrl', function ($scope, $localStorage, $ionicModal, contactsFactory,
-                                      modalFactory,  peerFactory, socketFactory, configFactory,
-                                      $state, $ionicActionSheet, $translate) {
+                                      modalFactory, peerFactory, socketFactory, configFactory,
+                                      $state, $ionicActionSheet, $translate, $window) {
     var newContactModal = null;
 
     var translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {
@@ -50,10 +50,15 @@ angular.module('contacts', [])
 
     $scope.searchKeyPress = function (keyCode) {
         // Enter and Android keyboard 'GO' key codes to close the keyboard
-        if ((keyCode === 66 || keyCode === 13) && angular.isDefined(cordova)) {
-            cordova.plugins.Keyboard.close();
+        if (keyCode === 66 || keyCode === 13) {
+
+            if (angular.isDefined($window.cordova)) {
+                cordova.plugins.Keyboard.close();
+            }
         }
     };
+
+    $scope.isSearchBarVisible = false;
 
     $scope.addNewContactModalSubmit = function (newContact) {
         if (newContact && newContact.phoneNumber && newContact.displayName) {
@@ -91,6 +96,11 @@ angular.module('contacts', [])
                newContactModal.show();
            });
     };
+
+    $scope.toggleSearchBar = function () {
+        console.log('asdasdasdasdasdasdasdasdasdasdasdasdasdasd');
+        $scope.isSearchBarVisible = !$scope.isSearchBarVisible;
+    }
 
     $scope.reloadContactsList = reloadContactsList;
 
