@@ -25,7 +25,7 @@ angular.module('call', [])
                 return Promise.all([
                     fileFactory.writeToFile({
                         fileName : fileNamePrefix + '.webm',
-                        data     : results.videoBblob
+                        data     : results.videoBlob
                     }),
                     fileFactory.writeToFile({
                         fileName : fileNamePrefix + '-local.wav',
