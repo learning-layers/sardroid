@@ -22,6 +22,7 @@ angular.module('call', [])
             .then(function (results) {
                 var name = _.kebabCase($stateParams.user.displayName);
                 var fileNamePrefix = 'call-with-' + name + '-' + Date.now();
+                console.log(results.remoteAudioBlob);
                 return Promise.all([
                     fileFactory.writeToFile({
                         fileName : fileNamePrefix + '.webm',
@@ -30,11 +31,11 @@ angular.module('call', [])
                     fileFactory.writeToFile({
                         fileName : fileNamePrefix + '-local.wav',
                         data     : results.localAudioBlob
-                    }),
-                    fileFactory.writeToFile({
-                        fileName : fileNamePrefix + '-remote.wav',
-                        data     : results.remoteAudioBlob
                     })
+//                    fileFactory.writeToFile({
+//                        fileName : fileNamePrefix + '-remote.wav',
+//                        data     : results.remoteAudioBlob
+//                    })
                 ]);
             })
             .then(function (results) {
@@ -88,8 +89,10 @@ angular.module('call', [])
 
     if (saveCalls) {
         recordingFactory.initializeRecordingVideo(document.getElementById('local-wrapper'));
+        // TODO: Re-enable this once CrossWalk gets to chromium 49
+        // https://crosswalk-project.org/documentation/downloads.php
+        //recordingFactory.initializeRecordingAudio({ source: 'remote', audioStream: peerFactory.getRemoteStream() });
         recordingFactory.initializeRecordingAudio({ source: 'local',  audioStream: peerFactory.getLocalStream() });
-        recordingFactory.initializeRecordingAudio({ source: 'remote', audioStream: peerFactory.getRemoteStream() });
     }
 
     draggableVideo.on('staticClick', function () {

@@ -2,6 +2,7 @@
 
 /*
  * Module for recording calls on the user's device (strictly for research purposes!)
+ * Remote audio recording disabled until CrossWalk gest to chromium 49
  */
 
 angular.module('recordinghandler', [])
@@ -27,7 +28,7 @@ angular.module('recordinghandler', [])
         if (!remoteRecorder) {
             remoteRecorder = RecordRTC(audioStream, {
                 type: 'audio',
-                numberOfAudioChannels: 1,
+                numberOfAudioChannels: 2,
                 bufferSize: 16384,
                 disableLogs: ($window.env.environment === 'production')
             });
@@ -59,15 +60,15 @@ angular.module('recordinghandler', [])
         startRecording: function () {
             return new Promise(function (resolve, reject) {
                 // TODO: Make this look better?
-                if (videoRecorder && localRecorder && remoteRecorder) {
+                if (videoRecorder && localRecorder) {
                     videoRecorder.initRecorder(function () {
                         localRecorder.initRecorder(function () {
-                            remoteRecorder.initRecorder(function () {
+                            //remoteRecorder.initRecorder(function () {
                                 videoRecorder.startRecording();
-                                remoteRecorder.startRecording();
+                                //remoteRecorder.startRecording();
                                 localRecorder.startRecording();
                                 resolve();
-                            });
+                            //});
                         });
                     });
                 } else {
@@ -79,17 +80,17 @@ angular.module('recordinghandler', [])
             return new Promise(function (resolve) {
                 videoRecorder.stopRecording(function () {
                     localRecorder.stopRecording(function () {
-                        remoteRecorder.stopRecording(function () {
+                        //remoteRecorder.stopRecording(function () {
                             var videoBlob       = videoRecorder.getBlob();
-                            var remoteAudioBlob = remoteRecorder.getBlob();
+                            //var remoteAudioBlob = remoteRecorder.getBlob();
                             var localAudioBlob  = localRecorder.getBlob();
 
                             resolve({
                                 videoBlob: videoBlob,
-                                remoteAudioBlob: remoteAudioBlob,
+                                //remoteAudioBlob: remoteAudioBlob,
                                 localAudioBlob: localAudioBlob
                             });
-                        });
+                        //});
                     });
                 });
             });
