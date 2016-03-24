@@ -8,7 +8,7 @@
 angular.module('contacts', [])
 .controller('ContactsCtrl', function ($scope, $localStorage, $ionicModal, contactsFactory,
                                       modalFactory, peerFactory, socketFactory, configFactory,
-                                      $state, $ionicActionSheet, $translate, $window) {
+                                      $state, $ionicActionSheet, $timeout, $translate, $window) {
     var newContactModal = null;
 
     var translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {
@@ -99,13 +99,15 @@ angular.module('contacts', [])
 
     $scope.toggleSearchBar = function () {
         $scope.isSearchBarVisible = !$scope.isSearchBarVisible;
-        if ($sope.isSearchBarVisible === true) {
-            if (cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.show();
-            }
+
+        if ($scope.isSearchBarVisible === true) {
+            $timeout(function () {
+                document.getElementById('search-bar').focus();
+            }, 0);
+
         } else {
-            if (cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hide();
+            if (cordova.plugins.Keyboard && cordova.plugins.Keyboard.isVisible === true) {
+                cordova.plugins.Keyboard.close();
             }
         }
     }

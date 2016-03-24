@@ -8,7 +8,7 @@
                 <span on-tap="toggleSearchBar()">
                     <i class="icon ion-ios-arrow-back search-icon placeholder-icon"></i>
                 </span>
-                <input type="text" placeholder="{{'SEARCH' | translate}}" ng-model="contactSearch" ng-keyup="searchKeyPress($event.keyCode)">
+                <input type="text" id="search-bar" placeholder="{{'SEARCH' | translate}}"  ng-model="contactSearch" ng-keyup="searchKeyPress($event.keyCode)">
             </label>
         </div>
         <div class="list" >
