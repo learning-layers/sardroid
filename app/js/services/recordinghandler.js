@@ -5,10 +5,12 @@
  */
 
 angular.module('recordinghandler', [])
-.factory('recordingFactory', function () {
+.factory('recordingFactory', function (settingsFactory) {
     var videoRecorder  = null;
     var localRecorder  = null;
     var remoteRecorder = null
+
+    var frameInterval = settingsFactory.getSetting('callRecordingInterval');
 
     var initializeLocalAudio = function (audioStream) {
         if (!localRecorder) {
@@ -34,7 +36,7 @@ angular.module('recordinghandler', [])
                 videoRecorder = RecordRTC(elementToRecord, {
                     type: 'canvas',
                     bitsPerSecond: 32000,
-                    frameInterval: 1000
+                    frameInterval: frameInterval
                 });
             }
         },
