@@ -11,8 +11,8 @@
                 <input type="text" placeholder="{{'SEARCH' | translate}}" ng-model="contactSearch" ng-keyup="searchKeyPress($event.keyCode)">
             </label>
         </div>
-        <div class="list" ng-hide="isSearchBarVisible">
-            <div class="button-bar contacts-buttons" >
+        <div class="list" >
+            <div class="button-bar contacts-buttons" ng-hide="isSearchBarVisible">
                 <button ng-click="toggleSearchBar()" class="button button-block button-positive icon-left ion-search" translate="SEARCH"></button>
                 <button ng-click="addNewContact()" class="button button-block button-positive icon-left ion-person-add" translate="ADD_CONTACT"></button>
                 <button ng-click="reloadContactsList()" class="button button-block button-positive icon-left ion-refresh" translate="REFRESH_CONTACTS"></button>

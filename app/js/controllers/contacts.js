@@ -98,8 +98,16 @@ angular.module('contacts', [])
     };
 
     $scope.toggleSearchBar = function () {
-        console.log('asdasdasdasdasdasdasdasdasdasdasdasdasdasd');
         $scope.isSearchBarVisible = !$scope.isSearchBarVisible;
+        if ($sope.isSearchBarVisible === true) {
+            if (cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.show();
+            }
+        } else {
+            if (cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.hide();
+            }
+        }
     }
 
     $scope.reloadContactsList = reloadContactsList;
