@@ -92,6 +92,8 @@ angular.module('contacts', [])
            });
     };
 
+    $scope.reloadContactsList = reloadContactsList;
+
     $scope.user = $localStorage.user;
 
     $scope.selectUser = function (selectedUser) {
