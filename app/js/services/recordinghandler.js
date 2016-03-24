@@ -5,7 +5,7 @@
  */
 
 angular.module('recordinghandler', [])
-.factory('recordingFactory', function (settingsFactory) {
+.factory('recordingFactory', function (settingsFactory, $window) {
     var videoRecorder  = null;
     var localRecorder  = null;
     var remoteRecorder = null
@@ -16,7 +16,8 @@ angular.module('recordinghandler', [])
         if (!localRecorder) {
             localRecorder = RecordRTC(audioStream, {
                 type: 'audio',
-                numberOfAudioChannels: 1
+                numberOfAudioChannels: 1,
+                disableLogs: ($window.env.environment === 'production')
             });
         }
     }
@@ -25,7 +26,8 @@ angular.module('recordinghandler', [])
         if (!remoteRecorder) {
             remoteRecorder = RecordRTC(audioStream, {
                 type: 'audio',
-                numberOfAudioChannels: 1
+                numberOfAudioChannels: 1,
+                disableLogs: ($window.env.environment === 'production')
             });
         }
     }
@@ -36,7 +38,8 @@ angular.module('recordinghandler', [])
                 videoRecorder = RecordRTC(elementToRecord, {
                     type: 'canvas',
                     bitsPerSecond: 32000,
-                    frameInterval: frameInterval
+                    frameInterval: frameInterval,
+                    disableLogs: ($window.env.environment === 'production')
                 });
             }
         },
