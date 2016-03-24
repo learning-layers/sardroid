@@ -9,9 +9,13 @@ angular.module('settings')
 .factory('settingsFactory', function ($localStorage, configFactory) {
     return {
         setInitialSettingsIfApplicable: function () {
-            if ($localStorage.settings) return;
+            var initialSettings = configFactory.getValue('initialUserSettings');
 
-            $localStorage.settings = configFactory.getValue('initialUserSettings');
+            if (!$localStorage.settings) {
+                $localStorage.settings = {};
+            }
+
+            $localStorage.settings = _.defaults($localStorage.settings, initialSettings);
         },
 
         setSettings: function (settingOpt) {
