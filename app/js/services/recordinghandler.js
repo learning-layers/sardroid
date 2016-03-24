@@ -17,7 +17,7 @@ angular.module('recordinghandler', [])
             localRecorder = RecordRTC(audioStream, {
                 type: 'audio',
                 numberOfAudioChannels: 1,
-                bufferSize: 8192,
+                bufferSize: 16384,
                 disableLogs: ($window.env.environment === 'production')
             });
         }
@@ -28,7 +28,7 @@ angular.module('recordinghandler', [])
             remoteRecorder = RecordRTC(audioStream, {
                 type: 'audio',
                 numberOfAudioChannels: 1,
-                bufferSize: 8192,
+                bufferSize: 16384,
                 disableLogs: ($window.env.environment === 'production')
             });
         }
