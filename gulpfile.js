@@ -113,6 +113,7 @@ gulp.task('vendor-js', function() {
         './app/vendor/recordrtc/RecordRTC.js',
         './app/vendor/recordrtc/libs/screenshot-dev.js',
         './app/vendor/draggabilly/dist/draggabilly.pkgd.js',
+        './app/vendor/ionic-platform-web-client/dist/ionic.io.bundle.min.js',
         './app/vendor/fabric.js/dist/fabric.js'],
        { base: './app' })
        .pipe(ngAnnotate())
