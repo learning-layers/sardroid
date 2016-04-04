@@ -112,7 +112,13 @@ angular.module('contacts', [])
         }
     }
 
-    $scope.reloadContactsList = reloadContactsList;
+    $scope.reloadContactsList = function () {
+        $scope.preloaderClass = 'preloader-on';
+        contactsFactory.syncContactsWithServer()
+        .then(function () {
+              reloadContactsList();
+        });
+    };
 
     $scope.user = $localStorage.user;
 
