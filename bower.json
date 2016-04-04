@@ -35,5 +35,8 @@
   },
   "resolutions": {
     "angular": "~1.4.7"
+  },
+  "devDependencies": {
+    "ionic-platform-web-client": "^0.7.1"
   }
 }
