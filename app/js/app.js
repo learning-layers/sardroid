@@ -13,7 +13,10 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
 
 .run(function ($ionicPlatform, $ionicAnalytics, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
     $ionicPlatform.ready(function () {
-        $ionicAnalytics.register();
+        $ionicAnalytics.register({
+            dryRun: window.env.environment === 'production'
+        });
+
         fileFactory.createDataDirIfNotExist();
         settingsFactory.setInitialSettingsIfApplicable();
 
