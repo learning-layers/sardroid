@@ -9,7 +9,6 @@ window.env = {
         password : '@@TURN_PASSWORD'
     },
     environment : '@@ENVIRONMENT',
-    version     : '@@VERSION',
-    ga_token    : '@@GA_TOKEN'
+    version     : '@@VERSION'
 };
 

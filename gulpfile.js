@@ -39,7 +39,6 @@ var knownOptions = {
     string: 'env',
     default: {
         env             : process.env.NODE_ENV      || 'development',
-        ga_token        : process.env.GA_TOKEN      || '',
         turnServer : {
             username    : process.env.TURN_USERNAME || '',
             password    : process.env.TURN_PASSWORD || '',
@@ -160,10 +159,6 @@ gulp.task('replace-env', function () {
                 {
                     match: 'ROLLBAR_ENV',
                     replacement: options.rollbar.environment
-                },
-                {
-                    match: 'GA_TOKEN',
-                    replacement: options.ga_token
                 },
                 {
                     match: 'ENVIRONMENT',

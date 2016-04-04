@@ -11,8 +11,9 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
                             'apihandler', 'modalhandler', 'intlpnIonic', 'recordinghandler'])
 
-.run(function ($ionicPlatform, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window, $cordovaGoogleAnalytics) {
+.run(function ($ionicPlatform, $ionicAnalytics, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
     $ionicPlatform.ready(function () {
+        $ionicAnalytics.register();
         fileFactory.createDataDirIfNotExist();
         settingsFactory.setInitialSettingsIfApplicable();
 
@@ -24,14 +25,6 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
         .catch(function () {
             $rootScope.defaultCountry = 'fi';
         });
-
-        if ($window.cordova && $window.analytics) {
-            if ($window.env.environment !== 'production') {
-                $cordovaGoogleAnalytics.debugMode();
-            }
-            $cordovaGoogleAnalytics.startTrackerWithId($window.env.ga_token);
-            $cordovaGoogleAnalytics.trackView('Login');
-        }
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
