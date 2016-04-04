@@ -95,7 +95,30 @@ gulp.task('html', function() {
        .pipe(reload({stream: true}))
 });
 
-gulp.task('vendor-js', function() {
+gulp.task('ioconfig-replace', function () {
+    var start  = 'IONIC_SETTINGS_STRING_START: var settings =' ;
+    var config = fs.readFileSync('./.io-config.json', 'utf8')
+    var end =  '; return { get: function(setting) { if (settings[setting]) { return settings[setting]; } return null; } };"IONIC_SETTINGS_STRING_END"';
+
+    var replaceWith = start + config + end;
+
+    return gulp.src(['./app/vendor/ionic-platform-web-client/dist/ionic.io.bundle.js'],
+            { base: './app' }
+        )
+        .pipe(replace({
+            patterns: [
+                {
+                    match: /"IONIC_SETTINGS_STRING_START.*IONIC_SETTINGS_STRING_END"/,
+                    replacement: function () {
+                        return replaceWith;
+                    }
+                }
+            ]
+        }))
+        .pipe(gulp.dest('./www'))
+});
+
+gulp.task('vendor-js', ['ioconfig-replace'],  function() {
    return gulp.src(
        ['./app/vendor/ionic/js/ionic.bundle.js',
         './app/vendor/ngCordova/dist/*.js',
@@ -113,7 +136,6 @@ gulp.task('vendor-js', function() {
         './app/vendor/recordrtc/RecordRTC.js',
         './app/vendor/recordrtc/libs/screenshot-dev.js',
         './app/vendor/draggabilly/dist/draggabilly.pkgd.js',
-        './app/vendor/ionic-platform-web-client/dist/ionic.io.bundle.min.js',
         './app/vendor/fabric.js/dist/fabric.js'],
        { base: './app' })
        .pipe(ngAnnotate())
