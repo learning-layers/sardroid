@@ -106,7 +106,7 @@ angular.module('contacts', [])
             }, 0);
 
         } else {
-            if (cordova.plugins.Keyboard && cordova.plugins.Keyboard.isVisible === true) {
+            if (cordova && cordova.plugins.Keyboard.isVisible === true) {
                 cordova.plugins.Keyboard.close();
             }
         }
