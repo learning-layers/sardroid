@@ -7,6 +7,18 @@
 angular.module('trackinghandler', [])
 .factory('trackingFactory', function ($ionicAnalytics, $window) {
 
+    var trackingTypes = {
+        LOGIN: 'User logged in',
+        LOGOUT: 'User logged out',
+        VERIFY: 'User requested verification code',
+        REGISTER: 'User registered',
+        CALL_INIT: 'User initialized a call',
+        CALL_RECEIVE: 'User received a call',
+        CALL_END: 'A call was ended',
+        PEERJS_ERROR: 'PeerJS error',
+        SOCKETIO_ERROR: 'Socket.io error'
+    };
+
     var registerGlobals = function () {
         $ionicAnalytics.setGlobalProperties({
             app_version_number: $window.env.version
@@ -28,6 +40,29 @@ angular.module('trackinghandler', [])
             });
 
             registerGlobals();
+        },
+
+        track: {
+            auth: {
+                login: function (phoneNumber, password) {
+                },
+                logout: function () {
+                },
+                verify: function (phoneNumber, verificationType) {
+                },
+                register: function (verificationCode, password) {
+                },
+                resetPassword: function (verificationCode, password) {
+                }
+            },
+            user: {
+                contacts: {
+                    updateContactsList: function (contactsList) {
+                    },
+                    fetchContactsList: function () {
+                    }
+                }
+            }
         }
     };
 });
