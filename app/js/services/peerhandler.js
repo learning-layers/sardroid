@@ -9,7 +9,7 @@
 angular.module('peerhandler', [])
 .factory('peerFactory', function (configFactory, $log, $window, $rootScope, $ionicPopup, $ionicLoading, $ionicHistory,
                                   $timeout, $state, $translate, $cordovaLocalNotification, audioFactory,
-                                  contactsFactory, modalFactory, $cordovaVibration) {
+                                  contactsFactory, trackingFactory, modalFactory, $cordovaVibration) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -571,6 +571,11 @@ angular.module('peerhandler', [])
                             user = { displayName: mediaConnection.peer };
                         }
 
+                        trackingFactory.track.call.received({
+                            from: mediaConnection.peer,
+                            to: me.id
+                        });
+
                         $cordovaVibration.vibrateWithPattern(vibrationPattern, 0);
 
                         notificationText = $translate.instant('NOTIFICATION_CALL',
@@ -650,6 +655,11 @@ angular.module('peerhandler', [])
 
                 getLocalStream(function (stream) {
                     currentCallStream = me.call(userToCall.phoneNumber,  stream, { metadata: me.id });
+
+                    trackingFactory.track.call.started({
+                        from: me.id,
+                        to: userToCall.phoneNumber
+                    });
 
                     currentCallStream.on('error', function (err) {
                         reject(err);

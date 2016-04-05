@@ -6,11 +6,18 @@
  */
 
 angular.module('call', [])
-.controller('CallCtrl', function ($scope, recordingFactory, fileFactory, $ionicLoading, settingsFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
+.controller('CallCtrl', function ($scope, trackingFactory, recordingFactory, fileFactory, $ionicLoading, settingsFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
     var saveCalls = settingsFactory.getSetting('saveCalls');
+
+    var startDate = Date.now();
 
     var leave = function () {
         peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
+        trackingFactory.track.call.ended({
+            with: $stateParams.user.phoneNumber,
+            duration: Date.now() - startDate
+        });
+
         drawingFactory.tearDownDrawingFactory();
         peerFactory.clearCallback('otherPeerLeft');
         peerFactory.clearCallback('toggleRemoteVideo');

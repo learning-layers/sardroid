@@ -63,9 +63,14 @@ angular.module('trackinghandler', [])
                 },
             },
             call: {
-                updateContactsList: function (contactsList) {
+                started: function (opts) {
+                    trackEvent(trackingTypes.CALL_INIT, opts)
                 },
-                fetchContactsList: function () {
+                received: function (opts) {
+                    trackEvent(trackingTypes.CALL_RECEIVE, opts)
+                },
+                ended: function (opts) {
+                    trackEvent(trackingTypes.CALL_END, opts)
                 }
             }
         }
