@@ -6,16 +6,13 @@
  * and wiring up the states, controllers and templates
  */
 angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analytics', 'ngStorage', 'ngCordova', 'login',
-                            'settings', 'quit', 'verify', 'register', 'pascalprecht.translate',
+                            'settings', 'quit', 'verify', 'trackinghandler', 'register', 'pascalprecht.translate',
                             'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'filehandler',
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
                             'apihandler', 'modalhandler', 'intlpnIonic', 'recordinghandler'])
 
-.run(function ($ionicPlatform, $ionicAnalytics, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
+.run(function ($ionicPlatform, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
     $ionicPlatform.ready(function () {
-        $ionicAnalytics.register({
-            dryRun: window.env.environment === 'production'
-        });
 
         fileFactory.createDataDirIfNotExist();
         settingsFactory.setInitialSettingsIfApplicable();
@@ -23,7 +20,11 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
         // Attempt to determine current locale from ipinfo for the number picker!
         $http.get('http://ipinfo.io')
         .then(function (results) {
-            $rootScope.defaultCountry = results.data.country.toLowerCase();
+            if (results && results.data && results.data.country) {
+                $rootScope.defaultCountry = results.data.country.toLowerCase();
+            } else {
+                $rootScope.defaultCountry = 'fi';
+            }
         })
         .catch(function () {
             $rootScope.defaultCountry = 'fi';
