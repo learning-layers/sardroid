@@ -13,6 +13,14 @@ angular.module('trackinghandler', [])
         });
     };
 
+    var mergeDefaultParams = function (params) {
+        return _.merge(params, { time_stamp: Date.now() });
+    };
+
+    var trackEvent = function (name, payload) {
+        $ionicAnalytics.track(name, mergeDefaultParams(payload));
+    };
+
     return {
         registerAnalytics: function () {
             $ionicAnalytics.register({
