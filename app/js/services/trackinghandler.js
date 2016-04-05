@@ -50,7 +50,7 @@ angular.module('trackinghandler', [])
             registerGlobals();
         },
 
-        logTrack: {
+        track: {
             auth: {
                 login: function () {
                     trackEvent(trackingTypes.LOGIN);
@@ -58,8 +58,8 @@ angular.module('trackinghandler', [])
                 logout: function () {
                     trackEvent(trackingTypes.LOGOUT);
                 },
-                verify: function () {
-                    trackEvent(trackingTypes.VERIFY);
+                verify: function (opts) {
+                    trackEvent(trackingTypes.VERIFY, opts);
                 },
             },
             call: {

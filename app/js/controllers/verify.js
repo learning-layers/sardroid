@@ -36,6 +36,7 @@ angular.module('verify', [])
                 apiFactory.auth.verify(number, currentState)
                     .then(function success() {
                         goToRegister();
+                        trackingFactory.track.auth.verify({ verificationType: currentState });
                     })
                     .catch(function (error) {
                         var name = error.name;

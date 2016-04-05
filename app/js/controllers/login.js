@@ -28,7 +28,7 @@ angular.module('login', [])
                 disableBack: true
             });
 
-            trackingFactory.logTrack.auth.login();
+            trackingFactory.track.auth.login();
             $state.go('tabs.contacts');
         })
         .catch(function () {

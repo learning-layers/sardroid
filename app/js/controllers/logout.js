@@ -7,7 +7,7 @@
  */
 
 angular.module('logout', [])
-.controller('LogoutCtrl', function ($scope, $log, $state, $localStorage,  peerFactory, socketFactory, apiFactory) {
+.controller('LogoutCtrl', function ($scope, trackingFactory,  $log, $state, $localStorage,  peerFactory, socketFactory, apiFactory) {
     $scope.logout = function () {
         apiFactory.auth.logout()
         .then(function (results) {
@@ -27,7 +27,7 @@ angular.module('logout', [])
         }
 
         socketFactory.disconnectFromServer();
-
+        trackingFactory.track.auth.logout();
         $state.go('login');
     };
 });
