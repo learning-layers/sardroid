@@ -5,7 +5,7 @@
  */
 
 angular.module('trackinghandler', [])
-.factory('trackingFactory', function ($ionicAnalytics, $window) {
+.factory('trackingFactory', function ($ionicAnalytics, $localStorage, $window) {
 
     var trackingTypes = {
         LOGIN: 'User logged in',
@@ -26,7 +26,15 @@ angular.module('trackinghandler', [])
     };
 
     var mergeDefaultParams = function (params) {
-        return _.merge(params, { time_stamp: Date.now() });
+        if (!params) params = {};
+
+        var addedParams = { time_stamp: Date.now() };
+
+        if ($localStorage.user) {
+            addedParams.currentUser = { phoneNumber: $localStorage.user.phoneNumber };
+        }
+
+        return _.merge(params, addedParams);
     };
 
     var trackEvent = function (name, payload) {
@@ -42,25 +50,22 @@ angular.module('trackinghandler', [])
             registerGlobals();
         },
 
-        track: {
+        logTrack: {
             auth: {
-                login: function (phoneNumber, password) {
+                login: function () {
+                    trackEvent(trackingTypes.LOGIN);
                 },
                 logout: function () {
+                    trackEvent(trackingTypes.LOGOUT);
                 },
-                verify: function (phoneNumber, verificationType) {
+                verify: function () {
+                    trackEvent(trackingTypes.VERIFY);
                 },
-                register: function (verificationCode, password) {
-                },
-                resetPassword: function (verificationCode, password) {
-                }
             },
-            user: {
-                contacts: {
-                    updateContactsList: function (contactsList) {
-                    },
-                    fetchContactsList: function () {
-                    }
+            call: {
+                updateContactsList: function (contactsList) {
+                },
+                fetchContactsList: function () {
                 }
             }
         }

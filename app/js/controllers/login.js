@@ -7,7 +7,7 @@
 
 angular.module('login', [])
 .controller('LoginCtrl', function ($scope, $state, $localStorage, $ionicPlatform, $ionicHistory, $translate, apiFactory,
-                                  modalFactory,  peerFactory, socketFactory, contactsFactory) {
+                                  modalFactory, trackingFactory, peerFactory, socketFactory, contactsFactory) {
     var loginCompleted = function (number) {
         var promises = [];
 
@@ -27,6 +27,8 @@ angular.module('login', [])
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
+
+            trackingFactory.logTrack.auth.login();
             $state.go('tabs.contacts');
         })
         .catch(function () {
