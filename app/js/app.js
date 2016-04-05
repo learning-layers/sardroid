@@ -11,9 +11,10 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
                             'apihandler', 'modalhandler', 'intlpnIonic', 'recordinghandler'])
 
-.run(function ($ionicPlatform, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
+.run(function ($ionicPlatform, trackingFactory, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
     $ionicPlatform.ready(function () {
 
+        trackingFactory.registerAnalytics();
         fileFactory.createDataDirIfNotExist();
         settingsFactory.setInitialSettingsIfApplicable();
 
