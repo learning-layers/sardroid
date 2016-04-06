@@ -6,7 +6,7 @@
  */
 
 angular.module('verify', [])
-.controller('VerifyCtrl', function ($scope, $state, $localStorage, $translate, $stateParams, modalFactory, apiFactory) {
+.controller('VerifyCtrl', function ($scope, $state, $localStorage, $translate, $stateParams, modalFactory, trackingFactory, apiFactory) {
     var currentState = $stateParams.state;
 
     var goToRegister = function () {
