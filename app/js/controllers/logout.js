@@ -18,6 +18,7 @@ angular.module('logout', [])
         });
 
         apiFactory.deleteApiToken();
+        trackingFactory.track.auth.logout();
 
         delete $localStorage.user;
         delete $localStorage.token;
@@ -27,7 +28,6 @@ angular.module('logout', [])
         }
 
         socketFactory.disconnectFromServer();
-        trackingFactory.track.auth.logout();
         $state.go('login');
     };
 });
