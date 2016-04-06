@@ -9,6 +9,7 @@ angular.module('trackinghandler', [])
 
     var trackingTypes = {
         LOGIN: 'User logged in',
+        REGISTER: 'User registered',
         LOGOUT: 'User logged out',
         VERIFY: 'User requested verification code',
         REGISTER: 'User registered',
@@ -54,6 +55,9 @@ angular.module('trackinghandler', [])
             auth: {
                 login: function () {
                     trackEvent(trackingTypes.LOGIN);
+                },
+                register: function () {
+                    trackEvent(trackingTypes.REGISTER);
                 },
                 logout: function () {
                     trackEvent(trackingTypes.LOGOUT);

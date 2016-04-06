@@ -6,7 +6,7 @@
 
 angular.module('register', [])
 .controller('RegisterCtrl', function ($scope, $state, $localStorage, $translate, $stateParams, apiFactory, modalFactory,
-                                      configFactory, contactsFactory) {
+                                      configFactory, trackingFactory, contactsFactory) {
     var currentState = $stateParams.state;
 
     if (currentState === 'register') {
@@ -61,6 +61,7 @@ angular.module('register', [])
                 return contactsFactory.syncContactsWithServer();
             })
             .then(function () {
+                trackingFactory.track.auth.register();
                 $state.go('login');
             })
             .catch(function (error) {
