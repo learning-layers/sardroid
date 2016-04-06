@@ -36,6 +36,15 @@
         padding-right: 6px !important;
         font-size: 0.8em;
     }
+
+    @media (max-width: 500px) {
+        button {
+            &:before {
+                content: none;
+           }
+        }
+
+    }
 }
 
 .contact-telephone {
