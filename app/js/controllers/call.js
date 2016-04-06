@@ -11,51 +11,57 @@ angular.module('call', [])
 
     var startDate = Date.now();
 
+    var alreadyLeaving = false;
+
     var leave = function () {
-        peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
-        trackingFactory.track.call.ended({
-            with: $stateParams.user.phoneNumber,
-            duration: Date.now() - startDate
-        });
+        if (alreadyLeaving === false) {
+            alreadyLeaving = true;
+            peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
+            trackingFactory.track.call.ended({
+                with: $stateParams.user.phoneNumber,
+                duration: Date.now() - startDate
+            });
 
-        drawingFactory.tearDownDrawingFactory();
-        peerFactory.clearCallback('otherPeerLeft');
-        peerFactory.clearCallback('toggleRemoteVideo');
-        peerFactory.clearCallback('toggleVideoMute');
+            drawingFactory.tearDownDrawingFactory();
+            peerFactory.clearCallback('otherPeerLeft');
+            peerFactory.clearCallback('toggleRemoteVideo');
+            peerFactory.clearCallback('toggleVideoMute');
 
-        if (saveCalls) {
-            $ionicLoading.show({ templateUrl: 'templates/modals/save-video-loader.html' });
-            recordingFactory.stopRecording()
-            .then(function (results) {
-                var name = _.kebabCase($stateParams.user.displayName);
-                var fileNamePrefix = 'call-with-' + name + '-' + Date.now();
-                return Promise.all([
-                    fileFactory.writeToFile({
-                        fileName : fileNamePrefix + '.webm',
-                        data     : results.videoBlob
-                    }),
-                    fileFactory.writeToFile({
-                        fileName : fileNamePrefix + '-local.wav',
-                        data     : results.localAudioBlob
-                    })
-//                    fileFactory.writeToFile({
-//                        fileName : fileNamePrefix + '-remote.wav',
-//                        data     : results.remoteAudioBlob
-//                    })
-                ]);
-            })
-            .then(function (results) {
-                $ionicLoading.hide();
-                recordingFactory.clearRecordedData();
+            if (saveCalls) {
+                $ionicLoading.show({ templateUrl: 'templates/modals/save-video-loader.html' });
+                recordingFactory.stopRecording()
+                .then(function (results) {
+                    var name = _.kebabCase($stateParams.user.displayName);
+                    var fileNamePrefix = 'call-with-' + name + '-' + Date.now();
+                    return Promise.all([
+                        fileFactory.writeToFile({
+                            fileName : fileNamePrefix + '.webm',
+                            data     : results.videoBlob
+                        }),
+                        fileFactory.writeToFile({
+                            fileName : fileNamePrefix + '-local.wav',
+                            data     : results.localAudioBlob
+                        })
+                        //                    fileFactory.writeToFile({
+                        //                        fileName : fileNamePrefix + '-remote.wav',
+                        //                        data     : results.remoteAudioBlob
+                        //                    })
+                    ]);
+                })
+                .then(function (results) {
+                    $ionicLoading.hide();
+                    recordingFactory.clearRecordedData();
+                    peerFactory.endCurrentCall();
+                })
+                .catch(function (error) {
+                    $ionicLoading.hide();
+                    recordingFactory.clearRecordedData();
+                    peerFactory.endCurrentCall();
+                })
+            } else {
                 peerFactory.endCurrentCall();
-            })
-            .catch(function (error) {
-                $ionicLoading.hide();
-                recordingFactory.clearRecordedData();
-                peerFactory.endCurrentCall();
-            })
-        } else {
-            peerFactory.endCurrentCall();
+            }
+
         }
     };
 
