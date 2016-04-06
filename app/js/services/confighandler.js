@@ -89,7 +89,7 @@ angular.module('confighandler', [])
                 url: 'http://130.233.84.100:9000'
             },
             initialUserSettings: {
-                saveCalls: true,
+                saveCalls: false,
                 callRecordingInterval: 1500
             }
         }
