@@ -47,14 +47,14 @@ angular.module('confighandler', [])
                 url: 'https://mattij.com:9000'
             },
             initialUserSettings: {
-                saveCalls: false,
+                saveCalls: true,
                 callRecordingInterval: 1500
             }
         },
         development: {
-            apiUrl: 'http://192.168.0.12:9000/',
+            apiUrl: 'http://130.233.84.100:9000/',
             peerjs: {
-                host: '192.168.0.12',
+                host: '130.233.84.100',
                 port: 9000,
                 path: '/peerjs',
                 debug: 0,
@@ -86,7 +86,7 @@ angular.module('confighandler', [])
                 }
             },
             socketio: {
-                url: 'http://192.168.0.12:9000'
+                url: 'http://130.233.84.100:9000'
             },
             initialUserSettings: {
                 saveCalls: true,
