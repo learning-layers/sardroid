@@ -1,5 +1,6 @@
 {
     "ABOUT": "Tietoja SoAR:sta",
+    "NUMBER_NOT_INTL": "Numero '{{number}}' ei näytä olevan kansainvälinen puhelinnumero!",
     "DELETE_CACHED_VIDEOS": "Delete saved calls",
     "ACTIONS": "Toiminnot",
     "SUCCESS": "Toiminto onnistui",

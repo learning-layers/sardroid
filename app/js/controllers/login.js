@@ -72,9 +72,20 @@ angular.module('login', [])
         var number;
 
         if (angular.isDefined(user) && user.phoneNumber && user.password) {
-            $scope.isLoginButtonDisabled = true;
+            number = user.phoneNumber;
+
+            if (number.charAt(0) !== '+') {
+                number = '+' + number;
+            }
+
+            if (!intlTelInputUtils.isValidNumber(number)) {
+                modalFactory.alert($translate.instant('ERROR'), $translate.instant('NUMBER_NOT_INTL', { number: number }));
+                return;
+            }
+
             number = user.phoneNumber.replace(/[ +]/g, '');
 
+            $scope.isLoginButtonDisabled = true;
             apiFactory.auth.login(number, user.password)
             .then(function success(loggedInUser) {
                 $localStorage.user  =  loggedInUser;
