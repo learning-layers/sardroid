@@ -4,7 +4,9 @@
  */
 
 angular.module('about', [])
-.controller('AboutCtrl', function ($scope, $ionicModal) {
+.controller('AboutCtrl', function ($scope, $window, $ionicModal, $cordovaInAppBrowser) {
+    $scope.appVersion = $window.env.version;
+
     $scope.showAboutPopup = function () {
         $ionicModal.fromTemplateUrl(
             'templates/modals/about-soar.html', {
@@ -19,6 +21,10 @@ angular.module('about', [])
 
     $scope.hideAboutPopup = function () {
         $scope.modal.hide();
+    };
+
+    $scope.openSoarSite = function () {
+        $cordovaInAppBrowser.open('http://soar.aalto.fi', '_system');
     };
 
     $scope.$on('$destroy', function () {

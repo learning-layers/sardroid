@@ -1,7 +1,8 @@
 {
     "ABOUT": "Tietoja SoAR:sta",
+    "WEBSITE": "Verkkosivut",
     "NUMBER_NOT_INTL": "Numero '{{number}}' ei näytä olevan kansainvälinen puhelinnumero!",
-    "DELETE_CACHED_VIDEOS": "Delete saved calls",
+    "DELETE_CACHED_VIDEOS": "Poista tallennetut puhelut",
     "ACTIONS": "Toiminnot",
     "SUCCESS": "Toiminto onnistui",
     "CALL_LOG": "Puheluhistoria",

@@ -3,6 +3,24 @@
         <h2 class="title">{{'ABOUT' | translate }}</h2>
     </ion-header-bar>
     <ion-content>
-        <button ng-click="hideAboutPopup()">OK</button>
+        <div class="padding">
+            Learning Environments research group,
+            <br>Aalto University School of Arts, Design and Architecture
+            <br>
+            <br>Aalto University
+            <br>School of Arts, Design and Architecture
+            <br>PO Box 31000
+            <br>FI-00076 AALTO
+            <br>FINLAND
+        </div>
+        <div class="settings-section full-width-vw">
+            <div class="item item-text-wrap">
+                <h3>{{'VERSION' | translate}}: {{::appVersion}}</h3>
+            </div>
+            <div class="item item-text-wrap">
+                <h3>{{'WEBSITE' | translate}}: <a href="#" ng-click="openSoarSite()" >http://soar.aalto.fi</a></h3>
+            </div>
+        </div>
+        <button ng-click="hideAboutPopup()" class="button button-block button-positive">Ok</button>
     </ion-content>
 </ion-modal-view>

@@ -33,7 +33,8 @@
       "id": "cordova-plugin-nativeaudio"
     },
     "cordova-plugin-vibration",
-    "cordova-plugin-file"
+    "cordova-plugin-file",
+    "cordova-plugin-inappbrowser"
   ],
   "cordovaPlatforms": [
     "android"

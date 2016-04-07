@@ -1,5 +1,6 @@
 {
     "ABOUT": "About SoAR",
+    "WEBSITE": "Website",
     "NUMBER_NOT_INTL": "The number '{{number}}' does not seem to be an international phone number!",
     "ACTIONS": "Actions",
     "CALL_LOG": "Call log",
