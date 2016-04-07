@@ -1,6 +1,12 @@
 {
     "ABOUT": "Tietoja SoAR:sta",
     "WEBSITE": "Verkkosivut",
+    "CONTACT_INFO": "Yhteystiedot",
+    "INFO_CONTENT": "SoAR on Aalto yliopiston Learning Environments-tutkimusryhmässä Learning Layers-hankkeen yhteydessä kehitetty MIT-lisenssin alainen avoimen koodin sovellus",
+    "INFO": "Tietoja",
+    "GIT_REPO": "GitHub-repositorio",
+    "LAYERS_LINK": "Learning Layers",
+    "LINKS": "Linkkejä",
     "NUMBER_NOT_INTL": "Numero '{{number}}' ei näytä olevan kansainvälinen puhelinnumero!",
     "DELETE_CACHED_VIDEOS": "Poista tallennetut puhelut",
     "ACTIONS": "Toiminnot",

@@ -4,6 +4,14 @@
     </ion-header-bar>
     <ion-content>
         <div class="padding">
+            <h3 class="title">{{'INFO' | translate }}</h3>
+            {{'INFO_CONTENT' | translate}}
+            <br>
+            <br>
+            {{'VERSION' | translate}}: {{::appVersion}}
+        </div>
+        <div class="padding">
+            <h3 class="title">{{'CONTACT_INFO' | translate }}</h3>
             Learning Environments research group,
             <br>Aalto University School of Arts, Design and Architecture
             <br>
@@ -13,12 +21,36 @@
             <br>FI-00076 AALTO
             <br>FINLAND
         </div>
-        <div class="settings-section full-width-vw">
+        <div class="settings-section">
             <div class="item item-text-wrap">
-                <h3>{{'VERSION' | translate}}: {{::appVersion}}</h3>
+                <div class="row">
+                    <div class="col">
+                        {{'WEBSITE' | translate}}:
+                    </div>
+                    <div class="col">
+                         <a href="#" ng-click="openSoarSite()">http://soar.aalto.fi</a>
+                    </div>
+                </div>
             </div>
             <div class="item item-text-wrap">
-                <h3>{{'WEBSITE' | translate}}: <a href="#" ng-click="openSoarSite()" >http://soar.aalto.fi</a></h3>
+                <div class="row">
+                    <div class="col">
+                        {{'GIT_REPO' | translate}}:
+                    </div>
+                    <div class="col">
+                        <a href="#" ng-click="openGitHub()">https://github.com/learning-layers/sardroid</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item item-text-wrap">
+                <div class="row">
+                    <div class="col">
+                        {{'LAYERS_LINK' | translate}}:
+                    </div>
+                    <div class="col">
+                        <a href="#" ng-click="openLayers()">http://learning-layers.eu</a>
+                    </div>
+                </div>
             </div>
         </div>
         <button ng-click="hideAboutPopup()" class="button button-block button-positive">Ok</button>

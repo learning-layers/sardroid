@@ -27,6 +27,14 @@ angular.module('about', [])
         $cordovaInAppBrowser.open('http://soar.aalto.fi', '_system');
     };
 
+    $scope.openGitHub = function () {
+        $cordovaInAppBrowser.open('https://github.com/learning-layers/sardroid', '_system');
+    };
+
+    $scope.openLayers = function () {
+        $cordovaInAppBrowser.open('http://learning-layers.eu', '_system');
+    };
+
     $scope.$on('$destroy', function () {
         $scope.modal.remove();
     });

@@ -1,6 +1,12 @@
 {
     "ABOUT": "About SoAR",
     "WEBSITE": "Website",
+    "CONTACT_INFO": "Contact info",
+    "INFO": "Info",
+    "GIT_REPO": "GitHub repository",
+    "LAYERS_LINK": "Learning Layers",
+    "LINKS": "Links",
+    "INFO_CONTENT": "SoAR is an MIT-licensed open-source application developed in the Learning Environments research group in Aalto University, Finland. It is part of the Learning Layers-research project",
     "NUMBER_NOT_INTL": "The number '{{number}}' does not seem to be an international phone number!",
     "ACTIONS": "Actions",
     "CALL_LOG": "Call log",
