@@ -9,7 +9,7 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
                             'settings', 'quit', 'verify', 'trackinghandler', 'register', 'pascalprecht.translate',
                             'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'filehandler',
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
-                            'apihandler', 'modalhandler', 'intlpnIonic', 'recordinghandler'])
+                            'apihandler', 'modalhandler', 'about', 'intlpnIonic', 'recordinghandler'])
 
 .run(function ($ionicPlatform, trackingFactory, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
     $ionicPlatform.ready(function () {

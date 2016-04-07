@@ -3,7 +3,7 @@
 /*
  * Controller for the logout button on the tab bar and side-menu
  * Basically, it closes the PeerJS connection and retuns you to
- * the login screen
+ * the login screen. TODO: refactor logging out into seperate service
  */
 
 angular.module('logout', [])
