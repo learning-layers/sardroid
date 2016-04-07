@@ -13,6 +13,7 @@
         "Peer": true,
         "Draggabilly": true,
         "Promise": true,
+        "intlTelInputUtils": true,
         "_": true,
         "cordova": true,
         "fabric": true,
