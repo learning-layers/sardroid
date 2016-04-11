@@ -139,7 +139,7 @@ angular.module('contacts', [])
 
         showUserModal = $ionicPopup.show({
             templateUrl: 'templates/modals/select-user.html',
-            title: selectedUser.phoneNumber,
+            title: selectedUser.displayName,
             scope: $scope
         });
 
