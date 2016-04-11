@@ -10,6 +10,7 @@ angular.module('contacts', [])
                                       modalFactory, peerFactory, socketFactory, configFactory,
                                       $state, $ionicActionSheet, $timeout, $translate, $window) {
     var newContactModal = null;
+    var showUserModal   = null;
 
     var translations = $translate(['SAR_CALL', 'PROFILE', 'ACTIONS', 'CANCEL']).then(function (trans) {
         translations = trans;
@@ -123,34 +124,44 @@ angular.module('contacts', [])
     $scope.user = $localStorage.user;
 
     $scope.selectUser = function (selectedUser) {
-        var sheetClass = selectedUser.currentState === contactsFactory.contactStates.ONLINE ? 'online' : 'offline';
-        var sheet = $ionicActionSheet.show({
-            cssClass: sheetClass,
-            buttons: [
-                { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' }
-            ],
-            titleText:  translations.ACTIONS,
-            cancelText: translations.CANCEL,
-            cancel: function () {
-                sheet();
-            },
+        console.log(selectedUser);
+        $scope.selectedUser = selectedUser;
 
-            buttonClicked: function (index) {
-                switch (index) {
-                case 0:
-                    peerFactory.callPeer(selectedUser)
-                    .then(function (user) {
-                        $state.go('call', { user: user });
-                    })
-                    .catch(function () {
+        $ionicModal.fromTemplateUrl('templates/modals/select-user.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+         }).then(function (modal) {
+             showUserModal = modal;
+             showUserModal.show();
+         });
+        //var sheetClass = selectedUser.currentState === contactsFactory.contactStates.ONLINE ? 'online' : 'offline';
+        //var sheet = $ionicActionSheet.show({
+        //    cssClass: sheetClass,
+        //    buttons: [
+        //        { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' }
+        //    ],
+        //    titleText:  translations.ACTIONS,
+        //    cancelText: translations.CANCEL,
+        //    cancel: function () {
+        //        sheet();
+        //    },
 
-                    });
-                    break;
-                }
+        //    buttonClicked: function (index) {
+        //        switch (index) {
+        //        case 0:
+        //            peerFactory.callPeer(selectedUser)
+        //            .then(function (user) {
+        //                $state.go('call', { user: user });
+        //            })
+        //            .catch(function () {
 
-                return true;
-            }
-        });
+        //            });
+        //            break;
+        //        }
+
+        //        return true;
+        //    }
+        //});
     };
 
     reloadContactsList();
