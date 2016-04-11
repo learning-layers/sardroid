@@ -8,7 +8,7 @@
 angular.module('contacts', [])
 .controller('ContactsCtrl', function ($scope, $localStorage, $ionicPopup, contactsFactory,
                                       modalFactory, peerFactory, socketFactory, configFactory,
-                                      $state, $ionicActionSheet, $timeout, $translate, $window) {
+                                      $state, $timeout, $translate, $window) {
     var newContactModal = null;
     var showUserModal   = null;
 
@@ -139,6 +139,7 @@ angular.module('contacts', [])
 
         showUserModal = $ionicPopup.show({
             templateUrl: 'templates/modals/select-user.html',
+            title: selectedUser.phoneNumber,
             scope: $scope
         });
 
@@ -154,34 +155,6 @@ angular.module('contacts', [])
                     }
                 }
             });
-        //var sheetClass = selectedUser.currentState === contactsFactory.contactStates.ONLINE ? 'online' : 'offline';
-        //var sheet = $ionicActionSheet.show({
-        //    cssClass: sheetClass,
-        //    buttons: [
-        //        { text: '<i class="icon ion-ios-telephone"></i> <b>' + translations.SAR_CALL + '</b>' }
-        //    ],
-        //    titleText:  translations.ACTIONS,
-        //    cancelText: translations.CANCEL,
-        //    cancel: function () {
-        //        sheet();
-        //    },
-
-        //    buttonClicked: function (index) {
-        //        switch (index) {
-        //        case 0:
-        //            peerFactory.callPeer(selectedUser)
-        //            .then(function (user) {
-        //                $state.go('call', { user: user });
-        //            })
-        //            .catch(function () {
-
-        //            });
-        //            break;
-        //        }
-
-        //        return true;
-        //    }
-        //});
     };
 
     reloadContactsList();

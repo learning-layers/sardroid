@@ -1,6 +1,5 @@
 {
     "ABOUT": "Tietoja SoAR:sta",
-    "USER_WITH_NAME" :  "Henkilö {{displayName}}",
     "ACTIONS": "Toiminnot",
     "ADD": "Lisää",
     "ADD_CONTACT": "Lisää kontakti",
@@ -18,6 +17,7 @@
     "DELETE_CACHED_VIDEOS": "Poista tallennetut puhelut",
     "DIAL_WAIT": "Soitetaan, odota hetki...",
     "DISPLAY_NAME": "Nimi",
+    "EDIT": "Muokkaa",
     "ERROR" :  "Virhe!",
     "ERROR_FETCH_CONTACTS": "Kontaktien haku ei onnistunut.",
     "ERROR_NETWORK" : "Yhteysvirhe palvelimen kanssa",
@@ -80,6 +80,7 @@
     "USER_ALREADY_IN_CALL": "Käyttäjällä on puhelu kesken!",
     "USER_EXISTS": "Tuolla numerolla oleva käyttäjä on jo olemassa!",
     "USER_NOT_FOUND": "Käyttäjää ei löytynyt!",
+    "USER_WITH_NAME" :  "Henkilö {{displayName}}",
     "VERIFICATION_EXPIRED": "Käyttämäsi koodi on vanhentunut. Ole hyvä ja pyydä uusi",
     "VERIFICATION_USED": "Koodi on jo käytetty kerran!",
     "VERIFY_CODE": "Varmistusluku",

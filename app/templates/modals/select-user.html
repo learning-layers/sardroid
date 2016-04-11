@@ -1,8 +1,10 @@
 <div>
-    <h2 class="text-center">{{selectedUser.displayName}}</h2>
-    <div class="col">
-        <div class="row">
-            <button ng-click="callUser(selectedUser)" class="button button-positive" translate="SAR_CALL"></button>
+    <div class="row">
+        <div class="col">
+            <button ng-click="callUser(selectedUser)" class="button button-positive icon-left ion-ios-videocam" translate="SAR_CALL"></button>
+        </div>
+        <div class="col">
+            <button disabled class="button button-positive icon-left ion-edit" translate="EDIT"></button>
         </div>
     </div>
 </div>
