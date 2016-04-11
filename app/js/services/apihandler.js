@@ -151,6 +151,9 @@ angular.module('apihandler', [])
                 fetchContactsList: function () {
                     return get('user/contacts');
                 }
+            },
+            exists: function (phoneNumber) {
+                return get('user/' + phoneNumber + '/exists');
             }
         }
     };

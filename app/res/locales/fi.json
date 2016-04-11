@@ -24,6 +24,7 @@
     "ERROR_SERVER" : "Palvelimeen ei saatu yhteyttä!",
     "ERROR_TITLE" : "Jotain meni pieleen!",
     "ERROR_USER_OFFLINE": "Näyttää siltä että käyttäjä on offline!",
+    "ADD_USER_NOT_FOUND": "Käyttäjä numerolla {{phoneNumber}} ei ole rekisteröitynt SoAR:n. Lisää silti?",
     "FORCE_RECONNECT": "Kokeile uudelleen heti",
     "GIT_REPO": "GitHub-repositorio",
     "INFO": "Tietoja",
@@ -90,6 +91,7 @@
     "VERIFY_NUMBER_PASSWORD_TEXT" :  "Kirjoita alas rekisteröimäsi numero. Lähetämme sinulle koodin, jolla voit vaihtaa salasanan.",
     "VERIFY_NUMBER_REGISTER_TEXT" :  "Palveluun rekisteröidytään puhelinnumerolla. Syötä numero kenttään kansainvälisessä muodossa. Saat tekstiviestillä koodin, joka vaaditaan rekisteröitymiseen. ",
     "VERSION": "Asennettu sovelluksen versio",
+    "WARNING": "Varoitus!",
     "WEBSITE": "Verkkosivut",
     "WRONG_PASSWORD": "Väärä salasana!"
 }

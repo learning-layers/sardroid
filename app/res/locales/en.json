@@ -1,5 +1,6 @@
 {
     "ABOUT": "About SoAR",
+    "ADD_USER_NOT_FOUND": "User with the number {{phoneNumber}} is not a registered SoAR user. Do you want to add it still?",
     "ACTIONS": "Actions",
     "ADD": "Add",
     "ADD_CONTACT": "Add contact",
@@ -90,6 +91,7 @@
     "VERIFY_NUMBER_PASSWORD_TEXT" :  "Put in the number you used to register below in international format. You will get an SMS with a one-time code for resetting your password",
     "VERIFY_NUMBER_REGISTER_TEXT" :  "Sign up with your phone number. Enter the number in international format. You will get an SMS with a one-time code required for registration",
     "VERSION": "Current app version",
+    "WARNING": "Warning!",
     "WEBSITE": "Website",
     "WRONG_PASSWORD": "Wrong password!"
 }

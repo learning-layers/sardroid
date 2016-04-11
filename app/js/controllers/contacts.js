@@ -7,8 +7,8 @@
 
 angular.module('contacts', [])
 .controller('ContactsCtrl', function ($scope, $localStorage, $ionicPopup, contactsFactory,
-                                      modalFactory, peerFactory, socketFactory, configFactory,
-                                      $state, $timeout, $translate, $window) {
+                                      modalFactory, peerFactory, socketFactory, configFactory, apiFactory,
+                                      $state, $timeout, $translate, $window, $ionicModal) {
     var newContactModal = null;
     var showUserModal   = null;
 
@@ -31,6 +31,19 @@ angular.module('contacts', [])
         });
     };
 
+
+    var addNewContactAndSync = function (newContact) {
+        contactsFactory.addNewContact(newContact)
+        .then(function () {
+            return contactsFactory.syncContactsWithServer();
+        })
+        .then(function () {
+            reloadContactsList();
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    };
 
     var updateContactState = function (data) {
         var stateToSet = data.eventType === socketFactory.eventTypes.CONTACT_ONLINE ?
@@ -63,19 +76,30 @@ angular.module('contacts', [])
 
     $scope.addNewContactModalSubmit = function (newContact) {
         if (newContact && newContact.phoneNumber && newContact.displayName) {
-            newContactModal.hide();
+            apiFactory.user.exists(newContact.phoneNumber)
+                .then(function (response) {
+                    if (response.found === true) {
+                        newContactModal.hide();
+                        $scope.preloaderClass = 'preloader-on';
+                        addNewContactAndSync(newContact);
+                    } else {
+                        modalFactory.confirm($translate.instant('WARNING'), $translate.instant('ADD_USER_NOT_FOUND', { phoneNumber: newContact.phoneNumber }))
+                            .then(function (promptRes) {
+                                console.log(promptRes);
+                                if (promptRes === true) {
+                                    newContactModal.hide();
+                                    $scope.preloaderClass = 'preloader-on';
+                                    addNewContactAndSync(newContact);
+                                } else {
+                                    return;
+                                }
+                            });
+                    }
+                })
+                .catch(function (err) {
 
-            $scope.preloaderClass = 'preloader-on';
+                });
 
-            contactsFactory.addNewContact(newContact)
-            .then(function () {
-                return contactsFactory.syncContactsWithServer();
-            })
-            .then(function () {
-                reloadContactsList();
-            })
-            .catch(function () {
-            });
         } else if (newContact && !newContact.phoneNumber) {
             modalFactory.alert($translate.instant('ERROR'), $translate.instant('NUMBER_WRONG_FORMAT'));
         } else if (newContact && !newContact.displayName) {
