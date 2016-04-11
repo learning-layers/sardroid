@@ -1,5 +1,6 @@
 {
     "ABOUT": "Tietoja SoAR:sta",
+    "USER_WITH_NAME" :  "Henkilö {{displayName}}",
     "ACTIONS": "Toiminnot",
     "ADD": "Lisää",
     "ADD_CONTACT": "Lisää kontakti",
@@ -67,7 +68,7 @@
     "RESET_PASSWORD" :  "Uusi salasanasi",
     "RESET_PASSWORD_HEADER" :  "2 / 2 | Salasanasi uusiminen",
     "RESET_PASSWORD_TEXT" :  "OK, sinun pitäisi saada koodisi hetken päästä. Sinulla on tunti aikaa käyttää koodi, joten kirjoita se alle, sekä myös uusi salasana jota haluat käyttää kahteen kertaan.",
-    "SAR_CALL": "Soita SoAR:lla",
+    "SAR_CALL": "Soita",
     "SAVING_CALL": "Tallennetaan puhelua...",
     "SEARCH": "Hae",
     "SETTINGS": "Asetukset",

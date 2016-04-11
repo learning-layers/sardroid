@@ -6,7 +6,7 @@
  */
 
 angular.module('contacts', [])
-.controller('ContactsCtrl', function ($scope, $localStorage, $ionicModal, contactsFactory,
+.controller('ContactsCtrl', function ($scope, $localStorage, $ionicPopup, contactsFactory,
                                       modalFactory, peerFactory, socketFactory, configFactory,
                                       $state, $ionicActionSheet, $timeout, $translate, $window) {
     var newContactModal = null;
@@ -123,17 +123,37 @@ angular.module('contacts', [])
 
     $scope.user = $localStorage.user;
 
+    $scope.callUser = function (userToCall) {
+        showUserModal.close();
+        peerFactory.callPeer(userToCall)
+        .then(function (user) {
+            $state.go('call', { user: user });
+        })
+        .catch(function () {
+
+        });
+    }
+
     $scope.selectUser = function (selectedUser) {
-        console.log(selectedUser);
         $scope.selectedUser = selectedUser;
 
-        $ionicModal.fromTemplateUrl('templates/modals/select-user.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-         }).then(function (modal) {
-             showUserModal = modal;
-             showUserModal.show();
-         });
+        showUserModal = $ionicPopup.show({
+            templateUrl: 'templates/modals/select-user.html',
+            scope: $scope
+        });
+
+        // Hack for allowing us to close the popup on
+        // clicking the backdrop
+        angular.element(document.querySelector('html'))
+            .on('click', function (e) {
+                console.log(e);
+                if (e.target.nodeName === 'HTML') {
+                    if (showUserModal) {
+                        showUserModal.close();
+                        showUserModal = null;
+                    }
+                }
+            });
         //var sheetClass = selectedUser.currentState === contactsFactory.contactStates.ONLINE ? 'online' : 'offline';
         //var sheet = $ionicActionSheet.show({
         //    cssClass: sheetClass,
