@@ -85,19 +85,38 @@ angular.module('call', [])
         }
     };
 
-
     var toggleRemoteVideoPlayingState = function () {
         toggleVideoPlayingState($scope.currentRemoteVideoLocation);
     };
 
     var toggleLocalVideoPlayingState = function () {
         toggleVideoPlayingState($scope.currentLocalVideoLocation);
+        if ($scope.isOwnVideoPaused === true) {
+            var screen = getVideoScreen($scope.currentLocalVideoLocation);
+            console.log(screen.uri);
+        }
     };
 
     var draggableVideo = new Draggabilly('#small-video');
 
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc());
+
+    var getVideoScreen = function (videoSelector) {
+        var canvas = document.createElement('canvas');
+        var video = document.querySelector(videoSelector);
+        var ctx = canvas.getContext('2d');
+
+        canvas.width = video.width;
+        canvas.height = video.height;
+
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        var dataUri = canvas.toDataURL();
+        console.log(dataUri);
+
+        return { uri: dataUri };
+    }
 
     if (saveCalls) {
         recordingFactory.initializeRecordingVideo(document.getElementById('local-wrapper'));
