@@ -93,7 +93,7 @@ angular.module('call', [])
         toggleVideoPlayingState($scope.currentLocalVideoLocation);
         if ($scope.isOwnVideoPaused === true) {
             var screen = getVideoScreen($scope.currentLocalVideoLocation);
-            console.log(screen.uri);
+            // window.open(screen.uri);
         }
     };
 
@@ -107,13 +107,12 @@ angular.module('call', [])
         var video = document.querySelector(videoSelector);
         var ctx = canvas.getContext('2d');
 
-        canvas.width = video.width;
-        canvas.height = video.height;
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         var dataUri = canvas.toDataURL();
-        console.log(dataUri);
 
         return { uri: dataUri };
     }
