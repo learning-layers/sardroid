@@ -133,6 +133,7 @@ gulp.task('vendor-js', ['ioconfig-replace'],  function() {
         './app/vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
         './app/vendor/socket.io-client/socket.io.js',
         './app/vendor/recordrtc/RecordRTC.js',
+        './app/vendor/whammy/whammy.js',
         './app/vendor/recordrtc/libs/screenshot-dev.js',
         './app/vendor/draggabilly/dist/draggabilly.pkgd.js',
         './app/vendor/fabric.js/dist/fabric.js'],
