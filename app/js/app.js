@@ -66,7 +66,9 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
         $rootScope.hideLoader    = true;
         $ionicSideMenuDelegate._instances[0].right.isEnabled = false;
     });
-}).config(function ($stateProvider, $urlRouterProvider, $translateProvider) {
+}).config(function ($stateProvider, $ionicAutoTrackProvider, $urlRouterProvider, $translateProvider) {
+    $ionicAutoTrackProvider.disableTracking('Tap');
+
     $stateProvider
         .state('login', {
             cache: false,
