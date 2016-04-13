@@ -31,6 +31,16 @@ angular.module('contacts', [])
         });
     };
 
+    var closeCallModalOnClick = function (e) {
+        console.log(e);
+        if (e.target.nodeName === 'HTML') {
+            if (showUserModal) {
+                showUserModal.close();
+                showUserModal = null;
+                document.querySelector('html').removeEventListener('click', closeCallModalOnClick);
+            }
+        }
+    };
 
     var addNewContactAndSync = function (newContact) {
         contactsFactory.addNewContact(newContact)
@@ -151,6 +161,7 @@ angular.module('contacts', [])
         showUserModal.close();
         peerFactory.callPeer(userToCall)
         .then(function (user) {
+            document.querySelector('html').removeEventListener('click', closeCallModalOnClick);
             $state.go('call', { user: user });
         })
         .catch(function () {
@@ -169,16 +180,7 @@ angular.module('contacts', [])
 
         // Hack for allowing us to close the popup on
         // clicking the backdrop
-        angular.element(document.querySelector('html'))
-            .on('click', function (e) {
-                console.log(e);
-                if (e.target.nodeName === 'HTML') {
-                    if (showUserModal) {
-                        showUserModal.close();
-                        showUserModal = null;
-                    }
-                }
-            });
+        document.querySelector('html').addEventListener('click', closeCallModalOnClick);
     };
 
     reloadContactsList();
