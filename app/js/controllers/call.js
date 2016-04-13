@@ -65,16 +65,6 @@ angular.module('call', [])
         }
     };
 
-    var toggleVideoPlayingState = function (videoSelector) {
-        var video = $document[0].querySelector(videoSelector);
-
-        if (video.paused === true) {
-            video.play();
-        } else {
-            video.pause();
-        }
-    };
-
     var toggleAudioPlayingState = function (audioSelector) {
         var audio = $document[0].querySelector(audioSelector);
 
@@ -87,16 +77,34 @@ angular.module('call', [])
 
     var toggleRemoteVideoPlayingState = function (screen) {
         if ($window.isRemoteVideoPaused === true && angular.isDefined(screen)) {
-            setRemoteVideoSrc(screen.uri);
+            console.log('settings webm to remote stream');
+            setRemoteVideoSrc(Whammy.fromImageArray([screen.uri], 1));
         } else {
+            console.log('settings camera to remote stream');
             setRemoteVideoSrc(remoteStreamSrc);
         }
     };
 
+        if ($scope.currentBigScreen === 'remote-big') {
+            $scope.currentBigScreen = 'local-big';
+            $scope.currentRemoteVideoLocation = '#small-video';
+            $scope.currentLocalVideoLocation = '#big-video';
+            $scope.smallStreamSrc = $scope.remoteStreamSrc;
+            $scope.bigStreamSrc = $scope.localStreamSrc;
+        } else if ($scope.currentBigScreen === 'local-big') {
+            $scope.currentBigScreen = 'remote-big';
+            $scope.currentRemoteVideoLocation = '#big-video';
+            $scope.currentLocalVideoLocation = '#small-video';
+            $scope.smallStreamSrc = $scope.localStreamSrc;
+            $scope.bigStreamSrc = $scope.remoteStreamSrc;
+        }
+
     var toggleLocalVideoPlayingState = function (screen) {
         if ($scope.isOwnVideoPaused === true && angular.isDefined(screen)) {
-            setLocalStreamSrc(screen.uri);
+            console.log('settings webm to local stream');
+            setLocalStreamSrc(Whammy.fromImageArray([screen.uri], 1));
         } else {
+            console.log('settings camera to local stream');
             setLocalStreamSrc(localStreamSrc);
         }
     };
@@ -104,6 +112,8 @@ angular.module('call', [])
     var setRemoteVideoSrc = function (src) {
         if (typeof src === 'string') {
             src = $sce.trustAsResourceUrl(src);
+        } else if (src instanceof Blob) {
+            src = window.URL.createObjectURL(src);
         }
 
         console.log('remote video src: ', src);
@@ -112,6 +122,9 @@ angular.module('call', [])
 
     var setLocalStreamSrc = function (src) {
         if (typeof src === 'string') {
+            src = $sce.trustAsResourceUrl(src);
+        } else if (src instanceof Blob) {
+            src = window.URL.createObjectURL(src);
             src = $sce.trustAsResourceUrl(src);
         }
 
@@ -150,21 +163,17 @@ angular.module('call', [])
     draggableVideo.on('staticClick', function () {
         // TODO: Refactor this into something more elegant
         if ($scope.currentBigScreen === 'remote-big') {
-
             $scope.currentBigScreen = 'local-big';
             $scope.currentRemoteVideoLocation = '#small-video';
             $scope.currentLocalVideoLocation = '#big-video';
             $scope.smallStreamSrc = $scope.remoteStreamSrc;
             $scope.bigStreamSrc = $scope.localStreamSrc;
-
         } else if ($scope.currentBigScreen === 'local-big') {
-
             $scope.currentBigScreen = 'remote-big';
             $scope.currentRemoteVideoLocation = '#big-video';
             $scope.currentLocalVideoLocation = '#small-video';
             $scope.smallStreamSrc = $scope.localStreamSrc;
             $scope.bigStreamSrc = $scope.remoteStreamSrc;
-
         }
         $scope.$apply();
     });
@@ -222,24 +231,6 @@ angular.module('call', [])
         } else if ($scope.isOwnStreamMuted === false) {
             return 'ion-android-microphone';
         }
-    };
-
-    $scope.determineIfBigVideoIsAutoplay = function () {
-        if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#big-video')
-           || ($window.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#big-video')) {
-            return false;
-        }
-
-        return true;
-    };
-
-    $scope.determineIfSmallVideoIsAutoplay = function () {
-        if (($scope.isOwnVideoPaused === true && $scope.currentLocalVideoLocation === '#small-video')
-           || ($window.isRemoteVideoPaused === true && $scope.currentRemoteVideoLocation === '#small-video')) {
-            return false;
-        }
-
-        return true;
     };
 
     $scope.toggleArrowMode = function () {
