@@ -89,12 +89,31 @@ angular.module('call', [])
         toggleVideoPlayingState($scope.currentRemoteVideoLocation);
     };
 
-    var toggleLocalVideoPlayingState = function () {
+    var toggleLocalVideoPlayingState = function (screen) {
         toggleVideoPlayingState($scope.currentLocalVideoLocation);
-        if ($scope.isOwnVideoPaused === true) {
-            var screen = getVideoScreen($scope.currentLocalVideoLocation);
-            // window.open(screen.uri);
+        if ($scope.isOwnVideoPaused === true && angular.isDefined(screen)) {
+            setLocalStreamSrc(screen.uri);
+        } else {
+            setLocalStreamSrc($scope.localStreamSrc);
         }
+    };
+
+    var setRemoteVideoSrc = function (src) {
+        if (typeof src === 'string') {
+            src = $sce.trustAsResourceUrl(src);
+        }
+
+        console.log('remote video src: ', src);
+        $scope.remoteStreamSrc = src;
+    };
+
+    var setLocalStreamSrc = function (src) {
+        if (typeof src === 'string') {
+            src = $sce.trustAsResourceUrl(src);
+        }
+
+        console.log('local video src: ', src);
+        $scope.localStreamSrc = src;
     };
 
     var draggableVideo = new Draggabilly('#small-video');
@@ -112,7 +131,8 @@ angular.module('call', [])
 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        var dataUri = canvas.toDataURL();
+        var dataUri = canvas.toDataURL('image/webp');
+        console.log(dataUri);
 
         return { uri: dataUri };
     }
@@ -155,9 +175,15 @@ angular.module('call', [])
         toggleAudioPlayingState('#call-audio');
     });
 
-    peerFactory.registerCallback('toggleRemoteVideo', function () {
+    peerFactory.registerCallback('toggleRemoteVideo', function (data) {
         $window.isRemoteVideoPaused = !$window.isRemoteVideoPaused;
         toggleRemoteVideoPlayingState();
+
+        if ($window.isRemoteVideoPaused === true) {
+            setRemoteVideoSrc(data.uri);
+        } else {
+            setRemoteVideoSrc($scope.remoteStreamSrc);
+        }
     });
 
     $scope.currentBigScreen = 'remote-big';
@@ -228,8 +254,9 @@ angular.module('call', [])
 
     $scope.togglePause = function () {
         $scope.isOwnVideoPaused = !$scope.isOwnVideoPaused;
-        peerFactory.sendDataToPeer({ type: 'toggleRemoteVideo' });
-        toggleLocalVideoPlayingState();
+        var screen = getVideoScreen($scope.currentLocalVideoLocation);
+        peerFactory.sendDataToPeer({ type: 'toggleRemoteVideo', uri: screen.uri });
+        toggleLocalVideoPlayingState(screen);
     };
 
     $scope.determineFullscreenCanvas = function () {
