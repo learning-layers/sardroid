@@ -75,9 +75,10 @@ angular.module('call', [])
         }
     };
 
+
     var toggleRemoteVideoPlayingState = function (screen) {
         if ($window.isRemoteVideoPaused === true && angular.isDefined(screen)) {
-            remotePauseSrc = Whammy.fromImageArray([screen.uri], 1);
+            remotePauseSrc = $sce.trustAsResourceUrl(window.URL.createObjectURL(Whammy.fromImageArray([screen.uri], 1)))
 
             setRemoteVideoSrc(remotePauseSrc);
         } else {
@@ -89,7 +90,8 @@ angular.module('call', [])
     var toggleLocalVideoPlayingState = function (screen) {
         if ($scope.isOwnVideoPaused === true && angular.isDefined(screen)) {
 
-            localPauseSrc = Whammy.fromImageArray([screen.uri], 1);
+            localPauseSrc = $sce.trustAsResourceUrl(window.URL.createObjectURL(Whammy.fromImageArray([screen.uri], 1)));
+
             setLocalStreamSrc(localPauseSrc);
         } else {
             console.log('settings camera to local stream');
@@ -102,6 +104,7 @@ angular.module('call', [])
             src = $sce.trustAsResourceUrl(src);
         } else if (src instanceof Blob) {
             src = window.URL.createObjectURL(src);
+            src = $sce.trustAsResourceUrl(src);
         }
 
         console.log('remote video src: ', src);
@@ -177,8 +180,12 @@ angular.module('call', [])
             $scope.currentLocalVideoLocation = '#small-video';
 
             if ($scope.isOwnVideoPaused === true) {
+                console.log('small stream is local pause source');
+                console.log(localPauseSrc);
                 $scope.smallStreamSrc = localPauseSrc;
             } else {
+                console.log('small stream is local stream source');
+                console.log(localStreamSrc);
                 $scope.smallStreamSrc = localStreamSrc;
             }
 
