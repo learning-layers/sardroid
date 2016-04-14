@@ -77,32 +77,20 @@ angular.module('call', [])
 
     var toggleRemoteVideoPlayingState = function (screen) {
         if ($window.isRemoteVideoPaused === true && angular.isDefined(screen)) {
-            console.log('settings webm to remote stream');
-            setRemoteVideoSrc(Whammy.fromImageArray([screen.uri], 1));
+            remotePauseSrc = Whammy.fromImageArray([screen.uri], 1);
+
+            setRemoteVideoSrc(remotePauseSrc);
         } else {
             console.log('settings camera to remote stream');
             setRemoteVideoSrc(remoteStreamSrc);
         }
     };
 
-        if ($scope.currentBigScreen === 'remote-big') {
-            $scope.currentBigScreen = 'local-big';
-            $scope.currentRemoteVideoLocation = '#small-video';
-            $scope.currentLocalVideoLocation = '#big-video';
-            $scope.smallStreamSrc = $scope.remoteStreamSrc;
-            $scope.bigStreamSrc = $scope.localStreamSrc;
-        } else if ($scope.currentBigScreen === 'local-big') {
-            $scope.currentBigScreen = 'remote-big';
-            $scope.currentRemoteVideoLocation = '#big-video';
-            $scope.currentLocalVideoLocation = '#small-video';
-            $scope.smallStreamSrc = $scope.localStreamSrc;
-            $scope.bigStreamSrc = $scope.remoteStreamSrc;
-        }
-
     var toggleLocalVideoPlayingState = function (screen) {
         if ($scope.isOwnVideoPaused === true && angular.isDefined(screen)) {
-            console.log('settings webm to local stream');
-            setLocalStreamSrc(Whammy.fromImageArray([screen.uri], 1));
+
+            localPauseSrc = Whammy.fromImageArray([screen.uri], 1);
+            setLocalStreamSrc(localPauseSrc);
         } else {
             console.log('settings camera to local stream');
             setLocalStreamSrc(localStreamSrc);
@@ -137,6 +125,9 @@ angular.module('call', [])
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc());
 
+    var localPauseSrc  = null;
+    var remotePauseSrc = null;
+
     var getVideoScreen = function (videoSelector) {
         var canvas = document.createElement('canvas');
         var video = document.querySelector(videoSelector);
@@ -166,14 +157,37 @@ angular.module('call', [])
             $scope.currentBigScreen = 'local-big';
             $scope.currentRemoteVideoLocation = '#small-video';
             $scope.currentLocalVideoLocation = '#big-video';
-            $scope.smallStreamSrc = $scope.remoteStreamSrc;
-            $scope.bigStreamSrc = $scope.localStreamSrc;
+
+
+            if ($scope.isOwnVideoPaused === true) {
+                $scope.bigStreamSrc = localPauseSrc;
+            } else {
+                $scope.bigStreamSrc = localStreamSrc;
+            }
+
+            if ($scope.isRemoteVideoPaused === true) {
+                $scope.smallStreamSrc = remotePauseSrc;
+            } else {
+                $scope.smallStreamSrc = remoteStreamSrc;
+            }
+
         } else if ($scope.currentBigScreen === 'local-big') {
             $scope.currentBigScreen = 'remote-big';
             $scope.currentRemoteVideoLocation = '#big-video';
             $scope.currentLocalVideoLocation = '#small-video';
-            $scope.smallStreamSrc = $scope.localStreamSrc;
-            $scope.bigStreamSrc = $scope.remoteStreamSrc;
+
+            if ($scope.isOwnVideoPaused === true) {
+                $scope.smallStreamSrc = localPauseSrc;
+            } else {
+                $scope.smallStreamSrc = localStreamSrc;
+            }
+
+            if ($scope.isRemoteVideoPaused === true) {
+                $scope.bigStreamSrc = remotePauseSrc;
+            } else {
+                $scope.bigStreamSrc = remoteStreamSrc;
+            }
+
         }
         $scope.$apply();
     });
