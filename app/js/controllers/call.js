@@ -75,10 +75,23 @@ angular.module('call', [])
         }
     };
 
+    $scope.$watch('remoteStreamSrc', function (o, v) {
+        console.log('Remote stream var changed');
+    })
+
+    $scope.$watch('localStreamSrc', function (o, v) {
+        console.log('local stream var changed');
+    })
+
+    $scope.$watch('isOwnVideoPaused', function (o, v) {
+        console.log('own video paused var changed');
+    })
+
+    $scope.$watch('isRemoteVideoPaused', function (o, v) {
+        console.log('remote video paused var changed');
+    })
 
     var toggleRemoteVideoPlayingState = function (data) {
-        console.log('settings remote sceen');
-        console.log(data);
         if ($window.isRemoteVideoPaused === true && angular.isDefined(data.screen)) {
             remotePauseSrc = $sce.trustAsResourceUrl(window.URL.createObjectURL(Whammy.fromImageArray([data.screen], 1)))
 
@@ -89,8 +102,6 @@ angular.module('call', [])
     };
 
     var toggleLocalVideoPlayingState = function (data) {
-        console.log('settings local sceen');
-        console.log(data);
         if ($scope.isOwnVideoPaused === true && angular.isDefined(data.screen)) {
 
             localPauseSrc = $sce.trustAsResourceUrl(window.URL.createObjectURL(Whammy.fromImageArray([data.screen], 1)));
@@ -161,14 +172,13 @@ angular.module('call', [])
             $scope.currentRemoteVideoLocation = '#small-video';
             $scope.currentLocalVideoLocation = '#big-video';
 
-
             if ($scope.isOwnVideoPaused === true) {
                 $scope.bigStreamSrc = localPauseSrc;
             } else {
                 $scope.bigStreamSrc = localStreamSrc;
             }
 
-            if ($scope.isRemoteVideoPaused === true) {
+            if ($window.isRemoteVideoPaused === true) {
                 $scope.smallStreamSrc = remotePauseSrc;
             } else {
                 $scope.smallStreamSrc = remoteStreamSrc;
@@ -185,7 +195,7 @@ angular.module('call', [])
                 $scope.smallStreamSrc = localStreamSrc;
             }
 
-            if ($scope.isRemoteVideoPaused === true) {
+            if ($window.isRemoteVideoPaused === true) {
                 $scope.bigStreamSrc = remotePauseSrc;
             } else {
                 $scope.bigStreamSrc = remoteStreamSrc;
@@ -208,10 +218,10 @@ angular.module('call', [])
     });
 
     peerFactory.registerCallback('toggleRemoteVideo', function (data) {
-        console.log('data incoming');
-        console.log(data);
-        $window.isRemoteVideoPaused = !$window.isRemoteVideoPaused;
-        toggleRemoteVideoPlayingState(data.data);
+        $scope.$apply(function () {
+            $window.isRemoteVideoPaused = !$window.isRemoteVideoPaused;
+            toggleRemoteVideoPlayingState(data.data);
+        });
     });
 
     $scope.currentBigScreen = 'remote-big';
