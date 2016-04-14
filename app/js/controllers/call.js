@@ -76,26 +76,28 @@ angular.module('call', [])
     };
 
 
-    var toggleRemoteVideoPlayingState = function (screen) {
-        if ($window.isRemoteVideoPaused === true && angular.isDefined(screen)) {
-            remotePauseSrc = $sce.trustAsResourceUrl(window.URL.createObjectURL(Whammy.fromImageArray([screen.uri], 1)))
+    var toggleRemoteVideoPlayingState = function (data) {
+        console.log('settings remote sceen');
+        console.log(data);
+        if ($window.isRemoteVideoPaused === true && angular.isDefined(data.screen)) {
+            remotePauseSrc = $sce.trustAsResourceUrl(window.URL.createObjectURL(Whammy.fromImageArray([data.screen], 1)))
 
-            setRemoteVideoSrc(remotePauseSrc);
+            $scope.remoteStreamSrc = remotePauseSrc
         } else {
-            console.log('settings camera to remote stream');
-            setRemoteVideoSrc(remoteStreamSrc);
+            $scope.remoteStreamSrc = remoteStreamSrc;
         }
     };
 
-    var toggleLocalVideoPlayingState = function (screen) {
-        if ($scope.isOwnVideoPaused === true && angular.isDefined(screen)) {
+    var toggleLocalVideoPlayingState = function (data) {
+        console.log('settings local sceen');
+        console.log(data);
+        if ($scope.isOwnVideoPaused === true && angular.isDefined(data.screen)) {
 
-            localPauseSrc = $sce.trustAsResourceUrl(window.URL.createObjectURL(Whammy.fromImageArray([screen.uri], 1)));
+            localPauseSrc = $sce.trustAsResourceUrl(window.URL.createObjectURL(Whammy.fromImageArray([data.screen], 1)));
 
-            setLocalStreamSrc(localPauseSrc);
+            $scope.localStreamSrc = localPauseSrc;
         } else {
-            console.log('settings camera to local stream');
-            setLocalStreamSrc(localStreamSrc);
+            $scope.localStreamSrc = localStreamSrc;
         }
     };
 
@@ -107,7 +109,6 @@ angular.module('call', [])
             src = $sce.trustAsResourceUrl(src);
         }
 
-        console.log('remote video src: ', src);
         $scope.remoteStreamSrc = src;
     };
 
@@ -119,7 +120,6 @@ angular.module('call', [])
             src = $sce.trustAsResourceUrl(src);
         }
 
-        console.log('local video src: ', src);
         $scope.localStreamSrc = src;
     };
 
@@ -180,12 +180,8 @@ angular.module('call', [])
             $scope.currentLocalVideoLocation = '#small-video';
 
             if ($scope.isOwnVideoPaused === true) {
-                console.log('small stream is local pause source');
-                console.log(localPauseSrc);
                 $scope.smallStreamSrc = localPauseSrc;
             } else {
-                console.log('small stream is local stream source');
-                console.log(localStreamSrc);
                 $scope.smallStreamSrc = localStreamSrc;
             }
 
@@ -212,9 +208,10 @@ angular.module('call', [])
     });
 
     peerFactory.registerCallback('toggleRemoteVideo', function (data) {
+        console.log('data incoming');
+        console.log(data);
         $window.isRemoteVideoPaused = !$window.isRemoteVideoPaused;
-        toggleRemoteVideoPlayingState(data);
-
+        toggleRemoteVideoPlayingState(data.data);
     });
 
     $scope.currentBigScreen = 'remote-big';
@@ -266,10 +263,15 @@ angular.module('call', [])
     };
 
     $scope.togglePause = function () {
+        var payload = {};
+
         $scope.isOwnVideoPaused = !$scope.isOwnVideoPaused;
-        var screen = getVideoScreen($scope.currentLocalVideoLocation);
-        peerFactory.sendDataToPeer({ type: 'toggleRemoteVideo', uri: screen.uri });
-        toggleLocalVideoPlayingState(screen);
+        if ($scope.isOwnVideoPaused === true) {
+            payload.screen = getVideoScreen($scope.currentLocalVideoLocation).uri;
+        }
+
+        peerFactory.sendDataToPeer({ type: 'toggleRemoteVideo', data: payload });
+        toggleLocalVideoPlayingState(payload);
     };
 
     $scope.determineFullscreenCanvas = function () {
