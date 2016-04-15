@@ -263,6 +263,8 @@ angular.module('drawinghandler', [])
         tearDownDrawingFactory: function () {
             peerFactory.clearCallback('newPathCreated');
             peerFactory.clearCallback('newArrowCreated');
+            remoteCanvas = null;
+            localCanvas  = null;
         }
     };
 });
