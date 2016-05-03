@@ -6,13 +6,11 @@
 
 angular.module('trackinghandler', [])
 .factory('trackingFactory', function ($ionicAnalytics, $localStorage, $window) {
-
     var trackingTypes = {
         LOGIN: 'User logged in',
         REGISTER: 'User registered',
         LOGOUT: 'User logged out',
         VERIFY: 'User requested verification code',
-        REGISTER: 'User registered',
         CALL_INIT: 'User initialized a call',
         CALL_RECEIVE: 'User received a call',
         CALL_END: 'A call was ended',
@@ -68,13 +66,13 @@ angular.module('trackinghandler', [])
             },
             call: {
                 started: function (opts) {
-                    trackEvent(trackingTypes.CALL_INIT, opts)
+                    trackEvent(trackingTypes.CALL_INIT, opts);
                 },
                 received: function (opts) {
-                    trackEvent(trackingTypes.CALL_RECEIVE, opts)
+                    trackEvent(trackingTypes.CALL_RECEIVE, opts);
                 },
                 ended: function (opts) {
-                    trackEvent(trackingTypes.CALL_END, opts)
+                    trackEvent(trackingTypes.CALL_END, opts);
                 }
             }
         }

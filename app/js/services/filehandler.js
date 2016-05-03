@@ -5,17 +5,15 @@
  */
 
 angular.module('filehandler', [])
-.factory('fileFactory', function ($window, $cordovaFile) {
-    var dataDir = 'soar-calls';
-
+.factory('fileFactory', function ($window) {
     return {
         createDataDirIfNotExist: function () {
+            var rejectErr = function (e) {
+                reject(e);
+            };
+
             if ($window.cordova) {
                 return new Promise(function (resolve, reject) {
-                    var rejectErr = function (e) {
-                        console.log(e);
-                        reject(e);
-                    };
 
                     xwalk.experimental.native_file_system.requestNativeFileSystem('dcim', function (fs) {
                         fs.root.getDirectory('/dcim/soar-calls', { create: true }, function () {
@@ -29,11 +27,11 @@ angular.module('filehandler', [])
             var self = this;
 
             return new Promise(function (resolve, reject) {
+                var rejectErr = function (e) {
+                    reject(e);
+                };
+
                 if ($window.cordova) {
-                    var rejectErr = function (e) {
-                        console.log(e);
-                        reject(e);
-                    };
 
                     xwalk.experimental.native_file_system.requestNativeFileSystem('dcim', function (fs) {
                         fs.root.getDirectory('/dcim/soar-calls', { create: false }, function (dir) {
@@ -50,7 +48,6 @@ angular.module('filehandler', [])
         writeToFile: function (opts) {
             return new Promise(function (resolve, reject) {
                 var rejectErr = function (e) {
-                    console.log(e);
                     reject(e);
                 };
 
