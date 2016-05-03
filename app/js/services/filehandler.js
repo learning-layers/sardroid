@@ -8,12 +8,11 @@ angular.module('filehandler', [])
 .factory('fileFactory', function ($window) {
     return {
         createDataDirIfNotExist: function () {
-            var rejectErr = function (e) {
-                reject(e);
-            };
-
             if ($window.cordova) {
                 return new Promise(function (resolve, reject) {
+                    var rejectErr = function (e) {
+                        reject(e);
+                    };
 
                     xwalk.experimental.native_file_system.requestNativeFileSystem('dcim', function (fs) {
                         fs.root.getDirectory('/dcim/soar-calls', { create: true }, function () {
