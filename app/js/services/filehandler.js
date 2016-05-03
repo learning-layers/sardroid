@@ -60,10 +60,7 @@ angular.module('filehandler', [])
                     fs.root.getFile('/dcim/soar-calls/' + opts.fileName, { create: true },
                            function (entry) {
                                 entry.createWriter(function (writer) {
-                                    console.log(writer);
-                                    var blob = new Blob(['asdasdasd'], {type: 'text/plain'})
-                                    writer.write(blob);
-                                    console.log('success!');
+                                    writer.write(opts.data);
                                     resolve();
                                 }, rejectErr)
                            }, rejectErr)
