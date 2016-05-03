@@ -95,32 +95,24 @@ angular.module('peerhandler', [])
 
     // Private api
     var getLocalCameraStream = function (successCallback, errorCallback) {
-        if (localStream && successCallback) {
-            successCallback(localStream);
-        } else {
-            getDeviceCameraID().then(function (id) {
-                var videoSettings = {};
+        getDeviceCameraID().then(function (id) {
+            var videoSettings = {};
 
-                if (id) {
-                    videoSettings.optional = [{ sourceId: id }];
-                }
+            if (id) {
+                videoSettings.optional = [{ sourceId: id }];
+            }
 
-                navigator.webkitGetUserMedia(
-                    {
-                        audio: true,
-                        video: videoSettings
-                    },
-                    function (stream) {
-                        localStream = stream;
-                        setLocalStreamSrc(stream);
-                        if (successCallback) {
-                            successCallback(stream);
-                        }
-                    },
-                    errorCallback
-                );
-            });
-        }
+            navigator.webkitGetUserMedia(
+                {
+                    audio: true,
+                    video: videoSettings
+                },
+                function (stream) {
+                    successCallback(stream);
+                },
+                errorCallback
+            );
+        });
     };
 
     var cancelAllLocalNotifications = function () {
@@ -150,7 +142,8 @@ angular.module('peerhandler', [])
         remoteVideoSource = $window.URL.createObjectURL(stream);
     };
 
-    var setLocalStreamSrc = function (stream) {
+    var setLocalStream = function (stream) {
+        localStream = stream;
         localVideoSource = $window.URL.createObjectURL(stream);
     };
 
@@ -273,8 +266,9 @@ angular.module('peerhandler', [])
         return new Promise(function (resolve, reject) {
             getLocalCameraStream(function (successStream) {
                 currentAnswerStream = call;
+                setLocalStream(successStream);
 
-                call.answer(localStream);
+                call.answer(successStream);
 
                 call.on('stream', function (mediaStream) {
                     setRemoteStreamSrc(mediaStream);
@@ -290,6 +284,7 @@ angular.module('peerhandler', [])
                     callAlertModal('Error: ' + error.toString());
                 });
             }, function (err) {
+                console.log(err);
                 reject(err);
             })
         });
@@ -665,6 +660,7 @@ angular.module('peerhandler', [])
                 showCallLoader();
 
                 getLocalCameraStream(function (stream) {
+                    setLocalStream(stream);
                     currentCallStream = me.call(userToCall.phoneNumber,  stream, { metadata: me.id });
 
                     trackingFactory.track.call.started({
