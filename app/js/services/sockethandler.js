@@ -11,6 +11,8 @@ angular.module('sockethandler', [])
 
     var eventTypes = {
         CONNECT         : 'connect',
+        HEARTBEAT_PING  : 'heartbeat_ping',
+        HEARTBEAT_PONG  : 'heartbeat_pong',
         DISCONNECT      : 'disconnect',
         CONNECT_ERROR   : 'connect_error',
         TOKEN_VALID     : 'token_valid',
@@ -81,6 +83,10 @@ angular.module('sockethandler', [])
 
                 socket.on(eventTypes.DISCONNECT, function () {
                     $log.log('Socket.io: Disconnected!');
+                });
+
+                socket.on(eventTypes.HEARTBEAT_PING, function () {
+                    socket.emit(eventTypes.HEARTBEAT_PONG, { beat: 1})
                 });
 
                 socket.on(eventTypes.CONNECT_ERROR, function (err) {
