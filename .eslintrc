@@ -17,7 +17,8 @@
         "_": true,
         "cordova": true,
         "fabric": true,
-        "io": true
+        "io": true,
+        "xwalk": true
     },
     "rules": {
         "indent":  [2, 4],

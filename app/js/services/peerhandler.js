@@ -94,33 +94,25 @@ angular.module('peerhandler', [])
     };
 
     // Private api
-    var getLocalStream = function (successCallback, errorCallback) {
-        if (localStream && successCallback) {
-            successCallback(localStream);
-        } else {
-            getDeviceCameraID().then(function (id) {
-                var videoSettings = {};
+    var getLocalCameraStream = function (successCallback, errorCallback) {
+        getDeviceCameraID().then(function (id) {
+            var videoSettings = {};
 
-                if (id) {
-                    videoSettings.optional = [{ sourceId: id }];
-                }
+            if (id) {
+                videoSettings.optional = [{ sourceId: id }];
+            }
 
-                navigator.webkitGetUserMedia(
-                    {
-                        audio: true,
-                        video: videoSettings
-                    },
-                    function (stream) {
-                        localStream = stream;
-                        setLocalStreamSrc(stream);
-                        if (successCallback) {
-                            successCallback(stream);
-                        }
-                    },
-                    errorCallback
-                );
-            });
-        }
+            navigator.webkitGetUserMedia(
+                {
+                    audio: true,
+                    video: videoSettings
+                },
+                function (stream) {
+                    successCallback(stream);
+                },
+                errorCallback
+            );
+        });
     };
 
     var cancelAllLocalNotifications = function () {
@@ -150,7 +142,8 @@ angular.module('peerhandler', [])
         remoteVideoSource = $window.URL.createObjectURL(stream);
     };
 
-    var setLocalStreamSrc = function (stream) {
+    var setLocalStream = function (stream) {
+        localStream = stream;
         localVideoSource = $window.URL.createObjectURL(stream);
     };
 
@@ -271,23 +264,29 @@ angular.module('peerhandler', [])
 
     var answer = function (call) {
         return new Promise(function (resolve, reject) {
-            currentAnswerStream = call;
+            getLocalCameraStream(function (successStream) {
+                currentAnswerStream = call;
+                setLocalStream(successStream);
 
-            call.answer(localStream);
+                call.answer(successStream);
 
-            call.on('stream', function (mediaStream) {
-                setRemoteStreamSrc(mediaStream);
-                resolve();
-            });
+                call.on('stream', function (mediaStream) {
+                    setRemoteStreamSrc(mediaStream);
+                    resolve();
+                });
 
-            call.on('close', function () {
-                endCallAndGoBack();
-            });
+                call.on('close', function () {
+                    endCallAndGoBack();
+                });
 
-            call.on('error', function (error) {
-                reject();
-                callAlertModal('Error: ' + error.toString());
-            });
+                call.on('error', function (error) {
+                    reject();
+                    callAlertModal('Error: ' + error.toString());
+                });
+            }, function (err) {
+                console.log(err);
+                reject(err);
+            })
         });
     };
 
@@ -364,6 +363,12 @@ angular.module('peerhandler', [])
             currentAnswerStream.close();
             currentAnswerStream = null;
         }
+
+        if (localStream) {
+            localStream.getAudioTracks()[0].stop();
+            localStream.getVideoTracks()[0].stop();
+            localStream = null;
+        }
     };
 
     var disconnectFromPeerJS = function () {
@@ -421,6 +426,7 @@ angular.module('peerhandler', [])
 
         getLocalStreamSrc: function () {
             if (!localVideoSource) {
+                $log.log('No video local source!');
                 return null;
             }
 
@@ -511,12 +517,12 @@ angular.module('peerhandler', [])
                 });
 
                 me.socket._socket.onopen = function () {
-                    getLocalStream(null, function (err) {
-                        if (err.name === 'DevicesNotFoundError') {
-                            modalFactory.alert($translate.instant('ERROR_TITLE'),
-                                               $translate.instant('CAMERA_NOT_FOUND'));
-                        }
-                    });
+                    //getLocalCameraStream(null, function (err) {
+                    //    if (err.name === 'DevicesNotFoundError') {
+                    //        modalFactory.alert($translate.instant('ERROR_TITLE'),
+                    //                           $translate.instant('CAMERA_NOT_FOUND'));
+                    //    }
+                    //});
                 };
 
                 me.on('error', function (error) {
@@ -653,7 +659,8 @@ angular.module('peerhandler', [])
                 isInCallCurrently = true;
                 showCallLoader();
 
-                getLocalStream(function (stream) {
+                getLocalCameraStream(function (stream) {
+                    setLocalStream(stream);
                     currentCallStream = me.call(userToCall.phoneNumber,  stream, { metadata: me.id });
 
                     trackingFactory.track.call.started({
@@ -678,6 +685,8 @@ angular.module('peerhandler', [])
                         reject();
                         endCallAndGoBack();
                     });
+                }, function (err) {
+                    reject(err);
                 });
 
                 dataConn = me.connect(userToCall.phoneNumber, { reliable: true, serialization: 'none' });

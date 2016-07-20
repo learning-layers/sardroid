@@ -52,9 +52,9 @@ angular.module('confighandler', [])
             }
         },
         development: {
-            apiUrl: 'http://192.168.0.13:9000/',
+            apiUrl: 'http://10.100.16.185:9000/',
             peerjs: {
-                host: '192.168.0.13',
+                host: '10.100.16.185',
                 port: 9000,
                 path: '/peerjs',
                 debug: 0,

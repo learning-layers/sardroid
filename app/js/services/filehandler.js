@@ -5,29 +5,40 @@
  */
 
 angular.module('filehandler', [])
-.factory('fileFactory', function ($window, $cordovaFile) {
-    var dataDir = 'soar-calls';
-
+.factory('fileFactory', function ($window) {
     return {
         createDataDirIfNotExist: function () {
             if ($window.cordova) {
-                $cordovaFile.createDir(cordova.file.externalRootDirectory, dataDir, false);
+                return new Promise(function (resolve, reject) {
+                    var rejectErr = function (e) {
+                        reject(e);
+                    };
+
+                    xwalk.experimental.native_file_system.requestNativeFileSystem('dcim', function (fs) {
+                        fs.root.getDirectory('/dcim/soar-calls', { create: true }, function () {
+                            resolve();
+                        })
+                    }, rejectErr)
+                });
             }
         },
         emptyCallDataDir: function () {
             var self = this;
+
             return new Promise(function (resolve, reject) {
-                console.log(cordova.file.externalRootDirectory + dataDir);
+                var rejectErr = function (e) {
+                    reject(e);
+                };
 
                 if ($window.cordova) {
-                    $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, dataDir)
-                        .then(function () {
-                            self.createDataDirIfNotExist();
-                            resolve();
+
+                    xwalk.experimental.native_file_system.requestNativeFileSystem('dcim', function (fs) {
+                        fs.root.getDirectory('/dcim/soar-calls', { create: false }, function (dir) {
+                            dir.removeRecursively(function () {
+                                return self.createDataDirIfNotExist();
+                            }, rejectErr)
                         })
-                        .catch(function (err) {
-                            reject(err);
-                        });
+                    }, rejectErr);
                 } else {
                     resolve('Dummy resolve');
                 }
@@ -35,14 +46,21 @@ angular.module('filehandler', [])
         },
         writeToFile: function (opts) {
             return new Promise(function (resolve, reject) {
+                var rejectErr = function (e) {
+                    reject(e);
+                };
+
                 if ($window.cordova) {
-                    $cordovaFile.writeFile(cordova.file.externalRootDirectory + '/soar-calls', opts.fileName, opts.data)
-                    .then(function (success) {
-                        resolve(success);
-                    })
-                    .catch(function (error) {
-                        reject(error);
-                    });
+                    xwalk.experimental.native_file_system.requestNativeFileSystem('dcim',
+                    function (fs) {
+                    fs.root.getFile('/dcim/soar-calls/' + opts.fileName, { create: true },
+                           function (entry) {
+                                entry.createWriter(function (writer) {
+                                    writer.write(opts.data);
+                                    resolve();
+                                }, rejectErr)
+                           }, rejectErr)
+                    }, rejectErr);
                 } else {
                     resolve('Dummy resolve');
                 }
