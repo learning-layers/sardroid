@@ -6,12 +6,12 @@
  * and wiring up the states, controllers and templates
  */
 angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analytics', 'ngStorage', 'ngCordova', 'login',
-                            'settings', 'quit', 'verify', 'trackinghandler', 'register', 'pascalprecht.translate',
+                            'settings', 'quit', 'verify', 'trackinghandler', 'register', 'pascalprecht.translate', 'angularMoment',
                             'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'filehandler',
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
                             'apihandler', 'modalhandler', 'about', 'intlpnIonic', 'recordinghandler'])
 
-.run(function ($ionicPlatform, trackingFactory, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
+.run(function ($ionicPlatform, trackingFactory, amMoment, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
     $ionicPlatform.ready(function () {
 
         trackingFactory.registerAnalytics();
@@ -26,9 +26,12 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
             } else {
                 $rootScope.defaultCountry = 'fi';
             }
+
+            amMoment.changeLocale($rootScope.defaultCountry);
         })
         .catch(function () {
             $rootScope.defaultCountry = 'fi';
+            amMoment.changeLocale($rootScope.defaultCountry);
         });
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

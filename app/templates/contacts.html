@@ -30,7 +30,7 @@
                         <h2>{{contact.displayName}}</h2>
                         <p class="contact-number"><i class="icon ion-ios-telephone contact-telephone"></i> {{contact.phoneNumber | intlpnFormat}}</p>
                         <p class="contact-state" ng-hide="contact.currentState != 'online'"> {{'CONTACT_CURRENT_STATE' | translate}}  {{contact.currentState}}</p>
-                        <span class="contact-seen" ng-hide="contact.currentState == 'online'">Last seen: {{contact.lastSeen}}</span>
+                        <span class="contact-seen" ng-hide="contact.currentState == 'online'"> Seen: <span am-time-ago="contact.lastSeen"></span> </span>
                     </a>
                 </div>
             </div>
