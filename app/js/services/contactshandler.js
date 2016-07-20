@@ -136,6 +136,11 @@ angular.module('contacts').factory('contactsFactory', function ($cordovaContacts
 
             $log.log('setting contact ' + number + ' state to ' + state);
             contacts[index].currentState = state;
+
+            if (state === contactStates.OFFLINE) {
+                contacts[index].lastSeen = Date.now();
+            }
+
             return true;
         }
     };
