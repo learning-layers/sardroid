@@ -88,7 +88,7 @@
             display: inline-block;
         }
 
-        img, p2, h2, span {
+        img, p2, h2 {
             transition: opacity 0.5s, filter 0.5s;
             -webkit-transition: opacity 0.5s, filter 0.5s;
         }
@@ -121,6 +121,7 @@
     width: 10em;
     height: 10em;
 }
+
 @-webkit-keyframes load8 {
     0% {
         -webkit-transform: rotate(0deg);
