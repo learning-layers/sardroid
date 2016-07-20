@@ -1,9 +1,9 @@
 {
     "ABOUT": "About SoAR",
-    "ADD_USER_NOT_FOUND": "User with the number {{phoneNumber}} is not a registered SoAR user. Do you want to add it still?",
     "ACTIONS": "Actions",
     "ADD": "Add",
     "ADD_CONTACT": "Add contact",
+    "ADD_USER_NOT_FOUND": "User with the number {{phoneNumber}} is not a registered SoAR user. Do you want to add it still?",
     "CALLDATA_DELETED": "Saved call data was deleted",
     "CALL_HEADER": "Call with {{displayName}}",
     "CALL_INCOMING_TEMPLATE": "Incoming call. Answer?",
@@ -72,6 +72,7 @@
     "SAR_CALL": "Call",
     "SAVING_CALL": "Saving call to device...",
     "SEARCH": "Search",
+    "SEEN": "Seen: ",
     "SETTINGS": "Settings",
     "SOAR_PREFERENCES": "SoAR preferences",
     "SUCCESS": "Success",
