@@ -28,9 +28,9 @@
                     <a class="item item-avatar" href ng-click="selectUser(contact)">
                         <img src="{{contact.photo}}">
                         <h2>{{contact.displayName}}</h2>
-                        <p class="contact-number"><i class="icon ion-ios-telephone contact-telephone"></i> {{contact.phoneNumber | intlpnFormat}}</p>
-                        <p class="contact-state" ng-hide="contact.currentState != 'online'"> {{'CONTACT_CURRENT_STATE' | translate}}  {{contact.currentState}}</p>
                         <span class="contact-seen" ng-hide="contact.currentState == 'online'">{{'SEEN' | translate}} <span am-time-ago="contact.lastSeen"></span> </span>
+                        <span class="contact-state" ng-hide="contact.currentState != 'online'"> {{'CONTACT_CURRENT_STATE' | translate}}  {{contact.currentState}}</span>
+                        <p class="contact-number"><i class="icon ion-ios-telephone contact-telephone"></i> {{contact.phoneNumber | intlpnFormat}}</p>
                     </a>
                 </div>
             </div>
