@@ -95,7 +95,7 @@
     }
 
     .contact-wrapper.offline {
-        img, p, h2, span {
+        img, p, h2, .contact-seen {
             filter: grayscale(0.3) saturate(1);
             opacity: 0.5;
         }
