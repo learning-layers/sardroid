@@ -11,12 +11,14 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
                             'apihandler', 'modalhandler', 'about', 'intlpnIonic', 'recordinghandler'])
 
-.run(function ($ionicPlatform, trackingFactory, amMoment, settingsFactory, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
+.run(function ($ionicPlatform, trackingFactory, settingsFactory, amMoment, $translate, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
     $ionicPlatform.ready(function () {
 
         trackingFactory.registerAnalytics();
         fileFactory.createDataDirIfNotExist();
         settingsFactory.setInitialSettingsIfApplicable();
+
+        amMoment.changeLocale($translate.use());
 
         // Attempt to determine current locale from ipinfo for the number picker!
         $http.get('http://ipinfo.io')
@@ -27,11 +29,9 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
                 $rootScope.defaultCountry = 'fi';
             }
 
-            amMoment.changeLocale($rootScope.defaultCountry);
         })
         .catch(function () {
             $rootScope.defaultCountry = 'fi';
-            amMoment.changeLocale($rootScope.defaultCountry);
         });
 
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

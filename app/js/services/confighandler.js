@@ -52,9 +52,9 @@ angular.module('confighandler', [])
             }
         },
         development: {
-            apiUrl: 'http://10.100.28.191:9000/',
+            apiUrl: 'http://192.168.0.13:9000/',
             peerjs: {
-                host: '10.100.28.191',
+                host: '192.168.0.13',
                 port: 9000,
                 path: '/peerjs',
                 debug: 0,
@@ -86,7 +86,7 @@ angular.module('confighandler', [])
                 }
             },
             socketio: {
-                url: 'http://10.100.28.191:9000'
+                url: 'http://192.168.0.13:9000'
             },
             initialUserSettings: {
                 saveCalls: false,
