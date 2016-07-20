@@ -78,7 +78,7 @@ angular.module('login', [])
                 number = '+' + number;
             }
 
-            if (!intlTelInputUtils.isValidNumber(number)) {
+            if (!intlTelInputUtils.isValidNumber(number) && window.env.environment === 'PRODUCTION') {
                 modalFactory.alert($translate.instant('ERROR'), $translate.instant('NUMBER_NOT_INTL', { number: number }));
                 return;
             }

@@ -32,7 +32,6 @@ angular.module('contacts', [])
     };
 
     var closeCallModalOnClick = function (e) {
-        console.log(e);
         if (e.target.nodeName === 'HTML') {
             if (showUserModal) {
                 showUserModal.close();
