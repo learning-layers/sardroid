@@ -49,7 +49,6 @@ angular.module('contacts').factory('contactsFactory', function ($cordovaContacts
                                 }
 
                                 formatted.push({
-                                    original     : c,
                                     displayName  : displayName,
                                     phoneNumber  : number,
                                     photo        : photo
