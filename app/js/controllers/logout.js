@@ -17,7 +17,6 @@ angular.module('logout', [])
             $log.log(error);
         });
 
-        notificationFactory.unregister();
         apiFactory.deleteApiToken();
         trackingFactory.track.auth.logout();
 
