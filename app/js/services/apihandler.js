@@ -152,6 +152,11 @@ angular.module('apihandler', [])
                     return get('user/contacts');
                 }
             },
+            notifications: {
+                registerDevice: function (deviceToken) {
+                    return post('user/notifications/register', { token: deviceToken });
+                }
+            },
             exists: function (phoneNumber) {
                 return get('user/' + phoneNumber + '/exists');
             }

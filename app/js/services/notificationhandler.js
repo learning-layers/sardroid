@@ -5,13 +5,20 @@
  */
 
 angular.module('notificationhandler', [])
-.factory('notificationFactory', function ($ionicPlatform, $ionicPush, configFactory) {
+.factory('notificationFactory', function ($ionicPlatform, $ionicPush, apiFactory) {
     var onRegister = function (data) {
         console.log(data.token);
+        apiFactory.user.notifications.registerDevice(data.token)
+        .then(function (res) {
+            console.log(res);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     };
 
     var onNotification = function (notification) {
-
+        console.log(notification);
     };
 
     $ionicPlatform.ready(function () {
