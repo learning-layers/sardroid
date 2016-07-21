@@ -5,15 +5,16 @@
  * Mostly handles setting up configuration variables
  * and wiring up the states, controllers and templates
  */
-angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analytics', 'ngStorage', 'ngCordova', 'login',
+angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analytics', 'ionic.service.push', 'ngStorage', 'ngCordova', 'login',
                             'settings', 'quit', 'verify', 'trackinghandler', 'register', 'pascalprecht.translate', 'angularMoment',
-                            'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'filehandler',
+                            'logout', 'contacts', 'userprofile', 'call', 'peerhandler', 'filehandler', 'notificationhandler',
                             'drawinghandler', 'audiohandler', 'sockethandler', 'confighandler',
                             'apihandler', 'modalhandler', 'about', 'intlpnIonic', 'recordinghandler'])
 
-.run(function ($ionicPlatform, trackingFactory, settingsFactory, amMoment, $translate, $http, fileFactory,  $rootScope, $ionicSideMenuDelegate, $window) {
+.run(function ($ionicPlatform, notificationFactory, trackingFactory, settingsFactory, amMoment, $translate, $http, fileFactory, $rootScope, $ionicSideMenuDelegate, $window) {
     $ionicPlatform.ready(function () {
 
+        notificationFactory.register();
         trackingFactory.registerAnalytics();
         fileFactory.createDataDirIfNotExist();
         settingsFactory.setInitialSettingsIfApplicable();

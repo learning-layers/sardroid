@@ -7,7 +7,7 @@
  */
 
 angular.module('logout', [])
-.controller('LogoutCtrl', function ($scope, trackingFactory,  $log, $state, $localStorage,  peerFactory, socketFactory, apiFactory) {
+.controller('LogoutCtrl', function ($scope, trackingFactory, notificationFactory, $log, $state, $localStorage,  peerFactory, socketFactory, apiFactory) {
     $scope.logout = function () {
         apiFactory.auth.logout()
         .then(function (results) {
@@ -17,6 +17,7 @@ angular.module('logout', [])
             $log.log(error);
         });
 
+        notificationFactory.unregister();
         apiFactory.deleteApiToken();
         trackingFactory.track.auth.logout();
 
