@@ -9,7 +9,7 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <plugin name="cordova-plugin-whitelist" spec="1"/>
+    <plugin name="cordova-plugin-whitelist" spec="1" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -35,4 +35,7 @@
     <preference name="xwalkMode" value="embedded" />
     <preference name="xwalkMultipleApk" value="true" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
+    <plugin name="phonegap-plugin-push" spec="~1.7.4">
+        <variable name="SENDER_ID" value="704206308880" />
+    </plugin>
 </widget>

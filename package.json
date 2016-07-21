@@ -34,7 +34,14 @@
     },
     "cordova-plugin-vibration",
     "cordova-plugin-file",
-    "cordova-plugin-inappbrowser"
+    "cordova-plugin-inappbrowser",
+    {
+      "variables": {
+        "SENDER_ID": "704206308880"
+      },
+      "locator": "phonegap-plugin-push",
+      "id": "phonegap-plugin-push"
+    }
   ],
   "cordovaPlatforms": [
     "android"
