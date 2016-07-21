@@ -157,6 +157,7 @@ angular.module('contacts', [])
     $scope.user = $localStorage.user;
 
     $scope.callUser = function (userToCall) {
+        apiFactory.call.initiate(userToCall.phoneNumber);
         showUserModal.close();
         peerFactory.callPeer(userToCall)
         .then(function (user) {

@@ -143,6 +143,11 @@ angular.module('apihandler', [])
                 return post('auth/resetpw', { verificationCode: verificationCode, password: password });
             }
         },
+        call: {
+            initiate: function (recipientNumber) {
+                return post('call', { recipientNumber: recipientNumber });
+            }
+        },
         user: {
             contacts: {
                 updateContactsList: function (contactsList) {
