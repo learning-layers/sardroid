@@ -144,13 +144,13 @@ angular.module('contacts', [])
                 cordova.plugins.Keyboard.close();
             }
         }
-    }
+    };
 
     $scope.reloadContactsList = function () {
         $scope.preloaderClass = 'preloader-on';
         contactsFactory.syncContactsWithServer()
         .then(function () {
-              reloadContactsList();
+            reloadContactsList();
         });
     };
 
@@ -167,7 +167,7 @@ angular.module('contacts', [])
         .catch(function (error) {
             console.log(error);
         });
-    }
+    };
 
     $scope.selectUser = function (selectedUser) {
         $scope.selectedUser = selectedUser;

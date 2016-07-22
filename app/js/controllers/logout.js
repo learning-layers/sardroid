@@ -22,7 +22,7 @@ angular.module('logout', [])
 
         socketFactory.disconnectFromServer();
         $state.go('login');
-    }
+    };
 
     $scope.logout = function () {
         var currentDeviceToken = notificationFactory.getCurrentDeviceToken();

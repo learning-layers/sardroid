@@ -21,7 +21,7 @@ angular.module('settings', [])
             .catch(function (err) {
                 console.log(err);
                 modalFactory.alert($translate.instant('ERROR_TITLE'), err.message);
-            })
-    }
+            });
+    };
 });
 

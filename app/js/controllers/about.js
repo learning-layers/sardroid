@@ -12,10 +12,9 @@ angular.module('about', [])
             'templates/modals/about-soar.html', {
                 scope: $scope,
                 animation: 'slide-in-up'
-        }).then(function (modal) {
-            console.log('asdasdasdasdasdasdasdasasdadsasd');
-            $scope.modal = modal;
-            $scope.modal.show();
+            }).then(function (modal) {
+                $scope.modal = modal;
+                $scope.modal.show();
         });
     };
 

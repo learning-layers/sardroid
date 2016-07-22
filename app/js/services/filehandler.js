@@ -56,9 +56,9 @@ angular.module('filehandler', [])
                         fs.root.getFile('/dcim/soar-calls/' + opts.fileName, { create: true },
                            function (entry) {
                                entry.createWriter(function (writer) {
-                                    writer.write(opts.data);
-                                    resolve();
-                                }, rejectErr);
+                                   writer.write(opts.data);
+                                   resolve();
+                               }, rejectErr);
                            }, rejectErr);
                     }, rejectErr);
                 } else {

@@ -60,7 +60,7 @@ angular.module('call', [])
                     recordingFactory.clearRecordedData();
                     callFactory.callSucceeded();
                     peerFactory.endCurrentCall();
-                })
+                });
             } else {
                 peerFactory.endCurrentCall();
             }
@@ -106,7 +106,7 @@ angular.module('call', [])
         recordingFactory.initializeRecordingVideo(document.getElementById('local-wrapper'));
         // TODO: Re-enable this once CrossWalk gets to chromium 49
         // https://crosswalk-project.org/documentation/downloads.php
-        //recordingFactory.initializeRecordingAudio({ source: 'remote', audioStream: peerFactory.getRemoteStream() });
+        // recordingFactory.initializeRecordingAudio({ source: 'remote', audioStream: peerFactory.getRemoteStream() });
         recordingFactory.initializeRecordingAudio({ source: 'local',  audioStream: peerFactory.getLocalStream() });
     }
 
