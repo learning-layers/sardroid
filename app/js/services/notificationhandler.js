@@ -1,13 +1,15 @@
 'use strict';
 
 /*
- * Module for registering the device for push notifications with the backend server
+ * Module for handling push notifications
  */
 
 angular.module('notificationhandler', [])
 .factory('notificationFactory', function ($ionicPlatform, $ionicPush, apiFactory) {
+    var currentDeviceToken = null;
+
     var onRegister = function (data) {
-        console.log(data.token);
+        currentDeviceToken = data.token;
         apiFactory.user.notifications.registerDevice(data.token)
         .then(function (res) {
             console.log(res);
@@ -17,9 +19,7 @@ angular.module('notificationhandler', [])
         });
     };
 
-    var onNotification = function (notification) {
-        console.log(notification);
-    };
+    var onNotification = function (notification) { /* No-op for now! */ };
 
     $ionicPlatform.ready(function () {
         $ionicPush.init({
@@ -30,6 +30,12 @@ angular.module('notificationhandler', [])
     });
 
     return {
+        getCurrentDeviceToken: function () {
+            return currentDeviceToken;
+        },
+        removeCurrentDeviceToken: function () {
+            currentDeviceToken = null;
+        },
         register: function () {
             $ionicPush.register();
         },

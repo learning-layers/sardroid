@@ -65,6 +65,7 @@ angular.module('apihandler', [])
         };
     };
 
+    //TODO: DRY up these HTTP helper methods?
     var get = function (path) {
         return new Promise(function (resolve, reject) {
             $rootScope.hideLoader = false;
@@ -98,10 +99,10 @@ angular.module('apihandler', [])
         });
     };
 
-    var del = function (path) {
+    var put = function (path, params) {
         return new Promise(function (resolve, reject) {
             $rootScope.hideLoader = false;
-            $http.delete(apiUrl + path)
+            $http.put(apiUrl + path, params)
                 .then(function (results) {
                     resolve(results.data);
                 })
@@ -130,8 +131,8 @@ angular.module('apihandler', [])
             login: function (phoneNumber, password) {
                 return post('auth/login', { phoneNumber : phoneNumber, password : password });
             },
-            logout: function () {
-                return del('auth/logout');
+            logout: function (deviceToken) {
+                return put('auth/logout', { deviceToken: deviceToken });
             },
             verify: function (phoneNumber, verificationType) {
                 return post('auth/verification', { phoneNumber : phoneNumber, verificationType: verificationType });

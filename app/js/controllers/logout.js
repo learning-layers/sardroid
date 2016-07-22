@@ -8,17 +8,10 @@
 
 angular.module('logout', [])
 .controller('LogoutCtrl', function ($scope, trackingFactory, notificationFactory, $log, $state, $localStorage,  peerFactory, socketFactory, apiFactory) {
-    $scope.logout = function () {
-        apiFactory.auth.logout()
-        .then(function (results) {
-            $log.log(results);
-        })
-        .catch(function (error) {
-            $log.log(error);
-        });
-
+    var finishLogout = function () {
         apiFactory.deleteApiToken();
         trackingFactory.track.auth.logout();
+        notificationFactory.removeCurrentDeviceToken();
 
         delete $localStorage.user;
         delete $localStorage.token;
@@ -29,6 +22,14 @@ angular.module('logout', [])
 
         socketFactory.disconnectFromServer();
         $state.go('login');
+    }
+
+    $scope.logout = function () {
+        var currentDeviceToken = notificationFactory.getCurrentDeviceToken();
+
+        apiFactory.auth.logout(currentDeviceToken)
+        .then(finishLogout)
+        .catch(finishLogout);
     };
 });
 
