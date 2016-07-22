@@ -7,9 +7,10 @@
  */
 
 angular.module('peerhandler', [])
-.factory('peerFactory', function (configFactory, $log, $window, $rootScope, $ionicPopup, $ionicLoading, $ionicHistory,
-                                  $timeout, $state, $translate, $cordovaLocalNotification, audioFactory,
-                                  contactsFactory, trackingFactory, modalFactory, $cordovaVibration) {
+.factory('peerFactory', function (configFactory, $log, $window, $rootScope, $ionicPopup,
+                                  $ionicLoading, $ionicHistory, $timeout, $state,
+                                  $translate, audioFactory, contactsFactory, callFactory,
+                                  trackingFactory, modalFactory, $cordovaVibration) {
     // PeerJS object representing the user
     var me                = null;
 
@@ -516,17 +517,10 @@ angular.module('peerhandler', [])
                     reject();
                 });
 
-                me.socket._socket.onopen = function () {
-                    //getLocalCameraStream(null, function (err) {
-                    //    if (err.name === 'DevicesNotFoundError') {
-                    //        modalFactory.alert($translate.instant('ERROR_TITLE'),
-                    //                           $translate.instant('CAMERA_NOT_FOUND'));
-                    //    }
-                    //});
-                };
-
                 me.on('error', function (error) {
                     var errorMsg = error.toString();
+
+                    callFactory.callNotAnswered();
 
                     switch (error.type) {
                     case 'peer-unavailable':
@@ -587,12 +581,6 @@ angular.module('peerhandler', [])
                         notificationText = $translate.instant('NOTIFICATION_CALL',
                                                               { displayName: user.displayName,
                                                                 mediaConnection: mediaConnection.peer });
-
-                        $cordovaLocalNotification.schedule({
-                            id    : notificationsId,
-                            title : notificationText,
-                            text  : notificationText
-                        });
 
                         modalFactory.confirm(
                              $translate.instant('CALL_INCOMING_TITLE', { displayName: user.displayName }),
@@ -670,7 +658,6 @@ angular.module('peerhandler', [])
 
                     currentCallStream.on('error', function (err) {
                         reject(err);
-                        $log.log(err);
                         hideCallLoader();
                         isInCallCurrently = false;
                     });

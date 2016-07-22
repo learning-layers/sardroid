@@ -6,7 +6,7 @@
  */
 
 angular.module('contacts', [])
-.controller('ContactsCtrl', function ($scope, $localStorage, $ionicPopup, contactsFactory,
+.controller('ContactsCtrl', function ($scope, $localStorage, $ionicPopup, contactsFactory, callFactory,
                                       modalFactory, peerFactory, socketFactory, configFactory, apiFactory,
                                       $state, $timeout, $translate, $window, $ionicModal) {
     var newContactModal = null;
@@ -157,15 +157,15 @@ angular.module('contacts', [])
     $scope.user = $localStorage.user;
 
     $scope.callUser = function (userToCall) {
-        apiFactory.call.initiate(userToCall.phoneNumber);
+        callFactory.initiateCall(userToCall.phoneNumber);
         showUserModal.close();
         peerFactory.callPeer(userToCall)
         .then(function (user) {
             document.querySelector('html').removeEventListener('click', closeCallModalOnClick);
             $state.go('call', { user: user });
         })
-        .catch(function () {
-
+        .catch(function (error) {
+            console.log(error);
         });
     }
 
