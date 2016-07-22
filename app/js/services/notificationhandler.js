@@ -10,7 +10,7 @@ angular.module('notificationhandler', [])
 
     var onRegister = function (data) {
         currentDeviceToken = data.token;
-        apiFactory.user.notifications.registerDevice(data.token)
+        apiFactory.user.notifications.registerDevice(data.token);
     };
 
     var onNotification = function (notification) { /* No-op for now! */ };

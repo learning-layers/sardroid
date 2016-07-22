@@ -65,7 +65,7 @@ angular.module('apihandler', [])
         };
     };
 
-    //TODO: DRY up these HTTP helper methods?
+    // TODO: DRY up these HTTP helper methods?
     var get = function (path) {
         return new Promise(function (resolve, reject) {
             $rootScope.hideLoader = false;

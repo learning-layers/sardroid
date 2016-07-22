@@ -9,7 +9,7 @@ angular.module('recordinghandler', [])
 .factory('recordingFactory', function (settingsFactory, $window) {
     var videoRecorder  = null;
     var localRecorder  = null;
-    var remoteRecorder = null
+    var remoteRecorder = null;
 
     var frameInterval = settingsFactory.getSetting('callRecordingInterval');
 
@@ -22,7 +22,7 @@ angular.module('recordinghandler', [])
                 disableLogs: ($window.env.environment === 'production')
             });
         }
-    }
+    };
 
     var initializeRemoteAudio = function (audioStream) {
         if (!remoteRecorder) {
@@ -33,7 +33,7 @@ angular.module('recordinghandler', [])
                 disableLogs: ($window.env.environment === 'production')
             });
         }
-    }
+    };
 
     return {
         initializeRecordingVideo: function (elementToRecord) {
@@ -49,11 +49,11 @@ angular.module('recordinghandler', [])
         },
         initializeRecordingAudio: function (opts) {
             switch (opts.source) {
-                case 'local':
-                    initializeLocalAudio(opts.audioStream);
+            case 'local':
+                initializeLocalAudio(opts.audioStream);
                 break;
-                case 'remote':
-                    initializeRemoteAudio(opts.audioStream);
+            case 'remote':
+                initializeRemoteAudio(opts.audioStream);
                 break;
             }
         },
@@ -63,12 +63,12 @@ angular.module('recordinghandler', [])
                 if (videoRecorder && localRecorder) {
                     videoRecorder.initRecorder(function () {
                         localRecorder.initRecorder(function () {
-                            //remoteRecorder.initRecorder(function () {
-                                videoRecorder.startRecording();
-                                //remoteRecorder.startRecording();
-                                localRecorder.startRecording();
-                                resolve();
-                            //});
+                            // remoteRecorder.initRecorder(function () {
+                            videoRecorder.startRecording();
+                                // remoteRecorder.startRecording();
+                            localRecorder.startRecording();
+                            resolve();
+                            // });
                         });
                     });
                 } else {
@@ -80,17 +80,17 @@ angular.module('recordinghandler', [])
             return new Promise(function (resolve) {
                 videoRecorder.stopRecording(function () {
                     localRecorder.stopRecording(function () {
-                        //remoteRecorder.stopRecording(function () {
-                            var videoBlob       = videoRecorder.getBlob();
-                            //var remoteAudioBlob = remoteRecorder.getBlob();
-                            var localAudioBlob  = localRecorder.getBlob();
+                        // remoteRecorder.stopRecording(function () {
+                        var videoBlob       = videoRecorder.getBlob();
+                            // var remoteAudioBlob = remoteRecorder.getBlob();
+                        var localAudioBlob  = localRecorder.getBlob();
 
-                            resolve({
-                                videoBlob: videoBlob,
-                                //remoteAudioBlob: remoteAudioBlob,
-                                localAudioBlob: localAudioBlob
-                            });
-                        //});
+                        resolve({
+                            videoBlob: videoBlob,
+                                // remoteAudioBlob: remoteAudioBlob,
+                            localAudioBlob: localAudioBlob
+                        });
+                        // });
                     });
                 });
             });

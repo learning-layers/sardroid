@@ -287,7 +287,7 @@ angular.module('peerhandler', [])
             }, function (err) {
                 console.log(err);
                 reject(err);
-            })
+            });
         });
     };
 

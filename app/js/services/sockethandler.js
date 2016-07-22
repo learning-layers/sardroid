@@ -86,7 +86,7 @@ angular.module('sockethandler', [])
                 });
 
                 socket.on(eventTypes.HEARTBEAT_PING, function () {
-                    socket.emit(eventTypes.HEARTBEAT_PONG, { beat: 1})
+                    socket.emit(eventTypes.HEARTBEAT_PONG, { beat: 1 });
                 });
 
                 socket.on(eventTypes.CONNECT_ERROR, function (err) {

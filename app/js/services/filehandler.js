@@ -17,8 +17,8 @@ angular.module('filehandler', [])
                     xwalk.experimental.native_file_system.requestNativeFileSystem('dcim', function (fs) {
                         fs.root.getDirectory('/dcim/soar-calls', { create: true }, function () {
                             resolve();
-                        })
-                    }, rejectErr)
+                        });
+                    }, rejectErr);
                 });
             }
         },
@@ -36,8 +36,8 @@ angular.module('filehandler', [])
                         fs.root.getDirectory('/dcim/soar-calls', { create: false }, function (dir) {
                             dir.removeRecursively(function () {
                                 return self.createDataDirIfNotExist();
-                            }, rejectErr)
-                        })
+                            }, rejectErr);
+                        });
                     }, rejectErr);
                 } else {
                     resolve('Dummy resolve');
@@ -53,13 +53,13 @@ angular.module('filehandler', [])
                 if ($window.cordova) {
                     xwalk.experimental.native_file_system.requestNativeFileSystem('dcim',
                     function (fs) {
-                    fs.root.getFile('/dcim/soar-calls/' + opts.fileName, { create: true },
+                        fs.root.getFile('/dcim/soar-calls/' + opts.fileName, { create: true },
                            function (entry) {
-                                entry.createWriter(function (writer) {
+                               entry.createWriter(function (writer) {
                                     writer.write(opts.data);
                                     resolve();
-                                }, rejectErr)
-                           }, rejectErr)
+                                }, rejectErr);
+                           }, rejectErr);
                     }, rejectErr);
                 } else {
                     resolve('Dummy resolve');
