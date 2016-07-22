@@ -160,7 +160,7 @@ angular.module('apihandler', [])
             },
             notifications: {
                 registerDevice: function (deviceToken) {
-                    return post('user/notifications/register', { token: deviceToken });
+                    return post('user/notifications/register', { deviceToken: deviceToken });
                 }
             },
             exists: function (phoneNumber) {
