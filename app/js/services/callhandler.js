@@ -18,7 +18,7 @@ angular.module('call', [])
         return new Promise(function (resolve, reject) {
             apiFactory.call.initiate(recipient)
                 .then(function (newCall) {
-                    console.log(newCall);
+                    currentCallID = newCall.CallId;
                     resolve(newCall);
                 })
                 .catch(function (callErr) {
@@ -33,13 +33,15 @@ angular.module('call', [])
                 return reject(new Error('Current call ID is null!'));
             }
 
-            apiFactory.call.end(finalStatus, currentCallID);
+            apiFactory.call.end(finalStatus, currentCallID)
                 .then(function (endedCall) {
-                    console.log(endedCall);
                     resolve(endedCall);
                 })
-                .catch(function (endedCall) {
-                    reject(endedCall);
+                .catch(function (error) {
+                    reject(error);
+                })
+                .finally(function () {
+                    currentCallID = null;
                 });
         });
     };

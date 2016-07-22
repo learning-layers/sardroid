@@ -6,7 +6,9 @@
  */
 
 angular.module('call', [])
-.controller('CallCtrl', function ($scope, trackingFactory, recordingFactory, fileFactory, $ionicLoading, settingsFactory, $window, $document, $sce, $stateParams, peerFactory, drawingFactory) {
+.controller('CallCtrl', function ($scope, trackingFactory, recordingFactory, fileFactory,
+                                  $ionicLoading, settingsFactory, $window, $document, callFactory
+                                  , $sce, $stateParams, peerFactory, drawingFactory) {
     var saveCalls = settingsFactory.getSetting('saveCalls');
 
     var startDate = Date.now();
@@ -56,6 +58,7 @@ angular.module('call', [])
                 .catch(function (error) {
                     $ionicLoading.hide();
                     recordingFactory.clearRecordedData();
+                    callFactory.callSucceeded();
                     peerFactory.endCurrentCall();
                 })
             } else {
