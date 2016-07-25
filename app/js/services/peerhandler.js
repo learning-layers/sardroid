@@ -56,6 +56,7 @@ angular.module('peerhandler', [])
 
     var stopCallAttempt = function () {
         closeDataConnection({ type: 'callerClosed', message: 'User changed his mind!' });
+        callFactory.callNotAnswered();
     };
 
     // Array of callback functions to handle data
