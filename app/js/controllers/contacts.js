@@ -157,15 +157,18 @@ angular.module('contacts', [])
     $scope.user = $localStorage.user;
 
     $scope.callUser = function (userToCall) {
-        callFactory.initiateCall(userToCall.phoneNumber);
         showUserModal.close();
-        peerFactory.callPeer(userToCall)
+
+        callFactory.initiateCall(userToCall.phoneNumber)
+        .then(function () {
+             return peerFactory.callPeer(userToCall);
+        })
         .then(function (user) {
             document.querySelector('html').removeEventListener('click', closeCallModalOnClick);
             $state.go('call', { user: user });
         })
         .catch(function (error) {
-            console.log(error);
+            callFactory.callError();
         });
     };
 

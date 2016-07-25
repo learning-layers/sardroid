@@ -520,7 +520,11 @@ angular.module('peerhandler', [])
                 me.on('error', function (error) {
                     var errorMsg = error.toString();
 
-                    callFactory.callNotAnswered();
+                    if (error.type === 'peer-unavailable') {
+                        callFactory.callNotAnswered();
+                    } else {
+                        callFactory.callError();
+                    }
 
                     switch (error.type) {
                     case 'peer-unavailable':
