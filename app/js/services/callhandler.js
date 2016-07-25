@@ -18,7 +18,8 @@ angular.module('call', [])
         return new Promise(function (resolve, reject) {
             apiFactory.call.initiate(recipient)
                 .then(function (newCall) {
-                    currentCallID = newCall.CallId;
+                    console.log(newCall);
+                    currentCallID = newCall.id;
                     resolve(newCall);
                 })
                 .catch(function (callErr) {
