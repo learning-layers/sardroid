@@ -116,24 +116,6 @@ angular.module('peerhandler', [])
         });
     };
 
-    var cancelAllLocalNotifications = function () {
-        notificationIds.forEach(function (id) {
-            cancelLocalNotification(id);
-        });
-
-        notificationIds = [];
-    };
-
-    var cancelLocalNotification = function (id) {
-        var index = notificationIds.indexOf(id);
-
-        if ($window.cordova) {
-            $cordovaLocalNotification.cancel(id);
-        }
-
-        notificationIds.splice(index, 1);
-    };
-
     var getCallbacksByType = function (type) {
         return _.where(dataCallbacks, { eventType: type });
     };
@@ -197,7 +179,6 @@ angular.module('peerhandler', [])
                     hideCallLoader();
                     callAlertModal(dataJSON.message);
                 } else if (dataJSON.type === 'callerClosed') {
-                    cancelAllLocalNotifications();
                     modalFactory.closeAllPopups();
                     closeDataConnection();
                     isInCallCurrently = false;
@@ -352,7 +333,6 @@ angular.module('peerhandler', [])
     };
 
     var endCurrentCall = function () {
-        cancelAllLocalNotifications();
         closeDataConnection();
 
         if (currentCallStream) {
@@ -593,7 +573,6 @@ angular.module('peerhandler', [])
                         .then(function (res) {
                             $cordovaVibration.cancelVibration();
                             audioFactory.stopSound('call');
-                            cancelLocalNotification(id);
 
                             if (res) {
                                 answer(mediaConnection)

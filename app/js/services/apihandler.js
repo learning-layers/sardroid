@@ -149,7 +149,7 @@ angular.module('apihandler', [])
                 return post('call/initiate', { recipientNumber: recipientNumber });
             },
             end: function (finalStatus, callID) {
-                return post('call/' + callID + '/end', { finalStatus: finalStatus });
+                return put('call/' + callID + '/end', { finalStatus: finalStatus });
             }
         },
         user: {
