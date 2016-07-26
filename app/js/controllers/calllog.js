@@ -15,15 +15,26 @@ angular.module('callLog', [])
                 var didUserDoCall = callLogFactory.didCurrentLoggedInUserDoCall(call);
 
                 if (didUserDoCall) {
-                    call.text = call.caller.phoneNumber + " called you";
-                } else {
                     call.text = 'You called ' + call.recipient.phoneNumber;
+                } else {
+                    call.text = call.caller.phoneNumber + " called you";
                 }
 
-                if (call.state === callLogFactory.callStates.not_answered && didUserDoCall) {
-                    call.text += ", but they didn't answer"
-                } else {
-                    call.text += ", but you didn't answer"
+                switch (call.finalStatus) {
+                    case callLogFactory.callStates.not_answered:
+                        if (didUserDoCall) {
+                            call.text += ", but they didn't answer"
+                        } else {
+                            call.text += ", but you didn't answer"
+                        }
+                    break;
+                    case callLogFactory.callStates.error:
+                        call.text += ', but something went wrong'
+
+                    break;
+                    case callLogFactory.callStates.succeeded:
+
+                    break;
                 }
 
                 return call;

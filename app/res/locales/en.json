@@ -41,6 +41,7 @@
     "NAME_MISSING": "Looks like you're missing a contact name!",
     "NEXT_RECONNECT_IN": "Next attempt in {{countdown}} seconds...",
     "NOTIFICATION_CALL" : "SoAR call from {{displayName}} ( {{mediaConnection}} )",
+    "NO_CALLS_MADE": "Looks like you haven't made any calls yet!",
     "NO_CONTACTS_FOUND": "Looks like your phone doesn't have any contacts that have SoAR installed",
     "NO_CONTACTS_SEARCH": "No matching contacts",
     "NO_VERIFICATION": "Verification code not found",
