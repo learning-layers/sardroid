@@ -17,10 +17,10 @@ angular.module('callLog', [])
                 var didUserDoCall = callLogFactory.didCurrentLoggedInUserDoCall(call);
                 if (didUserDoCall) {
                     call.text = translations.CALL_LOG_YOU_CALLED;
-                    call.userInfo = contactsFactory.getPresentableContactName(call.recipient.phoneNumber);
+                    call.userInfo = contactsFactory.getContactName(call.recipient.phoneNumber);
                 } else {
                     call.text = translations.CALL_LOG_THEY_CALLED;
-                    call.userInfo = contactsFactory.getPresentableContactName(call.caller.phoneNumber);
+                    call.userInfo = contactsFactory.getContactName(call.caller.phoneNumber);
                 }
 
                 switch (call.finalStatus) {

@@ -4,12 +4,11 @@
             <div ng-repeat="call in calls">
                 <a href="#" class="item">
                     <h2>{{::call.userInfo}}</h2>
-                    <span>{{::call.startedAt | amDateFormat: 'dddd, D.M.YYYY hh:mm:ss'}}</span>
+                    <span>{{::call.startedAt | amDateFormat: 'D.M.YYYY hh:mm:ss'}}</span>
                     <p>{{::call.text}}</p>
                 </a>
             </div>
         </div>
-
         <div class="list" ng-hide="calls.length > 0">
             <a class="item no-results" href="#">
                 <h2>{{'NO_CALLS_MADE' | translate}}</h2>

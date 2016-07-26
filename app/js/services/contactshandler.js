@@ -112,21 +112,18 @@ angular.module('contacts').factory('contactsFactory', function ($cordovaContacts
             contacts = newContacts;
         },
 
-        getPresentableContactName: function (phoneNumber) {
+        getContactName: function (phoneNumber) {
             if (!phoneNumber) {
                 return 'Unknown';
             }
 
-            var output = '';
             var contact = this.getContactByNumber(phoneNumber);
 
             if (contact) {
-                output += contact.displayName + ' ';
+                return contact.displayName;
+            } else {
+                return intlpnFormatFilter('+' + phoneNumber);
             }
-
-            output += '(' + intlpnFormatFilter('+' + phoneNumber) + ')';
-
-            return output;
         },
         getContacts: function () {
             return contacts;
