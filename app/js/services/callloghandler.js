@@ -57,6 +57,9 @@ angular.module('callLog')
         },
         callNotAnswered: function () {
             return endCall(callStates.not_answered);
+        },
+        fetchLogsFromServer: function () {
+            return apiFactory.call.getLogs();
         }
     };
 });

@@ -1,4 +1,18 @@
 <ion-view view-title="{{'CALL_LOG' | translate}}" ng-cloak>
-    <h1>HALLO</h1>
+    <ion-content class="padding has-header">
+        <div class="list">
+            <div ng-repeat="call in calls">
+                <a href="#" class="item">
+                    {{call.finalStatus}}
+                </a>
+            </div>
+        </div>
+
+        <div class="list" ng-hide="calls.length > 0">
+            <a class="item no-results" href="#">
+                <h2>No calls made!</h2>
+            </a>
+        </div>
+    </ion-content>
 </ion-view>
 

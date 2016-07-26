@@ -150,6 +150,9 @@ angular.module('apihandler', [])
             },
             end: function (finalStatus, callID) {
                 return put('call/' + callID + '/end', { finalStatus: finalStatus });
+            },
+            getLogs: function () {
+                return get('call');
             }
         },
         user: {
