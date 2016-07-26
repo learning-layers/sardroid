@@ -5,7 +5,7 @@
  */
 
 angular.module('callLog')
-.factory('callLogFactory', function (apiFactory) {
+.factory('callLogFactory', function (apiFactory, $localStorage) {
     var callStates = {
         error: 'error',
         not_answered: 'not_answered',
@@ -57,6 +57,11 @@ angular.module('callLog')
         },
         callNotAnswered: function () {
             return endCall(callStates.not_answered);
+        },
+        didCurrentLoggedInUserDoCall: function (call) {
+            if (call && call.caller && $localStorage.user) {
+                return call.caller.phoneNumber === $localStorage.user.phoneNumber;
+            }
         },
         fetchLogsFromServer: function () {
             return apiFactory.call.getLogs();
