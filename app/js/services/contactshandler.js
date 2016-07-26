@@ -4,7 +4,7 @@
  * Factory for manipulating the phone's native contacts.
  */
 angular.module('contacts').factory('contactsFactory', function ($cordovaContacts, $http, $log,
-                                                               $localStorage, apiFactory) {
+                                                               $localStorage, apiFactory, intlpnFormatFilter) {
     // Array to store all the devices contacts so we don't have to re-fetch them all the time
     var contacts = [];
 
@@ -112,6 +112,25 @@ angular.module('contacts').factory('contactsFactory', function ($cordovaContacts
             contacts = newContacts;
         },
 
+        getPresentableContactName: function (phoneNumber) {
+            if (!phoneNumber) {
+                return 'Unknown';
+            }
+
+            var output = '';
+            var contact = this.getContactByNumber(phoneNumber);
+
+            if (contact) {
+                output += contact.displayName + ' ';
+            }
+
+            output += '(' + intlpnFormatFilter('+' + phoneNumber) + ')';
+            console.log(contact);
+            console.log(output);
+
+            return output;
+
+        },
         getContacts: function () {
             return contacts;
         },

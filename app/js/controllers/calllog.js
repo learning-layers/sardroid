@@ -5,7 +5,7 @@
  */
 
 angular.module('callLog', [])
-.controller('CallLogCtrl', function (callLogFactory, $scope) {
+.controller('CallLogCtrl', function (callLogFactory, contactsFactory, $scope) {
     callLogFactory.fetchLogsFromServer()
     .then(function (calls) {
         $scope.$apply(function () {
@@ -15,9 +15,9 @@ angular.module('callLog', [])
                 var didUserDoCall = callLogFactory.didCurrentLoggedInUserDoCall(call);
 
                 if (didUserDoCall) {
-                    call.text = 'You called ' + call.recipient.phoneNumber;
+                    call.text = 'You called ' + contactsFactory.getPresentableContactName(call.recipient.phoneNumber);
                 } else {
-                    call.text = call.caller.phoneNumber + " called you";
+                    call.text = contactsFactory.getPresentableContactName(call.caller.phoneNumber) + " called you";
                 }
 
                 switch (call.finalStatus) {
