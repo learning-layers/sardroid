@@ -130,7 +130,18 @@ angular.module('sardroid', ['ionic', 'ionic.service.core', 'ionic.service.analyt
                     controller: 'ContactsCtrl'
                 }
             }
+        })
+        .state('tabs.calllog', {
+            url: '/calllog',
+            cache: false,
+            views: {
+                'calllog-tab': {
+                    templateUrl: 'templates/calllog.html',
+                    controller: 'CallLogCtrl'
+                }
+            }
         });
+
 
     $translateProvider.
         useStaticFilesLoader({
