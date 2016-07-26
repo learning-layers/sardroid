@@ -125,11 +125,8 @@ angular.module('contacts').factory('contactsFactory', function ($cordovaContacts
             }
 
             output += '(' + intlpnFormatFilter('+' + phoneNumber) + ')';
-            console.log(contact);
-            console.log(output);
 
             return output;
-
         },
         getContacts: function () {
             return contacts;

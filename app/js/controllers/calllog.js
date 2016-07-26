@@ -14,10 +14,13 @@ angular.module('callLog', [])
             var formattedCalls = calls.map(function (call) {
                 var didUserDoCall = callLogFactory.didCurrentLoggedInUserDoCall(call);
 
+
                 if (didUserDoCall) {
-                    call.text = 'You called ' + contactsFactory.getPresentableContactName(call.recipient.phoneNumber);
+                    call.text = 'You called them'
+                    call.userInfo = contactsFactory.getPresentableContactName(call.recipient.phoneNumber);
                 } else {
-                    call.text = contactsFactory.getPresentableContactName(call.caller.phoneNumber) + " called you";
+                    call.text =  'They called you';
+                    call.userInfo = contactsFactory.getPresentableContactName(call.caller.phoneNumber);
                 }
 
                 switch (call.finalStatus) {
@@ -29,7 +32,7 @@ angular.module('callLog', [])
                         }
                     break;
                     case callLogFactory.callStates.error:
-                        call.text += ', but something went wrong'
+                        call.text += ', but something went wrong!'
 
                     break;
                     case callLogFactory.callStates.succeeded:
