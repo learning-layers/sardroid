@@ -9,7 +9,7 @@
 angular.module('peerhandler', [])
 .factory('peerFactory', function (configFactory, $log, $window, $rootScope, $ionicPopup,
                                   $ionicLoading, $ionicHistory, $timeout, $state,
-                                  $translate, audioFactory, contactsFactory, callFactory,
+                                  $translate, audioFactory, contactsFactory, callLogFactory,
                                   trackingFactory, modalFactory, $cordovaVibration) {
     // PeerJS object representing the user
     var me                = null;
@@ -56,7 +56,7 @@ angular.module('peerhandler', [])
 
     var stopCallAttempt = function () {
         closeDataConnection({ type: 'callerClosed', message: 'User changed his mind!' });
-        callFactory.callNotAnswered();
+        callLogFactory.callNotAnswered();
     };
 
     // Array of callback functions to handle data
@@ -502,9 +502,9 @@ angular.module('peerhandler', [])
                     var errorMsg = error.toString();
 
                     if (error.type === 'peer-unavailable') {
-                        callFactory.callNotAnswered();
+                        callLogFactory.callNotAnswered();
                     } else {
-                        callFactory.callError();
+                        callLogFactory.callError();
                     }
 
                     switch (error.type) {

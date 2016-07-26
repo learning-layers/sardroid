@@ -6,7 +6,7 @@
  */
 
 angular.module('contacts', [])
-.controller('ContactsCtrl', function ($scope, $localStorage, $ionicPopup, contactsFactory, callFactory,
+.controller('ContactsCtrl', function ($scope, $localStorage, $ionicPopup, contactsFactory, callLogFactory,
                                       modalFactory, peerFactory, socketFactory, configFactory, apiFactory,
                                       $state, $timeout, $translate, $window, $ionicModal) {
     var newContactModal = null;
@@ -159,7 +159,7 @@ angular.module('contacts', [])
     $scope.callUser = function (userToCall) {
         showUserModal.close();
 
-        callFactory.initiateCall(userToCall.phoneNumber)
+        callLogFactory.initiateCall(userToCall.phoneNumber)
         .then(function () {
              return peerFactory.callPeer(userToCall);
         })
@@ -168,7 +168,7 @@ angular.module('contacts', [])
             $state.go('call', { user: user });
         })
         .catch(function (error) {
-            callFactory.callError();
+            callLogFactory.callError();
         });
     };
 

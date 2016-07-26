@@ -4,8 +4,8 @@
  * Module for juggling call state.
  */
 
-angular.module('call', [])
-.factory('callFactory', function (apiFactory) {
+angular.module('callLog', [])
+.factory('callLogFactory', function (apiFactory) {
     var callStates = {
         error: 'error',
         not_answered: 'not_answered',
@@ -31,6 +31,7 @@ angular.module('call', [])
     var endCall = function (finalStatus) {
         return new Promise(function (resolve, reject) {
             if (!currentCallID) {
+                console.log(currentCallID);
                 return reject(new Error('Current call ID is null!'));
             }
 
