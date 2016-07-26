@@ -3,7 +3,8 @@
         <div class="list">
             <div ng-repeat="call in calls">
                 <a href="#" class="item">
-                    {{call.text}}
+                    <h2>{{::call.text}}</h2>
+                    <span>{{::call.startedAt | amDateFormat: 'dddd, D.M.YYYY hh:mm:ss'}}</span>
                 </a>
             </div>
         </div>

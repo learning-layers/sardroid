@@ -15,15 +15,15 @@ angular.module('callLog', [])
                 var didUserDoCall = callLogFactory.didCurrentLoggedInUserDoCall(call);
 
                 if (didUserDoCall) {
-                    call.text = call.caller.phoneNumber + " called you.";
+                    call.text = call.caller.phoneNumber + " called you";
                 } else {
                     call.text = 'You called ' + call.recipient.phoneNumber;
                 }
 
                 if (call.state === callLogFactory.callStates.not_answered && didUserDoCall) {
-                    call.text += " , but they did not answer."
+                    call.text += ", but they didn't answer"
                 } else {
-                    call.text += " , but you did not answer."
+                    call.text += ", but you didn't answer"
                 }
 
                 return call;
