@@ -49,10 +49,11 @@ angular.module('callLog', [])
                     return call;
                 });
 
+                $scope.haveAllCallsBeenLoaded = calls.length != paginationOffset;
                 $scope.calls = $scope.calls.concat(formattedCalls);
                 $scope.$broadcast('scroll.infiniteScrollComplete');
+
                 currentPagination += paginationOffset;
-                console.log(calls);
             });
         })
         .catch(function (err) {
