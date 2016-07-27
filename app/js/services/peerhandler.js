@@ -499,6 +499,7 @@ angular.module('peerhandler', [])
                 });
 
                 me.on('error', function (error) {
+                    isInCallCurrently = false;
                     var errorMsg = error.toString();
 
                     if (error.type === 'peer-unavailable') {
