@@ -19,6 +19,7 @@ angular.module('call', [])
         if (alreadyLeaving === false) {
             alreadyLeaving = true;
             peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
+            callLogFactory.callSucceeded();
             trackingFactory.track.call.ended({
                 with: $stateParams.user.phoneNumber,
                 duration: Date.now() - startDate
@@ -58,7 +59,6 @@ angular.module('call', [])
                 .catch(function (error) {
                     $ionicLoading.hide();
                     recordingFactory.clearRecordedData();
-                    callLogFactory.callSucceeded();
                     peerFactory.endCurrentCall();
                 });
             } else {
