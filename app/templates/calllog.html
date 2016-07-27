@@ -4,7 +4,7 @@
             <div ng-repeat="call in calls">
                 <a href="#" class="item">
                     <h2>{{::call.userInfo}}</h2>
-                    <span>{{::call.startedAt | amDateFormat: 'D.M.YYYY hh:mm:ss'}}</span>
+                    <span>{{::call.startedAt | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
                     <p>{{::call.text}}</p>
                 </a>
             </div>
