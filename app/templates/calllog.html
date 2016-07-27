@@ -13,6 +13,10 @@
             <a class="item no-results" href="#">
                 <h2>{{'NO_CALLS_MADE' | translate}}</h2>
             </a>
+            <ion-infinite-scroll
+                on-infinite="loadMoreCalls()"
+                distance="1%">
+            </ion-infinite-scroll>
         </div>
     </ion-content>
 </ion-view>
