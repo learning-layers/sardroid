@@ -7,7 +7,7 @@
 
 angular.module('call', [])
 .controller('CallCtrl', function ($scope, trackingFactory, recordingFactory, fileFactory,
-                                  $ionicLoading, settingsFactory, $window, $document, callFactory
+                                  $ionicLoading, settingsFactory, $window, $document, callLogFactory
                                   , $sce, $stateParams, peerFactory, drawingFactory) {
     var saveCalls = settingsFactory.getSetting('saveCalls');
 
@@ -58,7 +58,7 @@ angular.module('call', [])
                 .catch(function (error) {
                     $ionicLoading.hide();
                     recordingFactory.clearRecordedData();
-                    callFactory.callSucceeded();
+                    callLogFactory.callSucceeded();
                     peerFactory.endCurrentCall();
                 });
             } else {

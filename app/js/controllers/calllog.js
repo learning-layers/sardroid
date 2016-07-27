@@ -11,7 +11,7 @@ angular.module('callLog', [])
                                           'CALL_LOG_ERROR']);
 
     var currentPagination = 0;
-    var paginationOffset = 5;
+    var paginationOffset = 10;
 
     $scope.calls = [];
 
@@ -49,7 +49,7 @@ angular.module('callLog', [])
                     return call;
                 });
 
-                $scope.haveAllCallsBeenLoaded = calls.length != paginationOffset;
+                $scope.haveAllCallsBeenLoaded = calls.length < paginationOffset;
                 $scope.calls = $scope.calls.concat(formattedCalls);
                 $scope.$broadcast('scroll.infiniteScrollComplete');
 
