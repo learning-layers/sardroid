@@ -5,7 +5,7 @@
  */
 
 angular.module('apihandler', [])
-.factory('apiFactory', function ($http, $log, $rootScope, configFactory) {
+.factory('apiFactory', function ($http, $httpParamSerializer, $log, $rootScope, configFactory) {
     // Private API
     var apiUrl = configFactory.getValue('apiUrl');
 
@@ -66,9 +66,14 @@ angular.module('apihandler', [])
     };
 
     // TODO: DRY up these HTTP helper methods?
-    var get = function (path) {
+    var get = function (path, params) {
         return new Promise(function (resolve, reject) {
             $rootScope.hideLoader = false;
+            if (params) {
+                path += '?' + $httpParamSerializer(params);
+                console.log(path);
+            }
+
             $http.get(apiUrl + path)
                 .then(function (results) {
                     resolve(results.data);
@@ -151,8 +156,8 @@ angular.module('apihandler', [])
             end: function (finalStatus, callID) {
                 return put('call/' + callID + '/end', { finalStatus: finalStatus });
             },
-            getLogs: function () {
-                return get('call');
+            getLogs: function (offset, limit) {
+                return get('call', { offset: offset, limit: limit });
             }
         },
         user: {

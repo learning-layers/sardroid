@@ -63,8 +63,8 @@ angular.module('callLog')
                 return call.caller.phoneNumber === $localStorage.user.phoneNumber;
             }
         },
-        fetchMoreLogs: function () {
-            return apiFactory.call.getLogs();
+        fetchMoreLogs: function (offset, limit) {
+            return apiFactory.call.getLogs(offset, limit);
         }
     };
 });

@@ -16,8 +16,7 @@ angular.module('callLog', [])
     $scope.calls = [];
 
     $scope.loadMoreCalls = function () {
-        console.log('loading more!');
-        callLogFactory.fetchMoreLogs()
+        callLogFactory.fetchMoreLogs(currentPagination, paginationOffset)
         .then(function (calls) {
             $scope.$apply(function () {
                 var formattedCalls = calls.map(function (call) {
@@ -52,6 +51,7 @@ angular.module('callLog', [])
 
                 $scope.calls = $scope.calls.concat(formattedCalls);
                 $scope.$broadcast('scroll.infiniteScrollComplete');
+                currentPagination += paginationOffset;
                 console.log(calls);
             });
         })
