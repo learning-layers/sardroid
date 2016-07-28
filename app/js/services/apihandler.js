@@ -71,7 +71,6 @@ angular.module('apihandler', [])
             $rootScope.hideLoader = false;
             if (params) {
                 path += '?' + $httpParamSerializer(params);
-                console.log(path);
             }
 
             $http.get(apiUrl + path)

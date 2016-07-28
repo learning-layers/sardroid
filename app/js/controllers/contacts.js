@@ -94,7 +94,6 @@ angular.module('contacts', [])
                     } else {
                         modalFactory.confirm($translate.instant('WARNING'), $translate.instant('ADD_USER_NOT_FOUND', { phoneNumber: newContact.phoneNumber }))
                             .then(function (promptRes) {
-                                console.log(promptRes);
                                 if (promptRes === true) {
                                     newContactModal.hide();
                                     $scope.preloaderClass = 'preloader-on';
