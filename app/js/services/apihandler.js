@@ -175,6 +175,9 @@ angular.module('apihandler', [])
             },
             exists: function (phoneNumber) {
                 return get('user/' + phoneNumber + '/exists');
+            },
+            generatePeerId: function () {
+                return get('user/generatePeerId');
             }
         }
     };

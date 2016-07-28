@@ -9,34 +9,39 @@ angular.module('login', [])
 .controller('LoginCtrl', function ($scope, $state, $localStorage, $ionicPlatform, $ionicHistory, $translate, apiFactory,
                                   modalFactory, trackingFactory, peerFactory, socketFactory, contactsFactory, notificationFactory) {
     var loginCompleted = function (number) {
-        var promises = [];
-
         apiFactory.setApiToken($localStorage.token);
-        $localStorage.hasBeenInRegister = true;
 
-        promises.push(socketFactory.connectToServer($localStorage.token));
-        promises.push(peerFactory.connectToPeerJS(number));
+        apiFactory.user.generatePeerId()
+        .then(function (data) {
+            var id = data.peerJSId;
+            var promises = [];
 
-        if (!$localStorage.contactsBeenSynced) {
-            promises.push(contactsFactory.syncContactsWithServer());
-        }
+            $localStorage.hasBeenInRegister = true;
 
-        Promise.all(promises)
-        .then(function () {
-            // Disable back button so we can't back to login!
-            $ionicHistory.nextViewOptions({
-                disableBack: true
+            promises.push(socketFactory.connectToServer($localStorage.token));
+            promises.push(peerFactory.connectToPeerJS(id));
+
+            if (!$localStorage.contactsBeenSynced) {
+                promises.push(contactsFactory.syncContactsWithServer());
+            }
+
+            Promise.all(promises)
+            .then(function () {
+                // Disable back button so we can't back to login!
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                notificationFactory.register();
+                trackingFactory.track.auth.login();
+                $state.go('tabs.contacts');
+            })
+            .catch(function () {
+                $scope.isLoginButtonDisabled = false;
+                socketFactory.disconnectFromServer();
+                peerFactory.disconnectFromPeerJS();
             });
-
-            notificationFactory.register();
-            trackingFactory.track.auth.login();
-            $state.go('tabs.contacts');
         })
-        .catch(function () {
-            $scope.isLoginButtonDisabled = false;
-            socketFactory.disconnectFromServer();
-            peerFactory.disconnectFromPeerJS();
-        });
     };
 
     // Hack so we're disconnected for sure!

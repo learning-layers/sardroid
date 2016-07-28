@@ -478,6 +478,8 @@ angular.module('peerhandler', [])
             return new Promise(function (resolve, reject) {
                 if (me) {
                     me.disconnect();
+                    me.destroy();
+                    me = null;
                 }
 
                 me = new Peer(id, config);
@@ -548,9 +550,6 @@ angular.module('peerhandler', [])
                         audioFactory.playSound('call');
 
                         user = contactsFactory.getContactByNumber(mediaConnection.peer);
-
-                        notificationsId = Math.floor(Math.random() * 10000);
-                        notificationIds.push(notificationsId);
 
                         if (!user) {
                             user = { displayName: mediaConnection.peer };
@@ -633,7 +632,7 @@ angular.module('peerhandler', [])
 
                 getLocalCameraStream(function (stream) {
                     setLocalStream(stream);
-                    currentCallStream = me.call(userToCall.phoneNumber,  stream, { metadata: me.id });
+                    currentCallStream = me.call(userToCall.peerJSId,  stream, { metadata: me.id });
 
                     trackingFactory.track.call.started({
                         from: me.id,
