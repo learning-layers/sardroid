@@ -5,7 +5,7 @@
  */
 
 angular.module('callLog', [])
-.controller('CallLogCtrl', function (callLogFactory, contactsFactory, $scope, $translate) {
+.controller('CallLogCtrl', function (callLogFactory, modalFactory, contactsFactory, $scope, $translate) {
     var translations = $translate.instant(['CALL_LOG_YOU_CALLED', 'CALL_LOG_THEY_CALLED',
                                           'CALL_LOG_THEY_NO_ANSWER', 'CALL_LOG_YOU_NO_ANSWER',
                                           'CALL_LOG_ERROR']);
@@ -57,7 +57,7 @@ angular.module('callLog', [])
             });
         })
         .catch(function (err) {
-            console.log(err);
+            modalFactory.alert($translate.instant('ERROR'), $translate.instant('CALL_LOG_FETCH_ERROR'));
         });
     };
 
