@@ -10,6 +10,7 @@
     "CALL_INCOMING_TITLE":" Puhelu {{displayName}}:lta",
     "CALL_LOG": "Puheluhistoria",
     "CALL_LOG_ERROR": ", mutta jotain meni pieleen!",
+    "CALL_LOG_FETCH_ERROR": "Puheluiden lataus meni pieleen!",
     "CALL_LOG_THEY_CALLED": "Hän soitti sinulle",
     "CALL_LOG_THEY_NO_ANSWER": ", mutta hän ei vastannut",
     "CALL_LOG_YOU_CALLED": "Soitit hänelle",

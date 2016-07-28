@@ -267,7 +267,6 @@ angular.module('peerhandler', [])
                     callAlertModal('Error: ' + error.toString());
                 });
             }, function (err) {
-                console.log(err);
                 reject(err);
             });
         });
