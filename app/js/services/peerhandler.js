@@ -549,7 +549,7 @@ angular.module('peerhandler', [])
                         isInCallCurrently = true;
                         audioFactory.playSound('call');
 
-                        user = contactsFactory.getContactByNumber(mediaConnection.peer);
+                        user = contactsFactory.getContactByNumber(mediaConnection.peer.split('PEER')[0]);
 
                         if (!user) {
                             user = { displayName: mediaConnection.peer };
@@ -659,7 +659,7 @@ angular.module('peerhandler', [])
                     reject(err);
                 });
 
-                dataConn = me.connect(userToCall.phoneNumber, { reliable: true, serialization: 'none' });
+                dataConn = me.connect(userToCall.peerJSId, { reliable: true, serialization: 'none' });
 
                 if (checkIfDataConnectionIsSet(dataConn) === false) {
                     setDataConnection(dataConn);
