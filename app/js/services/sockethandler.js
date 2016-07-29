@@ -10,15 +10,16 @@ angular.module('sockethandler', [])
     var socket = null;
 
     var eventTypes = {
-        CONNECT         : 'connect',
-        HEARTBEAT_PING  : 'heartbeat_ping',
-        HEARTBEAT_PONG  : 'heartbeat_pong',
-        DISCONNECT      : 'disconnect',
-        CONNECT_ERROR   : 'connect_error',
-        TOKEN_VALID     : 'token_valid',
-        TOKEN_INVALID   : 'token_invalid',
-        CONTACT_ONLINE  : 'contact:online',
-        CONTACT_OFFLINE : 'contact:offline'
+        CONNECT           : 'connect',
+        HEARTBEAT_PING    : 'heartbeat_ping',
+        HEARTBEAT_PONG    : 'heartbeat_pong',
+        DISCONNECT        : 'disconnect',
+        CONNECT_ERROR     : 'connect_error',
+        TOKEN_VALID       : 'token_valid',
+        TOKEN_INVALID     : 'token_invalid',
+        ALREADY_LOGGED_IN : 'already_logged_in',
+        CONTACT_ONLINE    : 'contact:online',
+        CONTACT_OFFLINE   : 'contact:offline'
     };
 
     // Array of callbacks
@@ -63,6 +64,10 @@ angular.module('sockethandler', [])
                     $log.log('Socket.io: User is offline');
                     data.eventType = eventTypes.CONTACT_OFFLINE;
                     callCallbacks(eventTypes.CONTACT_OFFLINE, data);
+                });
+
+                socket.on(eventTypes.ALREADY_LOGGED_IN, function (data) {
+                    console.log('we are already logged in!');
                 });
 
                 // These two events are used for authentication
