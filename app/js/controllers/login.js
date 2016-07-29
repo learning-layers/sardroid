@@ -25,23 +25,30 @@ angular.module('login', [])
                 promises.push(contactsFactory.syncContactsWithServer());
             }
 
-            Promise.all(promises)
-            .then(function () {
-                // Disable back button so we can't back to login!
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-
-                notificationFactory.register();
-                trackingFactory.track.auth.login();
-                $state.go('tabs.contacts');
-            })
-            .catch(function () {
-                $scope.isLoginButtonDisabled = false;
-                socketFactory.disconnectFromServer();
-                peerFactory.disconnectFromPeerJS();
-            });
+            return Promise.all(promises);
         })
+        .then(function () {
+            // Disable back button so we can't back to login!
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+
+            notificationFactory.register();
+            trackingFactory.track.auth.login();
+            $state.go('tabs.contacts');
+        })
+        .catch(function () {
+            delete $localStorage.token;
+            delete $localStorage.user.token;
+            apiFactory.deleteApiToken();
+
+            $scope.$apply(function () {
+                $scope.isLoginButtonDisabled = false;
+            });
+
+            socketFactory.disconnectFromServer();
+            peerFactory.disconnectFromPeerJS();
+        });
     };
 
     // Hack so we're disconnected for sure!
