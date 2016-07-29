@@ -157,6 +157,9 @@ angular.module('apihandler', [])
             },
             getLogs: function (offset, limit) {
                 return get('call', { offset: offset, limit: limit });
+            },
+            getNotSeen: function () {
+                return get('call/not_seen');
             }
         },
         user: {

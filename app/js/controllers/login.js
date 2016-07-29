@@ -6,8 +6,11 @@
  */
 
 angular.module('login', [])
-.controller('LoginCtrl', function ($scope, $state, $localStorage, $ionicPlatform, $ionicHistory, $translate, apiFactory,
-                                  modalFactory, trackingFactory, peerFactory, socketFactory, contactsFactory, notificationFactory) {
+.controller('LoginCtrl', function ($scope, $state, $localStorage,
+                                   $ionicPlatform, $ionicHistory, $translate,
+                                   apiFactory, modalFactory, trackingFactory,
+                                   peerFactory, socketFactory, contactsFactory,
+                                   notificationFactory, callLogFactory) {
     var loginCompleted = function (number) {
         apiFactory.setApiToken($localStorage.token);
 
@@ -20,6 +23,7 @@ angular.module('login', [])
 
             promises.push(socketFactory.connectToServer($localStorage.token));
             promises.push(peerFactory.connectToPeerJS(id));
+            promises.push(callLogFactory.fetchNotSeenCalls());
 
             if (!$localStorage.contactsBeenSynced) {
                 promises.push(contactsFactory.syncContactsWithServer());

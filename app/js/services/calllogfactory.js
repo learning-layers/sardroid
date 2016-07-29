@@ -14,6 +14,24 @@ angular.module('callLog')
 
     var currentCallID = null;
 
+    var callsNotSeen = [];
+
+
+    var fetchNotSeenCalls = function () {
+         return new Promise(function (resolve, reject) {
+            apiFactory.call.getNotSeen()
+                .then(function (notSeenCalls) {
+                    console.log(notSeenCalls);
+                    callsNotSeen = notSeenCalls
+                    resolve(notSeenCalls);
+                })
+                .catch(function (callErr) {
+                    reject(callErr);
+                });
+        });
+    };
+
+
     var initiateCall = function (recipient) {
         return new Promise(function (resolve, reject) {
             apiFactory.call.initiate(recipient)
@@ -65,7 +83,8 @@ angular.module('callLog')
         },
         fetchMoreLogs: function (offset, limit) {
             return apiFactory.call.getLogs(offset, limit);
-        }
+        },
+        fetchNotSeenCalls: fetchNotSeenCalls
     };
 });
 
