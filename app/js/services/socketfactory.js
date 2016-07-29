@@ -56,14 +56,16 @@ angular.module('sockethandler', [])
 
                 socket.on(eventTypes.CONTACT_ONLINE, function (data) {
                     $log.log('Socket.io: User is online');
+                    console.log(data);
                     data.eventType = eventTypes.CONTACT_ONLINE;
                     callCallbacks(eventTypes.CONTACT_ONLINE, data);
                 });
 
                 socket.on(eventTypes.CONTACT_OFFLINE, function (data) {
                     $log.log('Socket.io: User is offline');
+                    console.log(data[0]);
                     data.eventType = eventTypes.CONTACT_OFFLINE;
-                    callCallbacks(eventTypes.CONTACT_OFFLINE, data);
+                    callCallbacks(eventTypes.CONTACT_OFFLINE, data[0]);
                 });
 
                 socket.on(eventTypes.ALREADY_LOGGED_IN, function (data) {

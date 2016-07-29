@@ -146,7 +146,6 @@ angular.module('contacts').factory('contactsFactory', function ($cordovaContacts
                 return false;
             }
 
-            $log.log('setting contact ' + number + ' state to ' + state);
             contacts[index].currentState = state;
             contacts[index].peerJSId = peerJSId;
 
