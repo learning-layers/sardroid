@@ -4,6 +4,8 @@
     "ADD": "Lisää",
     "ADD_CONTACT": "Lisää kontakti",
     "ADD_USER_NOT_FOUND": "Käyttäjä numerolla {{phoneNumber}} ei ole rekisteröitynt SoAR:n. Lisää silti?",
+    "AlREADY_LOGGED_IN_HEADER": "Kirjautuminen toisella laitteella",
+    "AlREADY_LOGGED_IN_TEXT": "Sinut kirjattiin ulos automaattisesti, koska kirjaantui sisään samoilla tunnuksilla, mutta eri laitteella.",
     "CALLDATA_DELETED": "Tallennetut puhelut poistettii",
     "CALL_HEADER": "Puhelu {{displayName}}:n kanssa",
     "CALL_INCOMING_TEMPLATE": "Puhelu tulossa. Vastaa?",

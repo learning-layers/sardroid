@@ -4,6 +4,8 @@
     "ADD": "Add",
     "ADD_CONTACT": "Add contact",
     "ADD_USER_NOT_FOUND": "User with the number {{phoneNumber}} is not a registered SoAR user. Do you want to add it still?",
+    "ALREADY_LOGGED_IN_HEADER": "Log in from another device",
+    "ALREADY_LOGGED_IN_TEXT": "You were automatically logged out, because you logged in from another device.",
     "CALLDATA_DELETED": "Saved call data was deleted",
     "CALL_HEADER": "Call with {{displayName}}",
     "CALL_INCOMING_TEMPLATE": "Incoming call. Answer?",

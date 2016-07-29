@@ -67,7 +67,9 @@ angular.module('sockethandler', [])
                 });
 
                 socket.on(eventTypes.ALREADY_LOGGED_IN, function (data) {
-                    console.log('we are already logged in!');
+                    $log.log('Socket.io: User logged in from different device!');
+                    data.eventType = eventTypes.ALREADY_LOGGED_IN;
+                    callCallbacks(eventTypes.ALREADY_LOGGED_IN, data);
                 });
 
                 // These two events are used for authentication
