@@ -5,7 +5,7 @@
  */
 
 angular.module('callLog')
-.factory('callLogFactory', function (apiFactory, $localStorage) {
+.factory('callLogFactory', function (apiFactory, $localStorage, $rootScope) {
     var callStates = {
         error: 'error',
         not_answered: 'not_answered',
@@ -21,7 +21,7 @@ angular.module('callLog')
          return new Promise(function (resolve, reject) {
             apiFactory.call.getNotSeen()
                 .then(function (notSeenCalls) {
-                    console.log(notSeenCalls);
+                    $rootScope.notSeenCallsCount = notSeenCalls.length;
                     callsNotSeen = notSeenCalls
                     resolve(notSeenCalls);
                 })
