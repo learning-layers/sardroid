@@ -139,7 +139,7 @@ angular.module('contacts').factory('contactsFactory', function ($cordovaContacts
             });
         },
 
-        setContactStateIfApplicable: function (number, state) {
+        setContactStateIfApplicable: function (number, peerJSId, state) {
             var index = _.indexOf(contacts, this.getContactByNumber(number));
 
             if (index === -1) {
@@ -148,6 +148,7 @@ angular.module('contacts').factory('contactsFactory', function ($cordovaContacts
 
             $log.log('setting contact ' + number + ' state to ' + state);
             contacts[index].currentState = state;
+            contacts[index].peerJSId = peerJSId;
 
             if (state === contactStates.OFFLINE) {
                 contacts[index].lastSeen = Date.now();

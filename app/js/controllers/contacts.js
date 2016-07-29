@@ -58,7 +58,7 @@ angular.module('contacts', [])
         var stateToSet = data.eventType === socketFactory.eventTypes.CONTACT_ONLINE ?
             contactsFactory.contactStates.ONLINE : contactsFactory.contactStates.OFFLINE;
 
-        var didStateChange = contactsFactory.setContactStateIfApplicable(data.phoneNumber, stateToSet);
+        var didStateChange = contactsFactory.setContactStateIfApplicable(data.phoneNumber, data.peerJSId, stateToSet);
 
         if (didStateChange) {
             contactsFactory.sortContactsByState();
