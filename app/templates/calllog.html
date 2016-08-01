@@ -2,7 +2,7 @@
     <ion-content class="padding has-header">
         <div class="list call-log-list">
             <div ng-repeat="call in calls">
-                <a href="#" class="item">
+                <a href="#" class="item" ng-class="{ 'not-seen': ::call.hasBeenSeen}">
                     <h2>{{::call.userInfo}}</h2>
                     <span>{{::call.startedAt | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
                     <p>{{::call.text}}</p>

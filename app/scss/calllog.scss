@@ -1,3 +1,7 @@
+.tabs-striped.tabs-positive .tab-item .badge {
+    opacity: 1;
+}
+
 .call-log-list {
     .item {
         h2 {
@@ -7,6 +11,10 @@
 
         span {
             float: right;
+        }
+
+        &.not-seen {
+            background-color: red;
         }
     }
 }

@@ -5,7 +5,8 @@
  */
 
 angular.module('callLog', [])
-.controller('CallLogCtrl', function (callLogFactory, modalFactory, contactsFactory, $scope, $translate) {
+.controller('CallLogCtrl', function (callLogFactory, modalFactory, contactsFactory,
+                                     $scope, $translate, $localStorage) {
     var translations = $translate.instant(['CALL_LOG_YOU_CALLED', 'CALL_LOG_THEY_CALLED',
                                           'CALL_LOG_THEY_NO_ANSWER', 'CALL_LOG_YOU_NO_ANSWER',
                                           'CALL_LOG_ERROR']);
@@ -21,6 +22,7 @@ angular.module('callLog', [])
             $scope.$apply(function () {
                 var formattedCalls = calls.map(function (call) {
                     var didUserDoCall = callLogFactory.didCurrentLoggedInUserDoCall(call);
+
                     if (didUserDoCall) {
                         call.text = translations.CALL_LOG_YOU_CALLED;
                         call.userInfo = contactsFactory.getContactName(call.recipient.phoneNumber);
@@ -31,7 +33,7 @@ angular.module('callLog', [])
 
                     switch (call.finalStatus) {
                         case callLogFactory.callStates.not_answered:
-                            if (didUserDoCall) {
+                        if (didUserDoCall) {
                             call.text += translations.CALL_LOG_THEY_NO_ANSWER;
                         } else {
                             call.text += translations.CALL_LOG_YOU_NO_ANSWER;
@@ -45,6 +47,8 @@ angular.module('callLog', [])
 
                             break;
                     }
+
+                    call.hasBeenSeen = !call.missedCallBeenSeen && call.recipientId == $localStorage.user.id;
 
                     return call;
                 });
