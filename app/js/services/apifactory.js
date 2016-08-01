@@ -160,6 +160,9 @@ angular.module('apihandler', [])
             },
             getNotSeen: function () {
                 return get('call/not_seen');
+            },
+            markAsSeen: function (calls) {
+                return put('call/mark_seen', { calls: calls });
             }
         },
         user: {

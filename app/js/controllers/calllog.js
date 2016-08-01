@@ -58,6 +58,8 @@ angular.module('callLog', [])
                 $scope.$broadcast('scroll.infiniteScrollComplete');
 
                 currentPagination += paginationOffset;
+
+                callLogFactory.markCallsAsSeen(calls);
             });
         })
         .catch(function (err) {

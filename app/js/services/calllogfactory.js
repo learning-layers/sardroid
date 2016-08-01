@@ -16,13 +16,28 @@ angular.module('callLog')
 
     var callsNotSeen = [];
 
+    var filterNotSeenCalls = function (calls) {
+        return _.filter(calls, function (call) {
+            return (call.missedCallBeenSeen === false) && $localStorage.user.id === call.recipientId;
+        });
+    }
+
+    var setCallLogBadge = function (number) {
+        $rootScope.notSeenCallsCount = number;
+    };
+
+    var decrementCallLogBadge = function (number) {
+        if ($rootScope.notSeenCallsCount - number >= 0) {
+            $rootScope.notSeenCallsCount -= number
+        }
+    };
 
     var fetchNotSeenCalls = function () {
          return new Promise(function (resolve, reject) {
             apiFactory.call.getNotSeen()
                 .then(function (notSeenCalls) {
-                    $rootScope.notSeenCallsCount = notSeenCalls.length;
                     callsNotSeen = notSeenCalls
+                    setCallLogBadge(notSeenCalls.length);
                     resolve(notSeenCalls);
                 })
                 .catch(function (callErr) {
@@ -31,6 +46,23 @@ angular.module('callLog')
         });
     };
 
+    var markCallsAsSeen = function (calls) {
+         return new Promise(function (resolve, reject) {
+             var callsToMarkAsSeen = filterNotSeenCalls(calls);
+             if (callsToMarkAsSeen.length === 0) {
+                 return resolve();
+             } else {
+                 decrementCallLogBadge(callsToMarkAsSeen.length);
+                 return apiFactory.call.markAsSeen(callsToMarkAsSeen)
+                    .then(function (results) {
+                        resolve(resolve)
+                    })
+                    .catch(function (error) {
+                        reject(error);
+                    });
+             }
+        });
+    };
 
     var initiateCall = function (recipient) {
         return new Promise(function (resolve, reject) {
@@ -84,7 +116,8 @@ angular.module('callLog')
         fetchMoreLogs: function (offset, limit) {
             return apiFactory.call.getLogs(offset, limit);
         },
-        fetchNotSeenCalls: fetchNotSeenCalls
+        fetchNotSeenCalls: fetchNotSeenCalls,
+        markCallsAsSeen: markCallsAsSeen
     };
 });
 
