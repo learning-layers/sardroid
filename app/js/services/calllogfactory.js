@@ -53,9 +53,10 @@ angular.module('callLog')
                  return resolve();
              } else {
                  decrementCallLogBadge(callsToMarkAsSeen.length);
+
                  return apiFactory.call.markAsSeen(callsToMarkAsSeen)
                     .then(function (results) {
-                        resolve(resolve)
+                        resolve(results);
                     })
                     .catch(function (error) {
                         reject(error);
