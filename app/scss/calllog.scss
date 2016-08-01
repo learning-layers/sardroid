@@ -14,7 +14,16 @@
         }
 
         &.not-seen {
-            color: #ef473a;
+
+            span {
+                animation: notify-pulse 1.75s infinite;
+                color: #ef473a;
+            }
+
+            h2 {
+                animation: notify-pulse 1.75s infinite;
+                color: #ef473a;
+            }
         }
     }
 }
