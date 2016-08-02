@@ -1,9 +1,11 @@
 # Soar 
 Hi there!
 
-Welcome to the SOcial Augmented Reality mobile application, also kown as SOAR! It's powered by [Cordova](https://cordova.apache.org/) and
+Welcome to the Social Augmented Reality mobile application, also kown as SoAR! It's powered by [Cordova](https://cordova.apache.org/) and
 [Crosswalk](https://crosswalk-project.org/), with npm and bower as the package managers. [Ionic](http://ionicframework.com/)
 was chosen as the hybrid framework of choice! It's currently only been tested on Android, but it might also work on iOS someday, who knows.
+
+This is the front-end part, the server can be found at https://github.com/learning-layers/sardroid-server
 
 ## Installation
 
