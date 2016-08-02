@@ -2,6 +2,12 @@
     opacity: 1;
 }
 
+@keyframes not-read-pulse {
+    0%   { color: #ef473a;}
+    50%  { color: black;  }
+    100% { color: #ef473a; }
+}
+
 .call-log-list {
     .item {
         h2 {
@@ -14,14 +20,13 @@
         }
 
         &.not-seen {
-
             span {
-                animation: notify-pulse 1.75s infinite;
+                animation: not-read-pulse 1.75s infinite;
                 color: #ef473a;
             }
 
             h2 {
-                animation: notify-pulse 1.75s infinite;
+                animation: not-read-pulse 1.75s infinite;
                 color: #ef473a;
             }
         }
