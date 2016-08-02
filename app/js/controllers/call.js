@@ -168,9 +168,9 @@ angular.module('call', [])
 
     $scope.determineArrowSwitchClass = function () {
         if ($scope.isArrowModeOn === true) {
-            return 'ion-edit';
-        } else if ($scope.isArrowModeOn === false) {
             return 'ion-arrow-swap';
+        } else if ($scope.isArrowModeOn === false) {
+            return 'ion-edit';
         }
     };
 
