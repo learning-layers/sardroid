@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Module for juggling call state.
+ * Module for juggling call and such!
  */
 
 angular.module('callLog')
