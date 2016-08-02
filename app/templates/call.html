@@ -2,7 +2,7 @@
     <ion-content scroll="false">
         <div class="content-wrapper" id="local-wrapper" ng-class="determineFullscreenCanvas()">
             <div class="call-header">
-                <span class="user-name">{{'CALL_HEADER' | translate:callPartner}}</span>
+                <span class="user-name">{{'CALL_HEADER' | translate:callPartner}} {{callCurrentTime}}</span>
             </div>
             <video id="big-video"  ng-attr-autoplay="{{ determineIfBigVideoIsAutoplay() || undefined}}" muted="muted" ng-src="{{bigStreamSrc}}"></video>
             <video id="small-video" ng-attr-autoplay="{{ determineIfSmallVideoIsAutoplay() || undefined}}" muted="muted" ng-src="{{smallStreamSrc}}"></video>

@@ -6,9 +6,11 @@
  */
 
 angular.module('call', [])
-.controller('CallCtrl', function ($scope, trackingFactory, recordingFactory, fileFactory,
-                                  $ionicLoading, settingsFactory, $window, $document, callLogFactory
-                                  , $sce, $stateParams, peerFactory, drawingFactory) {
+.controller('CallCtrl', function ($scope, trackingFactory, recordingFactory,
+                                  fileFactory, $ionicLoading, settingsFactory,
+                                  $window, $document, callLogFactory,
+                                  $sce, $stateParams, peerFactory,
+                                  drawingFactory, $interval) {
     var saveCalls = settingsFactory.getSetting('saveCalls');
 
     var startDate = Date.now();
@@ -17,6 +19,7 @@ angular.module('call', [])
 
     var leave = function () {
         if (alreadyLeaving === false) {
+            $interval.cancel(callTimerInterval);
             alreadyLeaving = true;
             peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
             callLogFactory.callSucceeded();
@@ -145,6 +148,21 @@ angular.module('call', [])
     });
 
     $scope.callPartner = $stateParams.user || { displayName: 'Unknown' };
+
+    var timeSinceCallStarted = 0;
+    $scope.callCurrentTime = '00:01';
+
+    var callTimerInterval = $interval(function () {
+        timeSinceCallStarted += 1;
+
+        var minutes = Math.floor(timeSinceCallStarted / 60);
+        var seconds = timeSinceCallStarted - minutes * 60;
+
+        // Add leading zeroes to counter
+        $scope.callCurrentTime = (minutes.toString().length >= 2 ? minutes : '0' + minutes)
+                                + ':' + (seconds.toString().length >= 2 ? seconds : '0' + seconds) ;
+
+    }, 1000);
 
     $scope.currentBigScreen = 'remote-big';
 
