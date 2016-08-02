@@ -97,7 +97,7 @@ angular.module('call', [])
         toggleVideoPlayingState($scope.currentLocalVideoLocation);
     };
 
-    var draggableVideo = new Draggabilly('#small-video');
+    var draggableVideo = new Draggabilly('#small-video', { containment: true });
 
     var localStreamSrc  = $sce.trustAsResourceUrl(peerFactory.getLocalStreamSrc());
     var remoteStreamSrc = $sce.trustAsResourceUrl(peerFactory.getRemoteStreamSrc());
