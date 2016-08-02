@@ -5,7 +5,8 @@
                 <a href="#" class="item" ng-class="{ 'not-seen': call.hasBeenSeen }">
                     <h2>{{::call.userInfo}}</h2>
                     <span>{{::call.startedAt | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
-                    <p>{{::call.text}}</p>
+                    <p class="call-text">{{::call.text}}</p>
+                    <p class="call-duration">{{::call.durationText}}</p>
                 </a>
             </div>
         </div>

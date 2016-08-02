@@ -11,11 +11,24 @@
 .call-log-list {
     .item {
         h2 {
-            width: 50%;
+            width: 40%;
             display: inline-block;
         }
 
         span {
+            float: right;
+        }
+
+        p {
+            display: inline;
+        }
+
+        .call-text {
+            width: 50%;
+            float: left;
+        }
+
+        .call-duration {
             float: right;
         }
 

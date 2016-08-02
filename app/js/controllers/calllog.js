@@ -9,10 +9,20 @@ angular.module('callLog', [])
                                      $scope, $translate, $localStorage) {
     var translations = $translate.instant(['CALL_LOG_YOU_CALLED', 'CALL_LOG_THEY_CALLED',
                                           'CALL_LOG_THEY_NO_ANSWER', 'CALL_LOG_YOU_NO_ANSWER',
-                                          'CALL_LOG_ERROR']);
+                                          'CALL_LOG_ERROR', 'CALL_LOG_DURATION']);
 
     var currentPagination = 0;
     var paginationOffset = 10;
+
+    var getCallDuration = function (callStarted, callEnded) {
+        var ms = (new Date(callEnded) - new Date(callStarted));
+        var min = (ms / 1000 / 60) << 0;
+        var sec = (ms / 1000) % 60;
+
+
+        return Math.round(min) + ':' + Math.round(sec);
+    };
+
 
     $scope.calls = [];
 
@@ -44,7 +54,7 @@ angular.module('callLog', [])
 
                         break;
                         case callLogFactory.callStates.succeeded:
-
+                            call.durationText = translations.CALL_LOG_DURATION + getCallDuration(call.startedAt, call.endedAt);
                             break;
                     }
 
