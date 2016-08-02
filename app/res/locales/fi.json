@@ -65,7 +65,7 @@
     "PASSWORD_NO_MATCH": "Salasanat eivät täsmää!",
     "PREFERENCES_SAVE_CALLS": "Tallenna puhelut testausta varten?",
     "PROFILE": "Profiili",
-    "QUIT": "Lopeta sovellus",
+    "QUIT": "Poistu sovelluksesta",
     "QUIT_CALLING": "Lopeta puhelu",
     "RECONNECT_FAILED": "Yhteyden uudelleenmuodostaminen ei onnistunut. Ole hyvä ja yritä myöhemmin uudestaan.",
     "RECONNECT_STARTED": "Yhteys menetetty. Yritetään yhdistää...",
