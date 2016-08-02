@@ -88,7 +88,6 @@ angular.module('call', [])
         }
     };
 
-
     var toggleRemoteVideoPlayingState = function () {
         toggleVideoPlayingState($scope.currentRemoteVideoLocation);
     };
@@ -144,6 +143,8 @@ angular.module('call', [])
         $window.isRemoteVideoPaused = !$window.isRemoteVideoPaused;
         toggleRemoteVideoPlayingState();
     });
+
+    $scope.callPartner = $stateParams.user || { displayName: 'Unknown' };
 
     $scope.currentBigScreen = 'remote-big';
 
