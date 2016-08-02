@@ -168,10 +168,8 @@ angular.module('call', [])
 
     $scope.determineIfPauseButtonDisabled = function () {
         if ($scope.currentRemoteVideoLocation === '#big-video') {
-            console.log('button should be paused!');
             return true;
         } else if ($scope.currentRemoteVideoLocation === '#small-video') {
-            console.log('button should NOT be paused!');
             return false;
         }
     };
@@ -221,7 +219,8 @@ angular.module('call', [])
         $scope.isOwnStreamMuted = !$scope.isOwnStreamMuted;
     };
 
-    $scope.togglePause = function () {
+    $scope.togglePause = function ($event) {
+        if ($event.currentTarget.getAttribute('disabled') !== null) { return; }
         $scope.isOwnVideoPaused = !$scope.isOwnVideoPaused;
         peerFactory.sendDataToPeer({ type: 'toggleRemoteVideo' });
         toggleLocalVideoPlayingState();
