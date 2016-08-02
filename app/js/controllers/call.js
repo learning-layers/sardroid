@@ -166,6 +166,16 @@ angular.module('call', [])
         }
     };
 
+    $scope.determineIfPauseButtonDisabled = function () {
+        if ($scope.currentRemoteVideoLocation === '#big-video') {
+            console.log('button should be paused!');
+            return true;
+        } else if ($scope.currentRemoteVideoLocation === '#small-video') {
+            console.log('button should NOT be paused!');
+            return false;
+        }
+    };
+
     $scope.determineArrowSwitchClass = function () {
         if ($scope.isArrowModeOn === true) {
             return 'ion-arrow-swap';

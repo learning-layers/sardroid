@@ -56,7 +56,13 @@
         &:active {
             opacity: 1;
         }
+
+        &[disabled] {
+            opacity: 0.5;
+            -webkit-filter: grayscale(100%);
+        }
     }
+
 
 
     .pause-button {
