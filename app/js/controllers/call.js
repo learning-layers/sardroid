@@ -11,11 +11,16 @@ angular.module('call', [])
                                   $window, $document, callLogFactory,
                                   $sce, $stateParams, peerFactory,
                                   drawingFactory, $interval, $timeout) {
+    // Whether or not to save calls
     var saveCalls = settingsFactory.getSetting('saveCalls');
 
+    // The timestamp for when the call has started
     var startDate = Date.now();
 
+    // Flag to check if we've already leaving
     var alreadyLeaving = false;
+
+    var hasCallDataDirectoryBeenCreated = false;
 
     var leave = function () {
         if (alreadyLeaving === false) {
@@ -38,9 +43,12 @@ angular.module('call', [])
 
             if (saveCalls) {
                 $ionicLoading.show({ templateUrl: 'templates/modals/save-video-loader.html' });
-                recordingFactory.stopRecording()
+
+                createCallDataDirectoryIfNeeded()
+                .then(function () {
+                    return recordingFactory.stopRecording();
+                })
                 .then(function (results) {
-                    var name = _.kebabCase($stateParams.user.displayName);
                     return Promise.all([
                         fileFactory.writeToFile({
                             fileName : fileNamePrefix + 'your-video.webm',
@@ -49,14 +57,9 @@ angular.module('call', [])
                         fileFactory.writeToFile({
                             fileName : fileNamePrefix + 'your-audio.wav',
                             data     : results.localAudioBlob
-                        })
-                        //                    fileFactory.writeToFile({
-                        //                        fileName : fileNamePrefix + '-remote.wav',
-                        //                        data     : results.remoteAudioBlob
-                        //                    })
-                    ]);
+                        })]);
                 })
-                .then(function (results) {
+                .then(function () {
                     $ionicLoading.hide();
                     recordingFactory.clearRecordedData();
                     peerFactory.endCurrentCall();
@@ -74,6 +77,22 @@ angular.module('call', [])
     };
 
 
+    var createCallDataDirectoryIfNeeded = function () {
+        return new Promise(function (resolve, reject) {
+            if (hasCallDataDirectoryBeenCreated === true) {
+                return resolve();
+            } else {
+                fileFactory.createDirectory('/soar-calls/' + fileNamePrefix).
+                    then(function () {
+                    hasCallDataDirectoryBeenCreated = true;
+                    resolve()
+                })
+                .catch(function () {
+                    reject();
+                })
+            }
+        })
+    }
     var toggleVideoPlayingState = function (videoSelector) {
         var video = $document[0].querySelector(videoSelector);
 
@@ -155,7 +174,6 @@ angular.module('call', [])
     $scope.callPartner = $stateParams.user || { displayName: 'Unknown' };
 
     var fileNamePrefix = 'call-with-' + _.kebabCase($scope.callPartner.displayName) + '-' + Date.now() + '/';
-    fileFactory.createDirectory('/soar-calls/' + fileNamePrefix);
 
     var timeSinceCallStarted = 0;
     $scope.callCurrentTime = '00:01';
@@ -238,14 +256,13 @@ angular.module('call', [])
     $scope.takeScreenshot = function () {
         document.querySelector('#local-wrapper').classList.add('screenshot');
 
-        recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
-        .then(function (canvas) {
-            document.querySelector('#local-wrapper').classList.remove('screenshot');
-            var pngBlob = fileFactory.base64ToBlob(canvas.toDataURL('image/png'));
-
-            fileFactory.writeToFile({data: pngBlob, fileName: fileNamePrefix + recordingFactory.getCurrentScreenshotFilename() })
-            .then(function (res) {
-                console.log('alright!!!');
+            createCallDataDirectoryIfNeeded()
+            .then(function (canvas) {
+                return recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
+            .then(function (canvas) {
+                document.querySelector('#local-wrapper').classList.remove('screenshot');
+                var pngBlob = fileFactory.base64ToBlob(canvas.toDataURL('image/png'));
+                return fileFactory.writeToFile({data: pngBlob, fileName: fileNamePrefix + recordingFactory.getCurrentScreenshotFilename() })
             })
             .catch(function (e) {
                 console.log(e);
