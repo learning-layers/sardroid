@@ -110,6 +110,15 @@ angular.module('recordinghandler', [])
                 remoteRecorder.clearRecordedData();
                 remoteRecorder = null;
             }
+        },
+        screenshotElement: function (elementToCapture) {
+            return new Promise(function (resolve) {
+                html2canvas(elementToCapture, {
+                    onrendered: function (canvas) {
+                        resolve(canvas);
+                    }
+                });
+            });
         }
     };
 });

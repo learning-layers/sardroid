@@ -228,7 +228,13 @@ angular.module('call', [])
     };
 
     $scope.takeScreenshot = function () {
-        console.log('taking screenshot!');
+        $scope.isTakingScreenshot = true;
+
+        recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
+            .then(function (canvas) {
+                $scope.isTakingScreenshot = false;
+                console.log(canvas);
+            });
     };
 
     $scope.toggleArrowMode = function () {

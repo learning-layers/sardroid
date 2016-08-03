@@ -1,5 +1,5 @@
 <ion-view hide-nav-bar="true" hide-back-button="true">
-    <ion-content scroll="false">
+    <ion-content scroll="false" ng-class="{ 'screenshot': isTakingScreenshot}">
         <div class="content-wrapper" id="local-wrapper" ng-class="determineFullscreenCanvas()">
             <div class="call-header">
                 <span class="user-name">{{'CALL_HEADER' | translate:callPartner}}</span>
