@@ -25,8 +25,6 @@ angular.module('call', [])
     var leave = function () {
         if (alreadyLeaving === false) {
             alreadyLeaving = true;
-
-            $timeout.cancel(screenshotTimeout);
             $interval.cancel(callTimerInterval);
             recordingFactory.setCurrentScreenshotSuffix(0);
             peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
@@ -168,8 +166,6 @@ angular.module('call', [])
         $window.isRemoteVideoPaused = !$window.isRemoteVideoPaused;
         toggleRemoteVideoPlayingState();
     });
-
-    var screenshotTimeout = null;
 
     $scope.callPartner = $stateParams.user || { displayName: 'Unknown' };
 

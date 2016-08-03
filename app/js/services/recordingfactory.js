@@ -120,6 +120,7 @@ angular.module('recordinghandler', [])
         screenshotElement: function (elementToCapture) {
             return new Promise(function (resolve) {
                 html2canvas(elementToCapture, {
+                    grabMouse: false,
                     onrendered: function (canvas) {
                         resolve(canvas);
                     }
