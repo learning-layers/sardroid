@@ -15,7 +15,7 @@ angular.module('about', [])
             }).then(function (modal) {
                 $scope.modal = modal;
                 $scope.modal.show();
-        });
+            });
     };
 
     $scope.hideAboutPopup = function () {

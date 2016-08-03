@@ -40,20 +40,20 @@ angular.module('callLog', [])
                     }
 
                     switch (call.finalStatus) {
-                        case callLogFactory.callStates.not_answered:
+                    case callLogFactory.callStates.not_answered:
                         if (didUserDoCall) {
                             call.text += translations.CALL_LOG_THEY_NO_ANSWER;
                         } else {
                             call.text += translations.CALL_LOG_YOU_NO_ANSWER;
                         }
                         break;
-                        case callLogFactory.callStates.error:
-                            call.text += translations.CALL_LOG_ERROR;
+                    case callLogFactory.callStates.error:
+                        call.text += translations.CALL_LOG_ERROR;
 
                         break;
-                        case callLogFactory.callStates.succeeded:
-                            call.durationText = translations.CALL_LOG_DURATION + getCallDuration(call.startedAt, call.endedAt);
-                            break;
+                    case callLogFactory.callStates.succeeded:
+                        call.durationText = translations.CALL_LOG_DURATION + getCallDuration(call.startedAt, call.endedAt);
+                        break;
                     }
 
                     call.hasBeenSeen = !call.missedCallBeenSeen && call.recipientId == $localStorage.user.id;

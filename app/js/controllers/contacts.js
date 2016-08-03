@@ -160,7 +160,7 @@ angular.module('contacts', [])
 
         callLogFactory.initiateCall(userToCall.phoneNumber)
         .then(function () {
-             return peerFactory.callPeer(userToCall);
+            return peerFactory.callPeer(userToCall);
         })
         .then(function (user) {
             document.querySelector('html').removeEventListener('click', closeCallModalOnClick);

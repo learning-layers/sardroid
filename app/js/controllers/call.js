@@ -82,15 +82,15 @@ angular.module('call', [])
             } else {
                 fileFactory.createDirectory('/soar-calls/' + fileNamePrefix).
                     then(function () {
-                    hasCallDataDirectoryBeenCreated = true;
-                    resolve()
-                })
+                        hasCallDataDirectoryBeenCreated = true;
+                        resolve();
+                    })
                 .catch(function () {
                     reject();
-                })
+                });
             }
-        })
-    }
+        });
+    };
     var toggleVideoPlayingState = function (videoSelector) {
         var video = $document[0].querySelector(videoSelector);
 
@@ -182,7 +182,7 @@ angular.module('call', [])
 
         // Add leading zeroes to counter
         $scope.callCurrentTime = (minutes.toString().length >= 2 ? minutes : '0' + minutes)
-                                + ':' + (seconds.toString().length >= 2 ? seconds : '0' + seconds) ;
+                                + ':' + (seconds.toString().length >= 2 ? seconds : '0' + seconds);
 
     }, 1000);
 
@@ -253,18 +253,18 @@ angular.module('call', [])
         audioFactory.playSound('shutter');
         document.querySelector('#local-wrapper').classList.add('screenshot');
 
-            createCallDataDirectoryIfNeeded()
+        createCallDataDirectoryIfNeeded()
             .then(function (canvas) {
                 return recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
             .then(function (canvas) {
                 document.querySelector('#local-wrapper').classList.remove('screenshot');
                 var pngBlob = fileFactory.base64ToBlob(canvas.toDataURL('image/png'));
-                return fileFactory.writeToFile({data: pngBlob, fileName: fileNamePrefix + recordingFactory.getCurrentScreenshotFilename() })
+                return fileFactory.writeToFile({ data: pngBlob, fileName: fileNamePrefix + recordingFactory.getCurrentScreenshotFilename() });
             })
             .catch(function (e) {
                 console.log(e);
             });
-        });
+            });
     };
 
     $scope.toggleArrowMode = function () {

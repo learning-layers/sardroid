@@ -20,7 +20,7 @@ angular.module('callLog')
         return _.filter(calls, function (call) {
             return (call.missedCallBeenSeen === false) && $localStorage.user.id === call.recipientId;
         });
-    }
+    };
 
     var setCallLogBadge = function (number) {
         $rootScope.notSeenCallsCount = number;
@@ -28,26 +28,26 @@ angular.module('callLog')
 
     var decrementCallLogBadge = function (number) {
         if ($rootScope.notSeenCallsCount - number >= 0) {
-            $rootScope.notSeenCallsCount -= number
+            $rootScope.notSeenCallsCount -= number;
         }
     };
 
     var fetchNotSeenCalls = function () {
-         return new Promise(function (resolve, reject) {
-            apiFactory.call.getNotSeen()
+        return new Promise(function (resolve, reject) {
+             apiFactory.call.getNotSeen()
                 .then(function (notSeenCalls) {
-                    callsNotSeen = notSeenCalls
+                    callsNotSeen = notSeenCalls;
                     setCallLogBadge(notSeenCalls.length);
                     resolve(notSeenCalls);
                 })
                 .catch(function (callErr) {
                     reject(callErr);
                 });
-        });
+         });
     };
 
     var markCallsAsSeen = function (calls) {
-         return new Promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
              var callsToMarkAsSeen = filterNotSeenCalls(calls);
              if (callsToMarkAsSeen.length === 0) {
                  return resolve();
@@ -62,7 +62,7 @@ angular.module('callLog')
                         reject(error);
                     });
              }
-        });
+         });
     };
 
     var initiateCall = function (recipient) {
