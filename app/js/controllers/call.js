@@ -10,7 +10,7 @@ angular.module('call', [])
                                   fileFactory, $ionicLoading, settingsFactory,
                                   $window, $document, callLogFactory,
                                   $sce, $stateParams, peerFactory,
-                                  drawingFactory, $interval) {
+                                  drawingFactory, $interval, $timeout) {
     var saveCalls = settingsFactory.getSetting('saveCalls');
 
     var startDate = Date.now();
@@ -19,8 +19,10 @@ angular.module('call', [])
 
     var leave = function () {
         if (alreadyLeaving === false) {
-            $interval.cancel(callTimerInterval);
             alreadyLeaving = true;
+
+            $timeout.cancel(screenshotTimeout);
+            $interval.cancel(callTimerInterval);
             peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
             callLogFactory.callSucceeded();
             trackingFactory.track.call.ended({
@@ -147,6 +149,8 @@ angular.module('call', [])
         toggleRemoteVideoPlayingState();
     });
 
+    var screenshotTimeout = null;
+
     $scope.callPartner = $stateParams.user || { displayName: 'Unknown' };
 
     var timeSinceCallStarted = 0;
@@ -230,11 +234,14 @@ angular.module('call', [])
     $scope.takeScreenshot = function () {
         $scope.isTakingScreenshot = true;
 
-        recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
+        // We need a time out so that the buttons and small video window have a chance to disappear
+       screenshotTimeout = $timeout(function () {
+            recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
             .then(function (canvas) {
                 $scope.isTakingScreenshot = false;
-                console.log(canvas);
+                console.log(canvas.toDataURL('image/png'));
             });
+        }, 100);
     };
 
     $scope.toggleArrowMode = function () {
