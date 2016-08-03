@@ -227,6 +227,10 @@ angular.module('call', [])
         return true;
     };
 
+    $scope.takeScreenshot = function () {
+        console.log('taking screenshot!');
+    };
+
     $scope.toggleArrowMode = function () {
         $scope.isArrowModeOn = !$scope.isArrowModeOn;
         drawingFactory.toggleArrowDrawingMode();
