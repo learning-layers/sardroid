@@ -23,6 +23,7 @@ angular.module('call', [])
 
             $timeout.cancel(screenshotTimeout);
             $interval.cancel(callTimerInterval);
+            recordingFactory.setCurrentScreenshotSuffix(0);
             peerFactory.sendDataToPeer({ type: 'otherPeerLeft' });
             callLogFactory.callSucceeded();
             trackingFactory.track.call.ended({
@@ -40,14 +41,13 @@ angular.module('call', [])
                 recordingFactory.stopRecording()
                 .then(function (results) {
                     var name = _.kebabCase($stateParams.user.displayName);
-                    var fileNamePrefix = 'call-with-' + name + '-' + Date.now();
                     return Promise.all([
                         fileFactory.writeToFile({
-                            fileName : fileNamePrefix + '.webm',
+                            fileName : fileNamePrefix + 'your-video.webm',
                             data     : results.videoBlob
                         }),
                         fileFactory.writeToFile({
-                            fileName : fileNamePrefix + '-local.wav',
+                            fileName : fileNamePrefix + 'your-audio.wav',
                             data     : results.localAudioBlob
                         })
                         //                    fileFactory.writeToFile({
@@ -72,6 +72,7 @@ angular.module('call', [])
 
         }
     };
+
 
     var toggleVideoPlayingState = function (videoSelector) {
         var video = $document[0].querySelector(videoSelector);
@@ -152,6 +153,9 @@ angular.module('call', [])
     var screenshotTimeout = null;
 
     $scope.callPartner = $stateParams.user || { displayName: 'Unknown' };
+
+    var fileNamePrefix = 'call-with-' + _.kebabCase($scope.callPartner.displayName) + '-' + Date.now() + '/';
+    fileFactory.createDirectory('/soar-calls/' + fileNamePrefix);
 
     var timeSinceCallStarted = 0;
     $scope.callCurrentTime = '00:01';
@@ -239,7 +243,7 @@ angular.module('call', [])
             document.querySelector('#local-wrapper').classList.remove('screenshot');
             var pngBlob = fileFactory.base64ToBlob(canvas.toDataURL('image/png'));
 
-            fileFactory.writeToFile({data: pngBlob, fileName: recordingFactory.getCurrentScreenshotFilename() })
+            fileFactory.writeToFile({data: pngBlob, fileName: fileNamePrefix + recordingFactory.getCurrentScreenshotFilename() })
             .then(function (res) {
                 console.log('alright!!!');
             })

@@ -32,6 +32,9 @@ angular.module('filehandler', [])
             return new Blob(byteArrays, { type: contentType });
         },
         createDataDirIfNotExist: function () {
+            return this.createDirectory('soar-calls');
+        },
+        createDirectory: function (path) {
             if ($window.cordova) {
                 return new Promise(function (resolve, reject) {
                     var rejectErr = function (e) {
@@ -39,7 +42,7 @@ angular.module('filehandler', [])
                     };
 
                     xwalk.experimental.native_file_system.requestNativeFileSystem('dcim', function (fs) {
-                        fs.root.getDirectory('/dcim/soar-calls', { create: true }, function () {
+                        fs.root.getDirectory('/dcim/' + path, { create: true }, function () {
                             resolve();
                         });
                     }, rejectErr);
