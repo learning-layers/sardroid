@@ -10,6 +10,7 @@ angular.module('audiohandler', [])
         if ($window.cordova) {
             $cordovaNativeAudio.preloadComplex('dial', 'res/sounds/dial.wav', 1, 1);
             $cordovaNativeAudio.preloadComplex('call', 'res/sounds/incoming.mp3', 1, 1);
+            $cordovaNativeAudio.preloadComplex('shutter', 'res/sounds/shutter.wav', 1, 1);
         }
     });
     return {
@@ -32,6 +33,7 @@ angular.module('audiohandler', [])
             if ($window.cordova) {
                 this.stopSound('call');
                 this.stopSound('dial');
+                this.stopSound('shutter');
             }
         }
     };

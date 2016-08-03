@@ -10,7 +10,7 @@ angular.module('call', [])
                                   fileFactory, $ionicLoading, settingsFactory,
                                   $window, $document, callLogFactory,
                                   $sce, $stateParams, peerFactory,
-                                  drawingFactory, $interval, $timeout) {
+                                  drawingFactory, $interval, audioFactory) {
     // Whether or not to save calls
     var saveCalls = settingsFactory.getSetting('saveCalls');
 
@@ -254,6 +254,7 @@ angular.module('call', [])
     };
 
     $scope.takeScreenshot = function () {
+        audioFactory.playSound('shutter');
         document.querySelector('#local-wrapper').classList.add('screenshot');
 
             createCallDataDirectoryIfNeeded()
