@@ -232,16 +232,13 @@ angular.module('call', [])
     };
 
     $scope.takeScreenshot = function () {
-        $scope.isTakingScreenshot = true;
+        document.querySelector('#local-wrapper').classList.add('screenshot');
 
-        // We need a time out so that the buttons and small video window have a chance to disappear
-       screenshotTimeout = $timeout(function () {
-            recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
-            .then(function (canvas) {
-                $scope.isTakingScreenshot = false;
-                console.log(canvas.toDataURL('image/png'));
-            });
-        }, 100);
+        recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
+        .then(function (canvas) {
+            document.querySelector('#local-wrapper').classList.remove('screenshot');
+            console.log(canvas.toDataURL('image/png'));
+        });
     };
 
     $scope.toggleArrowMode = function () {
