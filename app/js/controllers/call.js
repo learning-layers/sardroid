@@ -237,7 +237,15 @@ angular.module('call', [])
         recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
         .then(function (canvas) {
             document.querySelector('#local-wrapper').classList.remove('screenshot');
-            console.log(canvas.toDataURL('image/png'));
+            var pngBlob = fileFactory.base64ToBlob(canvas.toDataURL('image/png'));
+
+            fileFactory.writeToFile({data: pngBlob, fileName: recordingFactory.getCurrentScreenshotFilename() })
+            .then(function (res) {
+                console.log('alright!!!');
+            })
+            .catch(function (e) {
+                console.log(e);
+            });
         });
     };
 

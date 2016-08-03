@@ -13,6 +13,8 @@ angular.module('recordinghandler', [])
 
     var frameInterval = settingsFactory.getSetting('callRecordingInterval');
 
+    var currentScreenShot = 0;
+
     var initializeLocalAudio = function (audioStream) {
         if (!localRecorder) {
             localRecorder = RecordRTC(audioStream, {
@@ -36,6 +38,10 @@ angular.module('recordinghandler', [])
     };
 
     return {
+        getCurrentScreenshotFilename: function () {
+            currentScreenShot += 1;
+            return 'screenshot-' + currentScreenShot + '.png';
+        },
         initializeRecordingVideo: function (elementToRecord) {
             if (!videoRecorder) {
                 videoRecorder = RecordRTC(elementToRecord, {
