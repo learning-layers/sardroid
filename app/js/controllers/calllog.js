@@ -16,10 +16,11 @@ angular.module('callLog', [])
 
     var getCallDuration = function (callStarted, callEnded) {
         var ms = (new Date(callEnded) - new Date(callStarted));
-        var min = (ms / 1000 / 60) << 0;
-        var sec = (ms / 1000) % 60;
+        var min = Math.round( (ms / 1000 / 60) << 0);
+        var sec = Math.round( (ms / 1000) % 60);
 
-        return Math.round(min) + ':' + Math.round(sec);
+        return (min.toString().length >= 2 ? min : '0' + min)
+        + ':' + (sec.toString().length >= 2 ? sec : '0' + sec);
     };
 
     $scope.calls = [];
