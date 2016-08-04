@@ -47,7 +47,7 @@ angular.module('confighandler', [])
                 url: 'https://mattij.com:9000'
             },
             initialUserSettings: {
-                saveCalls: true,
+                saveCalls: false,
                 callRecordingInterval: 1500
             }
         },
