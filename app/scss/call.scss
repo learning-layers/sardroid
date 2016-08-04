@@ -7,10 +7,21 @@
   z-index: 0;
 }
 
+@keyframes screenshot-flash {
+    0%   { opacity: 0;}
+    100% { opacity: 1;}
+}
+
 .content-wrapper{
     background-color: #444;
     height: 100vh;
     width: 100vw;
+
+}
+
+.screenshot {
+    background-color: #fff;
+    animation: screenshot-flash 1s;
 }
 
 .call-header {
@@ -119,14 +130,6 @@
         background-color: #ef473a;
         transform: rotate(136deg);
     }
-}
-
-.local-canvas-wrapper {
-    //background-color: yellow;
-}
-
-.remote-canvas-wrapper {
-   //background-color: green;
 }
 
 .canvas-wrapper {
