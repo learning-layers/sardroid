@@ -11,7 +11,7 @@
     "CALL_INCOMING_TEMPLATE": "Incoming call. Answer?",
     "CALL_INCOMING_TITLE":" Call from {{displayName}}",
     "CALL_LOG": "Call Log",
-    "CALL_LOG_DURATION": "Call lasted for ",
+    "CALL_LOG_DURATION": "Duration ",
     "CALL_LOG_ERROR": ", but something went wrong!",
     "CALL_LOG_FETCH_ERROR": "Fetching more calls failed!",
     "CALL_LOG_THEY_CALLED": "They called you",
