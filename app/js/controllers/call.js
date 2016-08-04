@@ -195,6 +195,7 @@ angular.module('call', [])
     $scope.isOwnVideoPaused     = false;
     $scope.isOwnStreamMuted     = false;
     $scope.isArrowModeOn        = false;
+    $scope.isTakingScreenshot   = false;
 
     $scope.currentRemoteVideoLocation = '#big-video';
     $scope.currentLocalVideoLocation  = '#small-video';
@@ -250,6 +251,7 @@ angular.module('call', [])
     };
 
     $scope.takeScreenshot = function () {
+        $scope.isTakingScreenshot = true;
         audioFactory.playSound('shutter');
 
         createCallDataDirectoryIfNeeded()
@@ -259,7 +261,11 @@ angular.module('call', [])
                 var pngBlob = fileFactory.base64ToBlob(canvas.toDataURL('image/png'));
                 return fileFactory.writeToFile({ data: pngBlob, fileName: fileNamePrefix + recordingFactory.getCurrentScreenshotFilename() });
             })
+            .then(function () {
+                $scope.isTakingScreenshot = false;
+            })
             .catch(function (e) {
+                $scope.isTakingScreenshot = false;
                 console.log(e);
             });
         });

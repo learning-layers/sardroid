@@ -10,7 +10,7 @@
             <audio id="call-audio" ng-src="{{::remoteAudioSrc}}" autoplay></audio>
             <div class="controls" data-html2canvas-ignore="true">
                 <i class="icon control-button arrow-button" ng-class="determineArrowSwitchClass()" ng-click="toggleArrowMode()"></i>
-                <i class="icon ion-camera control-button camera-button" ng-click="takeScreenshot()"></i>
+                <i class="icon ion-camera control-button camera-button" ng-disabled="isTakingScreenshot" ng-click="takeScreenshot()"></i>
                 <i class="icon assertive control-button mute-button" ng-class="determineMuteButtonClass()" ng-click="toggleMute()"></i>
                 <i class="icon control-button pause-button" ng-class="determinePauseButtonClass()" ng-disabled="determineIfPauseButtonDisabled()" ng-click="togglePause($event)"></i>
                 <i class="icon ion-trash-a control-button remove-button" ng-click="clearActiveCanvas()"></i>
