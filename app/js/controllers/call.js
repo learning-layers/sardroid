@@ -251,20 +251,18 @@ angular.module('call', [])
 
     $scope.takeScreenshot = function () {
         audioFactory.playSound('shutter');
-        document.querySelector('#local-wrapper').classList.add('screenshot');
 
         createCallDataDirectoryIfNeeded()
+        .then(function (canvas) {
+            return recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
             .then(function (canvas) {
-                return recordingFactory.screenshotElement(document.getElementById('local-wrapper'))
-            .then(function (canvas) {
-                document.querySelector('#local-wrapper').classList.remove('screenshot');
                 var pngBlob = fileFactory.base64ToBlob(canvas.toDataURL('image/png'));
                 return fileFactory.writeToFile({ data: pngBlob, fileName: fileNamePrefix + recordingFactory.getCurrentScreenshotFilename() });
             })
             .catch(function (e) {
                 console.log(e);
             });
-            });
+        });
     };
 
     $scope.toggleArrowMode = function () {
