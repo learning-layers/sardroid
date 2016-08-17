@@ -10,9 +10,9 @@ angular.module('confighandler', [])
     // Set up configuration variables we can use anywhere in Angular
     var config = {
         production: {
-            apiUrl: 'https://mattij.com:9000/',
+            apiUrl: 'https://layersbox.aalto.fi:9000/',
             peerjs: {
-                host: 'mattij.com',
+                host: 'layersbox.aalto.fi',
                 port: 9000,
                 path: '/peerjs',
                 debug: 0,
@@ -44,7 +44,7 @@ angular.module('confighandler', [])
                 }
             },
             socketio: {
-                url: 'https://mattij.com:9000'
+                url: 'https://layersbox.aalto.fi:9000'
             },
             initialUserSettings: {
                 saveCalls: false,
