@@ -89,6 +89,10 @@ of Arts, Design and Architecture of Aalto University, Finland.
 #### Development, design and direction:
 
 - Matti Jokitulppo (@melonmanchan)
+- Jukka Purma (@jpurma)
+- Leo Nikkilä (@lnikkila)
 - Marjo Virnes
+- Lassi Veikkonen (@lassiveikkonen)
+- Samuli Raivio (@bqqbarbhg)
 - Sanna Reponen
 - Jana Pejoska
