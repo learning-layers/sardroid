@@ -81,3 +81,14 @@ Add the following lines manually to your AndroidManifest.xml under platforms/and
 <uses-permission android:name="android.permission.CAMERA" />
 ```
 
+# Authors
+
+SoAR is developed by the Learning Environments research group at the School
+of Arts, Design and Architecture of Aalto University, Finland.
+
+#### Development, design and direction:
+
+- Matti Jokitulppo (@melonmanchan)
+- Marjo Virnes
+- Sanna Reponen
+- Jana Pejoska
